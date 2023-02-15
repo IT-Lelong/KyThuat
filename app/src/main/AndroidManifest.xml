@@ -28,7 +28,10 @@
         android:theme="@style/AppTheme"
         tools:targetApi="31">
         <activity
-            android:name=".login_kt01"
+            android:name=".KT02.login_kt02"
+            android:exported="false" />
+        <activity
+            android:name=".KT01.login_kt01"
             android:exported="false" />
 
         <provider
