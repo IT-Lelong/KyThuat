@@ -16,15 +16,23 @@ public class mainAdapter extends FragmentPagerAdapter {
         this.totalTabs = totalTabs;
     }
     public Fragment getItem(int position) {
-        /*switch (position) {
+        switch (position) {
             case 0:
-                mainData mainDataFragment = new mainData(position);
-                return mainDataFragment;
+                KT03_HM01 hangmuc01_Fragment = new KT03_HM01("01");
+                return hangmuc01_Fragment;
+            case 1:
+                KT03_HM02 hangmuc02_Fragment = new KT03_HM02("02");
+                return hangmuc02_Fragment;
+            case 2:
+                KT03_HM03 hangmuc03_Fragment = new KT03_HM03("03");
+                return hangmuc03_Fragment;
+            case 3:
+                KT03_HM04 hangmuc04_Fragment = new KT03_HM04("04");
+                return hangmuc04_Fragment;
             default:
                 return null;
-        }*/
-        mainData mainDataFragment = new mainData(position);
-        return mainDataFragment;
+        }
+
     }
     @Override
     public int getCount() {

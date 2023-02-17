@@ -9,19 +9,19 @@ import androidx.fragment.app.Fragment;
 
 import com.lelong.kythuat.R;
 
-public class mainData  extends Fragment {
-    static int g_dk = 0;
+public class KT03_HM01 extends Fragment {
+    static String g_dk = "";
 
-    public mainData(int position) {
-        g_dk = position;
+    public KT03_HM01(String qry_cond) {
+        g_dk = qry_cond;
     }
 
-    public static mainData newInstance(String param1, String param2) {
-        mainData fragment = new mainData(g_dk);
+    public static KT03_HM01 newInstance(String param1, String param2) {
+        KT03_HM01 fragment = new KT03_HM01(g_dk);
         //Bundle args = new Bundle();
         //args.putString(ARG_PARAM1, param1);
         //args.putString(ARG_PARAM2, param2);
-       // fragment.setArguments(args);
+        // fragment.setArguments(args);
         return fragment;
     }
 
@@ -38,6 +38,6 @@ public class mainData  extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.kt03_maindata_fragment, container, false);
+        return inflater.inflate(R.layout.kt03_hm01_fragment, container, false);
     }
 }

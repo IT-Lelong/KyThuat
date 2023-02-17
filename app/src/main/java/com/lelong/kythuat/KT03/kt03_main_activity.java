@@ -47,15 +47,10 @@ public class kt03_main_activity extends AppCompatActivity {
         Cursor cursor_tc_fab = createTable.getAll_tc_fab("KT03");
         cursor_tc_fab.moveToFirst();
         for (int i = 0; i < cursor_tc_fab.getCount(); i++) {
-            tabLayout.addTab(tabLayout.newTab().setText(
-                    cursor_tc_fab.getString(cursor_tc_fab.getColumnIndex(g_lang))));
+            tabLayout.addTab(tabLayout.newTab().setText(cursor_tc_fab.getString(cursor_tc_fab.getColumnIndex(g_lang))));
             cursor_tc_fab.moveToNext();
         }
 
-
-        //tabLayout.addTab(tabLayout.newTab().setText("Football"));
-        //tabLayout.addTab(tabLayout.newTab().setText("Cricket"));
-        //tabLayout.addTab(tabLayout.newTab().setText("NBA"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         final mainAdapter adapter = new mainAdapter(this, getSupportFragmentManager(),
                 tabLayout.getTabCount());
