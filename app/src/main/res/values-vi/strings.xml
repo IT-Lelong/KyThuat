@@ -6,6 +6,11 @@
     <string name="btn_cancel">Hủy bỏ</string>
     <string name="btn_clean">Làm trống</string>
     <string name="btn_print">In</string>
+    <string name="btn_date">Ngày</string>
+    <string name="btn_time">Thời gian</string>
+    <string name="btn_insert">Thêm mới</string>
+    <string name="btn_query">Tra cứu</string>
+
     <string name="tt_hangmuc">Hạng mục</string>
     <string name="tt_mvl">Mã vật liệu</string>
     <string name="tt_ten">Tên vật liệu</string>
@@ -13,6 +18,7 @@
     <string name="tt_kho">Kho</string>
     <string name="tt_solo">Số lô</string>
     <string name="tt_soluong">Số lượng</string>
+
 
     /*Menu Button*/
     <string name="btn_KT01">BIỂU ĐIỂM KHẢO HẠCH QUẢN LÝ THIẾT BỊ</string>
@@ -44,4 +50,8 @@
     <string name="E01">Tài khoản hoặc mật khẩu không đúng</string>
     <string name="E02">Liên kết máy chủ thất bại</string>
     <string name="E10">Xin nhập số tài khoản</string>
+
+    /*KT03*/
+    <string name="Ca1">Ca 1</string>
+    <string name="Ca2">Ca 2</string>
 </resources>

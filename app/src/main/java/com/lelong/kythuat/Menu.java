@@ -1,36 +1,27 @@
 package com.lelong.kythuat;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.PopupMenu;
-import android.widget.Spinner;
+import android.widget.CompoundButton;
+import android.widget.DatePicker;
+import android.widget.RadioButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
-
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.lelong.kythuat.KT01.login_kt01;
+import com.lelong.kythuat.KT03.login_kt03;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,10 +31,9 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
-import java.util.concurrent.ExecutionException;
 
 public class Menu extends AppCompatActivity {
 
@@ -53,7 +43,10 @@ public class Menu extends AppCompatActivity {
     TextView menuID;
     String ID;
     Locale locale;
+    SimpleDateFormat dateFormat;
     private CheckAppUpdate checkAppUpdate = null;
+    private login_kt03 loginKt03 = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setLanguage();
@@ -68,9 +61,12 @@ public class Menu extends AppCompatActivity {
         g_server = getbundle.getString("SERVER");
         menuID = (TextView) findViewById(R.id.menuID);
         new IDname().execute("http://172.16.40.20/" + g_server + "/getid.php?ID=" + ID);
+        dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 
         Cre_db = new Create_Table(this);
         Cre_db.open();
+
+        loginKt03 = new login_kt03();
 
         btn_KT01 = findViewById(R.id.btn_KT01);
         btn_KT02 = findViewById(R.id.btn_KT02);
@@ -127,12 +123,12 @@ public class Menu extends AppCompatActivity {
     }
 
 
-    private Button.OnClickListener btnlistener = new Button.OnClickListener() {
+    private final Button.OnClickListener btnlistener = new Button.OnClickListener() {
         public void onClick(View v) {
             //利用switch case方法，之後新增按鈕只需新增case即可
             switch (v.getId()) {
 
-                case R.id.btn_KT01: {
+                /*case R.id.btn_KT01: {
                     Intent KT01 = new Intent();
                     KT01.setClass(Menu.this, login_kt01.class);
                     Bundle bundle = new Bundle();
@@ -141,7 +137,7 @@ public class Menu extends AppCompatActivity {
                     KT01.putExtras(bundle);
                     startActivity(KT01);
                     break;
-                }
+                }*/
 
                 /*case R.id.btn_KT02: {
                     Intent QR010 = new Intent();
@@ -152,20 +148,15 @@ public class Menu extends AppCompatActivity {
                     QR010.putExtras(bundle);
                     startActivity(QR010);
                     break;
-                }
+                }*/
 
                 case R.id.btn_KT03: {
-                    Intent QR010 = new Intent();
-                    QR010.setClass(Menu.this, KT_1.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putString("ID", ID);
-                    bundle.putString("SERVER", g_server);
-                    QR010.putExtras(bundle);
-                    startActivity(QR010);
+                    loginKt03.login_dialog(v.getContext(),
+                            menuID.getText().toString());
                     break;
                 }
 
-                case R.id.btn_KT04: {
+               /* case R.id.btn_KT04: {
                     Intent QR010 = new Intent();
                     QR010.setClass(Menu.this, KT_1.class);
                     Bundle bundle = new Bundle();
@@ -175,10 +166,10 @@ public class Menu extends AppCompatActivity {
                     startActivity(QR010);
                     break;
                 }*/
-
             }
         }
     };
+
 
     //Khởi tạo menu trên thanh tiêu đề (S)
     @Override
