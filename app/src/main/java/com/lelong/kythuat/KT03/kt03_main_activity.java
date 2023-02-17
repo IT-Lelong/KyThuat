@@ -53,7 +53,7 @@ public class kt03_main_activity extends AppCompatActivity {
         }
 
 
-        tabLayout.addTab(tabLayout.newTab().setText("Football"));
+        //tabLayout.addTab(tabLayout.newTab().setText("Football"));
         //tabLayout.addTab(tabLayout.newTab().setText("Cricket"));
         //tabLayout.addTab(tabLayout.newTab().setText("NBA"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
