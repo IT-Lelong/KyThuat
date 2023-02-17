@@ -152,7 +152,9 @@ public class Menu extends AppCompatActivity {
 
                 case R.id.btn_KT03: {
                     loginKt03.login_dialog(v.getContext(),
-                            menuID.getText().toString());
+                            menuID.getText().toString(),
+                            ID,
+                            g_server);
                     break;
                 }
 
@@ -175,7 +177,6 @@ public class Menu extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(android.view.Menu menu) {
         getMenuInflater().inflate(R.menu.menu_opt, menu);
-
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -183,8 +184,8 @@ public class Menu extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.refresh_datatable:
-                //Cre_db.delete_table();
-                //Refresh_Datatable();
+                Cre_db.delete_table();
+                Refresh_Datatable();
                 break;
         }
         return super.onOptionsItemSelected(item);

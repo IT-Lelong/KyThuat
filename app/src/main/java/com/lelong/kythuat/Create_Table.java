@@ -108,17 +108,12 @@ public class Create_Table {
     }
 
     /*KT01*/
-    public Cursor getAll_tc_fab() {
+    public Cursor getAll_tc_fab(String qry_cond) {
         Cursor a;
         try {
-         /*  a  = db.query(TABLE_NAME_TC_FAB, new String[]{"rowid _id", tc_fab001,tc_fab002,tc_fab003,tc_fab004}
-                    , null, null, null, null, tc_fab002 + " DESC", null) ;*/
-            // a = db.rawQuery("SELECT * FROM " + TABLE_NAME_TC_FAB + " WHERE tc_fab001='KT01'", null);
-
             //SQLiteDatabase db = this.getWritableDatabase();
-            String selectQuery = "SELECT * FROM " + TABLE_NAME_TC_FAB + " WHERE tc_fab001='KT01'";
+            String selectQuery = "SELECT * FROM " + TABLE_NAME_TC_FAB + " WHERE tc_fab001 = '" + qry_cond + "' ORDER BY tc_fab001 ";
             return db.rawQuery(selectQuery, null);
-
         } catch (Exception e) {
             return null;
         }

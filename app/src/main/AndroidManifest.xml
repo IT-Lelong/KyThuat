@@ -28,7 +28,6 @@
         android:theme="@style/AppTheme"
         tools:targetApi="31">
 
-
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"
@@ -49,7 +48,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".KT02.login_kt02"
             android:exported="true" />
@@ -59,6 +57,10 @@
         <activity
             android:name=".Menu"
             android:exported="false" />
+        <activity
+            android:name=".KT03.kt03_main_activity"
+            android:exported="false"
+            android:screenOrientation="landscape"/>
     </application>
 
 </manifest>

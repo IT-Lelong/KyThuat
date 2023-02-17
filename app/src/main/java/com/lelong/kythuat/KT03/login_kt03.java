@@ -4,12 +4,15 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.lelong.kythuat.R;
 
@@ -18,7 +21,7 @@ import java.util.Date;
 
 public class login_kt03 {
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-    public void login_dialog(Context context, String menuID) {
+    public void login_dialog(Context context, String menuID, String ID, String g_server) {
         TextView tv_name, tv_date;
         RadioButton radio_a, radio_b;
         Button btn_Date, btn_Insert, btn_Query;
@@ -38,13 +41,13 @@ public class login_kt03 {
         radio_a.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                g_ca[0] = "Ca 1";
+                g_ca[0] = "1";
             }
         });
         radio_b.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                g_ca[0] = "Ca 2";
+                g_ca[0] = "2";
             }
         });
 
@@ -77,12 +80,38 @@ public class login_kt03 {
             }
         });
 
-        //btn_Insert.setOnClickListener(listenerButton);
-        //btn_Query.setOnClickListener(listenerButton);
+        btn_Insert.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!g_ca[0].isEmpty()){
+                    Intent KT03 = new Intent();
+                    KT03.setClass(context, kt03_main_activity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("ID", ID);
+                    bundle.putString("SERVER", g_server);
+                    bundle.putString("CA", g_ca[0].toString());
+                    bundle.putString("DATE",tv_date.getText().toString());
+                    KT03.putExtras(bundle);
+                    context.startActivity(KT03);
+                }else{
+                    Toast.makeText(context, "Xin chọn ca làm việc", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        btn_Query.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!g_ca[0].isEmpty()){
+                    String a = String.valueOf(1);
+                }else{
+                    Toast.makeText(context, "Xin chọn ca làm việc", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         tv_name.setText(menuID);
         tv_date.setText(dateFormat.format(new Date()).toString());
-
 
         dialog.show();
     }
