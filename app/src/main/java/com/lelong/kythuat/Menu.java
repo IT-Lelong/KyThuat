@@ -65,6 +65,7 @@ public class Menu extends AppCompatActivity {
 
         Cre_db = new Create_Table(this);
         Cre_db.open();
+        Cre_db.openTable();
 
         loginKt03 = new login_kt03();
 

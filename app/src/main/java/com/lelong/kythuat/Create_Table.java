@@ -39,13 +39,22 @@ public class Create_Table {
             + tc_fac004 + " TEXT," + tc_fac005 + " TEXT," + tc_fac006 + " TEXT,"
             + tc_fac007 + " TEXT," + tc_fac008 + " TEXT," + tc_fac011 + " TEXT )";
 
-
     public Create_Table(Context ctx) {
         this.mCtx = ctx;
     }
 
     public void open() throws SQLException {
         db = mCtx.openOrCreateDatabase(DATABASE_NAME, 0, null);
+        //nối DATABASE(S)
+        /*String dbPath = mCtx.getDatabasePath("KyThuatDB").getPath();
+        // dbPath = /data/user/0/com.lelong.kythuat/databases/KyThuatDB.db
+        String attachQuery = "ATTACH DATABASE '" + dbPath +"' AS KyThuatDB";
+        db.execSQL(attachQuery);*/
+        //nối DATABASE(E)
+
+    }
+
+    public void openTable() {
         try {
             db.execSQL(CREATE_TABLE_FAB);
             db.execSQL(CREATE_TABLE_FAC);
@@ -107,12 +116,20 @@ public class Create_Table {
         db.delete(TABLE_NAME_TC_FAC, null  , null);
     }
 
-    /*KT01*/
     public Cursor getAll_tc_fab(String qry_cond) {
-        Cursor a;
         try {
             //SQLiteDatabase db = this.getWritableDatabase();
             String selectQuery = "SELECT * FROM " + TABLE_NAME_TC_FAB + " WHERE tc_fab001 = '" + qry_cond + "' ORDER BY tc_fab001 ";
+            return db.rawQuery(selectQuery, null);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public Cursor getAll_tc_fac(String g_kind, String g_kind1) {
+        try {
+            //SQLiteDatabase db = this.getWritableDatabase();
+            String selectQuery = "SELECT * FROM " + TABLE_NAME_TC_FAC + " WHERE tc_fac002='" + g_kind + "' AND tc_fac001='" + g_kind1+"'";
             return db.rawQuery(selectQuery, null);
         } catch (Exception e) {
             return null;

@@ -10,6 +10,7 @@
     <string name="btn_insert">新增</string>
     <string name="btn_query">查詢</string>
 
+    <string name="tt_stt">序號</string>
     <string name="tt_hangmuc">項目</string>
     <string name="tt_mvl">料號</string>
     <string name="tt_ten">物料名稱</string>

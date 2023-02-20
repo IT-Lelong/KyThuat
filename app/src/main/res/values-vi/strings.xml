@@ -11,6 +11,7 @@
     <string name="btn_insert">Thêm mới</string>
     <string name="btn_query">Tra cứu</string>
 
+    <string name="tt_stt">STT</string>
     <string name="tt_hangmuc">Hạng mục</string>
     <string name="tt_mvl">Mã vật liệu</string>
     <string name="tt_ten">Tên vật liệu</string>

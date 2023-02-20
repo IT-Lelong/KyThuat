@@ -15,6 +15,7 @@ import com.lelong.kythuat.R;
 
 public class kt03_main_activity extends AppCompatActivity {
     private Create_Table createTable = null;
+    private KT03_DB kt03Db  = null;
     String ID, g_server, g_date, g_ca, g_lang;
     TabLayout tabLayout;
     ViewPager viewPager;
@@ -42,6 +43,8 @@ public class kt03_main_activity extends AppCompatActivity {
         tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager);
 
+        kt03Db= new KT03_DB(this,null,null,1);
+        kt03Db.open();
         createTable = new Create_Table(this);
         createTable.open();
         Cursor cursor_tc_fab = createTable.getAll_tc_fab("KT03");
