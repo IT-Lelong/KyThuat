@@ -11,7 +11,7 @@ import androidx.annotation.Nullable;
 public class KT03_DB  extends SQLiteOpenHelper {
 
     private Context mCtx = null;
-    String DATABASE_NAME = "KT03DB.db";
+    String DATABASE_NAME = "KyThuatDB.db";
     public SQLiteDatabase db = null;
 
     String KT03_TABLE = "KT03_01_file";
@@ -45,13 +45,11 @@ public class KT03_DB  extends SQLiteOpenHelper {
 
     public void open() throws SQLException {
         db = mCtx.openOrCreateDatabase(DATABASE_NAME, 0, null);
-        //append("KT03010101","true","true","false");
         //nối DATABASE(S)
-        db = getReadableDatabase();
-        String dbPath = mCtx.getDatabasePath("KyThuatDB").getPath();
+        /*String dbPath = mCtx.getDatabasePath("KyThuatDB").getPath();
         // dbPath = /data/user/0/com.lelong.kythuat/databases/KyThuatDB.db
         String attachQuery = "ATTACH DATABASE '" + dbPath +"' AS KyThuatDB1";
-        db.execSQL(attachQuery);
+        db.execSQL(attachQuery);*/
         //nối DATABASE(E)
 
         try {
@@ -70,8 +68,6 @@ public class KT03_DB  extends SQLiteOpenHelper {
 
         }
     }
-
-
 
     public void delete_table() {
         db.delete(KT03_TABLE, null  , null);

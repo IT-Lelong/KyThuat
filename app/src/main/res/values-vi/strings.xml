@@ -55,4 +55,10 @@
     /*KT03*/
     <string name="Ca1">Ca 1</string>
     <string name="Ca2">Ca 2</string>
+    <string name="vitridondep">Vị trí dọn dẹp vệ sinh</string>
+    <string name="danhgia">Đánh giá</string>
+    <string name="tot">Tốt</string>
+    <string name="khongtot">Không tốt</string>
+    <string name="ghichu">Ghi chú</string>
+
 </resources>

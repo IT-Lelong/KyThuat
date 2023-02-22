@@ -54,4 +54,10 @@
     /*KT03*/
     <string name="Ca1">第1班</string>
     <string name="Ca2">第2班</string>
+    <string name="vitridondep">清潔、整理位置</string>
+    <string name="danhgia">審核</string>
+    <string name="tot">好</string>
+    <string name="khongtot">不好</string>
+    <string name="ghichu">備註</string>
+
 </resources>
