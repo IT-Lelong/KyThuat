@@ -29,6 +29,10 @@ public class Create_Table {
     String tc_fac008 = "tc_fac008"; //Hãng sản xuất
     String tc_fac011 = "tc_fac011"; //Dãy đo thiết bị
 
+    String TABLE_NAME_GEM = "gem_file";
+    String gem01 = "tc_fac001"; //Mã bộ phận
+    String gem02 = "tc_fac002"; //Tên bộ phận
+
 
     String CREATE_TABLE_FAB = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_TC_FAB + " ("
             + tc_fab001 + " TEXT," + tc_fab002 + " TEXT,"
@@ -38,6 +42,9 @@ public class Create_Table {
             + tc_fac001 + " TEXT," + tc_fac002 + " TEXT," + tc_fac003 + " TEXT,"
             + tc_fac004 + " TEXT," + tc_fac005 + " TEXT," + tc_fac006 + " TEXT,"
             + tc_fac007 + " TEXT," + tc_fac008 + " TEXT," + tc_fac011 + " TEXT )";
+
+    String CREATE_TABLE_GEM = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_GEM + " ("
+            + gem01 + " TEXT," + gem02 + " TEXT ) ";
 
     public Create_Table(Context ctx) {
         this.mCtx = ctx;
@@ -58,6 +65,7 @@ public class Create_Table {
         try {
             db.execSQL(CREATE_TABLE_FAB);
             db.execSQL(CREATE_TABLE_FAC);
+            db.execSQL(CREATE_TABLE_GEM);
         } catch (Exception e) {
 
         }
@@ -67,8 +75,10 @@ public class Create_Table {
         try {
             String DROP_TABLE_TC_FAB = "DROP TABLE IF EXISTS " + TABLE_NAME_TC_FAB;
             String DROP_TABLE_TC_FAC = "DROP TABLE IF EXISTS " + TABLE_NAME_TC_FAC;
+            String DROP_TABLE_GEM= "DROP TABLE IF EXISTS " + TABLE_NAME_GEM;
             db.execSQL(DROP_TABLE_TC_FAB);
             db.execSQL(DROP_TABLE_TC_FAC);
+            db.execSQL(DROP_TABLE_GEM);
             db.close();
         } catch (Exception e) {
 
@@ -111,9 +121,23 @@ public class Create_Table {
 
     }
 
+    public String append(String g_gem01, String g_gem02) {
+        try {
+            ContentValues args = new ContentValues();
+            args.put(gem01, g_gem01);
+            args.put(gem02, g_gem02);
+            db.insert(TABLE_NAME_GEM, null, args);
+            return "TRUE";
+        } catch (Exception e) {
+            return "FALSE";
+        }
+
+    }
+
     public void delete_table() {
         db.delete(TABLE_NAME_TC_FAB, null  , null);
         db.delete(TABLE_NAME_TC_FAC, null  , null);
+        db.delete(TABLE_NAME_GEM, null  , null);
     }
 
     public Cursor getAll_tc_fab(String qry_cond) {
@@ -130,6 +154,16 @@ public class Create_Table {
         try {
             //SQLiteDatabase db = this.getWritableDatabase();
             String selectQuery = "SELECT * FROM " + TABLE_NAME_TC_FAC + " WHERE tc_fac002='" + g_kind + "' AND tc_fac001='" + g_kind1+"'";
+            return db.rawQuery(selectQuery, null);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public Cursor getAll_gem(String g_gem01) {
+        try {
+            //SQLiteDatabase db = this.getWritableDatabase();
+            String selectQuery = "SELECT * FROM " + TABLE_NAME_GEM + " WHERE gem01 like (% " + g_gem01 + "%) ";
             return db.rawQuery(selectQuery, null);
         } catch (Exception e) {
             return null;

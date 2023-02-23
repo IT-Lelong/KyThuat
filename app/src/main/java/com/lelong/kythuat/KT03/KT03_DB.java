@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
-public class KT03_DB  extends SQLiteOpenHelper {
+public class KT03_DB  {
 
     private Context mCtx = null;
     String DATABASE_NAME = "KyThuatDB.db";
@@ -24,10 +24,10 @@ public class KT03_DB  extends SQLiteOpenHelper {
             + KT03_01_001 + " TEXT," + KT03_01_002 + " TEXT,"
             + KT03_01_003 + " TEXT," + KT03_01_004 + " TEXT)";
 
-    public KT03_DB(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
+    /*public KT03_DB(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
         this.mCtx = context;
-    }
+    }*/
 
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -39,9 +39,9 @@ public class KT03_DB  extends SQLiteOpenHelper {
 
     }
 
-    /*public KT03_DB(Context ctx) {
+    public KT03_DB(Context ctx) {
         this.mCtx = ctx;
-    }*/
+    }
 
     public void open() throws SQLException {
         db = mCtx.openOrCreateDatabase(DATABASE_NAME, 0, null);
@@ -86,6 +86,8 @@ public class KT03_DB  extends SQLiteOpenHelper {
             return "FALSE";
         }
     }
+
+
     
 
     

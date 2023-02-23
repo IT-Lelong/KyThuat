@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".KT03.KT03_HM01">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -15,63 +15,112 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:theme="@style/title"
-            android:text="@string/tt_stt" />
+            android:text="@string/tt_stt"
+            android:theme="@style/title" />
+
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="5"
-            android:theme="@style/title"
-            android:text="@string/vitridondep" />
+            android:layout_weight="3"
+            android:text="@string/vitridondep"
+            android:theme="@style/title" />
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="6"
+            android:layout_height="match_parent"
+            android:layout_weight="7"
             android:orientation="vertical">
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:theme="@style/title"
-                android:text="@string/danhgia" />
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/danhgia"
+                android:theme="@style/title" />
+
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="match_parent"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <TableLayout
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="2"
-                    android:theme="@style/title"
-                    android:text="@string/tot" />
+                    android:layout_weight="4"
+                    android:shrinkColumns="*"
+                    android:stretchColumns="*">
+
+                    <TableRow>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_span="2"
+                            android:gravity="center"
+                            android:text="@string/tot"
+                            android:theme="@style/title" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_span="2"
+                            android:gravity="center"
+                            android:text="@string/khongtot"
+                            android:theme="@style/title" />
+                    </TableRow>
+
+                    <TableRow>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text="@string/Ca1"
+                            android:theme="@style/title" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text="@string/Ca2"
+                            android:theme="@style/title" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text="@string/Ca1"
+                            android:theme="@style/title" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text="@string/Ca2"
+                            android:theme="@style/title" />
+                    </TableRow>
+
+                </TableLayout>
+
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="2"
-                    android:theme="@style/title"
-                    android:text="@string/khongtot" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2"
-                    android:theme="@style/title"
-                    android:text="@string/ghichu" />
+                    android:layout_weight="3"
+                    android:gravity="center"
+                    android:text="@string/ghichu"
+                    android:theme="@style/title" />
+
             </LinearLayout>
 
         </LinearLayout>
 
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/lv_hm01"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcv_hm01"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-    </ListView>
-
+        android:layout_height="match_parent"
+        android:orientation="vertical" />
 
 </LinearLayout>

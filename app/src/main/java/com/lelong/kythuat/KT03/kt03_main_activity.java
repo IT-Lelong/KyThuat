@@ -43,7 +43,7 @@ public class kt03_main_activity extends AppCompatActivity {
         tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager);
 
-        kt03Db= new KT03_DB(this,null,null,1);
+        kt03Db= new KT03_DB(this);
         kt03Db.open();
         createTable = new Create_Table(this);
         createTable.open();
@@ -55,8 +55,7 @@ public class kt03_main_activity extends AppCompatActivity {
         }
 
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        final mainAdapter adapter = new mainAdapter(this, getSupportFragmentManager(),
-                tabLayout.getTabCount());
+        final mainAdapter adapter = new mainAdapter(this, getSupportFragmentManager(),tabLayout.getTabCount());
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
