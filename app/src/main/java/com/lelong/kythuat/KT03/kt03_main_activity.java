@@ -12,8 +12,10 @@ import android.os.Bundle;
 import com.google.android.material.tabs.TabLayout;
 import com.lelong.kythuat.Create_Table;
 import com.lelong.kythuat.R;
+import com.lelong.kythuat.SetLanguage;
 
-public class kt03_main_activity extends AppCompatActivity {
+public class kt03_main_activity extends AppCompatActivity  {
+    private SetLanguage setLanguage = null;
     private Create_Table createTable = null;
     private KT03_DB kt03Db  = null;
     String ID, g_server, g_date, g_ca, g_lang;
@@ -23,6 +25,7 @@ public class kt03_main_activity extends AppCompatActivity {
     @SuppressLint("Range")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //setLanguage.setLanguage();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.kt03_main_activity);
         SharedPreferences preferences = getSharedPreferences("Language", Context.MODE_PRIVATE);
@@ -55,7 +58,7 @@ public class kt03_main_activity extends AppCompatActivity {
         }
 
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        final mainAdapter adapter = new mainAdapter(this, getSupportFragmentManager(),tabLayout.getTabCount());
+        final mainAdapter adapter = new mainAdapter(this, getSupportFragmentManager(),tabLayout.getTabCount(),g_date,g_ca,ID);
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {

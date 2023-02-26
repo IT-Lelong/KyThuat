@@ -1,22 +1,36 @@
 package com.lelong.kythuat.KT03;
 
+import android.view.View;
+
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.io.Serializable;
 
-public class KT03_HM01_model implements Serializable {
-    private int g_stt;
-    private String g_noidungHM;
+public class KT03_HM01_Model implements Serializable {
+    private String g_stt;
+    private String g_maChiTiet;
+    private String g_noidungHM_TH;
+    private String g_noidungHM_TV;
     private boolean g_tot_ca1;
     private boolean g_tot_ca2;
     private boolean g_kotot_ca1;
     private boolean g_kotot_ca2;
     private String g_ghichu;
 
-    public int getG_stt() {
+    public String getG_stt() {
         return g_stt;
     }
 
-    public String getG_noidungHM() {
-        return g_noidungHM;
+    public String getG_maChiTiet() {
+        return g_maChiTiet;
+    }
+
+    public String getG_noidungHM_TH() {
+        return g_noidungHM_TH;
+    }
+
+    public String getG_noidungHM_TV() {
+        return g_noidungHM_TV;
     }
 
     public boolean isG_tot_ca1() {
@@ -39,12 +53,12 @@ public class KT03_HM01_model implements Serializable {
         return g_ghichu;
     }
 
-    public void setG_stt(int g_stt) {
+    public void setG_stt(String g_stt) {
         this.g_stt = g_stt;
     }
 
-    public void setG_noidungHM(String g_noidungHM) {
-        this.g_noidungHM = g_noidungHM;
+    public void setG_noidungHM_TH(String g_noidungHM_TH) {
+        this.g_noidungHM_TH = g_noidungHM_TH;
     }
 
     public void setG_tot_ca1(boolean g_tot_ca1) {
@@ -67,9 +81,22 @@ public class KT03_HM01_model implements Serializable {
         this.g_ghichu = g_ghichu;
     }
 
-    public KT03_HM01_model(int g_stt, String g_noidungHM, boolean g_tot_ca1, boolean g_tot_ca2, boolean g_kotot_ca1, boolean g_kotot_ca2, String g_ghichu) {
+
+    public void setG_maChiTiet(String g_maChiTiet) {
+        this.g_maChiTiet = g_maChiTiet;
+    }
+
+    public void setG_noidungHM_TV(String g_noidungHM_TV) {
+        this.g_noidungHM_TV = g_noidungHM_TV;
+    }
+
+    public KT03_HM01_Model(String g_stt, String g_maChiTiet, String g_noidungHM_TH, String g_noidungHM_TV,
+                           boolean g_tot_ca1, boolean g_tot_ca2, boolean g_kotot_ca1, boolean g_kotot_ca2,
+                           String g_ghichu) {
         this.g_stt = g_stt;
-        this.g_noidungHM = g_noidungHM;
+        this.g_maChiTiet = g_maChiTiet;
+        this.g_noidungHM_TH = g_noidungHM_TH;
+        this.g_noidungHM_TV = g_noidungHM_TV;
         this.g_tot_ca1 = g_tot_ca1;
         this.g_tot_ca2 = g_tot_ca2;
         this.g_kotot_ca1 = g_kotot_ca1;

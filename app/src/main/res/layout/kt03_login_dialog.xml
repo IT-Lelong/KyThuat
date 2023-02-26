@@ -11,6 +11,7 @@
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="8dp"
         android:shrinkColumns="*"
         android:stretchColumns="*">
 
@@ -21,10 +22,10 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="left|center_vertical"
                 android:gravity="left|center_vertical"
-                android:text="Tên :"
+                android:text="@string/tt_tenNV"
+                android:textColor="@color/black"
                 android:textSize="20sp"
-                android:textStyle="bold"
-                android:textColor="@color/black"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tv_name"
@@ -32,7 +33,7 @@
                 android:layout_height="match_parent"
                 android:layout_span="2"
                 android:gravity="left|center_vertical"
-                android:textColor="@color/black"/>
+                android:textColor="@color/black" />
 
         </TableRow>
 
@@ -43,10 +44,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="left|center_vertical"
                 android:gravity="left|center_vertical"
-                android:text="Ngày :"
+                android:text="@string/tt_ngay"
+                android:textColor="@color/black"
                 android:textSize="20sp"
-                android:textStyle="bold"
-                android:textColor="@color/black"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tv_date"
@@ -56,7 +57,7 @@
                 android:gravity="left|center_vertical"
                 android:hint="YYYY/MM/DD"
                 android:paddingLeft="10dp"
-                android:textColor="@color/black"/>
+                android:textColor="@color/black" />
 
             <Button
                 android:id="@+id/btn_Date"
@@ -76,10 +77,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="left|center_vertical"
                 android:gravity="left|center_vertical"
-                android:text="Ca :"
+                android:text="@string/tt_ca"
+                android:textColor="@color/black"
                 android:textSize="20sp"
-                android:textStyle="bold"
-                android:textColor="@color/black"/>
+                android:textStyle="bold" />
 
             <RadioGroup
                 android:layout_width="match_parent"
@@ -109,7 +110,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp">
 
@@ -126,12 +127,12 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/btn_Query"
+            android:id="@+id/btn_Upload"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="80dp"
             android:background="@drawable/button_type_nomal"
-            android:text="@string/btn_query"
+            android:text="@string/btn_upload"
             android:textColor="#FFFFFF"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -139,5 +140,56 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:gravity="center"
+        android:text="@string/Danhsach"
+        android:textStyle="bold"
+        android:theme="@style/title" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/tt_stt"
+            android:textStyle="bold"
+            android:theme="@style/title" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:text="@string/tt_ngay"
+            android:textStyle="bold"
+            android:theme="@style/title" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/tt_ca"
+            android:textStyle="bold"
+            android:theme="@style/title" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/lv_query"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/border_listview"/>
 
 </LinearLayout>

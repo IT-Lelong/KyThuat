@@ -36,20 +36,22 @@ import java.util.Date;
 import java.util.Locale;
 
 public class Menu extends AppCompatActivity {
-
+    private CheckAppUpdate checkAppUpdate = null;
     private Create_Table Cre_db = null;
+    private login_kt03 loginKt03 = null;
+    private SetLanguage setLanguage = null;
     String g_server = "";
     Button btn_KT01, btn_KT02, btn_KT03, btn_KT04;
     TextView menuID;
     String ID;
     Locale locale;
     SimpleDateFormat dateFormat;
-    private CheckAppUpdate checkAppUpdate = null;
-    private login_kt03 loginKt03 = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setLanguage();
+        //setLanguage = new SetLanguage(this);
+        //setLanguage.getLanguage();
+        //setLanguage();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
@@ -58,7 +60,7 @@ public class Menu extends AppCompatActivity {
         //actionBar.hide();
 
         ID = getbundle.getString("ID");
-        g_server = getbundle.getString("SERVER");
+        g_server= getString(R.string.server);
         menuID = (TextView) findViewById(R.id.menuID);
         new IDname().execute("http://172.16.40.20/" + g_server + "/getid.php?ID=" + ID);
         dateFormat = new SimpleDateFormat("yyyy/MM/dd");
@@ -123,7 +125,6 @@ public class Menu extends AppCompatActivity {
         }
     }
 
-
     private final Button.OnClickListener btnlistener = new Button.OnClickListener() {
         public void onClick(View v) {
             //利用switch case方法，之後新增按鈕只需新增case即可
@@ -154,8 +155,7 @@ public class Menu extends AppCompatActivity {
                 case R.id.btn_KT03: {
                     loginKt03.login_dialog(v.getContext(),
                             menuID.getText().toString(),
-                            ID,
-                            g_server);
+                            ID);
                     break;
                 }
 
@@ -213,7 +213,6 @@ public class Menu extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
-
                     String res_fac = get_DataTable("http://172.16.40.20/PHPtest/TechAPP/getDataTable.php?item=fac");
                     if (!res_fac.equals("FALSE")) {
                         try {
@@ -236,6 +235,21 @@ public class Menu extends AppCompatActivity {
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
+                        }
+
+                        String res_gem = get_DataTable("http://172.16.40.20/PHPtest/TechAPP/getDataTable.php?item=gem");
+                        if (!res_gem.equals("FALSE")) {
+                            try {
+                                JSONArray jsonarray = new JSONArray(res_gem);
+                                for (int i = 0; i < jsonarray.length(); i++) {
+                                    JSONObject jsonObject = jsonarray.getJSONObject(i);
+                                    String g_gem01 = jsonObject.getString("GEM01"); //Mã bộ phận
+                                    String g_gem02 = jsonObject.getString("GEM02"); //Tên bộ phận
+                                    Cre_db.append(g_gem01, g_gem02);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
                 }

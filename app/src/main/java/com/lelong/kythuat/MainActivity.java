@@ -32,6 +32,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.security.PrivateKey;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
@@ -39,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     EditText editID, editPassword;
     CheckBox onlinecheck, SaveCheck;
     TextView tv_ver;
-    String g_server = "PHPtest";
+    String g_server = "";
     String g_package = "";
     Locale locale;
     String ID, PASSWORD;
@@ -48,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
     String pass = "pass";
     private SQLiteDatabase db = null;
     private CheckAppUpdate checkAppUpdate = null;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setLanguage();
@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         g_package = this.getPackageName().toString();
         verifyStoragePermissions(MainActivity.this);
 
+        g_server= getString(R.string.server);
         checkAppUpdate = new CheckAppUpdate(this, g_server);
         checkAppUpdate.checkVersion();
 
@@ -301,5 +302,7 @@ public class MainActivity extends AppCompatActivity {
 
         }
         resources.updateConfiguration(configuration, displayMetrics);
+
     }
+
 }

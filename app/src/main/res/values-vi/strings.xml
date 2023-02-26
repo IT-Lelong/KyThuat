@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="server">PHPtest</string>
     <string name="app_name">KyThuat</string>
 
     <string name="btn_ok">Xác nhận</string>
@@ -10,16 +11,25 @@
     <string name="btn_time">Thời gian</string>
     <string name="btn_insert">Thêm mới</string>
     <string name="btn_query">Tra cứu</string>
+    <string name="btn_upload">Kết chuyển</string>
 
     <string name="tt_stt">STT</string>
     <string name="tt_hangmuc">Hạng mục</string>
     <string name="tt_mvl">Mã vật liệu</string>
-    <string name="tt_ten">Tên vật liệu</string>
+    <string name="tt_tenVL">Tên vật liệu</string>
     <string name="tt_quycach">Quy cách</string>
     <string name="tt_kho">Kho</string>
     <string name="tt_solo">Số lô</string>
     <string name="tt_soluong">Số lượng</string>
+    <string name="tt_ngay">Ngày</string>
+    <string name="tt_gio">Thời gian</string>
+    <string name="tt_ca">Ca</string>
+    <string name="tt_tenNV">Tên</string>
 
+    <string name="M01">Tải dữ liệu</string>
+    <string name="M02">Xác nhận tải dữ liệu lên hệ thống?</string>
+    <string name="M03">Tải lên thành công</string>
+    <string name="M04">Tải lên thất bại</string>
 
     /*Menu Button*/
     <string name="btn_KT01">BIỂU ĐIỂM KHẢO HẠCH QUẢN LÝ THIẾT BỊ</string>
@@ -60,5 +70,6 @@
     <string name="tot">Tốt</string>
     <string name="khongtot">Không tốt</string>
     <string name="ghichu">Ghi chú</string>
+    <string name="Danhsach">Danh sách đã kiểm tra</string>
 
 </resources>

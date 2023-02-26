@@ -41,7 +41,8 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -56,11 +57,13 @@
             android:exported="true" />
         <activity
             android:name=".Menu"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".KT03.kt03_main_activity"
             android:exported="false"
-            android:screenOrientation="landscape"/>
+            android:screenOrientation="reverseLandscape"
+            android:windowSoftInputMode="adjustResize"/>
     </application>
 
 </manifest>

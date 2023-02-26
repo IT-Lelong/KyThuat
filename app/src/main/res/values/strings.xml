@@ -1,4 +1,5 @@
 <resources>
+    <string name="server">PHPtest</string>
     <string name="app_name">KyThuat</string>
 
     <string name="btn_ok">確定</string>
@@ -9,16 +10,25 @@
     <string name="btn_time">時間</string>
     <string name="btn_insert">新增</string>
     <string name="btn_query">查詢</string>
+    <string name="btn_upload">結轉</string>
 
     <string name="tt_stt">序號</string>
     <string name="tt_hangmuc">項目</string>
     <string name="tt_mvl">料號</string>
-    <string name="tt_ten">物料名稱</string>
+    <string name="tt_tenVL">物料名稱</string>
     <string name="tt_quycach">規格</string>
     <string name="tt_kho">倉庫</string>
     <string name="tt_solo">批號</string>
     <string name="tt_soluong">數量</string>
+    <string name="tt_ngay">日期</string>
+    <string name="tt_gio">時間</string>
+    <string name="tt_ca">班別</string>
+    <string name="tt_tenNV">人員名稱</string>
 
+    <string name="M01">資料上傳</string>
+    <string name="M02">確定上傳資料?</string>
+    <string name="M03">上傳成功</string>
+    <string name="M04">上傳失敗</string>
 
     /*Menu Button*/
     <string name="btn_KT01">設備管理稽核評分表 </string>
@@ -59,5 +69,6 @@
     <string name="tot">好</string>
     <string name="khongtot">不好</string>
     <string name="ghichu">備註</string>
+    <string name="Danhsach">已稽查名冊</string>
 
 </resources>
