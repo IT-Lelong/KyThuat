@@ -72,4 +72,17 @@
     <string name="ghichu">Ghi chú</string>
     <string name="Danhsach">Danh sách đã kiểm tra</string>
 
+    <string name="tenmaymoc">Tên máy móc, thiết bị</string>
+    <string name="tinhtrang">Tình trạng thiết bị</string>
+    <string name="hoatdongbinhthuong">Hoạt động\nbình thường</string>
+    <string name="hong">Hỏng</string>
+    <string name="ghichuhm2">Ghi chú\n(các dấu hiệu bất thường,hư hỏng,\ncông tác bảo trì, vệ sinh nếu có)</string>
+
+    <string name="daydo">Dãy đo\nthiết bị</string>
+    <string name="nongdo">Nồng độ\ndung dịch chuẩn</string>
+    <string name="hansudung">Hạn sử dụng của\ndung dịch chuẩn</string>
+    <string name="giatri">Giá trị đọc được\n của thiết bị</string>
+    <string name="saiso">Sai số (%)</string>
+
+
 </resources>

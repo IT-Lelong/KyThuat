@@ -1,12 +1,8 @@
 package com.lelong.kythuat.KT03;
 
-import android.view.View;
-
-import androidx.recyclerview.widget.RecyclerView;
-
 import java.io.Serializable;
 
-public class KT03_HM01_Model implements Serializable {
+public class KT03_HM0102_Model implements Serializable {
     private String g_stt;
     private String g_maChiTiet;
     private String g_noidungHM_TH;
@@ -90,9 +86,9 @@ public class KT03_HM01_Model implements Serializable {
         this.g_noidungHM_TV = g_noidungHM_TV;
     }
 
-    public KT03_HM01_Model(String g_stt, String g_maChiTiet, String g_noidungHM_TH, String g_noidungHM_TV,
-                           boolean g_tot_ca1, boolean g_tot_ca2, boolean g_kotot_ca1, boolean g_kotot_ca2,
-                           String g_ghichu) {
+    public KT03_HM0102_Model(String g_stt, String g_maChiTiet, String g_noidungHM_TH, String g_noidungHM_TV,
+                             boolean g_tot_ca1, boolean g_tot_ca2, boolean g_kotot_ca1, boolean g_kotot_ca2,
+                             String g_ghichu) {
         this.g_stt = g_stt;
         this.g_maChiTiet = g_maChiTiet;
         this.g_noidungHM_TH = g_noidungHM_TH;

@@ -17,16 +17,15 @@ import com.lelong.kythuat.R;
 
 import java.util.List;
 
-public class KT03_HM01_Adapder extends RecyclerView.Adapter<KT03_HM01_Adapder.DataViewHolder> {
+public class KT03_HM0102_Adapder extends RecyclerView.Adapter<KT03_HM0102_Adapder.DataViewHolder> {
     private final Context context;
     private final int resource;
-    private final List<KT03_HM01_Model> objects;
+    private final List<KT03_HM0102_Model> objects;
     private final String g_date;
     private final String g_ca;
     KT03_DB kt03Db = null;
-    KT03_Interface kt03Interface;
 
-    public KT03_HM01_Adapder(@NonNull Context context, KT03_HM01 kt03_hm01, int resource, @NonNull List<KT03_HM01_Model> objects, String g_date, String g_ca) {
+    public KT03_HM0102_Adapder(@NonNull Context context, int resource, @NonNull List<KT03_HM0102_Model> objects, String g_date, String g_ca) {
         this.context = context;
         this.resource = resource;
         this.objects = objects;
@@ -34,8 +33,6 @@ public class KT03_HM01_Adapder extends RecyclerView.Adapter<KT03_HM01_Adapder.Da
         this.g_ca = g_ca;
         kt03Db = new KT03_DB(context);
         kt03Db.open();
-
-        kt03Interface = kt03_hm01;
     }
 
     @NonNull
@@ -54,15 +51,14 @@ public class KT03_HM01_Adapder extends RecyclerView.Adapter<KT03_HM01_Adapder.Da
         holder.cb_kotot_ca1.setChecked(objects.get(position).isG_kotot_ca1());
         holder.cb_kotot_ca2.setChecked(objects.get(position).isG_kotot_ca2());
         holder.edt_ghiChu.setText(objects.get(position).getG_ghichu());
+        String g_machitiet = objects.get(position).getG_maChiTiet();
 
         holder.cb_tot_ca1.setOnClickListener(v -> {
             if (holder.cb_tot_ca1.isChecked()) {
-                kt03Db.upd_HM01("KT03_01_002", objects.get(position).getG_maChiTiet(),
-                        "1", g_date, g_ca);
+                kt03Db.upd_HM0102("KT03_01_002", g_machitiet, "1", g_date, g_ca);
                 update_checkbox(position, 1);
             } else {
-                kt03Db.upd_HM01("KT03_01_002", objects.get(position).getG_maChiTiet(),
-                        "0", g_date, g_ca);
+                kt03Db.upd_HM0102("KT03_01_002", g_machitiet, "0", g_date, g_ca);
                 update_checkbox(position, 0);
             }
 
@@ -70,41 +66,45 @@ public class KT03_HM01_Adapder extends RecyclerView.Adapter<KT03_HM01_Adapder.Da
 
         holder.cb_tot_ca2.setOnClickListener(v -> {
             if (holder.cb_tot_ca2.isChecked()) {
-                kt03Db.upd_HM01("KT03_01_002", objects.get(position).getG_maChiTiet(),
-                        "2", g_date, g_ca);
+                kt03Db.upd_HM0102("KT03_01_002", g_machitiet, "2", g_date, g_ca);
                 update_checkbox(position, 2);
             } else {
-                kt03Db.upd_HM01("KT03_01_002", objects.get(position).getG_maChiTiet(),
-                        "0", g_date, g_ca);
+                kt03Db.upd_HM0102("KT03_01_002", g_machitiet, "0", g_date, g_ca);
                 update_checkbox(position, 0);
             }
         });
 
         holder.cb_kotot_ca1.setOnClickListener(v -> {
             if (holder.cb_kotot_ca1.isChecked()) {
-                kt03Db.upd_HM01("KT03_01_002", objects.get(position).getG_maChiTiet(),
-                        "3", g_date, g_ca);
+                kt03Db.upd_HM0102("KT03_01_002", g_machitiet, "3", g_date, g_ca);
                 update_checkbox(position, 3);
             } else {
-                kt03Db.upd_HM01("KT03_01_002", objects.get(position).getG_maChiTiet(),
-                        "0", g_date, g_ca);
+                kt03Db.upd_HM0102("KT03_01_002", g_machitiet, "0", g_date, g_ca);
                 update_checkbox(position, 0);
             }
         });
 
         holder.cb_kotot_ca2.setOnClickListener(v -> {
             if (holder.cb_kotot_ca2.isChecked()) {
-                kt03Db.upd_HM01("KT03_01_002", objects.get(position).getG_maChiTiet(),
-                        "4", g_date, g_ca);
+                kt03Db.upd_HM0102("KT03_01_002", g_machitiet, "4", g_date, g_ca);
                 update_checkbox(position, 4);
             } else {
-                kt03Db.upd_HM01("KT03_01_002", objects.get(position).getG_maChiTiet(),
-                        "0", g_date, g_ca);
+                kt03Db.upd_HM0102("KT03_01_002", g_machitiet, "0", g_date, g_ca);
                 update_checkbox(position, 0);
             }
         });
 
-        holder.edt_ghiChu.addTextChangedListener(new TextWatcher() {
+        holder.edt_ghiChu.setOnFocusChangeListener((v, hasFocus) -> {
+            if (!hasFocus) {
+                // Đây là nơi để thực hiện xử lý khi EditText bị mất trạng thái tập trung
+                String nd = holder.edt_ghiChu.getText().toString();
+                String machitiet = objects.get(holder.getPosition()).getG_maChiTiet();
+                kt03Db.upd_HM0102("KT03_01_003", machitiet, nd, g_date, g_ca);
+                objects.get(holder.getPosition()).setG_ghichu(nd);
+            }
+        });
+
+        /*holder.edt_ghiChu.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -118,25 +118,18 @@ public class KT03_HM01_Adapder extends RecyclerView.Adapter<KT03_HM01_Adapder.Da
             @Override
             public void afterTextChanged(Editable s) {
                 if (s.length() > 0) {
-                    kt03Db.upd_HM01("KT03_01_003",
+                    kt03Db.upd_HM0102("KT03_01_003",
                             objects.get(holder.getPosition()).getG_maChiTiet(),
                             s.toString(), g_date, g_ca);
                     objects.get(holder.getPosition()).setG_ghichu(s.toString());
                 }
             }
-        });
-
-        holder.edt_ghiChu.setOnFocusChangeListener((v, hasFocus) -> {
-            if (!hasFocus) {
-                // Đây là nơi để thực hiện xử lý khi EditText bị mất trạng thái tập trung
-                kt03Interface.HM01_Refect(true);
-            }
-        });
+        });*/
 
     }
 
     private void update_checkbox(int position, int i) {
-        boolean bol_1 = false,bol_2 = false,bol_3 = false,bol_4 = false;
+        boolean bol_1 = false, bol_2 = false, bol_3 = false, bol_4 = false;
 
         switch (i) {
             case 1:

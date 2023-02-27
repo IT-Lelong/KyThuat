@@ -71,4 +71,17 @@
     <string name="ghichu">備註</string>
     <string name="Danhsach">已稽查名冊</string>
 
+    <string name="tenmaymoc">清潔、整理位置</string>
+    <string name="tinhtrang">審核</string>
+    <string name="hoatdongbinhthuong">好</string>
+    <string name="hong">不好</string>
+    <string name="ghichuhm2">備註</string>
+
+    <string name="daydo">審核</string>
+    <string name="nongdo">好</string>
+    <string name="hansudung">不好</string>
+    <string name="giatri">備註</string>
+    <string name="saiso">備註</string>
+
+
 </resources>

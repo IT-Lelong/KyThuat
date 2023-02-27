@@ -31,18 +31,6 @@ public class KT03_DB {
 
     public void open() throws SQLException {
         db = mCtx.openOrCreateDatabase(DATABASE_NAME, 0, null);
-        //nối DATABASE(S)
-        /*String dbPath = mCtx.getDatabasePath("KyThuatDB").getPath();
-        // dbPath = /data/user/0/com.lelong.kythuat/databases/KyThuatDB.db
-        String attachQuery = "ATTACH DATABASE '" + dbPath +"' AS KyThuatDB1";
-        db.execSQL(attachQuery);*/
-        //nối DATABASE(E)
-
-        /*try {
-            db.execSQL(CREATE_TABLE_KT03);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }*/
     }
 
     public void openTable() {
@@ -83,17 +71,19 @@ public class KT03_DB {
         }
     }
 
-    public Cursor getAll_HM01(String g_date, String g_ca) {
+    public Cursor getAll_HM0102(String g_date, String g_ca, String s) {
         String selectQuery = "SELECT KT03_01_001,KT03_01_002,KT03_01_003,tc_fac005,tc_fac006,tc_fac002,tc_fac001,tc_fac003 " +
                 " FROM KT03_01_file,tc_fac_file " +
                 " WHERE tc_fac004 = KT03_01_001 " +
                 " AND KT03_01_004 = '" + g_date + "' " +
                 " AND KT03_01_005 = '" + g_ca + "' " +
+                " AND tc_fac001 = '" + s + "' " +
                 " ORDER BY KT03_01_001 ";
         return db.rawQuery(selectQuery, null);
     }
 
-    public void upd_HM01(String g_col, String g_maChiTiet, String g_noidung, String g_date, String g_ca) {
+
+    public void upd_HM0102(String g_col, String g_maChiTiet, String g_noidung, String g_date, String g_ca) {
         try {
             db.execSQL("UPDATE KT03_01_file SET " + g_col + "='" + g_noidung + "' " +
                     " WHERE KT03_01_001='" + g_maChiTiet + "' " +
@@ -134,4 +124,5 @@ public class KT03_DB {
     public Cursor getDataUpLoad_hm04() {
         return null;
     }
+
 }

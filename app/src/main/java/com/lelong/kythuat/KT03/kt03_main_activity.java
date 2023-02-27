@@ -8,13 +8,14 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import com.google.android.material.tabs.TabLayout;
 import com.lelong.kythuat.Create_Table;
 import com.lelong.kythuat.R;
 import com.lelong.kythuat.SetLanguage;
 
-public class kt03_main_activity extends AppCompatActivity  {
+public class kt03_main_activity extends AppCompatActivity {
     private SetLanguage setLanguage = null;
     private Create_Table createTable = null;
     private KT03_DB kt03Db  = null;
@@ -28,6 +29,7 @@ public class kt03_main_activity extends AppCompatActivity  {
         //setLanguage.setLanguage();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.kt03_main_activity);
+
         SharedPreferences preferences = getSharedPreferences("Language", Context.MODE_PRIVATE);
         int language = preferences.getInt("Language", 0);
         if (language == 0) {
@@ -41,7 +43,6 @@ public class kt03_main_activity extends AppCompatActivity  {
         g_date = getbundle.getString("DATE");
         g_ca = getbundle.getString("CA");
         ID = getbundle.getString("ID");
-
 
         tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager);
@@ -76,4 +77,22 @@ public class kt03_main_activity extends AppCompatActivity  {
             }
         });
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(android.view.Menu menu) {
+        getMenuInflater().inflate(R.menu.test, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.clear:
+                KT03_HM0102 kt03_hm01 = new KT03_HM0102(this);
+                kt03_hm01.clear_data();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 }
