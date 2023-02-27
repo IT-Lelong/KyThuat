@@ -24,9 +24,8 @@ public class KT03_HM01_Adapder extends RecyclerView.Adapter<KT03_HM01_Adapder.Da
     private final String g_date;
     private final String g_ca;
     KT03_DB kt03Db = null;
-    KT03_Interface kt03Interface;
 
-    public KT03_HM01_Adapder(@NonNull Context context, KT03_HM01 kt03_hm01, int resource, @NonNull List<KT03_HM01_Model> objects, String g_date, String g_ca) {
+    public KT03_HM01_Adapder(@NonNull Context context, int resource, @NonNull List<KT03_HM01_Model> objects, String g_date, String g_ca) {
         this.context = context;
         this.resource = resource;
         this.objects = objects;
@@ -34,8 +33,6 @@ public class KT03_HM01_Adapder extends RecyclerView.Adapter<KT03_HM01_Adapder.Da
         this.g_ca = g_ca;
         kt03Db = new KT03_DB(context);
         kt03Db.open();
-
-        kt03Interface = kt03_hm01;
     }
 
     @NonNull
@@ -129,7 +126,7 @@ public class KT03_HM01_Adapder extends RecyclerView.Adapter<KT03_HM01_Adapder.Da
         holder.edt_ghiChu.setOnFocusChangeListener((v, hasFocus) -> {
             if (!hasFocus) {
                 // Đây là nơi để thực hiện xử lý khi EditText bị mất trạng thái tập trung
-                kt03Interface.HM01_Refect(true);
+
             }
         });
 

@@ -1,5 +1,6 @@
 package com.lelong.kythuat.KT03;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
@@ -8,13 +9,16 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
 import com.lelong.kythuat.Create_Table;
 import com.lelong.kythuat.R;
 import com.lelong.kythuat.SetLanguage;
 
-public class kt03_main_activity extends AppCompatActivity  {
+public class kt03_main_activity extends AppCompatActivity {
     private SetLanguage setLanguage = null;
     private Create_Table createTable = null;
     private KT03_DB kt03Db  = null;
@@ -41,7 +45,6 @@ public class kt03_main_activity extends AppCompatActivity  {
         g_date = getbundle.getString("DATE");
         g_ca = getbundle.getString("CA");
         ID = getbundle.getString("ID");
-
 
         tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager);
@@ -76,4 +79,5 @@ public class kt03_main_activity extends AppCompatActivity  {
             }
         });
     }
+
 }
