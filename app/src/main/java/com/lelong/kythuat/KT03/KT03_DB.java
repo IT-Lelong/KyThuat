@@ -38,6 +38,14 @@ public class KT03_DB {
         db.execSQL(attachQuery);*/
         //nối DATABASE(E)
 
+        /*try {
+            db.execSQL(CREATE_TABLE_KT03);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }*/
+    }
+
+    public void openTable() {
         try {
             db.execSQL(CREATE_TABLE_KT03);
         } catch (Exception e) {
@@ -98,14 +106,16 @@ public class KT03_DB {
     }
 
     public Cursor getAll_lvQuery() {
-        //String selectQuery = "SELECT distinct _id,KT03_01_004,KT03_01_005 FROM KT03_01_file ORDER BY KT03_01_004,KT03_01_005 ";
-        //return db.rawQuery(selectQuery, null);
+        String selectQuery = " SELECT COUNT(*) AS _id ,KT03_01_004, KT03_01_005 FROM KT03_01_file" +
+                " GROUP BY KT03_01_004, KT03_01_005" +
+                " ORDER BY KT03_01_004, KT03_01_005";
+        return db.rawQuery(selectQuery, null);
 
         // Các cột cần lấy trong bảng
-        String[] projection = {"rowid _id", "KT03_01_004", "KT03_01_005"};
+        /*String[] projection = {"_id","distinct KT03_01_004", "KT03_01_005"};
         // Các cột dùng để ORDER BY
         String sortOrder = "KT03_01_004, KT03_01_005";
-        return db.query(KT03_TABLE, projection, null, null, null, null, sortOrder, null);
+        return db.query(KT03_TABLE, projection, null, null, null, null, sortOrder, null);*/
     }
 
     public Cursor getDataUpLoad_hm01() {

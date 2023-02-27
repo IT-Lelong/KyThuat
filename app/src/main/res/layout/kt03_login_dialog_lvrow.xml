@@ -2,9 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="10dp">
-
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/tv_stt"
@@ -13,6 +11,7 @@
         android:layout_weight="1"
         android:gravity="center"
         android:background="@drawable/border_listview"
+        android:textColor="@color/black"
         android:hint="STT"/>
 
     <TextView
@@ -22,6 +21,7 @@
         android:layout_weight="2"
         android:paddingLeft="5dp"
         android:background="@drawable/border_listview"
+        android:textColor="@color/black"
         android:hint="Ngày"/>
 
     <TextView
@@ -31,5 +31,6 @@
         android:layout_weight="1"
         android:paddingLeft="5dp"
         android:background="@drawable/border_listview"
+        android:textColor="@color/black"
         android:hint="Ca"/>
 </LinearLayout>

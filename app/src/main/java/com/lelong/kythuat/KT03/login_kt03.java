@@ -64,12 +64,27 @@ public class login_kt03 {
 
         //Danh sach đã kiểm tra (S)
         KT03_DB kt03Db = new KT03_DB(context);
+        kt03Db.open();
+        kt03Db.openTable();
         Cursor cursor = kt03Db.getAll_lvQuery();
         SimpleCursorAdapter simpleCursorAdapter = new SimpleCursorAdapter(context,
                 R.layout.kt03_login_dialog_lvrow, cursor,
-                new String[]{"STT", "KT03_01_004", "KT03_01_005"},
-                new int[]{R.id.tv_stt, R.id.tv_ngay, R.id.tv_ca},
+                new String[]{"_id","KT03_01_004", "KT03_01_005"},
+                new int[]{R.id.tv_stt,R.id.tv_ngay, R.id.tv_ca},
                 SimpleCursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
+
+        simpleCursorAdapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
+            @Override
+            public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
+                if (view.getId() == R.id.tv_stt) {
+                    int rowNumber = cursor.getPosition() + 1;
+                    ((TextView) view).setText(String.valueOf(rowNumber));
+                    return true;
+                }
+                return false;
+            }
+        });
+
         lv_query.setAdapter(simpleCursorAdapter);
 
         lv_query.setOnItemClickListener((parent, view, position, id) -> {

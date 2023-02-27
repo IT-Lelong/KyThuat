@@ -9,12 +9,15 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.lelong.kythuat.R;
+
 import java.util.List;
 
-public class KT03_HM01_Adapder extends RecyclerView.Adapter <KT03_HM01_Adapder.DataViewHolder> {
+public class KT03_HM01_Adapder extends RecyclerView.Adapter<KT03_HM01_Adapder.DataViewHolder> {
     private final Context context;
     private final int resource;
     private final List<KT03_HM01_Model> objects;
@@ -53,43 +56,51 @@ public class KT03_HM01_Adapder extends RecyclerView.Adapter <KT03_HM01_Adapder.D
         holder.edt_ghiChu.setText(objects.get(position).getG_ghichu());
 
         holder.cb_tot_ca1.setOnClickListener(v -> {
-            if(holder.cb_tot_ca1.isChecked()){
-                kt03Db.upd_HM01("KT03_01_002",objects.get(position).getG_maChiTiet(),
-                        "1",g_date,g_ca);
-            }else{
-                kt03Db.upd_HM01("KT03_01_002",objects.get(position).getG_maChiTiet(),
-                        "0",g_date,g_ca);
+            if (holder.cb_tot_ca1.isChecked()) {
+                kt03Db.upd_HM01("KT03_01_002", objects.get(position).getG_maChiTiet(),
+                        "1", g_date, g_ca);
+                update_checkbox(position, 1);
+            } else {
+                kt03Db.upd_HM01("KT03_01_002", objects.get(position).getG_maChiTiet(),
+                        "0", g_date, g_ca);
+                update_checkbox(position, 0);
             }
 
         });
 
         holder.cb_tot_ca2.setOnClickListener(v -> {
-            if(holder.cb_tot_ca2.isChecked()){
-                kt03Db.upd_HM01("KT03_01_002",objects.get(position).getG_maChiTiet(),
-                        "2",g_date,g_ca);
-            }else{
-                kt03Db.upd_HM01("KT03_01_002",objects.get(position).getG_maChiTiet(),
-                        "0",g_date,g_ca);
+            if (holder.cb_tot_ca2.isChecked()) {
+                kt03Db.upd_HM01("KT03_01_002", objects.get(position).getG_maChiTiet(),
+                        "2", g_date, g_ca);
+                update_checkbox(position, 2);
+            } else {
+                kt03Db.upd_HM01("KT03_01_002", objects.get(position).getG_maChiTiet(),
+                        "0", g_date, g_ca);
+                update_checkbox(position, 0);
             }
         });
 
         holder.cb_kotot_ca1.setOnClickListener(v -> {
-            if(holder.cb_kotot_ca1.isChecked()){
-                kt03Db.upd_HM01("KT03_01_002",objects.get(position).getG_maChiTiet(),
-                        "3",g_date,g_ca);
-            }else{
-                kt03Db.upd_HM01("KT03_01_002",objects.get(position).getG_maChiTiet(),
-                        "0",g_date,g_ca);
+            if (holder.cb_kotot_ca1.isChecked()) {
+                kt03Db.upd_HM01("KT03_01_002", objects.get(position).getG_maChiTiet(),
+                        "3", g_date, g_ca);
+                update_checkbox(position, 3);
+            } else {
+                kt03Db.upd_HM01("KT03_01_002", objects.get(position).getG_maChiTiet(),
+                        "0", g_date, g_ca);
+                update_checkbox(position, 0);
             }
         });
 
         holder.cb_kotot_ca2.setOnClickListener(v -> {
-            if(holder.cb_kotot_ca2.isChecked()){
-                kt03Db.upd_HM01("KT03_01_002",objects.get(position).getG_maChiTiet(),
-                        "4",g_date,g_ca);
-            }else{
-                kt03Db.upd_HM01("KT03_01_002",objects.get(position).getG_maChiTiet(),
-                        "0",g_date,g_ca);
+            if (holder.cb_kotot_ca2.isChecked()) {
+                kt03Db.upd_HM01("KT03_01_002", objects.get(position).getG_maChiTiet(),
+                        "4", g_date, g_ca);
+                update_checkbox(position, 4);
+            } else {
+                kt03Db.upd_HM01("KT03_01_002", objects.get(position).getG_maChiTiet(),
+                        "0", g_date, g_ca);
+                update_checkbox(position, 0);
             }
         });
 
@@ -106,21 +117,46 @@ public class KT03_HM01_Adapder extends RecyclerView.Adapter <KT03_HM01_Adapder.D
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(s.length() > 0){
+                if (s.length() > 0) {
                     kt03Db.upd_HM01("KT03_01_003",
                             objects.get(holder.getPosition()).getG_maChiTiet(),
-                            s.toString(),g_date,g_ca);
+                            s.toString(), g_date, g_ca);
+                    objects.get(holder.getPosition()).setG_ghichu(s.toString());
                 }
             }
         });
 
-       holder.edt_ghiChu.setOnFocusChangeListener((v, hasFocus) -> {
+        holder.edt_ghiChu.setOnFocusChangeListener((v, hasFocus) -> {
             if (!hasFocus) {
                 // Đây là nơi để thực hiện xử lý khi EditText bị mất trạng thái tập trung
                 kt03Interface.HM01_Refect(true);
             }
         });
 
+    }
+
+    private void update_checkbox(int position, int i) {
+        boolean bol_1 = false,bol_2 = false,bol_3 = false,bol_4 = false;
+
+        switch (i) {
+            case 1:
+                bol_1 = true;
+                break;
+            case 2:
+                bol_2 = true;
+                break;
+            case 3:
+                bol_3 = true;
+                break;
+            case 4:
+                bol_4 = true;
+                break;
+
+        }
+        objects.get(position).setG_tot_ca1(bol_1);
+        objects.get(position).setG_tot_ca2(bol_2);
+        objects.get(position).setG_kotot_ca1(bol_3);
+        objects.get(position).setG_kotot_ca2(bol_4);
     }
 
     @Override
