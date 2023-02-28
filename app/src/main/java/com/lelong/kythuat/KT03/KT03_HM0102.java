@@ -29,10 +29,10 @@ public class KT03_HM0102 extends Fragment {
     private Create_Table Cre_db = null;
     private KT03_DB kt03Db = null;
 
-    private static final String ARG_PARAM1 = null;
-    private static final String ARG_PARAM2 = null;
-    private static final String ARG_PARAM3 = null;
-    private static final String ARG_PARAM4 = null;
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_PARAM3 = "param3";
+    private static final String ARG_PARAM4 = "param4";
 
     KT03_HM0102_Adapder adapter;
     List list_hm01;

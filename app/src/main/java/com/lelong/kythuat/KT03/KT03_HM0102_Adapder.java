@@ -1,8 +1,6 @@
 package com.lelong.kythuat.KT03;
 
 import android.content.Context;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,10 +54,10 @@ public class KT03_HM0102_Adapder extends RecyclerView.Adapter<KT03_HM0102_Adapde
         holder.cb_tot_ca1.setOnClickListener(v -> {
             if (holder.cb_tot_ca1.isChecked()) {
                 kt03Db.upd_HM0102("KT03_01_002", g_machitiet, "1", g_date, g_ca);
-                update_checkbox(position, 1);
+                update_checkbox(position, 1,holder);
             } else {
                 kt03Db.upd_HM0102("KT03_01_002", g_machitiet, "0", g_date, g_ca);
-                update_checkbox(position, 0);
+                update_checkbox(position, 0, holder);
             }
 
         });
@@ -67,30 +65,30 @@ public class KT03_HM0102_Adapder extends RecyclerView.Adapter<KT03_HM0102_Adapde
         holder.cb_tot_ca2.setOnClickListener(v -> {
             if (holder.cb_tot_ca2.isChecked()) {
                 kt03Db.upd_HM0102("KT03_01_002", g_machitiet, "2", g_date, g_ca);
-                update_checkbox(position, 2);
+                update_checkbox(position, 2, holder);
             } else {
                 kt03Db.upd_HM0102("KT03_01_002", g_machitiet, "0", g_date, g_ca);
-                update_checkbox(position, 0);
+                update_checkbox(position, 0, holder);
             }
         });
 
         holder.cb_kotot_ca1.setOnClickListener(v -> {
             if (holder.cb_kotot_ca1.isChecked()) {
                 kt03Db.upd_HM0102("KT03_01_002", g_machitiet, "3", g_date, g_ca);
-                update_checkbox(position, 3);
+                update_checkbox(position, 3, holder);
             } else {
                 kt03Db.upd_HM0102("KT03_01_002", g_machitiet, "0", g_date, g_ca);
-                update_checkbox(position, 0);
+                update_checkbox(position, 0, holder);
             }
         });
 
         holder.cb_kotot_ca2.setOnClickListener(v -> {
             if (holder.cb_kotot_ca2.isChecked()) {
                 kt03Db.upd_HM0102("KT03_01_002", g_machitiet, "4", g_date, g_ca);
-                update_checkbox(position, 4);
+                update_checkbox(position, 4, holder);
             } else {
                 kt03Db.upd_HM0102("KT03_01_002", g_machitiet, "0", g_date, g_ca);
-                update_checkbox(position, 0);
+                update_checkbox(position, 0, holder);
             }
         });
 
@@ -128,7 +126,7 @@ public class KT03_HM0102_Adapder extends RecyclerView.Adapter<KT03_HM0102_Adapde
 
     }
 
-    private void update_checkbox(int position, int i) {
+    private void update_checkbox(int position, int i, DataViewHolder holder) {
         boolean bol_1 = false, bol_2 = false, bol_3 = false, bol_4 = false;
 
         switch (i) {
@@ -150,6 +148,10 @@ public class KT03_HM0102_Adapder extends RecyclerView.Adapter<KT03_HM0102_Adapde
         objects.get(position).setG_tot_ca2(bol_2);
         objects.get(position).setG_kotot_ca1(bol_3);
         objects.get(position).setG_kotot_ca2(bol_4);
+        holder.cb_tot_ca1.setChecked(bol_1);
+        holder.cb_tot_ca2.setChecked(bol_2);
+        holder.cb_kotot_ca1.setChecked(bol_3);
+        holder.cb_kotot_ca2.setChecked(bol_4);
     }
 
     @Override
