@@ -62,10 +62,11 @@ public class login_kt03 {
         tv_name.setText(menuID);
         tv_date.setText(dateFormat.format(new Date()).toString());
 
-        //Danh sach đã kiểm tra (S)
         KT03_DB kt03Db = new KT03_DB(context);
         kt03Db.open();
         kt03Db.openTable();
+
+        //Danh sach đã kiểm tra (S)
         Cursor cursor = kt03Db.getAll_lvQuery();
         SimpleCursorAdapter simpleCursorAdapter = new SimpleCursorAdapter(context,
                 R.layout.kt03_login_dialog_lvrow, cursor,
@@ -99,6 +100,7 @@ public class login_kt03 {
             bundle.putString("DATE", qry_ngay.getText().toString());
             KT03.putExtras(bundle);
             context.startActivity(KT03);
+            dialog.dismiss();
         });
         //Danh sach đã kiểm tra (E)
 
@@ -156,11 +158,14 @@ public class login_kt03 {
                     bundle.putString("DATE", tv_date.getText().toString());
                     KT03.putExtras(bundle);
                     context.startActivity(KT03);
+                    dialog.dismiss();
                 } else {
                     Toast.makeText(context, "Xin chọn ca làm việc", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+
+        
 
         btn_Upload.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -213,8 +218,6 @@ public class login_kt03 {
 
             }
         });
-
         dialog.show();
     }
-
 }

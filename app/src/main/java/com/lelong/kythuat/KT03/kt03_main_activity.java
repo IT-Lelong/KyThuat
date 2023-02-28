@@ -1,5 +1,6 @@
 package com.lelong.kythuat.KT03;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
@@ -29,6 +30,9 @@ public class kt03_main_activity extends AppCompatActivity {
         //setLanguage.setLanguage();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.kt03_main_activity);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();
 
         SharedPreferences preferences = getSharedPreferences("Language", Context.MODE_PRIVATE);
         int language = preferences.getInt("Language", 0);

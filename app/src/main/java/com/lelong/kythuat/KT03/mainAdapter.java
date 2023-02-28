@@ -33,7 +33,7 @@ public class mainAdapter extends FragmentPagerAdapter {
                 KT03_HM0102 hangmuc02_Fragment = KT03_HM0102.newInstance("02", context, g_date, g_ca, g_id);
                 return hangmuc02_Fragment;
             case 2:
-                KT03_HM03 hangmuc03_Fragment = new KT03_HM03("03", context, g_date, g_ca, g_id);
+                KT03_HM03 hangmuc03_Fragment = KT03_HM03.newInstance("03", context, g_date, g_ca, g_id);
                 return hangmuc03_Fragment;
             case 3:
                 KT03_HM04 hangmuc04_Fragment = new KT03_HM04("04", context, g_date, g_ca, g_id);

@@ -5,14 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-
     <TextView
         android:id="@+id/tv_stt"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="0.5"
         android:gravity="center"
-        android:hint="@string/tt_stt" />
+        android:hint="@string/tt_stt"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:background="@drawable/border_listview"/>
 
     <EditText
         android:id="@+id/edt_ten"
@@ -22,7 +24,9 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:paddingLeft="5dp"
-        android:hint="@string/tenmaymoc" />
+        android:hint="@string/tenmaymoc"
+        android:textSize="18sp"
+        android:background="@drawable/border_listview"/>
 
     <EditText
         android:id="@+id/edt_dayDo"
@@ -32,7 +36,9 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:paddingLeft="5dp"
-        android:hint="@string/daydo" />
+        android:hint="@string/daydo"
+        android:textSize="18sp"
+        android:background="@drawable/border_listview"/>
 
     <EditText
         android:id="@+id/edt_nongDo"
@@ -42,7 +48,9 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:paddingLeft="5dp"
-        android:hint="@string/nongdo" />
+        android:hint="@string/nongdo"
+        android:textSize="18sp"
+        android:background="@drawable/border_listview"/>
 
     <EditText
         android:id="@+id/edt_hanSuDung"
@@ -52,7 +60,9 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:paddingLeft="5dp"
-        android:hint="@string/hansudung" />
+        android:hint="@string/hansudung"
+        android:textSize="18sp"
+        android:background="@drawable/border_listview"/>
 
     <EditText
         android:id="@+id/edt_giaTri"
@@ -62,7 +72,9 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:paddingLeft="5dp"
-        android:hint="@string/giatri" />
+        android:hint="@string/giatri"
+        android:textSize="18sp"
+        android:background="@drawable/border_listview"/>
 
     <EditText
         android:id="@+id/edt_saiSo"
@@ -72,5 +84,7 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:paddingLeft="5dp"
-        android:hint="@string/saiso" />
+        android:hint="@string/saiso"
+        android:textSize="18sp"
+        android:background="@drawable/border_listview"/>
 </LinearLayout>

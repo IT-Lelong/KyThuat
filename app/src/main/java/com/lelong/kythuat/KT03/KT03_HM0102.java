@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -34,6 +35,7 @@ public class KT03_HM0102 extends Fragment {
     private static final String ARG_PARAM3 = "param3";
     private static final String ARG_PARAM4 = "param4";
 
+    RecyclerView recyclerView;
     KT03_HM0102_Adapder adapter;
     List list_hm01;
 
@@ -95,9 +97,9 @@ public class KT03_HM0102 extends Fragment {
                 throw new IllegalStateException("Unexpected value: " + g_dk);
         }
         View view = inflater.inflate(g_layout, container, false);
-        view.setId(R.id.fmID_hm01);
+        //view.setId(R.id.fmID_hm01);
 
-        RecyclerView recyclerView = view.findViewById(g_rcv_id);
+        recyclerView = view.findViewById(g_rcv_id);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
 
@@ -159,54 +161,59 @@ public class KT03_HM0102 extends Fragment {
             }
         }.start();
 
-
         return view;
     }
 
     private void addData_list_hm0102(Cursor cur_getAll) {
-        Boolean cb01 = false, cb02 = false, cb03 = false, cb04 = false;
-        cur_getAll.moveToFirst();
-        int num = cur_getAll.getCount();
-        list_hm01.clear();
-        for (int i = 0; i < num; i++) {
-            try {
-                @SuppressLint("Range") String tc_fac003 = cur_getAll.getString(cur_getAll.getColumnIndex("tc_fac003"));
-                @SuppressLint("Range") String KT03_01_001 = cur_getAll.getString(cur_getAll.getColumnIndex("KT03_01_001"));
-                @SuppressLint("Range") String tc_fac005 = cur_getAll.getString(cur_getAll.getColumnIndex("tc_fac005"));
-                @SuppressLint("Range") String tc_fac006 = cur_getAll.getString(cur_getAll.getColumnIndex("tc_fac006"));
-                @SuppressLint("Range") String KT03_01_002 = cur_getAll.getString(cur_getAll.getColumnIndex("KT03_01_002"));
-                @SuppressLint("Range") String KT03_01_003 = cur_getAll.getString(cur_getAll.getColumnIndex("KT03_01_003"));
+        recyclerView.post((new Runnable() {
+            @Override
+            public void run() {
+                Boolean cb01 = false, cb02 = false, cb03 = false, cb04 = false;
+                cur_getAll.moveToFirst();
+                int num = cur_getAll.getCount();
+                list_hm01.clear();
+                for (int i = 0; i < num; i++) {
+                    try {
+                        @SuppressLint("Range") String tc_fac003 = cur_getAll.getString(cur_getAll.getColumnIndex("tc_fac003"));
+                        @SuppressLint("Range") String KT03_01_001 = cur_getAll.getString(cur_getAll.getColumnIndex("KT03_01_001"));
+                        @SuppressLint("Range") String tc_fac005 = cur_getAll.getString(cur_getAll.getColumnIndex("tc_fac005"));
+                        @SuppressLint("Range") String tc_fac006 = cur_getAll.getString(cur_getAll.getColumnIndex("tc_fac006"));
+                        @SuppressLint("Range") String KT03_01_002 = cur_getAll.getString(cur_getAll.getColumnIndex("KT03_01_002"));
+                        @SuppressLint("Range") String KT03_01_003 = cur_getAll.getString(cur_getAll.getColumnIndex("KT03_01_003"));
 
-                switch (KT03_01_002) {
-                    case "0":
-                        cb01 = cb02 = cb03 = cb04 = false;
-                        break;
-                    case "1":
-                        cb01 = true;
-                        cb02 = cb03 = cb04 = false;
-                        break;
-                    case "2":
-                        cb02 = true;
-                        cb01 = cb03 = cb04 = false;
-                        break;
-                    case "3":
-                        cb03 = true;
-                        cb01 = cb02 = cb04 = false;
-                        break;
-                    case "4":
-                        cb04 = true;
-                        cb01 = cb02 = cb03 = false;
-                        break;
+                        switch (KT03_01_002) {
+                            case "0":
+                                cb01 = cb02 = cb03 = cb04 = false;
+                                break;
+                            case "1":
+                                cb01 = true;
+                                cb02 = cb03 = cb04 = false;
+                                break;
+                            case "2":
+                                cb02 = true;
+                                cb01 = cb03 = cb04 = false;
+                                break;
+                            case "3":
+                                cb03 = true;
+                                cb01 = cb02 = cb04 = false;
+                                break;
+                            case "4":
+                                cb04 = true;
+                                cb01 = cb02 = cb03 = false;
+                                break;
+                        }
+                        list_hm01.add(new KT03_HM0102_Model(
+                                tc_fac003, KT03_01_001, tc_fac005, tc_fac006,
+                                cb01, cb02, cb03, cb04, KT03_01_003));
+                    } catch (Exception e) {
+                        String err = e.toString();
+                    }
+                    cur_getAll.moveToNext();
                 }
-                list_hm01.add(new KT03_HM0102_Model(
-                        tc_fac003, KT03_01_001, tc_fac005, tc_fac006,
-                        cb01, cb02, cb03, cb04, KT03_01_003));
-            } catch (Exception e) {
-                String err = e.toString();
+                adapter.notifyDataSetChanged();
             }
-            cur_getAll.moveToNext();
-        }
-        adapter.notifyDataSetChanged();
+        }));
+
     }
 
     private void ins_KT03_0102_file(String g_date, String g_ca, String g_id) {
