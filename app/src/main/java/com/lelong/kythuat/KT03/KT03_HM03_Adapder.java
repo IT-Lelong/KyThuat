@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -43,13 +42,71 @@ public class KT03_HM03_Adapder extends RecyclerView.Adapter<KT03_HM03_Adapder.Da
 
     @Override
     public void onBindViewHolder(@NonNull KT03_HM03_Adapder.DataViewHolder holder, int position) {
-        holder.tv_stt.setText(objects.get(position).getKt03_03_001());
+        holder.tv_stt.setText(position + 1);
         holder.edt_ten.setText(objects.get(position).getKt03_03_002());
         holder.edt_dayDo.setText(objects.get(position).getKt03_03_003());
         holder.edt_nongDo.setText(objects.get(position).getKt03_03_004());
         holder.edt_hanSuDung.setText(objects.get(position).getKt03_03_005());
         holder.edt_giaTri.setText(objects.get(position).getKt03_03_006());
         holder.edt_saiSo.setText(objects.get(position).getKt03_03_007());
+
+        holder.edt_ten.setOnFocusChangeListener((view, hasFocus) -> {
+            if (!hasFocus) {
+                upd_Data("KT03_03_002",
+                        objects.get(holder.getPosition()).getKt03_03_001(),
+                        holder.edt_ten.getText().toString().trim());
+                objects.get(holder.getPosition()).setKt03_03_002(holder.edt_ten.getText().toString().trim());
+            }
+        });
+
+        holder.edt_dayDo.setOnFocusChangeListener((view, hasFocus) -> {
+            if (!hasFocus) {
+                upd_Data("KT03_03_003",
+                        objects.get(holder.getPosition()).getKt03_03_001(),
+                        holder.edt_ten.getText().toString().trim());
+                objects.get(holder.getPosition()).setKt03_03_003(holder.edt_dayDo.getText().toString().trim());
+            }
+        });
+
+        holder.edt_nongDo.setOnFocusChangeListener((view, hasFocus) -> {
+            if (!hasFocus) {
+                upd_Data("KT03_03_004",
+                        objects.get(holder.getPosition()).getKt03_03_001(),
+                        holder.edt_ten.getText().toString().trim());
+                objects.get(holder.getPosition()).setKt03_03_004(holder.edt_nongDo.getText().toString().trim());
+            }
+        });
+
+        holder.edt_hanSuDung.setOnFocusChangeListener((view, hasFocus) -> {
+            if (!hasFocus) {
+                upd_Data("KT03_03_005",
+                        objects.get(holder.getPosition()).getKt03_03_001(),
+                        holder.edt_ten.getText().toString().trim());
+                objects.get(holder.getPosition()).setKt03_03_005(holder.edt_hanSuDung.getText().toString().trim());
+            }
+        });
+
+        holder.edt_giaTri.setOnFocusChangeListener((view, hasFocus) -> {
+            if (!hasFocus) {
+                upd_Data("KT03_03_006",
+                        objects.get(holder.getPosition()).getKt03_03_001(),
+                        holder.edt_ten.getText().toString().trim());
+                objects.get(holder.getPosition()).setKt03_03_006(holder.edt_giaTri.getText().toString().trim());
+            }
+        });
+
+        holder.edt_saiSo.setOnFocusChangeListener((view, hasFocus) -> {
+            if (!hasFocus) {
+                upd_Data("KT03_03_007",
+                        objects.get(holder.getPosition()).getKt03_03_001(),
+                        holder.edt_ten.getText().toString().trim());
+                objects.get(holder.getPosition()).setKt03_03_007(holder.edt_saiSo.getText().toString().trim());
+            }
+        });
+    }
+
+    private void upd_Data(String g_col, String g_key, String g_noidung) {
+        kt03Db.upd_HM03(g_col,g_key,g_date,g_ca,g_noidung);
     }
 
     @Override
@@ -59,7 +116,7 @@ public class KT03_HM03_Adapder extends RecyclerView.Adapter<KT03_HM03_Adapder.Da
 
     public static class DataViewHolder extends RecyclerView.ViewHolder {
         TextView tv_stt;
-        EditText edt_ten,edt_dayDo,edt_nongDo,edt_hanSuDung,edt_giaTri,edt_saiSo;
+        EditText edt_ten, edt_dayDo, edt_nongDo, edt_hanSuDung, edt_giaTri, edt_saiSo;
 
         public DataViewHolder(View itemView) {
             super(itemView);

@@ -91,25 +91,26 @@ public class KT03_DB {
         }
     }
 
-   /* public String ins_hm03() {
+    public String ins_hm03(String g_KT03_03_001, String g_KT03_03_002, String g_KT03_03_003, String g_KT03_03_004, String g_KT03_03_005,
+                           String g_KT03_03_006, String g_KT03_03_007, String g_KT03_03_008, String g_KT03_03_009, String g_KT03_03_010) {
         try {
             ContentValues args = new ContentValues();
-            args.put(KT03_03_001, g_KT03_01_001);
-            args.put(KT03_03_002, g_KT03_01_002);
-            args.put(KT03_03_003, g_KT03_01_003);
-            args.put(KT03_03_004, g_KT03_01_004);
-            args.put(KT03_03_005, g_KT03_01_005);
-            args.put(KT03_03_006, g_KT03_01_006);
-            args.put(KT03_03_007, g_KT03_01_002);
-            args.put(KT03_03_008, g_KT03_01_003);
-            args.put(KT03_03_009, g_KT03_01_004);
-            args.put(KT03_03_010, g_KT03_01_005);
-            db.insert(KT03_TABLE, null, args);
+            args.put(KT03_03_001, g_KT03_03_001);
+            args.put(KT03_03_002, g_KT03_03_002);
+            args.put(KT03_03_003, g_KT03_03_003);
+            args.put(KT03_03_004, g_KT03_03_004);
+            args.put(KT03_03_005, g_KT03_03_005);
+            args.put(KT03_03_006, g_KT03_03_006);
+            args.put(KT03_03_007, g_KT03_03_007);
+            args.put(KT03_03_008, g_KT03_03_008);
+            args.put(KT03_03_009, g_KT03_03_009);
+            args.put(KT03_03_010, g_KT03_03_010);
+            db.insert(KT03_03_TABLE, null, args);
             return "TRUE";
         } catch (Exception e) {
             return "FALSE";
         }
-    }*/
+    }
 
     public Cursor getAll_HM0102(String g_date, String g_ca, String s) {
         String selectQuery = "SELECT KT03_01_001,KT03_01_002,KT03_01_003,tc_fac005,tc_fac006,tc_fac002,tc_fac001,tc_fac003 " +
@@ -130,6 +131,21 @@ public class KT03_DB {
         return db.rawQuery(selectQuery, null);
     }
 
+    public int query_HM03_max(String g_date, String g_ca) {
+        int g_max = 0;
+        String selection = "KT03_03_008 = ? AND KT03_03_009 = ?";
+        String[] selectionArgs = {g_date, g_ca};
+        String sortOrder = "KT03_03_001";
+        Cursor res_max = db.query(KT03_03_TABLE, new String[]{"MAX(" + KT03_03_001 + ") AS MAX"},
+                selection, selectionArgs, null, null, sortOrder);
+        res_max.moveToFirst();
+        if (res_max != null && res_max.getCount() > 0) {
+            g_max = res_max.getInt(0) + 1;
+        } else {
+            g_max = 1;
+        }
+        return g_max;
+    }
 
     public void upd_HM0102(String g_col, String g_maChiTiet, String g_noidung, String g_date, String g_ca) {
         try {
@@ -140,7 +156,17 @@ public class KT03_DB {
         } catch (Exception e) {
             String ex = e.getMessage().toString();
         }
+    }
 
+    public void upd_HM03(String g_col, String g_key, String g_date, String g_ca, String g_noidung) {
+        try {
+            db.execSQL("UPDATE KT03_03_file SET " + g_col + "='" + g_noidung + "' " +
+                    " WHERE KT03_03_001='" + g_key + "' " +
+                    " AND KT03_03_008 = '" + g_date + "' " +
+                    " AND KT03_03_009 = '" + g_ca + "' ");
+        } catch (Exception e) {
+            String ex = e.getMessage().toString();
+        }
     }
 
     public Cursor getAll_lvQuery() {
@@ -172,6 +198,5 @@ public class KT03_DB {
     public Cursor getDataUpLoad_hm04() {
         return null;
     }
-
 
 }

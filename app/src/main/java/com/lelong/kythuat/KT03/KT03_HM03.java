@@ -91,20 +91,12 @@ public class KT03_HM03 extends Fragment {
             }
         });
 
-        Thread thread_QRY = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                //cur_getAll[0] = kt03Db.getAll_HM03(g_date, g_ca);
-                addData_list_hm03(cur_getAll[0]);
-            }
+        Thread thread_QRY = new Thread(() -> {
+            //cur_getAll[0] = kt03Db.getAll_HM03(g_date, g_ca);
+            addData_list_hm03(cur_getAll[0]);
         });
 
-        Thread thread_INS = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                ins_KT03_03_file(0);
-            }
-        });
+        Thread thread_INS = new Thread(() -> ins_KT03_03_file(cur_getAll[0].getCount()));
 
         new Thread() {
             @Override
@@ -156,12 +148,10 @@ public class KT03_HM03 extends Fragment {
                         @SuppressLint("Range") String KT03_03_005 = cur_getAll.getString(cur_getAll.getColumnIndex("KT03_03_005"));
                         @SuppressLint("Range") String KT03_03_006 = cur_getAll.getString(cur_getAll.getColumnIndex("KT03_03_006"));
                         @SuppressLint("Range") String KT03_03_007 = cur_getAll.getString(cur_getAll.getColumnIndex("KT03_03_007"));
-                        @SuppressLint("Range") String KT03_03_008 = cur_getAll.getString(cur_getAll.getColumnIndex("KT03_03_008"));
-                        @SuppressLint("Range") String KT03_03_009 = cur_getAll.getString(cur_getAll.getColumnIndex("KT03_03_009"));
-                        @SuppressLint("Range") String KT03_03_010 = cur_getAll.getString(cur_getAll.getColumnIndex("KT03_03_010"));
 
-                        list_hm03.add(new KT03_HM03_Model(KT03_03_001, KT03_03_002, KT03_03_003, KT03_03_004, KT03_03_005,
-                                KT03_03_006, KT03_03_007, KT03_03_008, KT03_03_009, KT03_03_010));
+                        list_hm03.add(new KT03_HM03_Model(KT03_03_001,
+                                KT03_03_002, KT03_03_003, KT03_03_004,
+                                KT03_03_005, KT03_03_006, KT03_03_007));
                     } catch (Exception e) {
                         String err = e.toString();
                     }
@@ -174,8 +164,14 @@ public class KT03_HM03 extends Fragment {
     }
 
     private void ins_KT03_03_file(int i) {
-        list_hm03.add(new KT03_HM03_Model(String.valueOf(i + 1), "", "", "", "",
-                "", "", "", "", ""));
+        int g_max =  kt03Db.query_HM03_max(g_date,g_ca); //đã được +1 từ max
+        list_hm03.add(new KT03_HM03_Model(String.valueOf(g_max),
+                "", "", "",
+                "", "", ""));
         adapter.notifyDataSetChanged();
+        kt03Db.ins_hm03(String.valueOf(g_max),
+                "", "", "",
+                "", "", "",
+                g_date, g_ca, g_id);
     }
 }
