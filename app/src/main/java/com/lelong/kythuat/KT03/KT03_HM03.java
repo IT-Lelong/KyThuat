@@ -168,10 +168,10 @@ public class KT03_HM03 extends Fragment {
         list_hm03.add(new KT03_HM03_Model(String.valueOf(g_max),
                 "", "", "",
                 "", "", ""));
-        adapter.notifyDataSetChanged();
         kt03Db.ins_hm03(String.valueOf(g_max),
                 "", "", "",
                 "", "", "",
                 g_date, g_ca, g_id);
+        adapter.notifyDataSetChanged();
     }
 }

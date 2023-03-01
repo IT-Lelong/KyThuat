@@ -126,8 +126,6 @@ public class login_kt02 {
 
         cbxbophan.setAdapter(bophan_adapter);*/
 
-
-
         cursor_2=createTable.getAll_fia_02_bp();
         cursor_2.moveToFirst();
         int num1 = cursor_2.getCount();
