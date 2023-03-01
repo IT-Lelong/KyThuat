@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:background="#0300BCD4">
+
+
+        <TextView
+            android:id="@+id/tc_fac003"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.6"
+            android:text="stt"
+            style="@style/lv_kt02_fragmen_listitem"
+            />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:orientation="vertical"
+            android:background="#0300BCD4">
+
+            <TextView
+                android:id="@+id/tc_fac006"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:text="Nội dung khảo hạch"
+                style="@style/lv_kt02_fragmen_listitem"
+                android:layout_weight="8"/>
+
+            <TextView
+                android:id="@+id/tc_fac004"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:text="Nội dung khảo hạch"
+                style="@style/lv_kt02_fragmen_listitem"
+                android:layout_weight="2"
+                android:visibility="invisible"/>
+        </LinearLayout>
+
+
+        <CheckBox
+            android:id="@+id/checkBox1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.9"
+            style="@style/lv_kt02_fragmen_listitem"
+            android:checked="true"
+            />
+
+        <CheckBox
+            android:id="@+id/checkBox2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.6"
+            style="@style/lv_kt02_fragmen_listitem"
+            android:checked="false"
+            />
+
+        <CheckBox
+            android:id="@+id/checkBox3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            style="@style/lv_kt02_fragmen_listitem"
+            android:checked="false"
+            />
+
+        <CheckBox
+            android:id="@+id/checkBox4"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.6"
+            style="@style/lv_kt02_fragmen_listitem"
+            android:checked="false"
+            />
+
+        <CheckBox
+            android:id="@+id/checkBox5"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.7"
+            style="@style/lv_kt02_fragmen_listitem"
+            android:checked="false"
+
+            />
+
+        <CheckBox
+            android:id="@+id/checkBox6"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.7"
+            style="@style/lv_kt02_fragmen_listitem"
+            android:checked="false"
+            />
+
+        <EditText
+            android:id="@+id/tc_fac009"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.9"
+            android:text="stt"
+            style="@style/lv_kt02_fragmen_listitem"
+            />
+
+    </LinearLayout>
+</LinearLayout>

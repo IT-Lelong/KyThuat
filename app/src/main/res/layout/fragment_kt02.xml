@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".KT02.Fragment_KT02">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2.5"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/maso1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.6"
+            android:textSize="20sp"
+            android:text="@string/maso1"
+            style="@style/lv_kt02_fragmen"/>
+
+        <TextView
+            android:id="@+id/chitiet1"
+            style="@style/lv_kt02_fragmen"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:text="@string/chitiet1"
+            android:textSize="20sp" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="4.5"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/diemdatkh"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+
+                android:text="@string/diemdatkh"
+                android:textSize="20sp"
+                style="@style/lv_kt02_fragmen"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+
+                <TextView
+                    android:id="@+id/loai1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.9"
+
+                    android:text="@string/loai1"
+                    android:textSize="20sp"
+                    style="@style/lv_kt02_fragmen"/>
+                <TextView
+                    android:id="@+id/loai2"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.6"
+
+                    android:text="@string/loai2"
+                    android:textSize="20sp"
+                    style="@style/lv_kt02_fragmen"/>
+                <TextView
+                    android:id="@+id/loai3"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+
+                    android:text="@string/loai3"
+                    android:textSize="20sp"
+                    style="@style/lv_kt02_fragmen"/>
+                <TextView
+                    android:id="@+id/loai4"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.6"
+
+                    android:text="@string/loai4"
+                    android:textSize="20sp"
+                    style="@style/lv_kt02_fragmen"/>
+                <TextView
+                    android:id="@+id/loai5"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.7"
+
+                    android:text="@string/loai5"
+                    android:textSize="20sp"
+                    style="@style/lv_kt02_fragmen"/>
+                <TextView
+                    android:id="@+id/loai6"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.7"
+
+                    android:text="@string/loai6"
+                    android:textSize="20sp"
+                    style="@style/lv_kt02_fragmen"/>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/ghichu1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.9"
+            android:text="@string/ghichu"
+            android:textSize="20sp"
+            style="@style/lv_kt02_fragmen"
+            android:layout_marginRight="2dp"/>
+    </LinearLayout>
+    <!--RecyclerView-->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="7.5"
+        android:background="#228BC34A"
+        />
+
+</LinearLayout>

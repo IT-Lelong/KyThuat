@@ -83,5 +83,24 @@
     <string name="giatri">備註</string>
     <string name="saiso">備註</string>
 
+    /*KT02_activity*/
+    <string name="ERRORtvStatus_false">Không insert được table tc_fad_file</string>
+    <string name="ERRORtvStatus_true">Insert table tc_fad_file thành công</string>
+    <string name="ERRORtvStatus_errorins">Dữ liệu đã được insert</string>
+    /*Fragment_KT02*/
+    <string name="maso1">項次</string>
+    <string name="chitiet1">檢查內容</string>
+    <string name="diemdatkh">考核評分</string>
+    <string name="loai1">特優</string>
+    <string name="loai2">優</string>
+    <string name="loai3">可</string>
+    <string name="loai4">差</string>
+    <string name="loai5">很差</string>
+    <string name="loai6">特差</string>
+
+    /*loginKT02*/
+    <string name="soxe">機台號碼</string>
+    <string name="bophan">負責部門</string>
+    <string name="btninsert">Thực hiện</string>
 
 </resources>

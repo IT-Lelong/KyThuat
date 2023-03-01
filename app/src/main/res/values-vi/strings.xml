@@ -84,5 +84,24 @@
     <string name="giatri">Giá trị đọc được\n của thiết bị</string>
     <string name="saiso">Sai số (%)</string>
 
+    /*KT02_activity*/
+    <string name="ERRORtvStatus_false">Không insert được table tc_fad_file</string>
+    <string name="ERRORtvStatus_true">Insert table tc_fad_file thành công</string>
+    <string name="ERRORtvStatus_errorins">Dữ liệu đã được insert</string>
+    /*Fragment_KT02*/
+    <string name="maso1">STT</string>
+    <string name="chitiet1">Nội dung kiểm tra</string>
+    <string name="diemdatkh">Điểm đạt</string>
+    <string name="loai1">Xuất sắc</string>
+    <string name="loai2">Tốt</string>
+    <string name="loai3">Được</string>
+    <string name="loai4">Kém</string>
+    <string name="loai5">Rất kém</string>
+    <string name="loai6">Đặc biệt kém</string>
+
+    /*loginKT02*/
+    <string name="soxe">Số máy</string>
+    <string name="bophan">Bộ phận</string>
+    <string name="btninsert">Thực hiện</string>
 
 </resources>

@@ -49,9 +49,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".KT02.login_kt02"
-            android:exported="true" />
+
         <activity
             android:name=".KT01.login_kt01"
             android:exported="true" />
@@ -64,6 +62,11 @@
             android:exported="false"
             android:screenOrientation="reverseLandscape"
             android:windowSoftInputMode="adjustResize"/>
+        <activity
+            android:name=".KT02.KT02_activity"
+            android:exported="true"
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="adjustPan" />
     </application>
 
 </manifest>
