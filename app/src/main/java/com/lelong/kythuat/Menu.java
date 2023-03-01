@@ -22,6 +22,7 @@ import android.widget.DatePicker;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import com.lelong.kythuat.KT01.Log_BoPhan;
 import com.lelong.kythuat.KT02.KT02_activity;
 import com.lelong.kythuat.KT02.login_kt02;
 import com.lelong.kythuat.KT03.login_kt03;
@@ -135,16 +136,16 @@ public class Menu extends AppCompatActivity {
             //利用switch case方法，之後新增按鈕只需新增case即可
             switch (v.getId()) {
 
-                /*case R.id.btn_KT01: {
+                case R.id.btn_KT01: {
                     Intent KT01 = new Intent();
-                    KT01.setClass(Menu.this, login_kt01.class);
+                    KT01.setClass(Menu.this, Log_BoPhan.class);
                     Bundle bundle = new Bundle();
                     bundle.putString("ID", ID);
                     bundle.putString("SERVER", g_server);
                     KT01.putExtras(bundle);
                     startActivity(KT01);
                     break;
-                }*/
+                }
 
                 case R.id.btn_KT02: {
                     Activity activity = Menu.this;
