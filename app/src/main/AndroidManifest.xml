@@ -2,6 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+
+    <uses-permission android:name="android.permission.CAMERA"
+        android:required="true"
+        android:requiredFeature="true"/>
+    <uses-feature android:name="android.hardware.camera" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -49,10 +54,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity
-            android:name=".KT01.login_kt01"
-            android:exported="true" />
         <activity
             android:name=".Menu"
             android:exported="false"
@@ -67,6 +68,20 @@
             android:exported="true"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".KT01.login_kt01"
+            android:windowSoftInputMode="adjustPan"
+            android:exported="true"
+            android:screenOrientation="landscape"/>
+        <activity
+            android:name=".KT01.kt01_camera">
+        </activity>
+        <activity
+            android:name=".KT01.Log_BoPhan">
+        </activity>
+        <activity
+            android:name=".KT01.kt01_update">
+        </activity>
     </application>
 
 </manifest>
