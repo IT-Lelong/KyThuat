@@ -30,9 +30,11 @@ public class Create_Table {
     String tc_fac008 = "tc_fac008"; //Hãng sản xuất
     String tc_fac011 = "tc_fac011"; //Dãy đo thiết bị
 
+
     String TABLE_NAME_GEM = "gem_file";
-    String gem01 = "tc_fac001"; //Mã bộ phận
-    String gem02 = "tc_fac002"; //Tên bộ phận
+    String gem01 = "gem01"; //Mã bộ phận
+    String gem02 = "gem02"; //Tên bộ phận
+
 
     //KT02(S)
     String TABLE_NAME_FIA = "fia_file";
@@ -204,13 +206,21 @@ public class Create_Table {
         }
     }
 
-    public Cursor getAll_gem(String g_gem01) {
+    public
+    boolean getAll_gem(String g_gem01) {
         try {
             //SQLiteDatabase db = this.getWritableDatabase();
-            String selectQuery = "SELECT * FROM " + TABLE_NAME_GEM + " WHERE gem01 like (% " + g_gem01 + "%) ";
-            return db.rawQuery(selectQuery, null);
+            Cursor mCursor=db.query(TABLE_NAME_GEM,new String[]{gem01},gem01+"=?",new String[]{g_gem01},null,null,null,null);
+            if(mCursor.getCount()>0){
+                return true;
+            }else{
+                return false;
+            }
+
+            //String selectQuery = "SELECT count(*) FROM " + TABLE_NAME_GEM + " WHERE gem01 like (% " + g_gem01 + "%) ";
+            // return db.rawQuery(selectQuery, null);
         } catch (Exception e) {
-            return null;
+            return false;
         }
     }
 

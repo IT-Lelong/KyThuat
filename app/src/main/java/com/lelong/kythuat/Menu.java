@@ -239,6 +239,8 @@ public class Menu extends AppCompatActivity {
                             e.printStackTrace();
                         }
 
+
+
                         String res_gem = get_DataTable("http://172.16.40.20/PHPtest/TechAPP/getDataTable.php?item=gem");
                         if (!res_gem.equals("FALSE")) {
                             try {
