@@ -87,6 +87,7 @@
     <string name="ERRORtvStatus_false">Không insert được table tc_fad_file</string>
     <string name="ERRORtvStatus_true">Insert table tc_fad_file thành công</string>
     <string name="ERRORtvStatus_errorins">Dữ liệu đã được insert</string>
+
     /*Fragment_KT02*/
     <string name="maso1">項次</string>
     <string name="chitiet1">檢查內容</string>
@@ -103,6 +104,6 @@
     <string name="bophan">負責部門</string>
     <string name="btninsert">Thực hiện</string>
 
-    /*loginKT03*/
+    /*loginKT03*/45
 
 </resources>
