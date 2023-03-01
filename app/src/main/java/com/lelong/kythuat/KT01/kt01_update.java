@@ -43,17 +43,7 @@ class kt01_update extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.kt01_update);
         nutchucnang();
-        imgdangky.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*");
-                startActivityForResult(intent, Request_Code_Image);
 
-
-            }
-        });
         btnEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,39 +91,11 @@ class kt01_update extends AppCompatActivity {
             }
         });
     }
-
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == Request_Code_Image && resultCode == RESULT_OK && data != null) {
-            Uri uri = data.getData();
-            realpath = getRealPathFromURI(uri);
-            try {
-                InputStream inputStream = getContentResolver().openInputStream(uri);
-                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                imgdangky.setImageBitmap(bitmap);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
     private void nutchucnang() {
         btnEditText = (Button) findViewById(R.id.register1_button);
         imgdangky = findViewById(R.id.imageview2);
     }
 
-    public String getRealPathFromURI(Uri contentUri) {
-        String path = null;
-        String[] proj = {MediaStore.MediaColumns.DATA};
-        Cursor cursor = getContentResolver().query(contentUri, proj, null, null, null);
-        if (cursor.moveToFirst()) {
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
-            path = cursor.getString(column_index);
-        }
-        cursor.close();
-        return path;
-    }
+
 }
 
