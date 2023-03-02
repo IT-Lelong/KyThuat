@@ -54,7 +54,7 @@
                 android:id="@+id/btninsert"
                 android:layout_width="100dp"
                 android:layout_height="60dp"
-                android:background="@drawable/qr210_button_custom"
+                android:background="@drawable/button_type_nomal"
                 android:textColor="@color/white"
                 android:text="@string/btn_insert"
                 android:textSize="15sp"
