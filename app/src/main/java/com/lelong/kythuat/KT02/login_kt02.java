@@ -99,7 +99,8 @@ public class login_kt02 {
                     List_Bophan res = bophan_adapter.getItem(position);
                     mabp = res.getMabp().toString().trim();
                     tenbp = res.getTenbp().toString().trim();
-                    g_bophan=qrReScanIpLists.get(position).getMabp().trim();
+                    //g_bophan=qrReScanIpLists.get(position).getMabp().trim();
+                    //g_bophan=tenbp;
                 }
             }
 
@@ -113,6 +114,21 @@ public class login_kt02 {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 g_soxe = cbxsoxe.getSelectedItem().toString().trim();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        cbxbophan.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //g_bophan=cbxbophan.getAdapter().toString().trim();
+                //g_bophan=cbxbophan.getSelectedItem().toString().trim();
+                g_bophan=qrReScanIpLists.get(position).getMabp().trim();
+
             }
 
             @Override
