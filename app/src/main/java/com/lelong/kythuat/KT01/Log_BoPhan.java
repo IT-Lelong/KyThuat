@@ -57,9 +57,9 @@ class Log_BoPhan extends AppCompatActivity {
     TextView viewID;
     JSONObject ujobject;
     String lbophan1;
-    String  L_BP;
+    String L_BP;
     JSONArray jsonupload;
-    private  KT01_DB db=null;
+    private KT01_DB db = null;
     EditText editText1;
     int Request_Code_Image = 1234;
     Button btnlogin1;
@@ -71,6 +71,7 @@ class Log_BoPhan extends AppCompatActivity {
     Button btnketchuyenanh;
     Button btnketchuyendl;
     Button btnaupdate;
+
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,14 +79,14 @@ class Log_BoPhan extends AppCompatActivity {
         setContentView(R.layout.kt01_bophan);
         g_server = getString(R.string.server);
 
-        editText1  = findViewById(R.id.editID);
-        btnlogin1 =findViewById(R.id.btnlogin);
+        editText1 = findViewById(R.id.editID);
+        btnlogin1 = findViewById(R.id.btnlogin);
         btnaddnew = findViewById(R.id.btn_addnew);
         btnaupdate = findViewById(R.id.btn_updatesever);
-        btnketchuyenanh =findViewById(R.id.btn_kcanh);
-        btnketchuyendl =findViewById(R.id.btn_kcdl);
-        btnback  = findViewById(R.id.btnback);
-        viewID  =findViewById(R.id.viewID);
+        btnketchuyenanh = findViewById(R.id.btn_kcanh);
+        btnketchuyendl = findViewById(R.id.btn_kcdl);
+        btnback = findViewById(R.id.btnback);
+        viewID = findViewById(R.id.viewID);
         editText1.setVisibility(View.GONE);
         btnback.setVisibility(View.GONE);
         viewID.setVisibility(View.GONE);
@@ -94,8 +95,7 @@ class Log_BoPhan extends AppCompatActivity {
         btnketchuyendl.setVisibility(View.GONE);
         btnaddnew.setOnClickListener(new View.OnClickListener() {
             @Override
-            public
-            void onClick(View v) {
+            public void onClick(View v) {
                 btnketchuyenanh.setVisibility(View.GONE);
                 btnketchuyendl.setVisibility(View.GONE);
                 editText1.setVisibility(View.VISIBLE);
@@ -104,10 +104,9 @@ class Log_BoPhan extends AppCompatActivity {
                 btnback.setVisibility(View.VISIBLE);
             }
         });
-           btnaupdate.setOnClickListener(new View.OnClickListener() {
+        btnaupdate.setOnClickListener(new View.OnClickListener() {
             @Override
-            public
-            void onClick(View v) {
+            public void onClick(View v) {
                 editText1.setVisibility(View.GONE);
                 btnback.setVisibility(View.GONE);
                 viewID.setVisibility(View.GONE);
@@ -121,7 +120,7 @@ class Log_BoPhan extends AppCompatActivity {
                 builder.setMessage(message);
 
                 //AlertDialog dialog = builder.create();
-               // dialog.show();
+                // dialog.show();
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -138,7 +137,7 @@ class Log_BoPhan extends AppCompatActivity {
                                     try {
                                         @SuppressLint("Range") String tc_faa005 = cursor_1.getString(cursor_1.getColumnIndex("tc_faa005"));
                                         // String   a = "/storage/emulated/0/Pictures/KT010103_2023-02-25_13_45_37_ABI3100000.jpg";
-                                        String   a = "/storage/emulated/0/Pictures/"+ tc_faa005 + "" + ".jpg"+"";
+                                        String a = "/storage/emulated/0/Pictures/" + tc_faa005 + "" + ".jpg" + "";
                                         File file = new File(a);
                                         String File_path = file.getAbsolutePath();
                                         String[] mangtenfile = File_path.split("\\.");
@@ -182,7 +181,7 @@ class Log_BoPhan extends AppCompatActivity {
                                     e.printStackTrace();
                                 }
 
-                                final String res = upload_all("http://172.16.40.20/"+ g_server + "/TechAPP/uploadtc_fae.php");
+                                final String res = upload_all("http://172.16.40.20/" + g_server + "/TechAPP/uploadtc_fae.php");
 
 
                         /*  runOnUiThread(new Runnable() { //Vì Toast không thể chạy đc nếu không phải UI Thread nên sử dụng runOnUIThread.
@@ -209,9 +208,7 @@ class Log_BoPhan extends AppCompatActivity {
                         }).start();
 
                     }
-                });
-
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // Xử lý khi người dùng chọn "Cancel"
@@ -221,35 +218,31 @@ class Log_BoPhan extends AppCompatActivity {
                 AlertDialog dialog = builder.create();
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#00CCFF")));
 
-// Hiển thị hộp thoại
+                // Hiển thị hộp thoại
                 dialog.show();
 
                 // Intent intent = new Intent(Log_BoPhan.this, kt01_update.class);
-               // startActivity(intent);
+                // startActivity(intent);
 
 
+                // Intent intent = new Intent(Log_BoPhan.this, kt01_update.class);
+                // startActivity(intent);
 
-                    // Intent intent = new Intent(Log_BoPhan.this, kt01_update.class);
-                    // startActivity(intent);
 
-
-                }
+            }
         });
 
         btnketchuyenanh.setOnClickListener(new View.OnClickListener() {
             @Override
-            public
-            void onClick(View v) {
-                 Intent intent = new Intent(Log_BoPhan.this, kt01_update.class);
-                 startActivity(intent);
+            public void onClick(View v) {
+                Intent intent = new Intent(Log_BoPhan.this, kt01_update.class);
+                startActivity(intent);
             }
         });
 
-
         btnback.setOnClickListener(new View.OnClickListener() {
             @Override
-            public
-            void onClick(View v) {
+            public void onClick(View v) {
                 editText1.setVisibility(View.GONE);
                 btnback.setVisibility(View.GONE);
                 viewID.setVisibility(View.GONE);
@@ -257,50 +250,48 @@ class Log_BoPhan extends AppCompatActivity {
             }
         });
 
-
-
         btnlogin1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                L_BP = editText1.getText().toString();
-                db = new KT01_DB(view.getContext());
-                db.open();
-                db.getAll_gem(L_BP);
-                boolean result = db.getAll_gem(L_BP);
+                                         @Override
+                                         public void onClick(View view) {
+                                             L_BP = editText1.getText().toString();
+                                             db = new KT01_DB(view.getContext());
+                                             db.open();
+                                             db.getAll_gem(L_BP);
+                                             boolean result = db.getAll_gem(L_BP);
 
-                if (result) {
-                    lbophan1 = editText1.getText().toString();
-                    Intent intent = new Intent(Log_BoPhan.this, login_kt01.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putString("ID1", lbophan1);
-                    intent.putExtras(bundle);
-                    startActivity(intent);
-                    nutchucnang();
-                    editText1.setVisibility(View.GONE);
-                    btnback.setVisibility(View.GONE);
-                    viewID.setVisibility(View.GONE);
-                    btnlogin1.setVisibility(View.GONE);
-                } else {
-                    Toast.makeText(view.getContext(), "Mã bộ phận không đúng vui lòng kiểm tra lại: " , Toast.LENGTH_SHORT).show();
-                }
-            }
+                                             if (result) {
+                                                 lbophan1 = editText1.getText().toString();
+                                                 Intent intent = new Intent(Log_BoPhan.this, login_kt01.class);
+                                                 Bundle bundle = new Bundle();
+                                                 bundle.putString("ID1", lbophan1);
+                                                 intent.putExtras(bundle);
+                                                 startActivity(intent);
+                                                 nutchucnang();
+                                                 editText1.setVisibility(View.GONE);
+                                                 btnback.setVisibility(View.GONE);
+                                                 viewID.setVisibility(View.GONE);
+                                                 btnlogin1.setVisibility(View.GONE);
+                                             } else {
+                                                 Toast.makeText(view.getContext(), "Mã bộ phận không đúng vui lòng kiểm tra lại: ", Toast.LENGTH_SHORT).show();
+                                             }
+                                         }
 
-     private void nutchucnang() {
-         try {
-             FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
-             fos.write(lbophan1.getBytes());
-             fos.close();
-         } catch (IOException e) {
-             e.printStackTrace();
-         }
-     }
-          }
+                                         private void nutchucnang() {
+                                             try {
+                                                 FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
+                                                 fos.write(lbophan1.getBytes());
+                                                 fos.close();
+                                             } catch (IOException e) {
+                                                 e.printStackTrace();
+                                             }
+                                         }
+                                     }
 
         );
 
 
-
     }
+
     public String upload_all(String apiUrl) {
         HttpURLConnection conn = null;
         try {
@@ -335,6 +326,7 @@ class Log_BoPhan extends AppCompatActivity {
             }
         }
     }
+
     public JSONArray cur2Json(Cursor cursor) {
         JSONArray resultSet = new JSONArray();
         cursor.moveToFirst();

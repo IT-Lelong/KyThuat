@@ -82,21 +82,4 @@ public class kt03_main_activity extends AppCompatActivity {
         });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(android.view.Menu menu) {
-        getMenuInflater().inflate(R.menu.test, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.clear:
-                KT03_HM0102 kt03_hm01 = new KT03_HM0102(this);
-                kt03_hm01.clear_data();
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
 }

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.widget.TextView;
 
 public class KT03_DB {
 
@@ -70,9 +71,12 @@ public class KT03_DB {
         }
     }
 
-    public void delete_table() {
-        db.delete(KT03_TABLE, null, null);
-        db.delete(KT03_03_TABLE, null, null);
+    public void delete_table(String qry_ngay, String qry_ca) {
+        String whereClause_hm0102 = "KT03_01_004=? AND KT03_01_005=?";
+        String whereClause_hm03 = "KT03_03_008=? AND KT03_03_009=?";
+        String[] strings = new String[]{qry_ngay, qry_ca};
+        db.delete(KT03_TABLE, whereClause_hm0102, strings);
+        db.delete(KT03_03_TABLE, whereClause_hm03, strings);
     }
 
     public String append(String g_KT03_01_001, String g_KT03_01_002, String g_KT03_01_003, String g_KT03_01_004, String g_KT03_01_005, String g_KT03_01_006) {
