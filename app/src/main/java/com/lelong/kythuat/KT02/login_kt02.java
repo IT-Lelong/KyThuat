@@ -58,79 +58,20 @@ public class login_kt02 {
             } catch (Exception e) {
                 String err = e.toString();
             }
-            stationlist = new ArrayAdapter<>(dialog.getContext(), android.R.layout.simple_list_item_1, station);
+            stationlist = new ArrayAdapter<>(dialog.getContext(), android.R.layout.simple_spinner_item, station);
             cbxsoxe.setAdapter(stationlist);
             cbxsoxe.setSelection(0);
             cursor_1.moveToNext();
         }
 //Bộ phận
 
-
-        /*cursor_2=createTable.getAll_fia_02_bp();
-        cursor_2.moveToFirst();
-        int num1 = cursor_2.getCount();
-        station = new String[num1];
-        for (int i = 0; i < num1; i++) {
-
-            try {
-                @SuppressLint("Range") String fia11 = cursor_2.getString(cursor_2.getColumnIndex("fia11"));
-                @SuppressLint("Range") String gem02 = cursor_2.getString(cursor_2.getColumnIndex("gem02"));
-                String g_fia11 = fia11;
-                String g_gem02=gem02;
-                //station[i] = g_fia11;
-                station[i] = g_gem02;
-
-            } catch (Exception e) {
-                String err = e.toString();
-            }
-            stationlist = new ArrayAdapter<>(dialog.getContext(), android.R.layout.simple_list_item_1, station);
-            cbxbophan.setAdapter(stationlist);
-            cbxbophan.setSelection(0);
-            cursor_2.moveToNext();
-        }
-
-        cbxsoxe.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                g_soxe = cbxsoxe.getSelectedItem().toString().trim();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-        cbxbophan.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                g_bophan=cbxbophan.getSelectedItem().toString().trim();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        dateFormatKT02.format(new Date()).toString();
-        dialog.show();*/
-//spinner Scan IP (S)
         Spinner cbxbophan = dialog.findViewById(R.id.cbxbophan);
         List<List_Bophan> qrReScanIpLists = new ArrayList<>();
-
-        /*Bophan_Adapter bophan_adapter = new Bophan_Adapter(dialog.getOwnerActivity(),
-                R.layout.loginsetting_bophan,
-                R.id.sp_mabp,
-                R.id.sp_tenbp,
-                qrReScanIpLists);
-
-        cbxbophan.setAdapter(bophan_adapter);*/
 
         cursor_2=createTable.getAll_fia_02_bp();
         cursor_2.moveToFirst();
         int num1 = cursor_2.getCount();
         station = new String[num1];
-        //mangbp = new ArrayList<List_Bophan>();
         for (int i = 0; i < num1; i++) {
 
             try {
@@ -158,6 +99,7 @@ public class login_kt02 {
                     List_Bophan res = bophan_adapter.getItem(position);
                     mabp = res.getMabp().toString().trim();
                     tenbp = res.getTenbp().toString().trim();
+                    g_bophan=qrReScanIpLists.get(position).getMabp().trim();
                 }
             }
 
@@ -178,22 +120,6 @@ public class login_kt02 {
 
             }
         });
-        cbxbophan.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                //g_bophan=cbxbophan.getAdapter().toString().trim();
-                //g_bophan=cbxbophan.getSelectedItem().toString().trim();
-                g_bophan=qrReScanIpLists.get(position).getMabp().trim();
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        //dateFormatKT02.format(new Date()).toString();
 
         dialog.show();
     }
