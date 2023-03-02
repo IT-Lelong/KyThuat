@@ -98,7 +98,7 @@
     <string name="loai4">Kém</string>
     <string name="loai5">Rất kém</string>
     <string name="loai6">Đặc biệt kém</string>
-
+    <string name="ghichu1">Thuyết minh bổ sung vấn đề</string>
     /*loginKT02*/
     <string name="soxe">Số máy</string>
     <string name="bophan">Bộ phận</string>
