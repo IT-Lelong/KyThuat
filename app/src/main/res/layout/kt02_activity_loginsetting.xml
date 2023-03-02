@@ -56,7 +56,7 @@
                 android:layout_height="60dp"
                 android:background="@drawable/qr210_button_custom"
                 android:textColor="@color/white"
-                android:text="@string/btninsert"
+                android:text="@string/btn_insert"
                 android:textSize="15sp"
                 android:layout_gravity="center"/>
 
