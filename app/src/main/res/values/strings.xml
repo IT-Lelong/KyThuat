@@ -5,6 +5,7 @@
     <string name="btn_ok">確定</string>
     <string name="btn_cancel">取消</string>
     <string name="btn_clean">清空</string>
+    <string name="btn_delete">刪除</string>
     <string name="btn_print">列印</string>
     <string name="btn_date">日期</string>
     <string name="btn_time">時間</string>
@@ -29,6 +30,7 @@
     <string name="M02">確定上傳資料?</string>
     <string name="M03">上傳成功</string>
     <string name="M04">上傳失敗</string>
+    <string name="M05">確定刪除資料?</string>
 
     /*Menu Button*/
     <string name="btn_KT01">設備管理稽核評分表 </string>
@@ -77,16 +79,16 @@
     <string name="hong">不好</string>
     <string name="ghichuhm2">備註</string>
 
-    <string name="daydo">審核</string>
-    <string name="nongdo">好</string>
-    <string name="hansudung">不好</string>
-    <string name="giatri">備註</string>
-    <string name="saiso">備註</string>
+    <string name="daydo">儀器量測範圍</string>
+    <string name="nongdo">標準藥劑濃度</string>
+    <string name="hansudung">標準藥劑使用期限</string>
+    <string name="giatri">儀器校正結果</string>
+    <string name="saiso">誤差(%)</string>
 
     /*KT02_activity*/
-    <string name="ERRORtvStatus_false">Không insert được table tc_fad_file</string>
-    <string name="ERRORtvStatus_true">Insert table tc_fad_file thành công</string>
-    <string name="ERRORtvStatus_errorins">Dữ liệu đã được insert</string>
+    <string name="ERRORtvStatus_false">出現錯誤，不能插入資料到tc_fad_file</string>
+    <string name="ERRORtvStatus_true">更新資料成功</string>
+    <string name="ERRORtvStatus_errorins">資料已更新</string>
 
     /*Fragment_KT02*/
     <string name="maso1">項次</string>
@@ -102,6 +104,6 @@
     /*loginKT02*/
     <string name="soxe">機台號碼</string>
     <string name="bophan">負責部門</string>
-    <string name="btninsert">Thực hiện</string>
+    <string name="btninsert">執行</string>
 
 </resources>

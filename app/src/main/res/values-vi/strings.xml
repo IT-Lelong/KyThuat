@@ -6,6 +6,7 @@
     <string name="btn_ok">Xác nhận</string>
     <string name="btn_cancel">Hủy bỏ</string>
     <string name="btn_clean">Làm trống</string>
+    <string name="btn_delete">Xóa</string>
     <string name="btn_print">In</string>
     <string name="btn_date">Ngày</string>
     <string name="btn_time">Thời gian</string>
@@ -30,6 +31,7 @@
     <string name="M02">Xác nhận tải dữ liệu lên hệ thống?</string>
     <string name="M03">Tải lên thành công</string>
     <string name="M04">Tải lên thất bại</string>
+    <string name="M05">Xác nhận xóa dữ liệu?</string>
 
     /*Menu Button*/
     <string name="btn_KT01">BIỂU ĐIỂM KHẢO HẠCH QUẢN LÝ THIẾT BỊ</string>

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -21,8 +22,9 @@ public class KT03_HM03_Adapder extends RecyclerView.Adapter<KT03_HM03_Adapder.Da
     private final String g_date;
     private final String g_ca;
     KT03_DB kt03Db = null;
+    private KT03_Interface listener;
 
-    public KT03_HM03_Adapder(Context context, int resource, List<KT03_HM03_Model> objects, String g_date, String g_ca) {
+    public KT03_HM03_Adapder(Context context, int resource, List<KT03_HM03_Model> objects, String g_date, String g_ca, KT03_Interface listener) {
 
         this.context = context;
         this.resource = resource;
@@ -30,6 +32,7 @@ public class KT03_HM03_Adapder extends RecyclerView.Adapter<KT03_HM03_Adapder.Da
         this.g_date = g_date;
         this.g_ca = g_ca;
         kt03Db = new KT03_DB(context);
+        this.listener = listener;
         kt03Db.open();
     }
 
@@ -42,6 +45,8 @@ public class KT03_HM03_Adapder extends RecyclerView.Adapter<KT03_HM03_Adapder.Da
 
     @Override
     public void onBindViewHolder(@NonNull KT03_HM03_Adapder.DataViewHolder holder, int position) {
+        //Sự kiện lắng nghe khi click vào recycleview Item
+        holder.itemView.setOnClickListener(v -> listener.HM03_rcv_onItemClick(position));
         holder.tv_stt.setText(String.valueOf(position + 1));
         holder.edt_ten.setText(objects.get(position).getKt03_03_002());
         holder.edt_dayDo.setText(objects.get(position).getKt03_03_003());

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,8 +19,9 @@ import com.lelong.kythuat.R;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-public class KT03_HM03 extends Fragment {
+public class KT03_HM03 extends Fragment implements KT03_Interface {
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
     private String g_dk = "";
     private String g_date;
@@ -80,21 +82,13 @@ public class KT03_HM03 extends Fragment {
         recyclerView.setLayoutManager(linearLayoutManager);
 
         list_hm03 = new ArrayList<KT03_HM03_Model>();
-        adapter = new KT03_HM03_Adapder(getContext(), R.layout.kt03_hm03_fragment_row, list_hm03, g_date, g_ca);
+        adapter = new KT03_HM03_Adapder(getContext(), R.layout.kt03_hm03_fragment_row, list_hm03, g_date, g_ca, this);
         recyclerView.setAdapter(adapter);
 
         final Cursor[] cur_getAll = {null};
-        Thread thread_CHK = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                cur_getAll[0] = kt03Db.getAll_HM03(g_date, g_ca);
-            }
-        });
+        Thread thread_CHK = new Thread(() -> cur_getAll[0] = kt03Db.getAll_HM03(g_date, g_ca));
 
-        Thread thread_QRY = new Thread(() -> {
-            //cur_getAll[0] = kt03Db.getAll_HM03(g_date, g_ca);
-            addData_list_hm03(cur_getAll[0]);
-        });
+        Thread thread_QRY = new Thread(() -> addData_list_hm03(cur_getAll[0]));
 
         Thread thread_INS = new Thread(() -> ins_KT03_03_file(cur_getAll[0].getCount()));
 
@@ -133,45 +127,55 @@ public class KT03_HM03 extends Fragment {
     }
 
     private void addData_list_hm03(Cursor cur_getAll) {
-        recyclerView.post((new Runnable() {
-            @Override
-            public void run() {
-                cur_getAll.moveToFirst();
-                int num = cur_getAll.getCount();
-                list_hm03.clear();
-                for (int i = 0; i < num; i++) {
-                    try {
-                        @SuppressLint("Range") String KT03_03_001 = cur_getAll.getString(cur_getAll.getColumnIndex("KT03_03_001"));
-                        @SuppressLint("Range") String KT03_03_002 = cur_getAll.getString(cur_getAll.getColumnIndex("KT03_03_002"));
-                        @SuppressLint("Range") String KT03_03_003 = cur_getAll.getString(cur_getAll.getColumnIndex("KT03_03_003"));
-                        @SuppressLint("Range") String KT03_03_004 = cur_getAll.getString(cur_getAll.getColumnIndex("KT03_03_004"));
-                        @SuppressLint("Range") String KT03_03_005 = cur_getAll.getString(cur_getAll.getColumnIndex("KT03_03_005"));
-                        @SuppressLint("Range") String KT03_03_006 = cur_getAll.getString(cur_getAll.getColumnIndex("KT03_03_006"));
-                        @SuppressLint("Range") String KT03_03_007 = cur_getAll.getString(cur_getAll.getColumnIndex("KT03_03_007"));
+        recyclerView.post((() -> {
+            cur_getAll.moveToFirst();
+            int num = cur_getAll.getCount();
+            list_hm03.clear();
+            for (int i = 0; i < num; i++) {
+                try {
+                    @SuppressLint("Range") String KT03_03_001 = cur_getAll.getString(cur_getAll.getColumnIndex("KT03_03_001"));
+                    @SuppressLint("Range") String KT03_03_002 = cur_getAll.getString(cur_getAll.getColumnIndex("KT03_03_002"));
+                    @SuppressLint("Range") String KT03_03_003 = cur_getAll.getString(cur_getAll.getColumnIndex("KT03_03_003"));
+                    @SuppressLint("Range") String KT03_03_004 = cur_getAll.getString(cur_getAll.getColumnIndex("KT03_03_004"));
+                    @SuppressLint("Range") String KT03_03_005 = cur_getAll.getString(cur_getAll.getColumnIndex("KT03_03_005"));
+                    @SuppressLint("Range") String KT03_03_006 = cur_getAll.getString(cur_getAll.getColumnIndex("KT03_03_006"));
+                    @SuppressLint("Range") String KT03_03_007 = cur_getAll.getString(cur_getAll.getColumnIndex("KT03_03_007"));
 
-                        list_hm03.add(new KT03_HM03_Model(KT03_03_001,
-                                KT03_03_002, KT03_03_003, KT03_03_004,
-                                KT03_03_005, KT03_03_006, KT03_03_007));
-                    } catch (Exception e) {
-                        String err = e.toString();
-                    }
-                    cur_getAll.moveToNext();
+                    list_hm03.add(new KT03_HM03_Model(KT03_03_001,
+                            KT03_03_002, KT03_03_003, KT03_03_004,
+                            KT03_03_005, KT03_03_006, KT03_03_007, "old"));
+                } catch (Exception e) {
+                    String err = e.toString();
                 }
-                adapter.notifyDataSetChanged();
+                cur_getAll.moveToNext();
             }
+            adapter.notifyDataSetChanged();
         }));
 
     }
 
     private void ins_KT03_03_file(int i) {
-        int g_max =  kt03Db.query_HM03_max(g_date,g_ca); //đã được +1 từ max
-        list_hm03.add(new KT03_HM03_Model(String.valueOf(g_max),
+        //int g_list_count = list_hm03.size();
+        list_hm03.add(new KT03_HM03_Model(String.valueOf(i + 1),
                 "", "", "",
-                "", "", ""));
-        kt03Db.ins_hm03(String.valueOf(g_max),
-                "", "", "",
-                "", "", "",
-                g_date, g_ca, g_id);
+                "", "", "", "new"));
         adapter.notifyDataSetChanged();
+    }
+
+
+    @Override
+    public void HM03_rcv_onItemClick(int position) {
+        KT03_HM03_Model objects = (KT03_HM03_Model) list_hm03.get(position);
+        String status = objects.getRow_status(); // Lấy giá trị của trường Status
+        if (status.equals("new")) {
+            int g_max = kt03Db.query_HM03_max(g_date, g_ca); //đã được +1 từ max
+            kt03Db.ins_hm03(String.valueOf(g_max),
+                    "", "", "",
+                    "", "", "",
+                    g_date, g_ca, g_id);
+            objects.setRow_status("old");
+            ins_KT03_03_file(position);
+        }
+
     }
 }

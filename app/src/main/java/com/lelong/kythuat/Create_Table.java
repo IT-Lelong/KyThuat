@@ -30,11 +30,9 @@ public class Create_Table {
     String tc_fac008 = "tc_fac008"; //Hãng sản xuất
     String tc_fac011 = "tc_fac011"; //Dãy đo thiết bị
 
-
     String TABLE_NAME_GEM = "gem_file";
     String gem01 = "gem01"; //Mã bộ phận
     String gem02 = "gem02"; //Tên bộ phận
-
 
     //KT02(S)
     String TABLE_NAME_FIA = "fia_file";

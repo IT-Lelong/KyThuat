@@ -11,9 +11,7 @@ public class KT03_HM03_Model implements Serializable {
     private String kt03_03_005;
     private String kt03_03_006;
     private String kt03_03_007;
-    private String kt03_03_008;
-    private String kt03_03_009;
-    private String kt03_03_010;
+    private String row_status;
 
     public String getKt03_03_001() {
         return kt03_03_001;
@@ -72,8 +70,16 @@ public class KT03_HM03_Model implements Serializable {
     }
 
 
+    public String getRow_status() {
+        return row_status;
+    }
+
+    public void setRow_status(String row_status) {
+        this.row_status = row_status;
+    }
+
     public KT03_HM03_Model(String kt03_03_001, String kt03_03_002, String kt03_03_003, String kt03_03_004, String kt03_03_005,
-                           String kt03_03_006, String kt03_03_007) {
+                           String kt03_03_006, String kt03_03_007, String row_status) {
         this.kt03_03_001 = kt03_03_001;
         this.kt03_03_002 = kt03_03_002;
         this.kt03_03_003 = kt03_03_003;
@@ -81,5 +87,6 @@ public class KT03_HM03_Model implements Serializable {
         this.kt03_03_005 = kt03_03_005;
         this.kt03_03_006 = kt03_03_006;
         this.kt03_03_007 = kt03_03_007;
+        this.row_status = row_status;
     }
 }

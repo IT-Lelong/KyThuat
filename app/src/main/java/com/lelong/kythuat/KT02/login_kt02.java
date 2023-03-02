@@ -28,7 +28,7 @@ public class login_kt02 {
     ArrayAdapter<String> stationlist;
     ArrayList<List_Bophan> mangbp;
 
-    String g_soxe, g_bophan,mabp,tenbp;
+    String g_soxe, g_bophan, mabp, tenbp;
     Button btnins, btnsearch;
     private Activity activity;
 
@@ -68,7 +68,7 @@ public class login_kt02 {
         Spinner cbxbophan = dialog.findViewById(R.id.cbxbophan);
         List<List_Bophan> qrReScanIpLists = new ArrayList<>();
 
-        cursor_2=createTable.getAll_fia_02_bp();
+        cursor_2 = createTable.getAll_fia_02_bp();
         cursor_2.moveToFirst();
         int num1 = cursor_2.getCount();
         station = new String[num1];
@@ -77,7 +77,7 @@ public class login_kt02 {
             try {
                 @SuppressLint("Range") String fia11 = cursor_2.getString(cursor_2.getColumnIndex("fia11"));
                 @SuppressLint("Range") String gem02 = cursor_2.getString(cursor_2.getColumnIndex("gem02"));
-                qrReScanIpLists.add(new List_Bophan(fia11,gem02));
+                qrReScanIpLists.add(new List_Bophan(fia11, gem02));
 
             } catch (Exception e) {
                 String err = e.toString();
@@ -127,7 +127,7 @@ public class login_kt02 {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 //g_bophan=cbxbophan.getAdapter().toString().trim();
                 //g_bophan=cbxbophan.getSelectedItem().toString().trim();
-                g_bophan=qrReScanIpLists.get(position).getMabp().trim();
+                g_bophan = qrReScanIpLists.get(position).getMabp().trim();
 
             }
 
