@@ -231,11 +231,5 @@ public class KT03_HM0102 extends Fragment {
         }
     }
 
-    public void clear_data() {
-        if (list_hm01.size() > 0) {
-            list_hm01.clear();
-            adapter.notifyDataSetChanged();
-        }
-    }
 
 }

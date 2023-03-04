@@ -45,8 +45,7 @@ public class KT03_HM03_Adapder extends RecyclerView.Adapter<KT03_HM03_Adapder.Da
 
     @Override
     public void onBindViewHolder(@NonNull KT03_HM03_Adapder.DataViewHolder holder, int position) {
-        //Sự kiện lắng nghe khi click vào recycleview Item
-        holder.itemView.setOnClickListener(v -> listener.HM03_rcv_onItemClick(position));
+
         holder.tv_stt.setText(String.valueOf(position + 1));
         holder.edt_ten.setText(objects.get(position).getKt03_03_002());
         holder.edt_dayDo.setText(objects.get(position).getKt03_03_003());
@@ -55,57 +54,81 @@ public class KT03_HM03_Adapder extends RecyclerView.Adapter<KT03_HM03_Adapder.Da
         holder.edt_giaTri.setText(objects.get(position).getKt03_03_006());
         holder.edt_saiSo.setText(objects.get(position).getKt03_03_007());
 
+        //Sự kiện lắng nghe khi click vào recycleview Item (S)
+        holder.itemView.setOnClickListener(v -> listener.HM03_rcv_onItemClick(position));
+        holder.edt_ten.setOnClickListener(v -> listener.HM03_rcv_onItemClick(position));
+        holder.edt_dayDo.setOnClickListener(v -> listener.HM03_rcv_onItemClick(position));
+        holder.edt_nongDo.setOnClickListener(v -> listener.HM03_rcv_onItemClick(position));
+        holder.edt_hanSuDung.setOnClickListener(v -> listener.HM03_rcv_onItemClick(position));
+        holder.edt_giaTri.setOnClickListener(v -> listener.HM03_rcv_onItemClick(position));
+        holder.edt_saiSo.setOnClickListener(v -> listener.HM03_rcv_onItemClick(position));
+        //Sự kiện lắng nghe khi click vào recycleview Item (E)
+
         holder.edt_ten.setOnFocusChangeListener((view, hasFocus) -> {
             if (!hasFocus) {
-                upd_Data("KT03_03_002",
-                        objects.get(holder.getPosition()).getKt03_03_001(),
-                        holder.edt_ten.getText().toString().trim());
-                objects.get(holder.getPosition()).setKt03_03_002(holder.edt_ten.getText().toString().trim());
+                if (holder.edt_ten.getText().length() > 0) {
+                    upd_Data("KT03_03_002",
+                            objects.get(holder.getPosition()).getKt03_03_001(),
+                            holder.edt_ten.getText().toString().trim());
+                    objects.get(holder.getPosition()).setKt03_03_002(holder.edt_ten.getText().toString().trim());
+                }
+            }else{
+                listener.HM03_rcv_onItemClick(position);
             }
         });
 
         holder.edt_dayDo.setOnFocusChangeListener((view, hasFocus) -> {
             if (!hasFocus) {
-                upd_Data("KT03_03_003",
-                        objects.get(holder.getPosition()).getKt03_03_001(),
-                        holder.edt_dayDo.getText().toString().trim());
-                objects.get(holder.getPosition()).setKt03_03_003(holder.edt_dayDo.getText().toString().trim());
+                if (holder.edt_dayDo.getText().length() > 0) {
+                    upd_Data("KT03_03_003",
+                            objects.get(holder.getPosition()).getKt03_03_001(),
+                            holder.edt_dayDo.getText().toString().trim());
+                    objects.get(holder.getPosition()).setKt03_03_003(holder.edt_dayDo.getText().toString().trim());
+                }
             }
         });
 
         holder.edt_nongDo.setOnFocusChangeListener((view, hasFocus) -> {
             if (!hasFocus) {
-                upd_Data("KT03_03_004",
-                        objects.get(holder.getPosition()).getKt03_03_001(),
-                        holder.edt_nongDo.getText().toString().trim());
-                objects.get(holder.getPosition()).setKt03_03_004(holder.edt_nongDo.getText().toString().trim());
+                if (holder.edt_nongDo.getText().length() > 0) {
+                    upd_Data("KT03_03_004",
+                            objects.get(holder.getPosition()).getKt03_03_001(),
+                            holder.edt_nongDo.getText().toString().trim());
+                    objects.get(holder.getPosition()).setKt03_03_004(holder.edt_nongDo.getText().toString().trim());
+                }
             }
         });
 
         holder.edt_hanSuDung.setOnFocusChangeListener((view, hasFocus) -> {
             if (!hasFocus) {
-                upd_Data("KT03_03_005",
-                        objects.get(holder.getPosition()).getKt03_03_001(),
-                        holder.edt_hanSuDung.getText().toString().trim());
-                objects.get(holder.getPosition()).setKt03_03_005(holder.edt_hanSuDung.getText().toString().trim());
+                if (holder.edt_hanSuDung.getText().length() > 0) {
+                    upd_Data("KT03_03_005",
+                            objects.get(holder.getPosition()).getKt03_03_001(),
+                            holder.edt_hanSuDung.getText().toString().trim());
+                    objects.get(holder.getPosition()).setKt03_03_005(holder.edt_hanSuDung.getText().toString().trim());
+                }
             }
         });
 
         holder.edt_giaTri.setOnFocusChangeListener((view, hasFocus) -> {
             if (!hasFocus) {
-                upd_Data("KT03_03_006",
-                        objects.get(holder.getPosition()).getKt03_03_001(),
-                        holder.edt_giaTri.getText().toString().trim());
-                objects.get(holder.getPosition()).setKt03_03_006(holder.edt_giaTri.getText().toString().trim());
+                if (holder.edt_giaTri.getText().length() > 0) {
+                    upd_Data("KT03_03_006",
+                            objects.get(holder.getPosition()).getKt03_03_001(),
+                            holder.edt_giaTri.getText().toString().trim());
+                    objects.get(holder.getPosition()).setKt03_03_006(holder.edt_giaTri.getText().toString().trim());
+                }
             }
         });
 
         holder.edt_saiSo.setOnFocusChangeListener((view, hasFocus) -> {
             if (!hasFocus) {
-                upd_Data("KT03_03_007",
-                        objects.get(holder.getPosition()).getKt03_03_001(),
-                        holder.edt_saiSo.getText().toString().trim());
-                objects.get(holder.getPosition()).setKt03_03_007(holder.edt_saiSo.getText().toString().trim());
+                if (holder.edt_saiSo.getText().length() > 0) {
+                    upd_Data("KT03_03_007",
+                            objects.get(holder.getPosition()).getKt03_03_001(),
+                            holder.edt_saiSo.getText().toString().trim());
+                    objects.get(holder.getPosition()).setKt03_03_007(holder.edt_saiSo.getText().toString().trim());
+                }
             }
         });
     }

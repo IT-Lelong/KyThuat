@@ -82,7 +82,7 @@ public class KT03_HM03 extends Fragment implements KT03_Interface {
         recyclerView.setLayoutManager(linearLayoutManager);
 
         list_hm03 = new ArrayList<KT03_HM03_Model>();
-        adapter = new KT03_HM03_Adapder(getContext(), R.layout.kt03_hm03_fragment_row, list_hm03, g_date, g_ca, this);
+        adapter = new KT03_HM03_Adapder(getContext(), R.layout.kt03_hm03_fragment_row, list_hm03, g_date, g_ca, (KT03_Interface) this);
         recyclerView.setAdapter(adapter);
 
         final Cursor[] cur_getAll = {null};
@@ -90,7 +90,7 @@ public class KT03_HM03 extends Fragment implements KT03_Interface {
 
         Thread thread_QRY = new Thread(() -> addData_list_hm03(cur_getAll[0]));
 
-        Thread thread_INS = new Thread(() -> ins_KT03_03_file(cur_getAll[0].getCount()));
+        Thread thread_INS = new Thread(() -> add_newRowToList(cur_getAll[0].getCount()));
 
         new Thread() {
             @Override
@@ -154,12 +154,23 @@ public class KT03_HM03 extends Fragment implements KT03_Interface {
 
     }
 
-    private void ins_KT03_03_file(int i) {
+    private void add_newRowToList(int i) {
         //int g_list_count = list_hm03.size();
         list_hm03.add(new KT03_HM03_Model(String.valueOf(i + 1),
                 "", "", "",
                 "", "", "", "new"));
         adapter.notifyDataSetChanged();
+
+        int columnIndex = 1; // cột thứ hai
+        int rowIndex = 0; // bắt đầu từ 0
+        /*recyclerView.scrollToPosition(rowIndex);
+        recyclerView.post(new Runnable() {
+            @Override
+            public void run() {
+                recyclerView.findViewHolderForAdapterPosition(rowIndex).itemView.requestFocus();
+                recyclerView.findViewHolderForAdapterPosition(rowIndex).itemView.findViewById(R.id.edt_ten).requestFocus();
+            }
+        });*/
     }
 
 
@@ -167,6 +178,7 @@ public class KT03_HM03 extends Fragment implements KT03_Interface {
     public void HM03_rcv_onItemClick(int position) {
         KT03_HM03_Model objects = (KT03_HM03_Model) list_hm03.get(position);
         String status = objects.getRow_status(); // Lấy giá trị của trường Status
+        int rownum = Integer.parseInt(objects.getKt03_03_001());
         if (status.equals("new")) {
             int g_max = kt03Db.query_HM03_max(g_date, g_ca); //đã được +1 từ max
             kt03Db.ins_hm03(String.valueOf(g_max),
@@ -174,8 +186,7 @@ public class KT03_HM03 extends Fragment implements KT03_Interface {
                     "", "", "",
                     g_date, g_ca, g_id);
             objects.setRow_status("old");
-            ins_KT03_03_file(position);
+            add_newRowToList(rownum);
         }
-
     }
 }
