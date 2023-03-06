@@ -94,12 +94,12 @@ public class login_kt02 {
         cbxbophan.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position > 0) {
+                if (position >= 0) {
                     //get IP
                     List_Bophan res = bophan_adapter.getItem(position);
                     mabp = res.getMabp().toString().trim();
                     tenbp = res.getTenbp().toString().trim();
-                    //g_bophan=qrReScanIpLists.get(position).getMabp().trim();
+                    g_bophan=qrReScanIpLists.get(position).getMabp().trim();
                     //g_bophan=tenbp;
                 }
             }
@@ -122,7 +122,7 @@ public class login_kt02 {
             }
         });
 
-        cbxbophan.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        /*cbxbophan.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 //g_bophan=cbxbophan.getAdapter().toString().trim();
@@ -135,7 +135,7 @@ public class login_kt02 {
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
-        });
+        });*/
 
         dialog.show();
     }
