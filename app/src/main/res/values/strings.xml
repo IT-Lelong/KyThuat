@@ -106,4 +106,25 @@
     <string name="bophan">負責部門</string>
     <string name="btninsert">執行</string>
 
+    /*kt01bophan*/
+    <string name="btn_addnew">新增</string>
+    <string name="btn_updatesever">結轉</string>
+    <string name="ls01">项目编号</string>
+    <string name="ls02">日期</string>
+    <string name="ls03">部分</string>
+    <string name="ls04">观点</string>
+    <string name="ls05">考核内容</string>
+
+    /*kt01fragment*/
+    <string name="hang1">考核項目</string>
+    <string name="hang2">編碼</string>
+    <string name="hang3">考核内容</string>
+    <string name="hang4">權重分數</string>
+    <string name="hang5">及格分数</string>
+    <string name="hang6">拍个照</string>
+    /*kt01listbophan*/
+    <string name="lk01">考核項目</string>
+    <string name="lk02">部分</string>
+    <string name="lk03">零件名称</string>
+
 </resources>

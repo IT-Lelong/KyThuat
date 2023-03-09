@@ -1,28 +1,41 @@
 package com.lelong.kythuat.KT01;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
-import android.text.Spanned;
-import android.text.style.AbsoluteSizeSpan;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.PopupMenu;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.lelong.kythuat.KT01.Retrofit2.APIYtils;
 import com.lelong.kythuat.KT01.Retrofit2.DataClient;
+import com.lelong.kythuat.KT02.Bophan_Adapter;
+import com.lelong.kythuat.KT02.List_Bophan;
+import com.lelong.kythuat.Menu;
 import com.lelong.kythuat.R;
 
 import org.json.JSONArray;
@@ -41,12 +54,15 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
@@ -56,52 +72,76 @@ class Log_BoPhan extends AppCompatActivity {
     String g_server = "";
     TextView viewID;
     JSONObject ujobject;
-    String lbophan1;
-    String L_BP;
+    private static final int REQUEST_CODE = 1;
+    String lbophan1, ID, BP;
+    String L_BP, g_lang;
+    ListView lis1;
+    ListView lv_query;
     JSONArray jsonupload;
     private KT01_DB db = null;
     EditText editText1;
     int Request_Code_Image = 1234;
     Button btnlogin1;
+    Button search1;
     Cursor cursor_1, cursor_2;
     Button btnback;
     List parts;
     String realpath = "";
+    ArrayList<TabLayout> mangLV;
     Button btnaddnew;
-    Button btnketchuyenanh;
-    Button btnketchuyendl;
     Button btnaupdate;
+    Locale locale;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        load();
+    }
 
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        setLanguage();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.kt01_bophan);
-        g_server = getString(R.string.server);
+        db = new KT01_DB(this);
+        db.open();
 
+        g_server = getString(R.string.server);
         editText1 = findViewById(R.id.editID);
         btnlogin1 = findViewById(R.id.btnlogin);
         btnaddnew = findViewById(R.id.btn_addnew);
         btnaupdate = findViewById(R.id.btn_updatesever);
-        btnketchuyenanh = findViewById(R.id.btn_kcanh);
-        btnketchuyendl = findViewById(R.id.btn_kcdl);
+        lis1 = findViewById(R.id.lv_query);
         btnback = findViewById(R.id.btnback);
         viewID = findViewById(R.id.viewID);
+        search1 = findViewById(R.id.search);
         editText1.setVisibility(View.GONE);
         btnback.setVisibility(View.GONE);
+        search1.setVisibility(View.GONE);
         viewID.setVisibility(View.GONE);
         btnlogin1.setVisibility(View.GONE);
-        btnketchuyenanh.setVisibility(View.GONE);
-        btnketchuyendl.setVisibility(View.GONE);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();
+
+        SharedPreferences preferences = getSharedPreferences("Language", Context.MODE_PRIVATE);
+        int language = preferences.getInt("Language", 0);
+        if (language == 0) {
+            g_lang = "tc_faa008";
+        } else {
+            g_lang = "tc_faa009";
+        }
+
+
         btnaddnew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                btnketchuyenanh.setVisibility(View.GONE);
-                btnketchuyendl.setVisibility(View.GONE);
                 editText1.setVisibility(View.VISIBLE);
                 viewID.setVisibility(View.VISIBLE);
                 btnlogin1.setVisibility(View.VISIBLE);
                 btnback.setVisibility(View.VISIBLE);
+                search1.setVisibility(View.VISIBLE);
             }
         });
         btnaupdate.setOnClickListener(new View.OnClickListener() {
@@ -114,13 +154,24 @@ class Log_BoPhan extends AppCompatActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
                 builder.setTitle("Warning");
                 SpannableStringBuilder message = new SpannableStringBuilder();
-                message.append("Xác Nhận kết chuyễn?");
-                message.setSpan(new AbsoluteSizeSpan(25, true), 0, message.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                //message.append("Xác Nhận kết chuyễn?");
 
-                builder.setMessage(message);
 
                 //AlertDialog dialog = builder.create();
                 // dialog.show();
+
+// Define a custom button style
+                int buttonStyle = android.R.style.Widget_Button;
+
+// Create a new button with the custom style
+                Button okButton = new Button(v.getContext(), null, buttonStyle);
+                okButton.setTextColor(Color.WHITE);
+                okButton.setText("Xác Nhận kết chuyễn?");
+
+// Set the button as the positive button of the dialog
+                builder.setPositiveButton(null, null);
+                builder.setNegativeButton(null, null);
+                builder.setView(okButton);
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -145,10 +196,10 @@ class Log_BoPhan extends AppCompatActivity {
                                         RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/from-data"), file);
                                         MultipartBody.Part body = MultipartBody.Part.createFormData("uploaded_file", File_path, requestBody);
                                         DataClient dataClient = APIYtils.getData();
-                                        retrofit2.Call<String> callback = dataClient.UploadPhot(body);
+                                        Call<String> callback = dataClient.UploadPhot(body);
                                         callback.enqueue(new Callback<String>() {
                                             @Override
-                                            public void onResponse(retrofit2.Call<String> call, Response<String> response) {
+                                            public void onResponse(Call<String> call, Response<String> response) {
                                                 if (response != null) {
                                                     String message = response.body();
                                                     Log.d("BBB", message);
@@ -156,7 +207,7 @@ class Log_BoPhan extends AppCompatActivity {
                                             }
 
                                             @Override
-                                            public void onFailure(retrofit2.Call<String> call, Throwable t) {
+                                            public void onFailure(Call<String> call, Throwable t) {
                                                 Log.d("BBB", t.getMessage());
                                             }
                                         });
@@ -172,43 +223,58 @@ class Log_BoPhan extends AppCompatActivity {
                                 db.getAll_tc_faa(bien);
                                 //tham số Y , biểu thị cập nhật dữ liệu tới chương trình gốc, và save đến qrf_file
                                 Cursor upl = db.getAll_tc_faa(bien);
-                                jsonupload = cur2Json(upl);
+                                if (upl.getCount() > 0) {
 
-                                try {
-                                    ujobject = new JSONObject();
-                                    ujobject.put("ujson", jsonupload);
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
+                                    jsonupload = cur2Json(upl);
 
-                                final String res = upload_all("http://172.16.40.20/" + g_server + "/TechAPP/uploadtc_fae.php");
-
-
-                        /*  runOnUiThread(new Runnable() { //Vì Toast không thể chạy đc nếu không phải UI Thread nên sử dụng runOnUIThread.
-                          @Override
-                            public void run() {
-                                if (res.contains("false")) {
-                                    //Toast.makeText(getApplicationContext(), getString(R.string.M09), Toast.LENGTH_SHORT).show();
-                                    if (chk_dialog == 1) {
-                                        tvStatus.setText(getString(R.string.M09));
-                                        tvStatus.setTextColor(getResources().getColor(R.color.RED));
+                                    try {
+                                        ujobject = new JSONObject();
+                                        ujobject.put("ujson", jsonupload);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
                                     }
+
+                                    final String res = upload_all("http://172.16.40.20/" + g_server + "/TechAPP/uploadtc_fae.php");
+
+                                    runOnUiThread(new Runnable() { //Vì Toast không thể chạy đc nếu không phải UI Thread nên sử dụng runOnUIThread.
+                                        @Override
+                                        public void run() {
+                                            if (res.contains("false")) {
+                                                //Toast.makeText(getApplicationContext(), getString(R.string.M09), Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(getApplicationContext(), "Kết chuyễn dữ liệu thất bại: ", Toast.LENGTH_SHORT).show();
+                                            } else {
+                                                //Toast.makeText(getApplicationContext(), getString(R.string.M08), Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(getApplicationContext(), "Kết chuyễn dữ liệu thành công: ", Toast.LENGTH_SHORT).show();
+                                                load();
+                                            }
+                                        }
+                                    });
+
                                 } else {
-                                    //Toast.makeText(getApplicationContext(), getString(R.string.M08), Toast.LENGTH_SHORT).show();
-                                    if (chk_dialog == 1) {
-                                        tvStatus.setText(getString(R.string.M08));
-                                        tvStatus.setTextColor(getResources().getColor(R.color.PURPLE));
-                                        db210.del_db(prog);
-                                    }
+                                    String res = "false";
+                                    runOnUiThread(new Runnable() { //Vì Toast không thể chạy đc nếu không phải UI Thread nên sử dụng runOnUIThread.
+                                        @Override
+                                        public void run() {
+                                            if (res.contains("false")) {
+                                                //Toast.makeText(getApplicationContext(), getString(R.string.M09), Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(getApplicationContext(), "Kết chuyễn dữ liệu thất bại: ", Toast.LENGTH_SHORT).show();
+                                            } else {
+                                                //Toast.makeText(getApplicationContext(), getString(R.string.M08), Toast.LENGTH_SHORT).show();
+
+                                            }
+                                        }
+                                    });
                                 }
-                            }
-                        });*/
+                                ;
+
 
                             }
                         }).start();
 
                     }
-                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                });
+
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // Xử lý khi người dùng chọn "Cancel"
@@ -216,9 +282,9 @@ class Log_BoPhan extends AppCompatActivity {
                 });
 
                 AlertDialog dialog = builder.create();
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#00CCFF")));
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#669999")));
 
-                // Hiển thị hộp thoại
+// Hiển thị hộp thoại
                 dialog.show();
 
                 // Intent intent = new Intent(Log_BoPhan.this, kt01_update.class);
@@ -232,13 +298,6 @@ class Log_BoPhan extends AppCompatActivity {
             }
         });
 
-        btnketchuyenanh.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Log_BoPhan.this, kt01_update.class);
-                startActivity(intent);
-            }
-        });
 
         btnback.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -247,8 +306,20 @@ class Log_BoPhan extends AppCompatActivity {
                 btnback.setVisibility(View.GONE);
                 viewID.setVisibility(View.GONE);
                 btnlogin1.setVisibility(View.GONE);
+                search1.setVisibility(View.GONE);
             }
         });
+        search1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Log_BoPhan.this, kt01_listbophan.class);
+                startActivityForResult(intent, REQUEST_CODE);
+
+
+
+            }
+        });
+
 
         btnlogin1.setOnClickListener(new View.OnClickListener() {
                                          @Override
@@ -269,6 +340,7 @@ class Log_BoPhan extends AppCompatActivity {
                                                  nutchucnang();
                                                  editText1.setVisibility(View.GONE);
                                                  btnback.setVisibility(View.GONE);
+                                                 search1.setVisibility(View.GONE);
                                                  viewID.setVisibility(View.GONE);
                                                  btnlogin1.setVisibility(View.GONE);
                                              } else {
@@ -322,7 +394,9 @@ class Log_BoPhan extends AppCompatActivity {
             if (conn != null) {
 
                 db.delete_table();
+
                 conn.disconnect();
+
             }
         }
     }
@@ -348,5 +422,118 @@ class Log_BoPhan extends AppCompatActivity {
         cursor.close();
         return resultSet;
     }
+
+    private void setLanguage() {
+        SharedPreferences preferences = getSharedPreferences("Language", Context.MODE_PRIVATE);
+        int language = preferences.getInt("Language", 0);
+        Resources resources = getResources();
+        DisplayMetrics displayMetrics = resources.getDisplayMetrics();
+        Configuration configuration = resources.getConfiguration();
+        switch (language) {
+            case 0:
+                configuration.setLocale(Locale.TRADITIONAL_CHINESE);
+                break;
+            case 1:
+                locale = new Locale("vi");
+                Locale.setDefault(locale);
+                configuration.setLocale(locale);
+                break;
+        }
+        resources.updateConfiguration(configuration, displayMetrics);
+    }
+
+    private void load() {
+
+        Cursor cursor = db.getAll_tc_faa1("KT01");
+
+        SimpleCursorAdapter simpleCursorAdapter = new SimpleCursorAdapter(this,
+                R.layout.kt01_login_dialog_lvrow, cursor,
+                new String[]{"_id", "tc_faa002", "tc_faa003", "tc_faa007"},
+                new int[]{R.id.tv_stt, R.id.tv_ngay, R.id.tv_BP, R.id.tv_diem},
+                SimpleCursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
+        lis1.setAdapter(simpleCursorAdapter);
+        lis1.setOnItemClickListener((parent, view, position, id) -> {
+
+            // Tạo đối tượng PopupMenu
+            PopupMenu popupMenu = new PopupMenu(view.getContext(), view, Gravity.END, 0, R.style.MyPopupMenu);
+
+            // Nạp tệp menu vào PopupMenu
+            popupMenu.getMenuInflater().inflate(R.menu.kt01_log_even, popupMenu.getMenu());
+
+            // Show the PopupMenu.
+            popupMenu.show();
+
+            // Đăng ký sự kiện Popup Menu
+            popupMenu.setOnMenuItemClickListener(item -> {
+
+                TextView qry_ngay = view.findViewById(R.id.tv_ngay);
+                TextView qry_BP = view.findViewById(R.id.tv_BP);
+
+                // Xử lý sự kiện khi người dùng chọn một lựa chọn trong menu
+                switch (item.getItemId()) {
+                    case R.id.openKT01:
+
+
+                        //   String ID12 = "DK1";
+                        Intent KT01 = new Intent();
+                        KT01.setClass(this, login_kt01.class);
+                        Bundle bundle = new Bundle();
+                        //bundle.putString("BP", BP);
+                        bundle.putString("DATE", qry_ngay.getText().toString());
+                        bundle.putString("BP", qry_BP.getText().toString());
+                        KT01.putExtras(bundle);
+                        this.startActivity(KT01);
+                        return true;
+                    case R.id.clearKT01:
+                        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(getApplicationContext());
+                        builder.setMessage(getApplicationContext().getString(R.string.M05))
+                                .setPositiveButton(getApplicationContext().getString(R.string.btn_ok), null)
+                                .setNegativeButton(getApplicationContext().getString(R.string.btn_cancel), null);
+                        android.app.AlertDialog al_dialog = builder.create();
+                        al_dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                            @Override
+                            public void onShow(DialogInterface dialogInterface) {
+                                TextView messageView = ((android.app.AlertDialog) dialogInterface).findViewById(android.R.id.message);
+                                messageView.setTextSize(35);
+
+                                Button positiveButton = ((android.app.AlertDialog) dialogInterface).getButton(DialogInterface.BUTTON_POSITIVE);
+                                positiveButton.setTextColor(ContextCompat.getColor(getApplication(), R.color.white));
+                                positiveButton.setTextSize(15);
+                                //positiveButton.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimary));
+                                Button negativeButton = ((android.app.AlertDialog) dialogInterface).getButton(DialogInterface.BUTTON_NEGATIVE);
+                                negativeButton.setTextColor(ContextCompat.getColor(getApplication(), R.color.white));
+                                positiveButton.setTextSize(15);
+
+
+                                //  negativeButton.setBackgroundColor(ContextCompat.getColor(getApplication(), R.color.colorPrimary));
+
+                                positiveButton.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        //  kt03Db.delete_table(qry_ngay.getText().toString(), qry_ca.getText().toString());
+                                        //  dialog.dismiss();
+                                        al_dialog.dismiss();
+                                    }
+                                });
+                            }
+                        });
+
+
+                        al_dialog.show();
+                        return true;
+                }
+                return true;
+            });
+        });
+    }
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
+            String selectedData = data.getStringExtra("selectedData");
+            editText1.setText(selectedData);
+        }
+    }
+
 
 }

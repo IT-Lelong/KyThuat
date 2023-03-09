@@ -91,6 +91,9 @@ public class ListDataAdapter extends RecyclerView.Adapter<ListDataAdapter.ViewHo
 
         holder.tc_fab003.setText(mangLV.get(position).getTc_fac003());
         holder.tc_fab006.setText(mangLV.get(position).getTc_fac006());
+        holder.tc_fab007.setText(mangLV.get(position).getTc_fac007());
+        holder.checkBox1.setChecked(mangLV.get(position).getTc_checkbox());
+        holder.ghichu1.setText(mangLV.get(position).getTc_ghichu());
 
         holder.btn1.setOnClickListener(new View.OnClickListener() {
 
@@ -99,7 +102,7 @@ public class ListDataAdapter extends RecyclerView.Adapter<ListDataAdapter.ViewHo
             void onClick(View v) {
                 ;
                 // Xóa giá trị của EditText
-                holder.ghichu1.setText("");
+              //  holder.ghichu1.setText("");
                 DULIEU =mangLV.get(position).getTc_fac004();
                 Intent intent = new Intent(applicationContext, kt01_camera.class);
                 Bundle bundle = new Bundle();

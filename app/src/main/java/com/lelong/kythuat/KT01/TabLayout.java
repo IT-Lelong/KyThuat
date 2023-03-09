@@ -9,6 +9,8 @@ import java.io.Serializable;
 
 public class TabLayout extends RecyclerView.ViewHolder implements Serializable {
 
+    private boolean checkBox;
+    private String ghichu;
     // private String  tc_fac001;
     //private String tc_fac002;
     private String tc_fac003;
@@ -22,12 +24,14 @@ public class TabLayout extends RecyclerView.ViewHolder implements Serializable {
     //private String tc_fac011;
     // private String tc_fac012;
 
-    public TabLayout(@NonNull View itemView, String tc_fac003, String tc_fac004, String tc_fac006, String tc_fac007) {
+    public TabLayout(@NonNull View itemView, String tc_fac003, String tc_fac004, String tc_fac006, String tc_fac007, String ghichu, boolean checkBox) {
         super(itemView);
         this.tc_fac003 = tc_fac003;
         this.tc_fac004 = tc_fac004;
         this.tc_fac006 = tc_fac006;
         this.tc_fac007 = tc_fac007;
+        this.ghichu = ghichu;
+        this.checkBox = checkBox;
     }
 
     //public TabLayout(String tc_fac001, String tc_fac002, String tc_fac003, String tc_fac004, String tc_fac005, String tc_fac006, String tc_fac007, String tc_fac008, String tc_fac009, String tc_fac010, String tc_fac011, String tc_fac012) {
@@ -100,8 +104,29 @@ public class TabLayout extends RecyclerView.ViewHolder implements Serializable {
         return tc_fac007;
     }
 
-    public void setTc_fac007(String tc_fac007) {
+    public void getTc_fac007(String tc_fac007) {
         this.tc_fac007 = tc_fac007;
+    }
+
+    public String getTc_ghichu() {
+        return ghichu;
+    }
+
+    public void getTc_ghichu(String ghichu) {
+        this.ghichu = ghichu;
+    }
+    public boolean getTc_checkbox() {
+        if (checkBox) {
+            return true;
+        }
+        else{
+            return false;
+        }
+
+    }
+
+    public void getTc_checkbox( boolean checkBox) {
+        this.checkBox = checkBox;
     }
 
     /*public String getTc_fac008() {

@@ -9,13 +9,14 @@ public class MyAdapter extends FragmentPagerAdapter {
     Context context;
     int totalTabs;
     private Context context1;
-    private String data;
-    public MyAdapter(Context c, FragmentManager fm, int totalTabs) {
+    private String data,g_date,g_BP;
+    public MyAdapter(Context c, FragmentManager fm, int totalTabs, String g_date, String g_BP) {
         super(fm);
         context = c;
         this.totalTabs = totalTabs;
-        this.context1 = context1;
         this.data = data;
+        this.g_date = g_date;
+        this.g_BP = g_BP;
     }
     public void setData(String data) {
         this.data = data;
@@ -42,7 +43,7 @@ public class MyAdapter extends FragmentPagerAdapter {
             default:
                 return null;
         }*/
-        Fragmen_KT01 fragmen_kt01 = new Fragmen_KT01(String.valueOf(position));
+        Fragmen_KT01 fragmen_kt01 = Fragmen_KT01.newInstance(context,String.valueOf(position), g_date, g_BP);
 
         return fragmen_kt01;
 

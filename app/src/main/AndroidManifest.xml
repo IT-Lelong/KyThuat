@@ -53,6 +53,7 @@
         <activity
             android:name=".Menu"
             android:exported="false"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
         <activity
             android:name=".KT03.kt03_main_activity"
@@ -74,9 +75,14 @@
         <activity
             android:name=".KT01.kt01_camera"/>
         <activity
-            android:name=".KT01.Log_BoPhan"/>
+            android:name=".KT01.Log_BoPhan"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".KT01.kt01_update"/>
+        <activity
+            android:name=".KT01.kt01_listbophan"/>
+
+
 
     </application>
 
