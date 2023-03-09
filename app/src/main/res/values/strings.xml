@@ -85,6 +85,14 @@
     <string name="giatri">儀器校正結果</string>
     <string name="saiso">誤差(%)</string>
 
+
+    /*KT04*/
+    <string name="hangsanxuat">製造商</string>
+    <string name="thongtin">輸入信息</string>
+
+
+
+
     /*KT02_activity*/
     <string name="ERRORtvStatus_false">出現錯誤，不能插入資料到tc_fad_file</string>
     <string name="ERRORtvStatus_true">更新資料成功</string>

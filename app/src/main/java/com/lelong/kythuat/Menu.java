@@ -2,7 +2,6 @@ package com.lelong.kythuat;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -22,10 +21,8 @@ import android.widget.DatePicker;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
-import com.lelong.kythuat.KT01.Log_BoPhan;
-import com.lelong.kythuat.KT02.KT02_activity;
-import com.lelong.kythuat.KT02.login_kt02;
 import com.lelong.kythuat.KT03.login_kt03;
+import com.lelong.kythuat.KT04.KT04_login;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,6 +40,7 @@ public class Menu extends AppCompatActivity {
     private CheckAppUpdate checkAppUpdate = null;
     private Create_Table Cre_db = null;
     private login_kt03 loginKt03 = null;
+    private KT04_login loginKt04 = null;
     private SetLanguage setLanguage = null;
     String g_server = "";
     Button btn_KT01, btn_KT02, btn_KT03, btn_KT04;
@@ -50,7 +48,6 @@ public class Menu extends AppCompatActivity {
     String ID;
     Locale locale;
     SimpleDateFormat dateFormat;
-    private login_kt02 loginkt02 = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +72,7 @@ public class Menu extends AppCompatActivity {
         Cre_db.openTable();
 
         loginKt03 = new login_kt03();
-        loginkt02 = new login_kt02();
+        loginKt04 = new KT04_login();
 
         btn_KT01 = findViewById(R.id.btn_KT01);
         btn_KT02 = findViewById(R.id.btn_KT02);
@@ -136,23 +133,27 @@ public class Menu extends AppCompatActivity {
             //利用switch case方法，之後新增按鈕只需新增case即可
             switch (v.getId()) {
 
-                case R.id.btn_KT01: {
+                /*case R.id.btn_KT01: {
                     Intent KT01 = new Intent();
-                    KT01.setClass(Menu.this, Log_BoPhan.class);
+                    KT01.setClass(Menu.this, login_kt01.class);
                     Bundle bundle = new Bundle();
                     bundle.putString("ID", ID);
                     bundle.putString("SERVER", g_server);
                     KT01.putExtras(bundle);
                     startActivity(KT01);
                     break;
-                }
+                }*/
 
-                case R.id.btn_KT02: {
-                    Activity activity = Menu.this;
-                    loginkt02.login_dialogkt02(v.getContext(),
-                            menuID.getText().toString(),activity);
+                /*case R.id.btn_KT02: {
+                    Intent QR010 = new Intent();
+                    QR010.setClass(Menu.this, KT02_activity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("ID", ID);
+                    bundle.putString("SERVER", g_server);
+                    QR010.putExtras(bundle);
+                    startActivity(QR010);
                     break;
-                }
+                }*/
 
                 case R.id.btn_KT03: {
                     loginKt03.login_dialog(v.getContext(),
@@ -161,6 +162,12 @@ public class Menu extends AppCompatActivity {
                     break;
                 }
 
+                case R.id.btn_KT04: {
+                    loginKt04.KT04_login_dialog(v.getContext(),
+                            menuID.getText().toString(),
+                            ID);
+                    break;
+                }
                /* case R.id.btn_KT04: {
                     Intent QR010 = new Intent();
                     QR010.setClass(Menu.this, KT_1.class);
@@ -239,8 +246,6 @@ public class Menu extends AppCompatActivity {
                             e.printStackTrace();
                         }
 
-
-
                         String res_gem = get_DataTable("http://172.16.40.20/PHPtest/TechAPP/getDataTable.php?item=gem");
                         if (!res_gem.equals("FALSE")) {
                             try {
@@ -250,27 +255,6 @@ public class Menu extends AppCompatActivity {
                                     String g_gem01 = jsonObject.getString("GEM01"); //Mã bộ phận
                                     String g_gem02 = jsonObject.getString("GEM02"); //Tên bộ phận
                                     Cre_db.append(g_gem01, g_gem02);
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        String res_fia = get_DataTable("http://172.16.40.20/PHPtest/TechAPP/getDataTable.php?item=fia");
-                        if (!res_fia.equals("FALSE")) {
-                            try {
-                                JSONArray jsonarray = new JSONArray(res_fia);
-                                for (int i = 0; i < jsonarray.length(); i++) {
-                                    JSONObject jsonObject = jsonarray.getJSONObject(i);
-                                    String g_fia01 = jsonObject.getString("FIA01"); //Mã số thiết bị
-                                    String g_fiaud03 = jsonObject.getString("FIAUD03"); //Số máy
-                                    String g_fia14 = jsonObject.getString("FIA14"); //Vị trí
-                                    String g_fia10 = jsonObject.getString("FIA10"); //Người phụ trách
-                                    String g_gen02 = jsonObject.getString("GEN02"); //Họ tên
-                                    String g_fia11 = jsonObject.getString("FIA11"); //Bộ phận phụ trách
-                                    String g_gem02 = jsonObject.getString("GEM02"); //Tên bộ phận
-                                    String g_fiaud07 = jsonObject.getString("FIAUD07"); //Bộ phận quản lý thiết bị
-
-                                    Cre_db.append(g_fia01,g_fiaud03,g_fia14,g_fia10,g_gen02,g_fia11,g_gem02,g_fiaud07 );
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
