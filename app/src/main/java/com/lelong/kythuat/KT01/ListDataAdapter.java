@@ -47,6 +47,8 @@ public class ListDataAdapter extends RecyclerView.Adapter<ListDataAdapter.ViewHo
     String ID2;
     String DULIEU;
     String DULIEUnew,DULIEUnew1;
+    String g_date;
+    String g_bp;
     private int resource;
     private ArrayList<TabLayout> mangLV;
     private Object buttonView;
@@ -55,10 +57,12 @@ public class ListDataAdapter extends RecyclerView.Adapter<ListDataAdapter.ViewHo
         mData = data;
         notifyDataSetChanged();
     }
-    public ListDataAdapter(Context applicationContext, int resource, ArrayList<TabLayout> mangLV) {
+    public ListDataAdapter(Context applicationContext, int resource, ArrayList<TabLayout> mangLV,String g_date, String g_bp ) {
         this.applicationContext = applicationContext;
         this.resource = resource;
         this.mangLV = mangLV;
+        this.g_date = g_date;
+        this.g_bp = g_bp;
         db=new KT01_DB(this.applicationContext);
         db.open();
     }
@@ -95,6 +99,29 @@ public class ListDataAdapter extends RecyclerView.Adapter<ListDataAdapter.ViewHo
         holder.checkBox1.setChecked(mangLV.get(position).getTc_checkbox());
         holder.ghichu1.setText(mangLV.get(position).getTc_ghichu());
 
+        if (g_date != null){
+
+            ID2 = g_bp;
+            bienngay  = g_date;
+        }else
+        {
+            try {
+                InputStream is = applicationContext.getApplicationContext().openFileInput("mydata.txt");
+                InputStreamReader isr = new InputStreamReader(is);
+                BufferedReader br = new BufferedReader(isr);
+                StringBuilder sb = new StringBuilder();
+                String line;
+                while ((line = br.readLine()) != null) {
+                    sb.append(line);
+                }
+                ID2 = sb.toString();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            LocalDate currentDate = LocalDate.now();
+            bienngay = String.valueOf(currentDate);
+        }
+
         holder.btn1.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -107,6 +134,8 @@ public class ListDataAdapter extends RecyclerView.Adapter<ListDataAdapter.ViewHo
                 Intent intent = new Intent(applicationContext, kt01_camera.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("ID", DULIEU);
+                bundle.putString("l_bp", ID2);
+                bundle.putString("l_ngay", bienngay);
                 intent.putExtras(bundle);
 
 
@@ -116,21 +145,8 @@ public class ListDataAdapter extends RecyclerView.Adapter<ListDataAdapter.ViewHo
 
             }
         });
-        try {
-            InputStream is = applicationContext.getApplicationContext().openFileInput("mydata.txt");
-            InputStreamReader isr = new InputStreamReader(is);
-            BufferedReader br = new BufferedReader(isr);
-            StringBuilder sb = new StringBuilder();
-            String line;
-            while ((line = br.readLine()) != null) {
-                sb.append(line);
-            }
-            ID2 = sb.toString();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        LocalDate currentDate = LocalDate.now();
-        bienngay = String.valueOf(currentDate);
+
+
       //  holder.checkBox1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
           //  @Override
           //  public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

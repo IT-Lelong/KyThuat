@@ -157,4 +157,11 @@ class KT01_DB {
         db.delete(TABLE_NAME_TC_FAA, null  , null);
     }
 
+
+    public void delete_table1(String qry_ngay, String qry_bp) {
+        String whereClause_hm0102 = "tc_faa002=? AND tc_faa003=?";
+        String[] strings = new String[]{qry_ngay, qry_bp};
+        db.delete(TABLE_NAME_TC_FAA, whereClause_hm0102, strings);
+    }
+
 }

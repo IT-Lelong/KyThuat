@@ -278,7 +278,7 @@ public class Fragmen_KT01 extends Fragment {
         }
 
 
-        ListDataAdapter adapter = new ListDataAdapter(getContext(), R.layout.listdata_item01, mangLV);
+        ListDataAdapter adapter = new ListDataAdapter(getContext(), R.layout.listdata_item01, mangLV,g_date,g_BP);
 
         // Setting Adapter to RecyclerView
         recyclerView.setAdapter(adapter);

@@ -36,8 +36,10 @@ class kt01_camera  extends AppCompatActivity {
     private  KT01_DB db=null;
     String ID;
     String ID1;
+    String l_bp;
+    String l_ngay;
     String lbophan1;
-    String currentDate;
+    LocalDate  currentDate;
     String tenanh;
     TextView menuID;
     private static final int CAMERA_REQUEST = 1888;
@@ -50,20 +52,8 @@ class kt01_camera  extends AppCompatActivity {
         //actionBar = getSupportActionBar();
         //actionBar.hide();
 
-        LocalDate currentDate = LocalDate.now();
-        try {
-            InputStream is = getApplicationContext().openFileInput("mydata.txt");
-            InputStreamReader isr = new InputStreamReader(is);
-            BufferedReader br = new BufferedReader(isr);
-            StringBuilder sb = new StringBuilder();
-            String line;
-            while ((line = br.readLine()) != null) {
-                sb.append(line);
-            }
-            ID1 = sb.toString();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+
 
         LocalTime now = LocalTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HHmmss");
@@ -72,8 +62,32 @@ class kt01_camera  extends AppCompatActivity {
         //Bundle bundle = new Bundle();
         //lbophan1 = getbundle.getString("lbophan1");
        // ID1 = getbundle.getString("ID1");
+        l_ngay = getbundle.getString("l_ngay");
+        if (l_ngay != null){
+
+            ID1 = getbundle.getString("l_bp");
+            l_ngay = getbundle.getString("l_ngay");
+        }else
+        {
+            try {
+                InputStream is = getApplicationContext().openFileInput("mydata.txt");
+                InputStreamReader isr = new InputStreamReader(is);
+                BufferedReader br = new BufferedReader(isr);
+                StringBuilder sb = new StringBuilder();
+                String line;
+                while ((line = br.readLine()) != null) {
+                    sb.append(line);
+                }
+                ID1 = sb.toString();
+                currentDate = LocalDate.now();
+                l_ngay = String.valueOf(currentDate);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
         ID = getbundle.getString("ID");
-        tenanh = ID +"_"+currentDate+"_"+formattedTime+"_"+ID1;
+        tenanh = ID +"_"+l_ngay+"_"+formattedTime+"_"+ID1;
         ttxtview  = findViewById(R.id.menuID);
         ttxtview.setText(tenanh);
         imageView = findViewById(R.id.image_view12);

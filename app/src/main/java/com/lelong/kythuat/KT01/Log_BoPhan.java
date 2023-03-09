@@ -485,41 +485,9 @@ class Log_BoPhan extends AppCompatActivity {
                         this.startActivity(KT01);
                         return true;
                     case R.id.clearKT01:
-                        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(getApplicationContext());
-                        builder.setMessage(getApplicationContext().getString(R.string.M05))
-                                .setPositiveButton(getApplicationContext().getString(R.string.btn_ok), null)
-                                .setNegativeButton(getApplicationContext().getString(R.string.btn_cancel), null);
-                        android.app.AlertDialog al_dialog = builder.create();
-                        al_dialog.setOnShowListener(new DialogInterface.OnShowListener() {
-                            @Override
-                            public void onShow(DialogInterface dialogInterface) {
-                                TextView messageView = ((android.app.AlertDialog) dialogInterface).findViewById(android.R.id.message);
-                                messageView.setTextSize(35);
-
-                                Button positiveButton = ((android.app.AlertDialog) dialogInterface).getButton(DialogInterface.BUTTON_POSITIVE);
-                                positiveButton.setTextColor(ContextCompat.getColor(getApplication(), R.color.white));
-                                positiveButton.setTextSize(15);
-                                //positiveButton.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimary));
-                                Button negativeButton = ((android.app.AlertDialog) dialogInterface).getButton(DialogInterface.BUTTON_NEGATIVE);
-                                negativeButton.setTextColor(ContextCompat.getColor(getApplication(), R.color.white));
-                                positiveButton.setTextSize(15);
-
-
-                                //  negativeButton.setBackgroundColor(ContextCompat.getColor(getApplication(), R.color.colorPrimary));
-
-                                positiveButton.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        //  kt03Db.delete_table(qry_ngay.getText().toString(), qry_ca.getText().toString());
-                                        //  dialog.dismiss();
-                                        al_dialog.dismiss();
-                                    }
-                                });
-                            }
-                        });
-
-
-                        al_dialog.show();
+                        db.delete_table1(qry_ngay.getText().toString(), qry_BP.getText().toString());
+                        //  dialog.dismiss();
+                        load();
                         return true;
                 }
                 return true;
