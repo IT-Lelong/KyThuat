@@ -3,9 +3,6 @@ package com.lelong.kythuat;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,14 +14,11 @@ import android.util.DisplayMetrics;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.DatePicker;
-import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.lelong.kythuat.KT01.Log_BoPhan;
 import com.lelong.kythuat.KT02.login_kt02;
-import com.lelong.kythuat.KT03.login_kt03;
+import com.lelong.kythuat.KT03.KT03_login;
 import com.lelong.kythuat.KT04.KT04_login;
 
 import org.json.JSONArray;
@@ -36,13 +30,12 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
 
 public class Menu extends AppCompatActivity {
     private CheckAppUpdate checkAppUpdate = null;
     private Create_Table Cre_db = null;
-    private login_kt03 loginKt03 = null;
+    private KT03_login loginKt03 = null;
     private login_kt02 loginkt02 = null;
     private KT04_login loginKt04 = null;
     private SetLanguage setLanguage = null;
@@ -76,7 +69,7 @@ public class Menu extends AppCompatActivity {
         Cre_db.openTable();
 
         loginkt02 = new login_kt02();
-        loginKt03 = new login_kt03();
+        loginKt03 = new KT03_login();
         loginKt04 = new KT04_login();
 
         btn_KT01 = findViewById(R.id.btn_KT01);

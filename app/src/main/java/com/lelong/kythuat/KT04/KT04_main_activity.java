@@ -9,12 +9,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.view.MenuItem;
 
 import com.google.android.material.tabs.TabLayout;
 import com.lelong.kythuat.Create_Table;
-import com.lelong.kythuat.KT03.KT03_DB;
-import com.lelong.kythuat.KT03.mainAdapter;
 import com.lelong.kythuat.R;
 import com.lelong.kythuat.SetLanguage;
 public class KT04_main_activity extends AppCompatActivity{

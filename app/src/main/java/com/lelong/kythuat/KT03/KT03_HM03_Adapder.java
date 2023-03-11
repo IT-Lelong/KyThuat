@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -22,17 +21,19 @@ public class KT03_HM03_Adapder extends RecyclerView.Adapter<KT03_HM03_Adapder.Da
     private final String g_date;
     private final String g_ca;
     KT03_DB kt03Db = null;
+    private String g_id;
     private KT03_Interface listener;
 
-    public KT03_HM03_Adapder(Context context, int resource, List<KT03_HM03_Model> objects, String g_date, String g_ca, KT03_Interface listener) {
+    public KT03_HM03_Adapder(Context context, int resource, List<KT03_HM03_Model> objects, String g_date, String g_ca, String g_id, KT03_Interface listener) {
 
         this.context = context;
         this.resource = resource;
         this.objects = objects;
         this.g_date = g_date;
         this.g_ca = g_ca;
-        kt03Db = new KT03_DB(context);
+        this.g_id = g_id;
         this.listener = listener;
+        kt03Db = new KT03_DB(context);
         kt03Db.open();
     }
 
@@ -55,35 +56,33 @@ public class KT03_HM03_Adapder extends RecyclerView.Adapter<KT03_HM03_Adapder.Da
         holder.edt_saiSo.setText(objects.get(position).getKt03_03_007());
 
         //Sự kiện lắng nghe khi click vào recycleview Item (S)
-        holder.itemView.setOnClickListener(v -> listener.HM03_rcv_onItemClick(position));
-        holder.edt_ten.setOnClickListener(v -> listener.HM03_rcv_onItemClick(position));
-        holder.edt_dayDo.setOnClickListener(v -> listener.HM03_rcv_onItemClick(position));
-        holder.edt_nongDo.setOnClickListener(v -> listener.HM03_rcv_onItemClick(position));
-        holder.edt_hanSuDung.setOnClickListener(v -> listener.HM03_rcv_onItemClick(position));
-        holder.edt_giaTri.setOnClickListener(v -> listener.HM03_rcv_onItemClick(position));
-        holder.edt_saiSo.setOnClickListener(v -> listener.HM03_rcv_onItemClick(position));
+        // holder.itemView.setOnClickListener(v -> listener.HM03_rcv_onItemClick(position));
         //Sự kiện lắng nghe khi click vào recycleview Item (E)
 
         holder.edt_ten.setOnFocusChangeListener((view, hasFocus) -> {
             if (!hasFocus) {
                 if (holder.edt_ten.getText().length() > 0) {
+                    String new_key = listener.HM03_ins_tablerow(position);
                     upd_Data("KT03_03_002",
-                            objects.get(holder.getPosition()).getKt03_03_001(),
-                            holder.edt_ten.getText().toString().trim());
+                            new_key,
+                            holder.edt_ten.getText().toString().trim(),
+                            g_id);
                     objects.get(holder.getPosition()).setKt03_03_002(holder.edt_ten.getText().toString().trim());
+                    //listener.HM03_add_newRow(position);
                 }
-            }else{
-                listener.HM03_rcv_onItemClick(position);
             }
         });
 
         holder.edt_dayDo.setOnFocusChangeListener((view, hasFocus) -> {
             if (!hasFocus) {
                 if (holder.edt_dayDo.getText().length() > 0) {
+                    String new_key = listener.HM03_ins_tablerow(position);
                     upd_Data("KT03_03_003",
-                            objects.get(holder.getPosition()).getKt03_03_001(),
-                            holder.edt_dayDo.getText().toString().trim());
+                            new_key,
+                            holder.edt_dayDo.getText().toString().trim(),
+                            g_id);
                     objects.get(holder.getPosition()).setKt03_03_003(holder.edt_dayDo.getText().toString().trim());
+                    //listener.HM03_add_newRow(position);
                 }
             }
         });
@@ -91,10 +90,13 @@ public class KT03_HM03_Adapder extends RecyclerView.Adapter<KT03_HM03_Adapder.Da
         holder.edt_nongDo.setOnFocusChangeListener((view, hasFocus) -> {
             if (!hasFocus) {
                 if (holder.edt_nongDo.getText().length() > 0) {
+                    String new_key = listener.HM03_ins_tablerow(position);
                     upd_Data("KT03_03_004",
-                            objects.get(holder.getPosition()).getKt03_03_001(),
-                            holder.edt_nongDo.getText().toString().trim());
+                            new_key,
+                            holder.edt_nongDo.getText().toString().trim(),
+                            g_id);
                     objects.get(holder.getPosition()).setKt03_03_004(holder.edt_nongDo.getText().toString().trim());
+                    //listener.HM03_add_newRow(position);
                 }
             }
         });
@@ -102,10 +104,13 @@ public class KT03_HM03_Adapder extends RecyclerView.Adapter<KT03_HM03_Adapder.Da
         holder.edt_hanSuDung.setOnFocusChangeListener((view, hasFocus) -> {
             if (!hasFocus) {
                 if (holder.edt_hanSuDung.getText().length() > 0) {
+                    String new_key = listener.HM03_ins_tablerow(position);
                     upd_Data("KT03_03_005",
-                            objects.get(holder.getPosition()).getKt03_03_001(),
-                            holder.edt_hanSuDung.getText().toString().trim());
+                            new_key,
+                            holder.edt_hanSuDung.getText().toString().trim(),
+                            g_id);
                     objects.get(holder.getPosition()).setKt03_03_005(holder.edt_hanSuDung.getText().toString().trim());
+                    //listener.HM03_add_newRow(position);
                 }
             }
         });
@@ -113,10 +118,13 @@ public class KT03_HM03_Adapder extends RecyclerView.Adapter<KT03_HM03_Adapder.Da
         holder.edt_giaTri.setOnFocusChangeListener((view, hasFocus) -> {
             if (!hasFocus) {
                 if (holder.edt_giaTri.getText().length() > 0) {
+                    String new_key = listener.HM03_ins_tablerow(position);
                     upd_Data("KT03_03_006",
-                            objects.get(holder.getPosition()).getKt03_03_001(),
-                            holder.edt_giaTri.getText().toString().trim());
+                            new_key,
+                            holder.edt_giaTri.getText().toString().trim(),
+                            g_id);
                     objects.get(holder.getPosition()).setKt03_03_006(holder.edt_giaTri.getText().toString().trim());
+                    //listener.HM03_add_newRow(position);
                 }
             }
         });
@@ -124,17 +132,20 @@ public class KT03_HM03_Adapder extends RecyclerView.Adapter<KT03_HM03_Adapder.Da
         holder.edt_saiSo.setOnFocusChangeListener((view, hasFocus) -> {
             if (!hasFocus) {
                 if (holder.edt_saiSo.getText().length() > 0) {
+                    String new_key = listener.HM03_ins_tablerow(position);
                     upd_Data("KT03_03_007",
-                            objects.get(holder.getPosition()).getKt03_03_001(),
-                            holder.edt_saiSo.getText().toString().trim());
+                            new_key,
+                            holder.edt_saiSo.getText().toString().trim(),
+                            g_id);
                     objects.get(holder.getPosition()).setKt03_03_007(holder.edt_saiSo.getText().toString().trim());
+                    //listener.HM03_add_newRow(position);
                 }
             }
         });
     }
 
-    private void upd_Data(String g_col, String g_key, String g_noidung) {
-        kt03Db.upd_HM03(g_col, g_key, g_date, g_ca, g_noidung);
+    private void upd_Data(String g_col, String g_key, String g_noidung, String g_id) {
+        kt03Db.upd_HM03(g_col, g_key, g_date, g_ca, g_noidung, g_id);
     }
 
     @Override

@@ -8,12 +8,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.view.ContextThemeWrapper;
+import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
@@ -37,7 +34,7 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class login_kt03 {
+public class KT03_login {
     private SetLanguage setLanguage = null;
     private UploadToServer uploadToServer = null;
     String g_server = "";
@@ -99,7 +96,7 @@ public class login_kt03 {
         lv_query.setOnItemClickListener((parent, view, position, id) -> {
 
             // Tạo đối tượng PopupMenu
-            PopupMenu popupMenu = new PopupMenu(view.getContext(), view, Gravity.END, 0, R.style.MyPopupMenu);
+            PopupMenu popupMenu = new PopupMenu(context.getApplicationContext(), view, Gravity.END, 0,R.style.MyPopupMenu);
 
             // Nạp tệp menu vào PopupMenu
             popupMenu.getMenuInflater().inflate(R.menu.kt03_login_lv, popupMenu.getMenu());
@@ -117,7 +114,7 @@ public class login_kt03 {
                 switch (item.getItemId()) {
                     case R.id.openKT03:
                         Intent KT03 = new Intent();
-                        KT03.setClass(context, kt03_main_activity.class);
+                        KT03.setClass(context, KT03_main_activity.class);
                         Bundle bundle = new Bundle();
                         bundle.putString("ID", ID);
                         bundle.putString("DATE", qry_ngay.getText().toString());
@@ -134,28 +131,26 @@ public class login_kt03 {
                                 .setNegativeButton(context.getString(R.string.btn_cancel), null);
 
 
-
                         AlertDialog al_dialog = builder.create();
                         al_dialog.setOnShowListener(new DialogInterface.OnShowListener() {
                             @Override
                             public void onShow(DialogInterface dialogInterface) {
                                 TextView messageView = ((AlertDialog) dialogInterface).findViewById(android.R.id.message);
-                                messageView.setTextSize(35);
+                                messageView.setTextSize(30);
 
                                 Button positiveButton = ((AlertDialog) dialogInterface).getButton(DialogInterface.BUTTON_POSITIVE);
-                                positiveButton.setTextColor(ContextCompat.getColor(context, R.color.black));
+                                positiveButton.setTextColor(ContextCompat.getColor(context, R.color.blue));
                                 positiveButton.setTextSize(15);
                                 //positiveButton.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimary));
                                 Button negativeButton = ((AlertDialog) dialogInterface).getButton(DialogInterface.BUTTON_NEGATIVE);
-                                negativeButton.setTextColor(ContextCompat.getColor(context, R.color.black));
-                                positiveButton.setTextSize(15);
+                                negativeButton.setTextColor(ContextCompat.getColor(context, R.color.red));
+                                negativeButton.setTextSize(15);
                                 //negativeButton.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimary));
 
                                 positiveButton.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
                                         kt03Db.delete_table(qry_ngay.getText().toString(), qry_ca.getText().toString());
-                                        dialog.dismiss();
                                         al_dialog.dismiss();
                                     }
                                 });
@@ -219,7 +214,7 @@ public class login_kt03 {
             public void onClick(View view) {
                 if (!g_ca[0].isEmpty()) {
                     Intent KT03 = new Intent();
-                    KT03.setClass(context, kt03_main_activity.class);
+                    KT03.setClass(context, KT03_main_activity.class);
                     Bundle bundle = new Bundle();
                     bundle.putString("ID", ID);
                     bundle.putString("CA", g_ca[0].toString());
@@ -244,10 +239,10 @@ public class login_kt03 {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         JSONObject ujobject = null;
                         uploadToServer = new UploadToServer();
-                        Cursor cur_hm01 = kt03Db.getDataUpLoad_hm01();
-                        JSONArray json_hm01 = uploadToServer.cur2Json(cur_hm01);
-                        Cursor cur_hm02 = kt03Db.getDataUpLoad_hm02();
-                        JSONArray json_hm02 = uploadToServer.cur2Json(cur_hm02);
+                        Cursor cur_hm0102 = kt03Db.getDataUpLoad_hm0102();
+                        JSONArray json_hm0102 = uploadToServer.cur2Json(cur_hm0102);
+                        //Cursor cur_hm02 = kt03Db.getDataUpLoad_hm02();
+                        //JSONArray json_hm02 = uploadToServer.cur2Json(cur_hm02);
                         Cursor cur_hm03 = kt03Db.getDataUpLoad_hm03();
                         JSONArray json_hm03 = uploadToServer.cur2Json(cur_hm03);
                         Cursor cur_hm04 = kt03Db.getDataUpLoad_hm04();
@@ -255,8 +250,8 @@ public class login_kt03 {
 
                         try {
                             ujobject = new JSONObject();
-                            ujobject.put("ujson_hm01", json_hm01);
-                            ujobject.put("ujson_hm02", json_hm02);
+                            ujobject.put("ujson_hm0102", json_hm0102);
+                            //ujobject.put("ujson_hm02", json_hm02);
                             ujobject.put("ujson_hm03", json_hm03);
                             ujobject.put("ujson_hm04", json_hm04);
                         } catch (JSONException e) {

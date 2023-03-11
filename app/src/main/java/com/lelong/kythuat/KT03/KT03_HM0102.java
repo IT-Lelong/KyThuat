@@ -104,7 +104,7 @@ public class KT03_HM0102 extends Fragment {
         recyclerView.setLayoutManager(linearLayoutManager);
 
         list_hm01 = new ArrayList<KT03_HM0102_Model>();
-        adapter = new KT03_HM0102_Adapder(getContext(), R.layout.kt03_hm0102_fragment_row, list_hm01, g_date, g_ca);
+        adapter = new KT03_HM0102_Adapder(getContext(), R.layout.kt03_hm0102_fragment_row, list_hm01, g_date, g_ca, g_id);
         recyclerView.setAdapter(adapter);
 
         final Cursor[] cur_getAll = {null};
@@ -174,12 +174,12 @@ public class KT03_HM0102 extends Fragment {
                 list_hm01.clear();
                 for (int i = 0; i < num; i++) {
                     try {
-                        @SuppressLint("Range") String tc_fac003 = cur_getAll.getString(cur_getAll.getColumnIndex("tc_fac003"));
-                        @SuppressLint("Range") String KT03_01_001 = cur_getAll.getString(cur_getAll.getColumnIndex("KT03_01_001"));
-                        @SuppressLint("Range") String tc_fac005 = cur_getAll.getString(cur_getAll.getColumnIndex("tc_fac005"));
-                        @SuppressLint("Range") String tc_fac006 = cur_getAll.getString(cur_getAll.getColumnIndex("tc_fac006"));
-                        @SuppressLint("Range") String KT03_01_002 = cur_getAll.getString(cur_getAll.getColumnIndex("KT03_01_002"));
-                        @SuppressLint("Range") String KT03_01_003 = cur_getAll.getString(cur_getAll.getColumnIndex("KT03_01_003"));
+                        String tc_fac003 = cur_getAll.getString(cur_getAll.getColumnIndexOrThrow("tc_fac003"));
+                        String KT03_01_001 = cur_getAll.getString(cur_getAll.getColumnIndexOrThrow("KT03_01_001"));
+                        String tc_fac005 = cur_getAll.getString(cur_getAll.getColumnIndexOrThrow("tc_fac005"));
+                        String tc_fac006 = cur_getAll.getString(cur_getAll.getColumnIndexOrThrow("tc_fac006"));
+                        String KT03_01_002 = cur_getAll.getString(cur_getAll.getColumnIndexOrThrow("KT03_01_002"));
+                        String KT03_01_003 = cur_getAll.getString(cur_getAll.getColumnIndexOrThrow("KT03_01_003"));
 
                         switch (KT03_01_002) {
                             case "0":
@@ -222,8 +222,8 @@ public class KT03_HM0102 extends Fragment {
         int num = cur_tc_fac.getCount();
         for (int i = 0; i < num; i++) {
             try {
-                @SuppressLint("Range") String tc_fac004 = cur_tc_fac.getString(cur_tc_fac.getColumnIndex("tc_fac004"));
-                kt03Db.append(tc_fac004, "0", "", g_date, g_ca, g_id);
+                String tc_fac004 = cur_tc_fac.getString(cur_tc_fac.getColumnIndex("tc_fac004"));
+                kt03Db.ins_hm0102(tc_fac004, "0", "", g_date, g_ca, g_id);
             } catch (Exception e) {
                 String err = e.toString();
             }

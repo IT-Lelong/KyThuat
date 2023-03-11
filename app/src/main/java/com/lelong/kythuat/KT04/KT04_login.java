@@ -1,7 +1,5 @@
 package com.lelong.kythuat.KT04;
 
-import static android.graphics.Color.parseColor;
-
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -14,7 +12,6 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
@@ -27,8 +24,6 @@ import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 
-import com.lelong.kythuat.KT03.KT03_DB;
-import com.lelong.kythuat.KT03.kt03_main_activity;
 import com.lelong.kythuat.R;
 import com.lelong.kythuat.SetLanguage;
 import com.lelong.kythuat.UploadToServer;
@@ -109,7 +104,7 @@ public class KT04_login {
         lv_query.setOnItemClickListener((parent, view, position, id) -> {
 
             // Tạo đối tượng PopupMenu
-            PopupMenu popupMenu = new PopupMenu(view.getContext(), view, Gravity.END, 0, R.style.MyPopupMenu);
+            PopupMenu popupMenu = new PopupMenu(context.getApplicationContext(), view, Gravity.END, 0, R.style.MyPopupMenu);
 
             // Nạp tệp menu vào PopupMenu
             popupMenu.getMenuInflater().inflate(R.menu.kt03_login_lv, popupMenu.getMenu());
@@ -152,12 +147,12 @@ public class KT04_login {
                                 messageView.setTextSize(35);
 
                                 Button positiveButton = ((AlertDialog) dialogInterface).getButton(DialogInterface.BUTTON_POSITIVE);
-                                positiveButton.setTextColor(ContextCompat.getColor(context, R.color.black));
+                                positiveButton.setTextColor(ContextCompat.getColor(context, R.color.blue));
                                 positiveButton.setTextSize(15);
                                 //positiveButton.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimary));
                                 Button negativeButton = ((AlertDialog) dialogInterface).getButton(DialogInterface.BUTTON_NEGATIVE);
-                                negativeButton.setTextColor(ContextCompat.getColor(context, R.color.black));
-                                positiveButton.setTextSize(15);
+                                negativeButton.setTextColor(ContextCompat.getColor(context, R.color.red));
+                                negativeButton.setTextSize(15);
                                 //negativeButton.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimary));
 
                                 positiveButton.setOnClickListener(new View.OnClickListener() {

@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-public class mainAdapter extends FragmentPagerAdapter {
+public class KT03_main_Adapter extends FragmentPagerAdapter {
 
     Context context;
     int totalTabs;
@@ -14,7 +14,7 @@ public class mainAdapter extends FragmentPagerAdapter {
     private final String g_ca;
     private final String g_id;
 
-    public mainAdapter(Context c, FragmentManager fm, int totalTabs, String g_date, String g_ca, String ID) {
+    public KT03_main_Adapter(Context c, FragmentManager fm, int totalTabs, String g_date, String g_ca, String ID) {
         super(fm);
         context = c;
         this.totalTabs = totalTabs;
@@ -36,7 +36,7 @@ public class mainAdapter extends FragmentPagerAdapter {
                 KT03_HM03 hangmuc03_Fragment = KT03_HM03.newInstance("03", context, g_date, g_ca, g_id);
                 return hangmuc03_Fragment;
             case 3:
-                KT03_HM04 hangmuc04_Fragment = new KT03_HM04("04", context, g_date, g_ca, g_id);
+                KT03_HM04 hangmuc04_Fragment = KT03_HM04.newInstance("04", context, g_date, g_ca, g_id);
                 return hangmuc04_Fragment;
             default:
                 return null;
