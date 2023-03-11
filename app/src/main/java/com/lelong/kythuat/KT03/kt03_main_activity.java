@@ -9,14 +9,13 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.view.MenuItem;
 
 import com.google.android.material.tabs.TabLayout;
 import com.lelong.kythuat.Create_Table;
 import com.lelong.kythuat.R;
 import com.lelong.kythuat.SetLanguage;
 
-public class kt03_main_activity extends AppCompatActivity {
+public class KT03_main_activity extends AppCompatActivity {
     private SetLanguage setLanguage = null;
     private Create_Table createTable = null;
     private KT03_DB kt03Db  = null;
@@ -62,9 +61,10 @@ public class kt03_main_activity extends AppCompatActivity {
             cursor_tc_fab.moveToNext();
         }
 
+        
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        final mainAdapter adapter = new mainAdapter(this, getSupportFragmentManager(),tabLayout.getTabCount(),g_date,g_ca,ID);
-        viewPager.setAdapter(adapter);
+        final KT03_main_Adapter kt03_main_adapter = new KT03_main_Adapter(this, getSupportFragmentManager(),tabLayout.getTabCount(),g_date,g_ca,ID);
+        viewPager.setAdapter(kt03_main_adapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
