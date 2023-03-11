@@ -56,7 +56,7 @@
             android:screenOrientation="portrait"/>
         <activity
             android:name=".KT03.KT03_main_activity"
-            android:exported="false"
+            android:exported="true"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="adjustResize"/>
         <activity

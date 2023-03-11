@@ -60,7 +60,6 @@ public class KT03_main_activity extends AppCompatActivity {
             tabLayout.addTab(tabLayout.newTab().setText(cursor_tc_fab.getString(cursor_tc_fab.getColumnIndex(g_lang))));
             cursor_tc_fab.moveToNext();
         }
-
         
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         final KT03_main_Adapter kt03_main_adapter = new KT03_main_Adapter(this, getSupportFragmentManager(),tabLayout.getTabCount(),g_date,g_ca,ID);
