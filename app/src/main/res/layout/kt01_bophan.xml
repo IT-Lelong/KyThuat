@@ -18,16 +18,16 @@
         android:shrinkColumns="*">
 
         <TableRow>
+
             <Button
                 android:id="@+id/btn_addnew"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
                 android:background="@drawable/button_type1"
-                android:theme="@style/btn_text_style"
                 android:enabled="true"
                 android:text="@string/btn_addnew"
-                />
+                android:theme="@style/btn_text_style" />
         </TableRow>
 
         <TableRow>
@@ -55,9 +55,11 @@
             android:id="@+id/viewID"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Mã bộ phận"
-            android:layout_weight="3"
             android:layout_gravity="center"
+            android:layout_marginLeft="15dp"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:text="@string/ls03"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -65,18 +67,18 @@
             android:id="@+id/editID"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="8"
+            android:layout_weight="3"
             android:inputType="textCapCharacters"
+            android:paddingRight="15dp"
             android:minHeight="40dp"
             android:textSize="25sp"
             android:gravity="center"
             tools:ignore="SpeakableTextPresentCheck" />
         <Button
             android:id="@+id/search"
-            android:layout_width="60dp"
-            android:layout_height="50sp"
-            android:layout_marginLeft="45dp"
-            android:layout_marginRight="2dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginRight="20dp"
             android:background="@drawable/button_type1"
             android:theme="@style/btn_text_style"
             android:padding="9dp"

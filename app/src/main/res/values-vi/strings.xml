@@ -106,8 +106,24 @@
     <string name="bophan">Bộ phận</string>
     <string name="btninsert">Thực hiện</string>
 
-    /*KT04*/
-    <string name="hangsanxuat">Hãng sản xuất</string>
-    <string name="thongtin">Nhập thông tin</string>
+    /*kt01bophan*/
+    <string name="btn_addnew">Thêm mới</string>
+    <string name="btn_updatesever">Kết chuyển</string>
+    <string name="ls01">Số hạng mục</string>
+    <string name="ls02">Ngày</string>
+    <string name="ls03">Bộ phận</string>
+    <string name="ls04">Tổng Điểm</string>
+    <string name="ls05">Nội dung</string>
 
+    /*kt01fragment*/
+    <string name="hang1">Hạng mục</string>
+    <string name="hang2">Nội dung khảo hạch</string>
+    <string name="hang3">Điểm số</string>
+    <string name="hang4">Điểm đạt</string>
+    <string name="hang5">Ghi Ghi chép khảo hoạch</string>
+    <string name="hang6">Chụp ảnh</string>
+    /*kt01listbophan*/
+    <string name="lk01">Tra cứu</string>
+    <string name="lk02">Bộ phận</string>
+    <string name="lk03">Tên bộ phận</string>
 </resources>

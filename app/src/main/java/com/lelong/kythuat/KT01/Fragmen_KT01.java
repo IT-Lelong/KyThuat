@@ -1,12 +1,16 @@
 package com.lelong.kythuat.KT01;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,20 +28,24 @@ import com.lelong.kythuat.Create_Table;
 import com.lelong.kythuat.R;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Locale;
-import com.lelong.kythuat.SetLanguage;
+import java.util.Random;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link Fragmen_KT01#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Fragmen_KT01 extends Fragment {
+public class Fragmen_KT01 extends Fragment implements KT01_Interface{
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -50,15 +58,25 @@ public class Fragmen_KT01 extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String g_date;
+    private static final int CAMERA_REQUEST = 1888;
     private String g_BP;
     String position;
     boolean checkBox ;
+    private Context mContext;
+
     String bienngay;
     String ID2,ID12;
+    String ID1 ;
+    String key1;
+    String dkcamera;
+    String l_ngay;
     String g_lang;
+    View view;
     private static Context g_context;
     String position1;
     Locale locale;
+    LocalDate  currentDate;
+    String tenanh;
     private  KT01_DB db=null;
     String fragment;
     String l_bien ;
@@ -146,6 +164,19 @@ public class Fragmen_KT01 extends Fragment {
         setContentView(R.layout.listdata_item01);
 
     }
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (g_date != null)  {
+            load1(view);
+        }else {
+
+        }
+
+       // load1(view);
+    }
+
+
 
 
     private void setContentView(int activity_main) {
@@ -156,7 +187,7 @@ public class Fragmen_KT01 extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragmen_kt01, container, false);
+        view = inflater.inflate(R.layout.fragmen_kt01, container, false);
         db=new KT01_DB(view.getContext());
         db.open();
 
@@ -223,34 +254,7 @@ public class Fragmen_KT01 extends Fragment {
         bienngay = String.valueOf(currentDate);
 
         if (g_date != null)  {
-            cursor_1 = db.getAll_tc_faa2(g_date,g_BP,position1);
-            cursor_1.moveToFirst();
-            int num = cursor_1.getCount();
-            for (int i = 0; i < num; i++) {
-
-
-                try {
-                    @SuppressLint("Range") String tc_fac003 = cursor_1.getString(cursor_1.getColumnIndex("tc_faa009"));
-                    @SuppressLint("Range") String tc_fac004 = cursor_1.getString(cursor_1.getColumnIndex("tc_faa001"));
-                    @SuppressLint("Range") String tc_fac006 = cursor_1.getString(cursor_1.getColumnIndex("tc_faa008"));
-                    @SuppressLint("Range") String tc_fac007 = cursor_1.getString(cursor_1.getColumnIndex("tc_faa007"));
-                    @SuppressLint("Range") String ghichu = cursor_1.getString(cursor_1.getColumnIndex("tc_faa006"));
-                    @SuppressLint("Range") String checkBox1 = cursor_1.getString(cursor_1.getColumnIndex("tc_faa004"));
-                    @SuppressLint("Range") String tc_fac001 = cursor_1.getString(cursor_1.getColumnIndex("tc_faa010"));
-                   if (checkBox1.equals("Y"))
-                   {
-                       checkBox = true;
-                    }else{
-                       checkBox = false;
-                   }
-                    mangLV.add(new TabLayout(view,tc_fac003,tc_fac004,tc_fac006, tc_fac007,ghichu,checkBox));
-                    db.append(tc_fac004,bienngay,ID2,"","","",tc_fac007,tc_fac006,tc_fac003,tc_fac001);
-                } catch (Exception e) {
-                    String err = e.toString();
-                }
-
-                cursor_1.moveToNext();
-            }
+            load1(view);
         }else
         {
             createTable_fac = new Create_Table(getContext());
@@ -267,7 +271,7 @@ public class Fragmen_KT01 extends Fragment {
                     @SuppressLint("Range") String tc_fac006 = cursor_1.getString(cursor_1.getColumnIndex(g_lang));
                     @SuppressLint("Range") String tc_fac007 = cursor_1.getString(cursor_1.getColumnIndex("tc_fac007"));
                     @SuppressLint("Range") String tc_fac001 = cursor_1.getString(cursor_1.getColumnIndex("tc_fac001"));
-                    mangLV.add(new TabLayout(view,tc_fac003,tc_fac004,tc_fac006, tc_fac007,"",false));
+                    mangLV.add(new TabLayout(view,tc_fac003,tc_fac004,tc_fac006, tc_fac007,"",false, dkcamera));
                     db.append(tc_fac004,bienngay,ID2,"","","",tc_fac007,tc_fac006,tc_fac003,tc_fac001);
                 } catch (Exception e) {
                     String err = e.toString();
@@ -278,7 +282,12 @@ public class Fragmen_KT01 extends Fragment {
         }
 
 
-        ListDataAdapter adapter = new ListDataAdapter(getContext(), R.layout.listdata_item01, mangLV,g_date,g_BP);
+        ListDataAdapter adapter = new ListDataAdapter(getContext(),
+                R.layout.listdata_item01,
+                mangLV,
+                g_date,
+                g_BP,
+                (KT01_Interface) this);
 
         // Setting Adapter to RecyclerView
         recyclerView.setAdapter(adapter);
@@ -307,6 +316,148 @@ public class Fragmen_KT01 extends Fragment {
 
     private Context getApplicationContext() {
         return null;
+    }
+
+
+    @Override
+    public void takefoto(Context context,String key) {
+        mContext = context;
+        key1 = key;
+        LocalTime now = LocalTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HHmmss");
+        String formattedTime = now.format(formatter);
+        System.out.println(formattedTime);
+
+
+
+        if (g_date != null){
+
+            ID1 = g_BP;
+            l_ngay = g_date;
+        }else
+        {
+            try {
+                InputStream is = mContext.openFileInput("mydata.txt");
+                InputStreamReader isr = new InputStreamReader(is);
+                BufferedReader br = new BufferedReader(isr);
+                StringBuilder sb = new StringBuilder();
+                String line;
+                while ((line = br.readLine()) != null) {
+                    sb.append(line);
+                }
+                ID1 = sb.toString();
+                currentDate = LocalDate.now();
+                l_ngay = String.valueOf(currentDate);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+     //   ID = getbundle.getString("ID");
+        tenanh = key1 +"_"+l_ngay+"_"+formattedTime+"_"+ID1;
+
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(cameraIntent, CAMERA_REQUEST);
+
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
+            Bitmap photo = (Bitmap) data.getExtras().get("data");
+           // imageView.setImageBitmap(photo);
+            saveImage(photo);
+            db.appendUPDAE(key1, tenanh, l_ngay,ID1,"TC_FAA005");
+        }
+
+    }
+    private void saveImage(Bitmap finalBitmap) {
+        String savedImageURL = MediaStore.Images.Media.insertImage(
+                mContext.getContentResolver(),
+                finalBitmap,
+                tenanh,
+                "Image Context"
+        );
+        Random generator = new Random();
+        int n = 10000;
+        n = generator.nextInt(n);
+        String fname = "Image-" + n + ".jpg";
+        File file = new File(savedImageURL, fname);
+        if (file.exists()) file.delete();
+        try {
+
+            FileOutputStream out = new FileOutputStream(file);
+            finalBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
+            out.flush();
+            out.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        load1(view);
+    }
+
+    private void  load1(View view){
+        if (g_date == null){
+            g_BP = ID2;
+            LocalTime now = LocalTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HHmmss");
+            String formattedTime = now.format(formatter);
+            System.out.println(formattedTime);
+            currentDate = LocalDate.now();
+            g_date = String.valueOf(currentDate);
+        }
+        cursor_1 = db.getAll_tc_faa2(g_date,g_BP,position1);
+        cursor_1.moveToFirst();
+        int num = cursor_1.getCount();
+        mangLV.clear();
+        for (int i = 0; i < num; i++) {
+
+
+            try {
+                @SuppressLint("Range") String tc_fac003 = cursor_1.getString(cursor_1.getColumnIndex("tc_faa009"));
+                String tc_fac004 = cursor_1.getString(cursor_1.getColumnIndexOrThrow("tc_faa001"));
+                @SuppressLint("Range") String tc_fac006 = cursor_1.getString(cursor_1.getColumnIndex("tc_faa008"));
+                @SuppressLint("Range") String tc_fac005 = cursor_1.getString(cursor_1.getColumnIndex("tc_faa005"));
+                @SuppressLint("Range") String tc_fac007 = cursor_1.getString(cursor_1.getColumnIndex("tc_faa007"));
+                @SuppressLint("Range") String ghichu = cursor_1.getString(cursor_1.getColumnIndex("tc_faa006"));
+                @SuppressLint("Range") String checkBox1 = cursor_1.getString(cursor_1.getColumnIndex("tc_faa004"));
+                @SuppressLint("Range") String tc_fac001 = cursor_1.getString(cursor_1.getColumnIndex("tc_faa010"));
+                if (checkBox1.equals("Y"))
+                {
+                    checkBox = true;
+                }else{
+                    checkBox = false;
+                }
+                if(tc_fac005.equals("")){
+                    dkcamera = "FALSE";
+                }else{
+                    dkcamera = "TRUE";
+                }
+
+                mangLV.add(new TabLayout(view,tc_fac003,tc_fac004,tc_fac006, tc_fac007,ghichu,checkBox,dkcamera));
+                db.append(tc_fac004,bienngay,ID2,"","","",tc_fac007,tc_fac006,tc_fac003,tc_fac001);
+            } catch (Exception e) {
+                String err = e.toString();
+            }
+
+            cursor_1.moveToNext();
+        }
+        ListDataAdapter adapter = new ListDataAdapter(getContext(),
+                R.layout.listdata_item01,
+                mangLV,
+                g_date,
+                g_BP,
+                (KT01_Interface) this);
+
+        // Setting Adapter to RecyclerView
+        recyclerView.setAdapter(adapter);
+
+        //return view;
+
+    }
+    private void  load2(View view) {
+
     }
 
 

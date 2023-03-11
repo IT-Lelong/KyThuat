@@ -163,5 +163,13 @@ class KT01_DB {
         String[] strings = new String[]{qry_ngay, qry_bp};
         db.delete(TABLE_NAME_TC_FAA, whereClause_hm0102, strings);
     }
+    public
+    Cursor checkxemdacochupdanhcua(String ngay,String bp ,String key) {
+        try {
+            return db.rawQuery("SELECT  tc_faa005  FROM " + TABLE_NAME_TC_FAA +   " WHERE tc_faa002='" +ngay + "' AND tc_faa003='" +bp+"'AND tc_faa001='" +key+"'  ", null);
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
 }

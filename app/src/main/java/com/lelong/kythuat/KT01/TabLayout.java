@@ -15,6 +15,7 @@ public class TabLayout extends RecyclerView.ViewHolder implements Serializable {
     //private String tc_fac002;
     private String tc_fac003;
     private String tc_fac004;
+    private  String dkcamera;
     // private String tc_fac005;
     private String tc_fac006;
     private String tc_fac007;
@@ -24,12 +25,13 @@ public class TabLayout extends RecyclerView.ViewHolder implements Serializable {
     //private String tc_fac011;
     // private String tc_fac012;
 
-    public TabLayout(@NonNull View itemView, String tc_fac003, String tc_fac004, String tc_fac006, String tc_fac007, String ghichu, boolean checkBox) {
+    public TabLayout(@NonNull View itemView, String tc_fac003, String tc_fac004, String tc_fac006, String tc_fac007, String ghichu, boolean checkBox, String dkcamera) {
         super(itemView);
         this.tc_fac003 = tc_fac003;
         this.tc_fac004 = tc_fac004;
         this.tc_fac006 = tc_fac006;
         this.tc_fac007 = tc_fac007;
+        this.dkcamera =dkcamera;
         this.ghichu = ghichu;
         this.checkBox = checkBox;
     }
@@ -68,6 +70,14 @@ public class TabLayout extends RecyclerView.ViewHolder implements Serializable {
         this.tc_fac002 = tc_fac002;
     }*/
 
+    public String getTc_dkcamera() {
+        return dkcamera;
+    }
+
+    public void setTc_dkcamera(String tc_fac003) {
+        this.dkcamera = dkcamera;
+    }
+
     public String getTc_fac003() {
         return tc_fac003;
     }
@@ -75,6 +85,7 @@ public class TabLayout extends RecyclerView.ViewHolder implements Serializable {
     public void setTc_fac003(String tc_fac003) {
         this.tc_fac003 = tc_fac003;
     }
+
 
     public String getTc_fac004() {
         return tc_fac004;
