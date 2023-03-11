@@ -216,7 +216,6 @@ public class KT04_HM02 extends Fragment {
                 adapter.notifyDataSetChanged();
             }
         }));
-
     }
 
     private void ins_KT04_02_file(String g_date, String g_ca, String g_id) {

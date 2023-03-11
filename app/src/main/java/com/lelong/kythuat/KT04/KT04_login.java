@@ -170,9 +170,7 @@ public class KT04_login {
                                 });
                             }
                         });
-
                         al_dialog.show();
-
                         return true;
                 }
                 return true;
