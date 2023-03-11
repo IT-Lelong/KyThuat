@@ -255,6 +255,29 @@ public class Menu extends AppCompatActivity {
                                 e.printStackTrace();
                             }
                         }
+
+                        String res_fia = get_DataTable("http://172.16.40.20/PHPtest/TechAPP/getDataTable.php?item=fia");
+                        if (!res_fia.equals("FALSE")) {
+                            try {
+                                JSONArray jsonarray = new JSONArray(res_fia);
+                                for (int i = 0; i < jsonarray.length(); i++) {
+                                    JSONObject jsonObject = jsonarray.getJSONObject(i);
+                                    String g_fia01 = jsonObject.getString("FIA01"); //Mã số thiết bị
+                                    String g_fiaud03 = jsonObject.getString("FIAUD03"); //Số máy
+                                    String g_fia14 = jsonObject.getString("FIA14"); //Vị trí
+                                    String g_fia10 = jsonObject.getString("FIA10"); //Người phụ trách
+                                    String g_gen02 = jsonObject.getString("GEN02"); //Họ tên
+                                    String g_fia11 = jsonObject.getString("FIA11"); //Bộ phận phụ trách
+                                    String g_gem02 = jsonObject.getString("GEM02"); //Tên bộ phận
+                                    String g_fiaud07 = jsonObject.getString("FIAUD07"); //Bộ phận quản lý thiết bị
+
+                                    Cre_db.append(g_fia01,g_fiaud03,g_fia14,g_fia10,g_gen02,g_fia11,g_gem02,g_fiaud07 );
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
                     }
                 }
             }
