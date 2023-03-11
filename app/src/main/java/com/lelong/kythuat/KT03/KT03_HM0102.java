@@ -222,7 +222,7 @@ public class KT03_HM0102 extends Fragment {
         int num = cur_tc_fac.getCount();
         for (int i = 0; i < num; i++) {
             try {
-                String tc_fac004 = cur_tc_fac.getString(cur_tc_fac.getColumnIndex("tc_fac004"));
+                String tc_fac004 = cur_tc_fac.getString(cur_tc_fac.getColumnIndexOrThrow("tc_fac004"));
                 kt03Db.ins_hm0102(tc_fac004, "0", "", g_date, g_ca, g_id);
             } catch (Exception e) {
                 String err = e.toString();
