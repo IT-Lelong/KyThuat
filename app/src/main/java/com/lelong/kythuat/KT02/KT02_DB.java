@@ -31,7 +31,6 @@ public class KT02_DB {
     private final static String tc_fac005 = "tc_fac005"; //Tên hạng mục (tiếng hoa)
     private final static String tc_fac006 = "tc_fac006"; //Tên hạng mục (tiếng việt)
 
-
     //Bảng ảo lưu biểu KT02 (S)
     String CREATE_TABLE_NAME_TC_FAC_KT02 = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_TC_FAC_KT02 + " ("
             + tc_fac004 + " TEXT," + tc_fac009 + " TEXT,"
@@ -39,6 +38,12 @@ public class KT02_DB {
             + checkbox5 + " TEXT," + checkbox6 + " TEXT," + user + " TEXT," + ngay + " TEXT," + somay + " TEXT,"
             + tc_fac003 + " TEXT," + tc_fac005 + " TEXT," + tc_fac006 + " TEXT)";
     //Bảng ảo lưu biểu KT02 (E)
+
+
+
+
+
+
 
 
     public KT02_DB(Context ctx) {
@@ -189,4 +194,21 @@ public class KT02_DB {
         }
     }*/
 
+    public Cursor getAll_lvQuery() {
+        String selectQuery = " SELECT COUNT(*) AS _id ,ngay,somay,user FROM " + TABLE_NAME_TC_FAC_KT02 +
+                " GROUP BY ngay,somay,user" +
+                " ORDER BY ngay,somay,user";
+        return db.rawQuery(selectQuery, null);
+
+        // Các cột cần lấy trong bảng
+        /*String[] projection = {"_id","distinct KT03_01_004", "KT03_01_005"};
+        // Các cột dùng để ORDER BY
+        String sortOrder = "KT03_01_004, KT03_01_005";
+        return db.query(KT03_TABLE, projection, null, null, null, null, sortOrder, null);*/
+    }
+    public void delete_table(String qry_ngay, String qry_somay,String qry_user) {
+        String where_loggin = "ngay=? AND somay=? AND user=?";
+        String[] strings = new String[]{qry_ngay, qry_somay, qry_user};
+        db.delete(TABLE_NAME_TC_FAC_KT02, where_loggin, strings);
+    }
 }

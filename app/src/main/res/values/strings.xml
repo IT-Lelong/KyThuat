@@ -51,6 +51,7 @@
     <string name="main_stay_logged">保持登入</string>
 
     /*check version*/
+    /*check version*/
     <string name="ver_curr_version">當前版本: </string>
     <string name="ver_new_version">新版本：</string>
     <string name="ver_install">請安裝!</string>
@@ -113,6 +114,7 @@
     <string name="soxe">機台號碼</string>
     <string name="bophan">負責部門</string>
     <string name="btninsert">執行</string>
+    <string name="diem">Điểm</string>
 
     /*kt01bophan*/
     <string name="btn_addnew">新增</string>

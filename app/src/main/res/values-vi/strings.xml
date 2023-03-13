@@ -105,6 +105,7 @@
     <string name="soxe">Số máy</string>
     <string name="bophan">Bộ phận</string>
     <string name="btninsert">Thực hiện</string>
+    <string name="diem">Điểm</string>
 
     /*kt01bophan*/
     <string name="btn_addnew">Thêm mới</string>
