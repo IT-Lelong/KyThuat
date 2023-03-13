@@ -6,13 +6,9 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Looper;
-import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -43,21 +39,22 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 
 public class KT03_login {
     private UploadToServer uploadToServer = null;
     String g_server = "";
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
     JSONObject ujobject = null;
+    KT03_DB kt03Db;
+    ListView lv_query;
+    TextView tv_name, tv_date;
+    RadioButton radio_a, radio_b;
+    Button btn_Date, btn_Insert, btn_Upload;
+    final String[] g_ca = {""};
+    private Context context;
 
     public void login_dialog(Context context, String menuID, String ID) {
-        TextView tv_name, tv_date;
-        RadioButton radio_a, radio_b;
-        Button btn_Date, btn_Insert, btn_Upload;
-        ListView lv_query;
-        final String[] g_ca = {""};
-
+        this.context = context;
         this.g_server = context.getString(R.string.server);
 
         Dialog dialog = new Dialog(context);
@@ -75,32 +72,12 @@ public class KT03_login {
         tv_name.setText(menuID);
         tv_date.setText(dateFormat.format(new Date()).toString());
 
-        KT03_DB kt03Db = new KT03_DB(context);
+        kt03Db = new KT03_DB(context);
         kt03Db.open();
         kt03Db.openTable();
 
         //Danh sach đã kiểm tra (S)
-        Cursor cursor = kt03Db.getAll_lvQuery();
-        SimpleCursorAdapter simpleCursorAdapter = new SimpleCursorAdapter(context,
-                R.layout.kt03_login_dialog_lvrow, cursor,
-                new String[]{"_id", "KT03_01_004", "KT03_01_005"},
-                new int[]{R.id.tv_stt, R.id.tv_ngay, R.id.tv_ca},
-                SimpleCursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
-
-        simpleCursorAdapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
-            @Override
-            public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
-                if (view.getId() == R.id.tv_stt) {
-                    int rowNumber = cursor.getPosition() + 1;
-                    ((TextView) view).setText(String.valueOf(rowNumber));
-                    return true;
-                }
-                return false;
-            }
-        });
-
-        lv_query.setAdapter(simpleCursorAdapter);
-
+        getLVData();
 
         lv_query.setOnItemClickListener((parent, view, position, id) -> {
 
@@ -161,6 +138,7 @@ public class KT03_login {
                                     public void onClick(View v) {
                                         kt03Db.delete_table(qry_ngay.getText().toString(), qry_ca.getText().toString());
                                         al_dialog.dismiss();
+                                        getLVData();
                                     }
                                 });
                             }
@@ -309,6 +287,29 @@ public class KT03_login {
             }
         });
         dialog.show();
+    }
+
+    private void getLVData() {
+        Cursor cursor = kt03Db.getAll_lvQuery();
+        SimpleCursorAdapter simpleCursorAdapter = new SimpleCursorAdapter(context,
+                R.layout.kt03_login_dialog_lvrow, cursor,
+                new String[]{"_id", "KT03_01_004", "KT03_01_005"},
+                new int[]{R.id.tv_stt, R.id.tv_ngay, R.id.tv_ca},
+                SimpleCursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
+
+        simpleCursorAdapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
+            @Override
+            public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
+                if (view.getId() == R.id.tv_stt) {
+                    int rowNumber = cursor.getPosition() + 1;
+                    ((TextView) view).setText(String.valueOf(rowNumber));
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        lv_query.setAdapter(simpleCursorAdapter);
     }
 
     private String upload_all(JSONObject ujobject, String uriURL) {
