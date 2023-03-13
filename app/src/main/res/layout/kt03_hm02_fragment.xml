@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".KT03.KT03_HM02">
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -78,6 +77,7 @@
                     <TableRow>
 
                         <TextView
+                            android:id="@+id/tv_hm02_01"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:gravity="center"
@@ -86,6 +86,7 @@
                             android:theme="@style/title" />
 
                         <TextView
+                            android:id="@+id/tv_hm02_02"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:gravity="center"
@@ -94,6 +95,7 @@
                             android:theme="@style/title" />
 
                         <TextView
+                            android:id="@+id/tv_hm02_03"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:gravity="center"
@@ -102,6 +104,7 @@
                             android:theme="@style/title" />
 
                         <TextView
+                            android:id="@+id/tv_hm02_04"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:gravity="center"

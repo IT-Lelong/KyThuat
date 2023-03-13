@@ -25,7 +25,6 @@ import android.widget.Toast;
 import androidx.core.content.ContextCompat;
 
 import com.lelong.kythuat.R;
-import com.lelong.kythuat.SetLanguage;
 import com.lelong.kythuat.UploadToServer;
 
 import org.json.JSONArray;
@@ -43,7 +42,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class KT04_login {
-    private SetLanguage setLanguage = null;
     private UploadToServer uploadToServer = null;
     String g_server = "";
     JSONObject ujobject;
@@ -288,18 +286,14 @@ public class KT04_login {
                                 }
 
                                 if (ujobject.length() > 0) {
-
                                     String uriURL = "http://172.16.40.20/" + g_server + "/TechAPP/upload_KT04.php";
                                     final String res = upload_all(uriURL);
 
                                     if (res.contains("false")) {
                                         Toast.makeText(view.getContext(), view.getContext().getString(R.string.M04), Toast.LENGTH_SHORT).show();
-                                    }
-                                    else if(res.contains("ERROINS"))
-                                    {
+                                    } else if (res.contains("ERROINS")) {
                                         Toast.makeText(view.getContext(), view.getContext().getString(R.string.M04), Toast.LENGTH_SHORT).show();
-                                    }
-                                    else {
+                                    } else {
                                         kt04Db.delete_all_table();
                                         Toast.makeText(view.getContext(), view.getContext().getString(R.string.M03), Toast.LENGTH_SHORT).show();
                                         dialog.dismiss();

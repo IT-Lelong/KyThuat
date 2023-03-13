@@ -199,6 +199,17 @@ public class KT03_DB {
         }
     }
 
+    public void upCheckAll(String g_date, String g_ca, String g_dk,String g_id, int i) {
+        try {
+            db.execSQL("UPDATE KT03_01_file SET KT03_01_002 ='" + i + "' ,KT03_01_006 = '" + g_id + "' " +
+                    " WHERE substr(KT03_01_001,1,6) = 'KT03" + g_dk + "' " +
+                    " AND KT03_01_004 = '" + g_date + "' " +
+                    " AND KT03_01_005 = '" + g_ca + "' ");
+        } catch (Exception e) {
+            String ex = e.getMessage().toString();
+        }
+    }
+
     public void upd_HM03(String g_col, String g_key, String g_date, String g_ca, String g_noidung, String g_id) {
         try {
             db.execSQL("UPDATE KT03_03_file SET " + g_col + "='" + g_noidung + "' , KT03_03_010 = '" + g_id + "' " +
@@ -247,6 +258,5 @@ public class KT03_DB {
         String selectQuery = "SELECT * FROM KT03_04_file  ORDER BY KT03_04_001,KT03_04_002";
         return db.rawQuery(selectQuery, null);
     }
-
 
 }

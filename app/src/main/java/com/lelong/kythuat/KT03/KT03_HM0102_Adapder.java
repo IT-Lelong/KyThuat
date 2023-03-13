@@ -1,6 +1,7 @@
 package com.lelong.kythuat.KT03;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ public class KT03_HM0102_Adapder extends RecyclerView.Adapter<KT03_HM0102_Adapde
     private final String g_ca;
     KT03_DB kt03Db = null;
     private String g_id;
+    private int g_lang;
 
     public KT03_HM0102_Adapder(@NonNull Context context, int resource, @NonNull List<KT03_HM0102_Model> objects, String g_date, String g_ca, String g_id) {
         this.context = context;
@@ -33,6 +35,10 @@ public class KT03_HM0102_Adapder extends RecyclerView.Adapter<KT03_HM0102_Adapde
         this.g_id = g_id;
         kt03Db = new KT03_DB(context);
         kt03Db.open();
+        SharedPreferences preferences = context.getSharedPreferences("Language", Context.MODE_PRIVATE);
+        int language = preferences.getInt("Language", 0);
+        this.g_lang = language;
+
     }
 
     @NonNull
@@ -45,7 +51,11 @@ public class KT03_HM0102_Adapder extends RecyclerView.Adapter<KT03_HM0102_Adapde
     @Override
     public void onBindViewHolder(@NonNull DataViewHolder holder, int position) {
         holder.tv_stt.setText(objects.get(position).getG_stt());
-        holder.tv_hangmuc.setText(objects.get(position).getG_noidungHM_TV());
+        if(g_lang==0){
+            holder.tv_hangmuc.setText(objects.get(position).getG_noidungHM_TH());
+        }else{
+            holder.tv_hangmuc.setText(objects.get(position).getG_noidungHM_TV());
+        }
         holder.cb_tot_ca1.setChecked(objects.get(position).isG_tot_ca1());
         holder.cb_tot_ca2.setChecked(objects.get(position).isG_tot_ca2());
         holder.cb_kotot_ca1.setChecked(objects.get(position).isG_kotot_ca1());

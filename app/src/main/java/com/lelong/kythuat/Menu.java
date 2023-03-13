@@ -38,7 +38,6 @@ public class Menu extends AppCompatActivity {
     private KT03_login loginKt03 = null;
     private login_kt02 loginkt02 = null;
     private KT04_login loginKt04 = null;
-    private SetLanguage setLanguage = null;
     String g_server = "";
     Button btn_KT01, btn_KT02, btn_KT03, btn_KT04;
     TextView menuID;
@@ -48,9 +47,7 @@ public class Menu extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //setLanguage = new SetLanguage(this);
-        //setLanguage.getLanguage();
-        //setLanguage();
+        setLanguage();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 

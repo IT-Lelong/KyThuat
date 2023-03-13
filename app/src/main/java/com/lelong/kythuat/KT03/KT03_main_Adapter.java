@@ -26,7 +26,6 @@ public class KT03_main_Adapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                //KT03_HM01 hangmuc01_Fragment = new KT03_HM01("01", context, g_date, g_ca, g_id);
                 KT03_HM0102 hangmuc01_Fragment = KT03_HM0102.newInstance("01",context, g_date, g_ca, g_id);
                 return hangmuc01_Fragment;
             case 1:

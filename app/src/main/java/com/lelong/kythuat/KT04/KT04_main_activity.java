@@ -13,9 +13,8 @@ import android.os.Bundle;
 import com.google.android.material.tabs.TabLayout;
 import com.lelong.kythuat.Create_Table;
 import com.lelong.kythuat.R;
-import com.lelong.kythuat.SetLanguage;
+
 public class KT04_main_activity extends AppCompatActivity{
-    private SetLanguage setLanguage = null;
     private Create_Table createTable = null;
     private KT04_DB kt04Db  = null;
     String ID, g_server, g_date, g_ca, g_lang;
@@ -25,7 +24,6 @@ public class KT04_main_activity extends AppCompatActivity{
     @SuppressLint("Range")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //setLanguage.setLanguage();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.kt04_main_activity);
 

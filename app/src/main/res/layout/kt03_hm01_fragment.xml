@@ -78,6 +78,7 @@
                     <TableRow>
 
                         <TextView
+                            android:id="@+id/tv_hm01_01"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:gravity="center"
@@ -86,6 +87,7 @@
                             android:theme="@style/title" />
 
                         <TextView
+                            android:id="@+id/tv_hm01_02"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:gravity="center"
@@ -94,6 +96,7 @@
                             android:theme="@style/title" />
 
                         <TextView
+                            android:id="@+id/tv_hm01_03"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:gravity="center"
@@ -102,6 +105,7 @@
                             android:theme="@style/title" />
 
                         <TextView
+                            android:id="@+id/tv_hm01_04"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:gravity="center"

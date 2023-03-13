@@ -7,26 +7,30 @@ import androidx.viewpager.widget.ViewPager;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 
 import com.google.android.material.tabs.TabLayout;
 import com.lelong.kythuat.Create_Table;
 import com.lelong.kythuat.R;
-import com.lelong.kythuat.SetLanguage;
+
+import java.util.Locale;
 
 public class KT03_main_activity extends AppCompatActivity {
-    private SetLanguage setLanguage = null;
     private Create_Table createTable = null;
     private KT03_DB kt03Db  = null;
     String ID, g_server, g_date, g_ca, g_lang;
     TabLayout tabLayout;
     ViewPager viewPager;
+    Locale locale;
 
     @SuppressLint("Range")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //setLanguage.setLanguage();
+        setLanguage();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.kt03_main_activity);
 
@@ -79,6 +83,29 @@ public class KT03_main_activity extends AppCompatActivity {
             public void onTabReselected(TabLayout.Tab tab) {
             }
         });
+    }
+
+    //設定顯示語言
+    private void setLanguage() {
+        SharedPreferences preferences = getSharedPreferences("Language", Context.MODE_PRIVATE);
+        int language = preferences.getInt("Language", 0);
+        Resources resources = getResources();
+        DisplayMetrics displayMetrics = resources.getDisplayMetrics();
+        Configuration configuration = resources.getConfiguration();
+        switch (language) {
+            case 0:
+                locale = new Locale("zh");
+                Locale.setDefault(locale);
+                configuration.setLocale(locale);
+                break;
+            case 1:
+                locale = new Locale("vi");
+                Locale.setDefault(locale);
+                configuration.setLocale(locale);
+                break;
+
+        }
+        resources.updateConfiguration(configuration, displayMetrics);
     }
 
 }

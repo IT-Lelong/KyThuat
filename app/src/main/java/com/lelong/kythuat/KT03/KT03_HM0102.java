@@ -1,14 +1,17 @@
 package com.lelong.kythuat.KT03;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -79,11 +82,13 @@ public class KT03_HM0102 extends Fragment {
         Cre_db.open();
     }
 
+    @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        int g_layout;
-        int g_rcv_id;
+        int g_layout, g_rcv_id;
+        TextView tv_hm01_01 = null, tv_hm01_02 = null, tv_hm01_03 = null, tv_hm01_04 = null;
+        TextView tv_hm02_01 = null, tv_hm02_02 = null, tv_hm02_03 = null, tv_hm02_04 = null;
         switch (g_dk) {
             case "01":
                 g_layout = R.layout.kt03_hm01_fragment;
@@ -97,7 +102,32 @@ public class KT03_HM0102 extends Fragment {
                 throw new IllegalStateException("Unexpected value: " + g_dk);
         }
         View view = inflater.inflate(g_layout, container, false);
-        //view.setId(R.id.fmID_hm01);
+
+        switch (g_dk) {
+            case "01":
+                tv_hm01_01 = view.findViewById(R.id.tv_hm01_01);
+                tv_hm01_02 = view.findViewById(R.id.tv_hm01_02);
+                tv_hm01_03 = view.findViewById(R.id.tv_hm01_03);
+                tv_hm01_04 = view.findViewById(R.id.tv_hm01_04);
+
+                tv_hm01_01.setOnClickListener(tvClickListener);
+                tv_hm01_02.setOnClickListener(tvClickListener);
+                tv_hm01_03.setOnClickListener(tvClickListener);
+                tv_hm01_04.setOnClickListener(tvClickListener);
+
+                break;
+            case "02":
+                tv_hm02_01 = view.findViewById(R.id.tv_hm02_01);
+                tv_hm02_02 = view.findViewById(R.id.tv_hm02_02);
+                tv_hm02_03 = view.findViewById(R.id.tv_hm02_03);
+                tv_hm02_04 = view.findViewById(R.id.tv_hm02_04);
+
+                tv_hm02_01.setOnClickListener(tvClickListener);
+                tv_hm02_02.setOnClickListener(tvClickListener);
+                tv_hm02_03.setOnClickListener(tvClickListener);
+                tv_hm02_04.setOnClickListener(tvClickListener);
+                break;
+        }
 
         recyclerView = view.findViewById(g_rcv_id);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext());
@@ -107,6 +137,11 @@ public class KT03_HM0102 extends Fragment {
         adapter = new KT03_HM0102_Adapder(getContext(), R.layout.kt03_hm0102_fragment_row, list_hm01, g_date, g_ca, g_id);
         recyclerView.setAdapter(adapter);
 
+        LoadData();
+        return view;
+    }
+
+    private void LoadData() {
         final Cursor[] cur_getAll = {null};
         Thread thread_CHK = new Thread(new Runnable() {
             @Override
@@ -160,8 +195,6 @@ public class KT03_HM0102 extends Fragment {
                 }
             }
         }.start();
-
-        return view;
     }
 
     private void addData_list_hm0102(Cursor cur_getAll) {
@@ -230,6 +263,63 @@ public class KT03_HM0102 extends Fragment {
             cur_tc_fac.moveToNext();
         }
     }
+
+    private View.OnClickListener tvClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.tv_hm01_01:
+                case R.id.tv_hm02_01: {
+                    spCheckALL(1);
+                    break;
+                }
+                case R.id.tv_hm01_02:
+                case R.id.tv_hm02_02: {
+                    spCheckALL(2);
+                    break;
+                }
+                case R.id.tv_hm01_03:
+                case R.id.tv_hm02_03: {
+                    spCheckALL(3);
+                    break;
+                }
+                case R.id.tv_hm01_04:
+                case R.id.tv_hm02_04: {
+                    spCheckALL(4);
+                    break;
+                }
+            }
+        }
+
+        private void spCheckALL(int i) {
+            String g_title = (i == 1) ? "Tốt ca 1" : (i == 2) ? "Tốt ca 2" : (i == 3) ? "Không Tốt ca 1" : (i == 4) ? "Không Tốt ca 2" : "";
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setTitle("Đánh giá " + g_title);
+            builder.setMessage("Xác nhận CHỌN toàn bộ hoặc BỎ CHỌN toàn bộ ???");
+            builder.setPositiveButton("Chọn tất cả", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    kt03Db.upCheckAll(g_date, g_ca, g_dk, g_id, i);
+                    LoadData();
+                }
+            });
+
+            builder.setNegativeButton(getContext().getString(R.string.btn_cancel), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+            builder.setNeutralButton("Bỏ chọn tất cả", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    kt03Db.upCheckAll(g_date, g_ca, g_dk, g_id, 0);
+                    LoadData();
+                }
+            });
+            builder.show();
+        }
+    };
 
 
 }
