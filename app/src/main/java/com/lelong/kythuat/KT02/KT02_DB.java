@@ -92,14 +92,7 @@ public class KT02_DB {
     public void delete_table() {
         db.delete(TABLE_NAME_TC_FAC_KT02, null, null);
     }
-    public void del_db(String prog) {
-        try {
-            final String DEL_TABLE1 = "DELETE FROM " + TABLE_NAME_TC_FAC_KT02 + " WHERE qraprog = '" + prog + "'";
-            db.execSQL(DEL_TABLE1);
-        } catch (Exception e) {
 
-        }
-    }
 
     /*update tb tc_fac*/
     public long updatekt02(String xtc_fac004, String xtc_fac009, String xcheckbox1, String xcheckbox2, String xcheckbox3,
@@ -178,24 +171,18 @@ public class KT02_DB {
         }
     }
 
-    /*Lấy dl bảng ảo đổ lên table tc_fad_file*/
-    /*public Cursor getAll_qra_qrb(String g_user, String g_date, String g_somay,String g_ngay) {
-        try {
-            String selectQuery = "SELECT  tc_fac_file.tc_fac003 as tc_fac003,tc_fac_file.tc_fac004 as tc_fac004,tc_fac_file.tc_fac006 as tc_fac006 ,tc_fac_table_kt02.checkbox1 as checkbox1,tc_fac_table_kt02.checkbox2 as checkbox2," +
-                    "tc_fac_table_kt02.checkbox3 as checkbox3,tc_fac_table_kt02.checkbox4 as checkbox4,tc_fac_table_kt02.checkbox5 as checkbox5,tc_fac_table_kt02.checkbox6 as checkbox6," +
-                    "tc_fac_table_kt02.tc_fac009 as tc_fac009 ,tc_fac_table_kt02.tc_fac005 as tc_fac005 " +
-                    " FROM " + TABLE_NAME_TC_FAC + ","+TABLE_NAME_TC_FAC_KT02+" " +
-                    " WHERE tc_fac_table_kt02.tc_fac004=tc_fac_file.tc_fac004 and  tc_fac002='" + g_kind + "' " +
-                    " AND tc_fac001='" + g_kind1+"' AND user='" + bophan+"' AND somay='" + somay+"' " +
-                    " AND ngay='" + ngay+"'";
-            return db.rawQuery(selectQuery, null);
-        } catch (Exception e) {
-            return null;
-        }
-    }*/
 
     public Cursor getAll_lvQuery() {
-        String selectQuery = " SELECT COUNT(*) AS _id ,ngay,somay,user FROM " + TABLE_NAME_TC_FAC_KT02 +
+        String selectQuery = " select COUNT(*) AS _id ,ngay,somay,user, (loai1*5+loai2*2+loai3-loai4*2-loai5*5-loai6*10) as tong" +
+                " from (select ngay,somay,user, " +
+                "      (select count(checkbox1)  from tc_fac_table_kt02 where checkbox1='true' and ngay=a.ngay and somay =a.somay and user = a.user ) AS loai1," +
+                "      (select count(checkbox2)  from tc_fac_table_kt02 where checkbox2='true' and ngay=a.ngay and somay =a.somay and user = a.user ) AS loai2," +
+                "      (select count(checkbox3)  from tc_fac_table_kt02 where checkbox3='true' and ngay=a.ngay and somay =a.somay and user = a.user ) AS loai3," +
+                "      (select count(checkbox4)  from tc_fac_table_kt02 where checkbox4='true' and ngay=a.ngay and somay =a.somay and user = a.user ) AS loai4," +
+                "      (select count(checkbox5)  from tc_fac_table_kt02 where checkbox5='true' and ngay=a.ngay and somay =a.somay and user = a.user ) AS loai5," +
+                "      (select count(checkbox6)  from tc_fac_table_kt02 where checkbox6='true' and ngay=a.ngay and somay =a.somay and user = a.user ) AS loai6" +
+                "       from tc_fac_table_kt02 a" +
+                "       GROUP BY ngay,somay,user ) " +
                 " GROUP BY ngay,somay,user" +
                 " ORDER BY ngay,somay,user";
         return db.rawQuery(selectQuery, null);
@@ -210,5 +197,13 @@ public class KT02_DB {
         String where_loggin = "ngay=? AND somay=? AND user=?";
         String[] strings = new String[]{qry_ngay, qry_somay, qry_user};
         db.delete(TABLE_NAME_TC_FAC_KT02, where_loggin, strings);
+    }
+    public void del_db(String xuser, String xngay, String xsomay) {
+        try {
+            final String DEL_TABLE1 = "DELETE FROM " + TABLE_NAME_TC_FAC_KT02 + " WHERE user = '" + xuser + "' and ngay = '" + xngay + "' and somay = '" + xsomay + "'";
+            db.execSQL(DEL_TABLE1);
+        } catch (Exception e) {
+
+        }
     }
 }

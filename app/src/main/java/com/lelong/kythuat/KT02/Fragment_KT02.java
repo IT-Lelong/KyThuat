@@ -44,9 +44,10 @@ public class Fragment_KT02 extends Fragment {
     private String mParam2;
     String somay;
     String bophan;
+    String ngay;
     private int position;
 
-    String matab,g_lang;
+    String matab, g_lang;
     RecyclerView recyclerView;
 
     ArrayList<KT02_LIST> mangLV02;
@@ -60,29 +61,21 @@ public class Fragment_KT02 extends Fragment {
     private KT02_DB createTable_fac02_detail = null;
     SimpleDateFormat dateFormatKT02 = new SimpleDateFormat("yyyy/MM/dd");
 
-    DecimalFormat decimalFormat=new DecimalFormat("00");
+    DecimalFormat decimalFormat = new DecimalFormat("00");
     ListDataAdapter_KT02 adapter;
 
-    public Fragment_KT02(String somay, String bophan, int position) {
+    public Fragment_KT02(String somay, String bophan, String ngay, int position) {
 
         this.somay = somay;
         this.bophan = bophan;
-
+        this.ngay = ngay;
         this.position = position;
-            matab=decimalFormat.format(position+1);
-        //matab=decimalFormat.format(position);
+        matab = decimalFormat.format(position + 1);
     }
 
     public Fragment_KT02() {
 
     }
-
-
-
-
-   /* public Fragment_KT02() {
-        // Required empty public constructor
-    }*/
 
     /**
      * Use this factory method to create a new instance of
@@ -110,7 +103,6 @@ public class Fragment_KT02 extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        //setContentView(layout.listdata_item_kt02);
     }
 
     private void setLanguage() {
@@ -132,10 +124,6 @@ public class Fragment_KT02 extends Fragment {
         resources.updateConfiguration(configuration, displayMetrics);
     }
 
-
-
-    //private void setContentView(int listdata_item_kt02) {
-    //}
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -162,26 +150,18 @@ public class Fragment_KT02 extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        /*
-        // Sending reference and data to Adapter
-        Adapter adapter = new Adapter(  getApplicationContext(), maso, noidung,diemso);
-
-        // Setting Adapter to RecyclerView
-        recyclerView.setAdapter(adapter);*/
-        String ngay = dateFormatKT02.format(new Date()).toString();
         createTable_fac02_detail = new KT02_DB(getContext());
         createTable_fac02_detail.open();
         mangLV02 = new ArrayList<KT02_LIST>();
         createTable_fac02 = new Create_Table(getContext());
         createTable_fac02.open();
-        createTable_fac02.ins_fac_02("KT02",bophan,ngay,somay);
-        cursor_1 = createTable_fac02.getAll_tc_fac_02("KT02", matab,bophan,somay,ngay);
+        createTable_fac02.ins_fac_02("KT02", bophan, ngay, somay);
+        cursor_1 = createTable_fac02.getAll_tc_fac_02("KT02", matab, bophan, somay, ngay);
         cursor_1.moveToFirst();
 
 
         int num = cursor_1.getCount();
         for (int i = 0; i < num; i++) {
-            //for (int i = 1; i <= num; i++) {
             try {
                 @SuppressLint("Range") String tc_fac003 = cursor_1.getString(cursor_1.getColumnIndex("tc_fac003"));
                 @SuppressLint("Range") String tc_fac006 = cursor_1.getString(cursor_1.getColumnIndex(g_lang));
@@ -193,13 +173,9 @@ public class Fragment_KT02 extends Fragment {
                 @SuppressLint("Range") Boolean checkbox5 = Boolean.valueOf(cursor_1.getString(cursor_1.getColumnIndex("checkbox5")));
                 @SuppressLint("Range") Boolean checkbox6 = Boolean.valueOf(cursor_1.getString(cursor_1.getColumnIndex("checkbox6")));
                 @SuppressLint("Range") String tc_fac009 = cursor_1.getString(cursor_1.getColumnIndex("tc_fac009"));
-                //@SuppressLint("Range") String tc_fac005 = cursor_1.getString(cursor_1.getColumnIndex("tc_fac005"));
 
-                mangLV02.add(new KT02_LIST(view, tc_fac003, tc_fac006, tc_fac004,checkbox1, checkbox2,
-                        checkbox3, checkbox4, checkbox5, checkbox6, bophan, ngay,tc_fac009, somay));
-                //createTable_fac02_detail.ins_tc_fac_table_kt02(tc_fac004, tc_fac009, checkbox1, checkbox2, checkbox3, checkbox4, checkbox5,
-                                                                //checkbox6, bophan, ngay,somay,tc_fac003,tc_fac005,tc_fac006);
-            //abcClear();
+                mangLV02.add(new KT02_LIST(view, tc_fac003, tc_fac006, tc_fac004, checkbox1, checkbox2,
+                        checkbox3, checkbox4, checkbox5, checkbox6, bophan, ngay, tc_fac009, somay));
             } catch (Exception e) {
                 String err = e.toString();
             }
@@ -208,8 +184,6 @@ public class Fragment_KT02 extends Fragment {
         }
 
         adapter = new ListDataAdapter_KT02(getContext(), R.layout.listdata_item_kt02, mangLV02);
-
-        // Setting Adapter to RecyclerView
         recyclerView.setAdapter(adapter);
 
         return view;
@@ -220,19 +194,4 @@ public class Fragment_KT02 extends Fragment {
         return null;
     }
 
-
-   /* @Override
-    public void mangLV_clear(boolean res) {
-        if (res){
-            if (mangLV02.size() > 0 || mangLV02.isEmpty()) {
-                mangLV02.clear();
-                //mangLV02.remove(mangLV02.get(position));
-                adapter.notifyDataSetChanged();
-            }
-        }
-    }
-    public void  abcClear(){
-        mangLV02.clear();
-        adapter.notifyDataSetChanged();
-    }*/
 }

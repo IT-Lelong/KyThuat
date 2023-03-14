@@ -308,7 +308,7 @@ public class Create_Table {
         int count = 0;
         //ContentValues argsA = new ContentValues();
         Cursor mCount = db.rawQuery("SELECT count(*) FROM "+TABLE_NAME_TC_FAC_KT02+" " +
-                " WHERE user='" + xuser +"' AND somay='" + xsomay +"' ", null);
+                " WHERE user='" + xuser +"' AND somay='" + xsomay +"' AND ngay='" + xngay +"' ", null);
         mCount.moveToFirst();
         count = mCount.getInt(0);
         if (count == 0) {

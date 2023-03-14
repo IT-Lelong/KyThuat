@@ -32,8 +32,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 public class KT02_activity extends AppCompatActivity {
-    String somay, bophan,g_lang;
+    String somay, bophan, g_lang;
     TabLayout tabLayout;
     ViewPager viewPager;
     TextView tvStatus;
@@ -45,9 +46,10 @@ public class KT02_activity extends AppCompatActivity {
     JSONObject ujobject;
     int chk_dialog = -1;
     String g_server = "";
+    String g_ngay, g_soxe, g_user, g_layout,ngay ;
     SimpleDateFormat dateFormatKT02 = new SimpleDateFormat("yyyy/MM/dd");
     KT02_Interface kt02_interface;
-    Fragment_KT02 fragmentKt02=null;
+    Fragment_KT02 fragmentKt02 = null;
     private Fragment_KT02 context;
 
     @Override
@@ -63,18 +65,31 @@ public class KT02_activity extends AppCompatActivity {
             g_lang = "tc_fab004";
         }
 
-        String ngay = dateFormatKT02.format(new Date()).toString();
+        Bundle getbundle = getIntent().getExtras();
+        g_server = getbundle.getString("SERVER");
+        g_ngay = getbundle.getString("DATE");
+        g_soxe = getbundle.getString("SOMAY");
+        g_user = getbundle.getString("USER");
+        g_layout = getbundle.getString("LAYOUT");
         kt02_interface = (KT02_Interface) context;
 
 
+        if (g_layout.length() <6) {
+            somay = g_soxe;
+            bophan = g_user;
+            ngay=g_ngay;
+            tvStatus = findViewById(R.id.tvStatus);
+            tvStatus.setText(null);
+        }else {
+            Bundle getBundle = getIntent().getExtras();
+            somay = getBundle.getString("somay");
+            bophan = getBundle.getString("bophan");
+            ngay = dateFormatKT02.format(new Date()).toString();
+            tvStatus = findViewById(R.id.tvStatus);
+            tvStatus.setText(null);
+        }
 
-        Bundle getBundle = getIntent().getExtras();
-        somay = getBundle.getString("somay");
-        bophan = getBundle.getString("bophan");
-        tvStatus = findViewById(R.id.tvStatus);
-        tvStatus.setText(null);
-
-        fragmentKt02 = new Fragment_KT02(somay,bophan,0);
+        fragmentKt02 = new Fragment_KT02(somay, bophan,ngay, 0);
         //kt02_interface = (KT02_Interface) fragmentKt02.getApplicationContext();;
 
 
@@ -84,8 +99,6 @@ public class KT02_activity extends AppCompatActivity {
 
         createTable = new Create_Table(getApplicationContext());
         createTable2 = new KT02_DB(getApplicationContext());
-        //KT01_DB createTable1 = new KT01_DB(this);
-        //KT02_DB createTable2 = new KT02_DB(this);
 
         createTable.open();
         createTable2.open();
@@ -93,7 +106,6 @@ public class KT02_activity extends AppCompatActivity {
         cursor_1.moveToFirst();
         int num = cursor_1.getCount();
         for (int i = 0; i < num; i++) {
-        //for (int i = 1; i <= num; i++) {
             try {
                 @SuppressLint("Range") String tab_name = cursor_1.getString(cursor_1.getColumnIndex(g_lang));
                 @SuppressLint("Range") String tab_name_TH = cursor_1.getString(cursor_1.getColumnIndex("tc_fab003"));
@@ -104,11 +116,8 @@ public class KT02_activity extends AppCompatActivity {
             }
             cursor_1.moveToNext();
         }
-        //tabLayout.addTab(tabLayout.newTab().setText("Football"));
-        //tabLayout.addTab(tabLayout.newTab().setText("Cricket"));
-        //tabLayout.addTab(tabLayout.newTab().setText("NBA"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        final MyAdappter_KT02 adapter = new MyAdappter_KT02(this, getSupportFragmentManager(), tabLayout.getTabCount(), somay, bophan);
+        final MyAdappter_KT02 adapter = new MyAdappter_KT02(this, getSupportFragmentManager(), tabLayout.getTabCount(), somay, bophan,ngay);
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -154,7 +163,7 @@ public class KT02_activity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String ngay = dateFormatKT02.format(new Date()).toString();
+                //String ngay = dateFormatKT02.format(new Date()).toString();
                 //tham số Y , biểu thị cập nhật dữ liệu tới chương trình gốc, và save đến qrf_file
                 Cursor upl = createTable.getAll_instc_fad(bophan, somay, ngay);
                 jsonupload = cur2Json(upl);
@@ -176,26 +185,17 @@ public class KT02_activity extends AppCompatActivity {
                             tvStatus.setText(getString(R.string.ERRORtvStatus_false));
                             tvStatus.setTextColor(getResources().getColor(R.color.red));
                         }
-                        if(res.contains("ERROINS")){
-                                //tvStatus.setText("đã được insert");
+                        if (res.contains("ERROINS")) {
+                            //tvStatus.setText("đã được insert");
                             tvStatus.setText(getString(R.string.ERRORtvStatus_errorins));
                             tvStatus.setTextColor(getResources().getColor(R.color.red));
+                            createTable2.delete_table(ngay,somay,bophan);
                         }
-                        if(res.contains("TRUE")) {
+                        if (res.contains("TRUE")) {
                             //tvStatus.setText(g_server);
                             tvStatus.setText(getString(R.string.ERRORtvStatus_true));
                             tvStatus.setTextColor(getResources().getColor(R.color.purple_200));
-                            createTable2.delete_table();
-                            //kt02_interface.mangLV_clear(true);
-                            //Fragment_KT02 fragment_kt02 = new Fragment_KT02();
-                            /*KT02_Interface kt02Interface=new KT02_Interface() {
-                                @Override
-                                public void mangLV_clear(boolean res) {
-                                    mangLV_clear(true);
-                                }
-                            };*/
-                            //kt02_interface.mangLV_clear(true);
-                            //fragment_kt02.abcClear();
+                            createTable2.delete_table(ngay,somay,bophan);
 
                         }
                     }
@@ -261,18 +261,6 @@ public class KT02_activity extends AppCompatActivity {
         }
     }
 
-   /* @Override
-    public void mangLV_clear(boolean res) {
-        Fragment_KT02 fragmentKt021= new Fragment_KT02();
-        if (res){
-            if (fragmentKt021.mangLV02.size() > 0 || fragmentKt021.mangLV02.isEmpty()) {
-                fragmentKt021.mangLV02.clear();
-
-                //mangLV02.remove(mangLV02.get(position));
-                fragmentKt021.adapter.notifyDataSetChanged();
-            }
-        }
-    }*/
 
     //Khởi tạo menu trên thanh tiêu đề (E)
 }

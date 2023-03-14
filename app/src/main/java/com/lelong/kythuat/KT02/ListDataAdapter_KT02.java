@@ -56,18 +56,6 @@ public class ListDataAdapter_KT02 extends RecyclerView.Adapter<ListDataAdapter_K
         holder.checkBox4.setChecked(mangLV02.get(position).getCheckBox4());
         holder.checkBox5.setChecked(mangLV02.get(position).getCheckBox5());
         holder.checkBox6.setChecked(mangLV02.get(position).getCheckBox6());
-       /* if(mangLV02.get(position).getCheckBox1()) {
-            holder.checkBox1.setChecked(true);
-            holder.checkBox1.isChecked();
-
-        }
-        else {holder.checkBox1.setChecked(false);}*/
-        /*holder.checkBox1.setOnCheckedChangeListener(null);
-        holder.checkBox2.setOnCheckedChangeListener(null);
-        holder.checkBox3.setOnCheckedChangeListener(null);
-        holder.checkBox4.setOnCheckedChangeListener(null);
-        holder.checkBox5.setOnCheckedChangeListener(null);
-        holder.checkBox6.setOnCheckedChangeListener(null);*/
         holder.tc_fac009.setText(mangLV02.get(position).getTc_fac009());
 
         user=mangLV02.get(position).getUser();
@@ -100,9 +88,6 @@ public class ListDataAdapter_KT02 extends RecyclerView.Adapter<ListDataAdapter_K
                     String mahangmuc= mangLV02.get(position).getTc_fac004();
                     g_ghichu=null;
                     g_ghichu=holder.tc_fac009.getText().toString();
-                    /*user=mangLV02.get(position).getUser();
-                    somay=mangLV02.get(position).getSomay();
-                    ngay=mangLV02.get(position).getNgay();*/
                     KT02_DB.updatekt_col("tc_fac009",g_ghichu,mahangmuc,user,somay,ngay);
                     mangLV02.get(position).setTc_fac009(g_ghichu);
                 } catch (Exception e) {
@@ -124,7 +109,6 @@ public class ListDataAdapter_KT02 extends RecyclerView.Adapter<ListDataAdapter_K
                     g_checkbox1= String.valueOf(holder.checkBox1.isChecked());
                     update_checkbox(holder.getPosition(), 0, holder);
                 }
-                //KT02_DB.updatekt_col("checkbox1",g_checkbox1,mahangmuc,user,somay,ngay);
             }
         });
         /*checkbox2*/
@@ -139,7 +123,6 @@ public class ListDataAdapter_KT02 extends RecyclerView.Adapter<ListDataAdapter_K
                     g_checkbox2= String.valueOf(holder.checkBox2.isChecked());
                     update_checkbox(holder.getPosition(), 0, holder);
                 }
-                //KT02_DB.updatekt_col("checkbox2",g_checkbox2,mahangmuc,user,somay,ngay);
             }
         });
         /*checkbox3*/
@@ -154,7 +137,6 @@ public class ListDataAdapter_KT02 extends RecyclerView.Adapter<ListDataAdapter_K
                     g_checkbox3= String.valueOf(holder.checkBox3.isChecked());
                     update_checkbox(holder.getPosition(), 0, holder);
                 }
-                //KT02_DB.updatekt_col("checkbox3",g_checkbox3,mahangmuc,user,somay,ngay);
             }
         });
         /*checkbox4*/
@@ -169,7 +151,6 @@ public class ListDataAdapter_KT02 extends RecyclerView.Adapter<ListDataAdapter_K
                     g_checkbox4= String.valueOf(holder.checkBox4.isChecked());
                     update_checkbox(holder.getPosition(), 0, holder);
                 }
-                //KT02_DB.updatekt_col("checkbox4",g_checkbox4,mahangmuc,user,somay,ngay);
             }
         });
         /*checkbox5*/
@@ -184,7 +165,6 @@ public class ListDataAdapter_KT02 extends RecyclerView.Adapter<ListDataAdapter_K
                     g_checkbox5= String.valueOf(holder.checkBox5.isChecked());
                     update_checkbox(holder.getPosition(), 0, holder);
                 }
-                //KT02_DB.updatekt_col("checkbox5",g_checkbox5,mahangmuc,user,somay,ngay);
             }
         });
         /*checkbox6*/
@@ -199,7 +179,6 @@ public class ListDataAdapter_KT02 extends RecyclerView.Adapter<ListDataAdapter_K
                     g_checkbox6= String.valueOf(holder.checkBox6.isChecked());
                     update_checkbox(holder.getPosition(), 0, holder);
                 }
-                KT02_DB.updatekt_col("checkbox6",g_checkbox6,mahangmuc,user,somay,ngay);
             }
         });
     }

@@ -3,7 +3,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp"
+    android:padding="20dp"
     android:background="#A9EDBB">
 
     <TextView
@@ -39,7 +39,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="horizontal"
             android:gravity="center"
             android:layout_marginTop="10dp">
@@ -60,7 +60,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="5dp"
+        >
 
         <TextView
             android:layout_width="match_parent"
@@ -87,7 +88,7 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
+                android:layout_weight="2.5"
                 android:gravity="center"
                 android:text="@string/tt_ngay"
                 android:textStyle="bold"
@@ -105,7 +106,7 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
+                android:layout_weight="2.5"
                 android:gravity="center"
                 android:text="@string/bophan"
                 android:textStyle="bold"
@@ -121,7 +122,7 @@
         </LinearLayout>
 
         <ListView
-            android:id="@+id/lv_query"
+            android:id="@+id/lv_query02"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
     </LinearLayout>

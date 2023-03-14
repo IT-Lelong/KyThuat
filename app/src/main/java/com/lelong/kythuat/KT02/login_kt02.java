@@ -45,121 +45,23 @@ public class login_kt02 {
     Button btnins, btnsearch;
     private Activity activity;
     ListView lv_query02;
+    private Context context;
+    Dialog dialog;
 
     public void login_dialogkt02(Context context, String menuID, Activity activity) {
         this.activity = activity;
-        Dialog dialog = new Dialog(context);
+        this.context=context;
+        dialog = new Dialog(context);
         dialog.setContentView(R.layout.kt02_activity_loginsetting);
 
         Spinner cbxsoxe = dialog.findViewById(R.id.cbxsoxe);
         btnins = dialog.findViewById(R.id.btninsert);
         btnins.setOnClickListener(btnlistener1);
+        lv_query02 = dialog.findViewById(R.id.lv_query02);
         createTable = new Create_Table(dialog.getContext());
         createTable.open();
-        kt02Db = new KT02_DB(dialog.getOwnerActivity());
+        kt02Db = new KT02_DB(dialog.getContext());
         //kt03Db = new KT03_DB(dialog.getContext());
-
-        //Danh sach đã kiểm tra (S)
-        kt02Db.open();
-        Cursor cursor = kt02Db.getAll_lvQuery();
-        SimpleCursorAdapter simpleCursorAdapter = new SimpleCursorAdapter(context,
-                R.layout.kt02_login_lvrow, cursor,
-                new String[]{"_id", "ngay", "somay", "user"},
-                new int[]{R.id.tv_stt, R.id.tv_ngay, R.id.tv_soxe,R.id.tv_bophan},
-                SimpleCursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
-
-        simpleCursorAdapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
-            @Override
-            public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
-                if (view.getId() == R.id.tv_stt) {
-                    int rowNumber = cursor.getPosition() + 1;
-                    ((TextView) view).setText(String.valueOf(rowNumber));
-                    return true;
-                }
-                return false;
-            }
-        });
-
-        lv_query02.setAdapter(simpleCursorAdapter);
-
-
-        lv_query02.setOnItemClickListener((parent, view, position, id) -> {
-
-            // Tạo đối tượng PopupMenu
-            PopupMenu popupMenu = new PopupMenu(context.getApplicationContext(), view, Gravity.END, 0, R.style.MyPopupMenu);
-
-            // Nạp tệp menu vào PopupMenu
-            popupMenu.getMenuInflater().inflate(R.menu.kt02_login_lv, popupMenu.getMenu());
-
-            // Show the PopupMenu.
-            popupMenu.show();
-
-            // Đăng ký sự kiện Popup Menu
-            popupMenu.setOnMenuItemClickListener(item -> {
-
-                TextView qry_ngay = view.findViewById(R.id.tv_ngay);
-                TextView qry_somay = view.findViewById(R.id.tv_soxe);
-                TextView qry_user = view.findViewById(R.id.tv_bophan);
-
-                // Xử lý sự kiện khi người dùng chọn một lựa chọn trong menu
-                switch (item.getItemId()) {
-                    case R.id.openKT02:
-                        Intent KT02 = new Intent();
-                        KT02.setClass(context, KT03_main_activity.class);
-                        Bundle bundle = new Bundle();
-                        //bundle.putString("ID", ID);
-                        bundle.putString("DATE", qry_ngay.getText().toString());
-                        bundle.putString("SOMAY", qry_somay.getText().toString());
-                        bundle.putString("USER", qry_user.getText().toString());
-                        KT02.putExtras(bundle);
-                        context.startActivity(KT02);
-                        dialog.dismiss();
-                        return true;
-
-                    case R.id.clearKT02:
-                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                        builder.setMessage(context.getString(R.string.M05))
-                                .setPositiveButton(context.getString(R.string.btn_ok), null)
-                                .setNegativeButton(context.getString(R.string.btn_cancel), null);
-
-
-                        AlertDialog al_dialog = builder.create();
-                        al_dialog.setOnShowListener(new DialogInterface.OnShowListener() {
-                            @Override
-                            public void onShow(DialogInterface dialogInterface) {
-                                TextView messageView = ((AlertDialog) dialogInterface).findViewById(android.R.id.message);
-                                messageView.setTextSize(30);
-
-                                Button positiveButton = ((AlertDialog) dialogInterface).getButton(DialogInterface.BUTTON_POSITIVE);
-                                positiveButton.setTextColor(ContextCompat.getColor(context, R.color.blue));
-                                positiveButton.setTextSize(15);
-                                //positiveButton.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimary));
-                                Button negativeButton = ((AlertDialog) dialogInterface).getButton(DialogInterface.BUTTON_NEGATIVE);
-                                negativeButton.setTextColor(ContextCompat.getColor(context, R.color.red));
-                                negativeButton.setTextSize(15);
-                                //negativeButton.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimary));
-
-                                positiveButton.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        kt02Db.delete_table(qry_ngay.getText().toString(), qry_somay.getText().toString(),qry_user.getText().toString());
-                                        al_dialog.dismiss();
-                                    }
-                                });
-                            }
-                        });
-
-                        al_dialog.show();
-
-                        return true;
-                }
-                return true;
-            });
-        });
-
-        //Danh sach đã kiểm tra (E)
-
-
 
         cursor_1 = createTable.getAll_fia_02();
         cursor_1.moveToFirst();
@@ -241,9 +143,116 @@ public class login_kt02 {
         });
 
 
+
+
+
+        //Danh sach đã kiểm tra (S)
+        getLVData();
+
+        lv_query02.setOnItemClickListener((parent, view, position, id) -> {
+
+            // Tạo đối tượng PopupMenu
+            PopupMenu popupMenu = new PopupMenu(context.getApplicationContext(), view, Gravity.END, 0, R.style.MyPopupMenu);
+
+            // Nạp tệp menu vào PopupMenu
+            popupMenu.getMenuInflater().inflate(R.menu.kt02_login_lv, popupMenu.getMenu());
+
+            // Show the PopupMenu.
+            popupMenu.show();
+
+            // Đăng ký sự kiện Popup Menu
+            popupMenu.setOnMenuItemClickListener(item -> {
+
+                TextView qry_ngay = view.findViewById(R.id.tv_ngay);
+                TextView qry_somay = view.findViewById(R.id.tv_soxe);
+                TextView qry_user = view.findViewById(R.id.tv_bophan);
+
+                // Xử lý sự kiện khi người dùng chọn một lựa chọn trong menu
+                switch (item.getItemId()) {
+                    case R.id.openKT02:
+                        Intent KT02 = new Intent();
+                        KT02.setClass(context, KT02_activity.class);
+                        Bundle bundle = new Bundle();
+                        //bundle.putString("ID", ID);
+                        bundle.putString("DATE", qry_ngay.getText().toString());
+                        bundle.putString("SOMAY", qry_somay.getText().toString());
+                        bundle.putString("USER", qry_user.getText().toString());
+                        bundle.putString("LAYOUT", "login");
+                        KT02.putExtras(bundle);
+                        context.startActivity(KT02);
+                        dialog.dismiss();
+                        return true;
+
+                    case R.id.clearKT02:
+                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                        builder.setMessage(context.getString(R.string.M05))
+                                .setPositiveButton(context.getString(R.string.btn_ok), null)
+                                .setNegativeButton(context.getString(R.string.btn_cancel), null);
+
+
+                        AlertDialog al_dialog = builder.create();
+                        al_dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                            @Override
+                            public void onShow(DialogInterface dialogInterface) {
+                                TextView messageView = ((AlertDialog) dialogInterface).findViewById(android.R.id.message);
+                                messageView.setTextSize(30);
+
+                                Button positiveButton = ((AlertDialog) dialogInterface).getButton(DialogInterface.BUTTON_POSITIVE);
+                                positiveButton.setTextColor(ContextCompat.getColor(context, R.color.blue));
+                                positiveButton.setTextSize(15);
+                                //positiveButton.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimary));
+                                Button negativeButton = ((AlertDialog) dialogInterface).getButton(DialogInterface.BUTTON_NEGATIVE);
+                                negativeButton.setTextColor(ContextCompat.getColor(context, R.color.red));
+                                negativeButton.setTextSize(15);
+                                //negativeButton.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimary));
+
+                                positiveButton.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        kt02Db.delete_table(qry_ngay.getText().toString(), qry_somay.getText().toString(),qry_user.getText().toString());
+                                        al_dialog.dismiss();
+                                        getLVData();
+                                    }
+                                });
+                            }
+                        });
+
+                        al_dialog.show();
+
+                        return true;
+                }
+                return true;
+            });
+        });
+
+        //Danh sach đã kiểm tra (E)
+
         dialog.show();
     }
 
+    private void getLVData() {
+        kt02Db.open();
+        Cursor cursor = kt02Db.getAll_lvQuery();
+        SimpleCursorAdapter simpleCursorAdapter = new SimpleCursorAdapter(context,
+                R.layout.kt02_login_lvrow, cursor,
+                new String[]{"_id", "ngay", "somay", "user", "tong"},
+                new int[]{R.id.tv_stt, R.id.tv_ngay, R.id.tv_soxe,R.id.tv_bophan,R.id.tv_diem},
+                SimpleCursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
+
+        simpleCursorAdapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
+            @Override
+            public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
+                if (view.getId() == R.id.tv_stt) {
+                    int rowNumber = cursor.getPosition() + 1;
+                    ((TextView) view).setText(String.valueOf(rowNumber));
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        lv_query02.setAdapter(simpleCursorAdapter);
+    }
 
     private Button.OnClickListener btnlistener1 = new Button.OnClickListener() {
         public void onClick(View v) {
@@ -257,20 +266,13 @@ public class login_kt02 {
                     Bundle bundle = new Bundle();
                     bundle.putString("somay", g_soxe);
                     bundle.putString("bophan", g_bophan);
+                    bundle.putString("LAYOUT", "notlogin");
                     QR020.putExtras(bundle);
                     v.getContext().startActivity(QR020);
+                    dialog.dismiss();
                     break;
                 }
 
-                /*case R.id.btnsearch: {
-                    Intent QR020 = new Intent();
-                    QR020.setClass(Menu.this, Login_setting.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putString("ID", ID);
-                    bundle.putString("SERVER", g_server);
-                    QR020.putExtras(bundle);
-                    startActivity(QR020);
-                    break;*/
             }
         }
     };
