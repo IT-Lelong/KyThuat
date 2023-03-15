@@ -1,34 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="20dp"
-    android:background="#A9EDBB">
+    android:background="#A9EDBB"
+    android:orientation="vertical"
+    android:padding="20dp">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/soxe"
+        android:textColor="@color/black"
         android:textSize="30sp"
-        android:textStyle="bold"
-        android:textColor="@color/black"/>
+        android:textStyle="bold" />
 
     <Spinner
         android:id="@+id/cbxsoxe"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:gravity="center"/>
+        android:gravity="center" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/bophan"
+        android:textColor="@color/black"
         android:textSize="30sp"
-        android:textStyle="bold"
-        android:textColor="@color/black"/>
+        android:textStyle="bold" />
 
     <Spinner
         android:id="@+id/cbxbophan"
@@ -37,31 +37,29 @@
         android:gravity="center" />
 
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:layout_marginTop="10dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/btninsert"
-                android:layout_width="100dp"
-                android:layout_height="60dp"
-                android:background="@drawable/button_type_nomal"
-                android:textColor="@color/white"
-                android:text="@string/btn_insert"
-                android:textSize="15sp"
-                android:layout_gravity="center"/>
+        <Button
+            android:id="@+id/btninsert"
+            android:layout_width="100dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:background="@drawable/button_type_nomal"
+            android:text="@string/btn_insert"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
 
-        </LinearLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-
-        >
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="match_parent"
@@ -83,7 +81,8 @@
                 android:gravity="center"
                 android:text="@string/tt_stt"
                 android:textStyle="bold"
-                android:theme="@style/title" />
+                android:theme="@style/title"
+                android:textSize="18sp"/>
 
             <TextView
                 android:layout_width="0dp"
@@ -92,7 +91,8 @@
                 android:gravity="center"
                 android:text="@string/tt_ngay"
                 android:textStyle="bold"
-                android:theme="@style/title" />
+                android:theme="@style/title"
+                android:textSize="18sp"/>
 
             <TextView
                 android:layout_width="0dp"
@@ -101,16 +101,19 @@
                 android:gravity="center"
                 android:text="@string/soxe"
                 android:textStyle="bold"
-                android:theme="@style/title" />
+                android:theme="@style/title"
+                android:textSize="18sp"/>
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="2.5"
+                android:layout_weight="3"
                 android:gravity="center"
                 android:text="@string/bophan"
                 android:textStyle="bold"
-                android:theme="@style/title" />
+                android:theme="@style/title"
+                android:textSize="18sp"/>
+
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -118,7 +121,8 @@
                 android:gravity="center"
                 android:text="@string/diem"
                 android:textStyle="bold"
-                android:theme="@style/title" />
+                android:theme="@style/title"
+                android:textSize="18sp"/>
         </LinearLayout>
 
         <ListView

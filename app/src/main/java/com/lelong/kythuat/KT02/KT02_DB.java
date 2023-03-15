@@ -39,20 +39,9 @@ public class KT02_DB {
             + tc_fac003 + " TEXT," + tc_fac005 + " TEXT," + tc_fac006 + " TEXT)";
     //Bảng ảo lưu biểu KT02 (E)
 
-
-
-
-
-
-
-
     public KT02_DB(Context ctx) {
         this.mCtx = ctx;
     }
-
-
-
-
     //public Create_Table(Fragmen_KT01 ctx) {
     // this.mCtx = ctx;
     //}

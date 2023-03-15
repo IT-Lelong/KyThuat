@@ -12,7 +12,8 @@
         android:gravity="center"
         android:background="@drawable/border_listview"
         android:textColor="@color/black"
-        android:hint="STT"/>
+        android:hint="STT"
+        android:textSize="16sp"/>
 
     <TextView
         android:id="@+id/tv_ngay"
@@ -22,7 +23,8 @@
         android:paddingLeft="5dp"
         android:background="@drawable/border_listview"
         android:textColor="@color/black"
-        android:hint="Ngày"/>
+        android:hint="Ngày"
+        android:textSize="16sp"/>
 
     <TextView
         android:id="@+id/tv_soxe"
@@ -32,17 +34,19 @@
         android:paddingLeft="5dp"
         android:background="@drawable/border_listview"
         android:textColor="@color/black"
-        android:hint="Số xe"/>
+        android:hint="Số xe"
+        android:textSize="16sp"/>
 
     <TextView
         android:id="@+id/tv_bophan"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="2.5"
+        android:layout_weight="3"
         android:paddingLeft="5dp"
         android:background="@drawable/border_listview"
         android:textColor="@color/black"
-        android:hint="Bộ phận"/>
+        android:hint="Bộ phận"
+        android:textSize="16sp"/>
     <TextView
         android:id="@+id/tv_diem"
         android:layout_width="0dp"
@@ -51,5 +55,6 @@
         android:paddingLeft="5dp"
         android:background="@drawable/border_listview"
         android:textColor="@color/black"
-        android:hint="Điểm"/>
+        android:hint="Điểm"
+        android:textSize="16sp"/>
 </LinearLayout>

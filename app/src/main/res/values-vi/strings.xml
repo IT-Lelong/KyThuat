@@ -86,6 +86,10 @@
     <string name="giatri">Giá trị đọc được\n của thiết bị</string>
     <string name="saiso">Sai số (%)</string>
 
+    /*KT04*/
+    <string name="hangsanxuat">製造商</string>
+    <string name="thongtin">輸入信息</string>
+
     /*KT02_activity*/
     <string name="ERRORtvStatus_false">Không insert được table tc_fad_file</string>
     <string name="ERRORtvStatus_true">Insert table tc_fad_file thành công</string>
