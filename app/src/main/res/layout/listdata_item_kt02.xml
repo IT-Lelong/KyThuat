@@ -139,5 +139,16 @@
             android:paddingRight="5dp"
             android:ems="10"/>
 
-
+        <Button
+            android:id="@+id/btn1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:background="@drawable/camera1"
+            android:drawablePadding="1dp"
+            android:ems="10"
+            android:scaleType="center"
+            android:layout_margin="5dp"
+            />
 </LinearLayout>

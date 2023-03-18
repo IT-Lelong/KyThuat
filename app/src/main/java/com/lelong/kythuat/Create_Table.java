@@ -37,13 +37,10 @@ public class Create_Table {
     //KT02(S)
     String TABLE_NAME_FIA = "fia_file";
     String fia01 = "fia01"; //Mã số thiết bị
+    String ta_fia02_1 = "ta_fia02_1"; //Tên thiết bị
     String fiaud03 = "fiaud03"; //Số máy
-    String fia14 = "fia14"; //Vị trí
-    String fia10 = "fia10"; //Người phụ trách
-    String gen02 = "gen02"; //Họ tên
-    String fia11 = "fia11"; //Bộ phận phụ trách
-    String gem02_1 = "gem02"; //Tên bộ phận
-    String fiaud07 = "fiaud07"; //Bộ phận quản lý thiết bị
+    String fia15 = "fia15"; //Bộ phận
+    String fka02 = "fka02"; //Tên bộ phận
     //KT02(E)
     String CREATE_TABLE_FAB = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_TC_FAB + " ("
             + tc_fab001 + " TEXT," + tc_fab002 + " TEXT,"
@@ -59,9 +56,8 @@ public class Create_Table {
 
     //KT02(S)
     String CREATE_TABLE_FIA = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_FIA + " ("
-            + fia01 + " TEXT," + fiaud03 + " TEXT," + fia14 + " TEXT,"
-            + fia10 + " TEXT," + gen02 + " TEXT," + fia11 + " TEXT,"
-            + gem02_1 + " TEXT," + fiaud07 + " TEXT )";
+            + fia01 + " TEXT," + ta_fia02_1 + " TEXT," + fiaud03 + " TEXT,"
+            + fia15 + " TEXT," + fka02 + " TEXT )";
     //KT02(E)
     public Create_Table(Context ctx) {
         this.mCtx = ctx;
@@ -155,19 +151,14 @@ public class Create_Table {
     }
 
     /*KT02(S)*/
-    public String append(String g_fia01, String g_fiaud03, String g_fia14,
-                         String g_fia10, String g_gen02, String g_fia11,
-                         String g_gem02, String g_fiaud07) {
+    public String append(String g_fia01,String g_ta_fia02_1,String g_fiaud03,String g_fia15,String g_fka02) {
         try {
             ContentValues args = new ContentValues();
             args.put(fia01, g_fia01);
+            args.put(ta_fia02_1, g_ta_fia02_1);
             args.put(fiaud03, g_fiaud03);
-            args.put(fia14, g_fia14);
-            args.put(fia10, g_fia10);
-            args.put(gen02, g_gen02);
-            args.put(fia11, g_fia11);
-            args.put(gem02_1, g_gem02);
-            args.put(fiaud07, g_fiaud07);
+            args.put(fia15, g_fia15);
+            args.put(fka02, g_fka02);
             db.insert(TABLE_NAME_FIA, null, args);
             return "TRUE";
         } catch (Exception e) {
@@ -246,7 +237,7 @@ public class Create_Table {
                         " AND ngay='" + ngay+"'";
                 return db.rawQuery(selectQuery, null);
             }else {
-                String selectQuery1 = "SELECT tc_fac003,tc_fac006,tc_fac004,'false' as checkbox1,'false' as checkbox2,'false' as checkbox3,'false' as checkbox4,'false' as checkbox5,'false' as checkbox6,'' as tc_fac009 ,tc_fac005 FROM " + TABLE_NAME_TC_FAC + " WHERE tc_fac002='" + g_kind + "' AND tc_fac001='" + g_kind1+"'";
+                String selectQuery1 = "SELECT tc_fac003,tc_fac006,tc_fac004,'false' as checkbox1,'false' as checkbox2,'true' as checkbox3,'false' as checkbox4,'false' as checkbox5,'false' as checkbox6,'' as tc_fac009 ,tc_fac005 FROM " + TABLE_NAME_TC_FAC + " WHERE tc_fac002='" + g_kind + "' AND tc_fac001='" + g_kind1+"'";
                 return db.rawQuery(selectQuery1, null);
             }
             //SQLiteDatabase db = this.getWritableDatabase();
@@ -264,7 +255,7 @@ public class Create_Table {
         try {
 
             //SQLiteDatabase db = this.getWritableDatabase();
-            String selectQuery = "SELECT distinct fiaud03 FROM fia_file ORDER BY fiaud03";
+            String selectQuery = "SELECT distinct fiaud03 FROM fia_file WHERE ta_fia02_1='Xe nâng dầu' ORDER BY fiaud03";
             return db.rawQuery(selectQuery, null);
 
         } catch (Exception e) {
@@ -274,12 +265,12 @@ public class Create_Table {
 
     /*KT02_loggin_bophan*/
 
-    public Cursor getAll_fia_02_bp() {
+    public Cursor getAll_fia_02_bp(String g_fiaud03) {
         Cursor a;
         try {
 
             //SQLiteDatabase db = this.getWritableDatabase();
-            String selectQuery = "SELECT distinct fia11,gem02 FROM fia_file ORDER BY fia11";
+            String selectQuery = "SELECT distinct fia15,fka02 FROM fia_file WHERE fiaud03='" + g_fiaud03+"' AND ta_fia02_1='Xe nâng dầu' ORDER BY fia15";
             return db.rawQuery(selectQuery, null);
 
         } catch (Exception e) {
@@ -313,7 +304,7 @@ public class Create_Table {
         count = mCount.getInt(0);
         if (count == 0) {
             ContentValues argsC = new ContentValues();
-            Cursor c=db.rawQuery("SELECT tc_fac004,'' as tc_fac009 ,'false' as checkbox1,'false' as checkbox2,'false' as checkbox3," +
+            Cursor c=db.rawQuery("SELECT tc_fac004,'' as tc_fac009 ,'false' as checkbox1,'false' as checkbox2,'true' as checkbox3," +
                     " 'false' as checkbox4,'false' as checkbox5,'false' as checkbox6,tc_fac003,tc_fac005,tc_fac006 FROM " + TABLE_NAME_TC_FAC +
                     " WHERE tc_fac002='" + g_kind + "'",null);
             if(c.getCount()>0){
@@ -344,5 +335,18 @@ public class Create_Table {
         }
     }
 
+    public Cursor getAll_fiaud03() {
+        Cursor a;
+        try {
+
+            //SQLiteDatabase db = this.getWritableDatabase();
+            String selectQuery = "select count(*) AS _id,fiaud03,fia15,fka02 from fia_file " +
+                    " where fiaud03 not in (select distinct somay from tc_fac_table_kt02) AND ta_fia02_1='Xe nâng dầu' group by fiaud03,fia15,fka02 order by fiaud03";
+            return db.rawQuery(selectQuery, null);
+
+        } catch (Exception e) {
+            return null;
+        }
+    }
    //KT02(E)
 }

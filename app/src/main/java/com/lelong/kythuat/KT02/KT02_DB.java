@@ -162,7 +162,7 @@ public class KT02_DB {
 
 
     public Cursor getAll_lvQuery() {
-        String selectQuery = " select COUNT(*) AS _id ,ngay,somay,user, (loai1*5+loai2*2+loai3-loai4*2-loai5*5-loai6*10) as tong" +
+        String selectQuery = " select COUNT(*) AS _id ,ngay,somay,user" +
                 " from (select ngay,somay,user, " +
                 "      (select count(checkbox1)  from tc_fac_table_kt02 where checkbox1='true' and ngay=a.ngay and somay =a.somay and user = a.user ) AS loai1," +
                 "      (select count(checkbox2)  from tc_fac_table_kt02 where checkbox2='true' and ngay=a.ngay and somay =a.somay and user = a.user ) AS loai2," +

@@ -23,10 +23,12 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 
 import com.lelong.kythuat.Create_Table;
-import com.lelong.kythuat.KT03.KT03_DB;
-import com.lelong.kythuat.KT03.KT03_main_activity;
 import com.lelong.kythuat.R;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +49,7 @@ public class login_kt02 {
     ListView lv_query02;
     private Context context;
     Dialog dialog;
-
+    boolean firstDetected = true;
     public void login_dialogkt02(Context context, String menuID, Activity activity) {
         this.activity = activity;
         this.context=context;
@@ -57,6 +59,8 @@ public class login_kt02 {
         Spinner cbxsoxe = dialog.findViewById(R.id.cbxsoxe);
         btnins = dialog.findViewById(R.id.btninsert);
         btnins.setOnClickListener(btnlistener1);
+        btnsearch=dialog.findViewById(R.id.btnsearch);
+        btnsearch.setOnClickListener(btnlistener1);
         lv_query02 = dialog.findViewById(R.id.lv_query02);
         createTable = new Create_Table(dialog.getContext());
         createTable.open();
@@ -83,27 +87,13 @@ public class login_kt02 {
             cbxsoxe.setSelection(0);
             cursor_1.moveToNext();
         }
+
+
+
 //Bộ phận
 
         Spinner cbxbophan = dialog.findViewById(R.id.cbxbophan);
-        List<List_Bophan> qrReScanIpLists = new ArrayList<>();
-
-        cursor_2 = createTable.getAll_fia_02_bp();
-        cursor_2.moveToFirst();
-        int num1 = cursor_2.getCount();
-        station = new String[num1];
-        for (int i = 0; i < num1; i++) {
-
-            try {
-                @SuppressLint("Range") String fia11 = cursor_2.getString(cursor_2.getColumnIndex("fia11"));
-                @SuppressLint("Range") String gem02 = cursor_2.getString(cursor_2.getColumnIndex("gem02"));
-                qrReScanIpLists.add(new List_Bophan(fia11, gem02));
-
-            } catch (Exception e) {
-                String err = e.toString();
-            }
-            cursor_2.moveToNext();
-        }
+        List<Loggin_List> qrReScanIpLists = new ArrayList<>();
         Bophan_Adapter bophan_adapter = new Bophan_Adapter(this.activity,
                 R.layout.kt02_loginsetting_bophan,
                 R.id.sp_mabp,
@@ -111,16 +101,54 @@ public class login_kt02 {
                 qrReScanIpLists);
         cbxbophan.setAdapter(bophan_adapter);
 
+
+        //spinner Scan IP (E)
+        cbxsoxe.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                g_soxe = cbxsoxe.getSelectedItem().toString().trim();
+                qrReScanIpLists.clear();
+                cursor_2 = createTable.getAll_fia_02_bp(g_soxe);
+                cursor_2.moveToFirst();
+                int num1 = cursor_2.getCount();
+                station = new String[num1];
+                for (int i = 0; i < num1; i++) {
+
+                    try {
+                        @SuppressLint("Range") String fia15 = cursor_2.getString(cursor_2.getColumnIndex("fia15"));
+                        @SuppressLint("Range") String fka02 = cursor_2.getString(cursor_2.getColumnIndex("fka02"));
+                        qrReScanIpLists.add(new Loggin_List(fia15, fka02));
+
+                    } catch (Exception e) {
+                        String err = e.toString();
+                    }
+                    cursor_2.moveToNext();
+                }
+                qrReScanIpLists.add(new Loggin_List("", ""));
+                bophan_adapter.notifyDataSetChanged();
+                cbxbophan.setSelection(0);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         cbxbophan.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position >= 0) {
-                    //get IP
-                    List_Bophan res = bophan_adapter.getItem(position);
-                    mabp = res.getMabp().toString().trim();
-                    tenbp = res.getTenbp().toString().trim();
-                    g_bophan = qrReScanIpLists.get(position).getMabp().trim();
-                    //g_bophan=tenbp;
+                int dem= bophan_adapter.getCount();
+                if (position+1< dem){
+                    if (position >= 0) {
+                        //get IP
+                        Loggin_List res = bophan_adapter.getItem(position);
+                        mabp = res.getIDbp().toString().trim();
+                        tenbp = res.getTenbp().toString().trim();
+                        g_bophan = qrReScanIpLists.get(position).getIDbp().trim();
+                        //g_bophan=tenbp;
+
+                    }
                 }
             }
 
@@ -128,23 +156,9 @@ public class login_kt02 {
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
+
+
         });
-        //spinner Scan IP (E)
-        cbxsoxe.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                g_soxe = cbxsoxe.getSelectedItem().toString().trim();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-
-
-
 
         //Danh sach đã kiểm tra (S)
         getLVData();
@@ -235,8 +249,8 @@ public class login_kt02 {
         Cursor cursor = kt02Db.getAll_lvQuery();
         SimpleCursorAdapter simpleCursorAdapter = new SimpleCursorAdapter(context,
                 R.layout.kt02_login_lvrow, cursor,
-                new String[]{"_id", "ngay", "somay", "user", "tong"},
-                new int[]{R.id.tv_stt, R.id.tv_ngay, R.id.tv_soxe,R.id.tv_bophan,R.id.tv_diem},
+                new String[]{"_id", "ngay", "somay", "user"},
+                new int[]{R.id.tv_stt, R.id.tv_ngay, R.id.tv_soxe,R.id.tv_bophan},
                 SimpleCursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
 
         simpleCursorAdapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
@@ -272,8 +286,42 @@ public class login_kt02 {
                     dialog.dismiss();
                     break;
                 }
+                case R.id.btnsearch: {
 
+                    Intent QR020 = new Intent();
+                    QR020.setClass(v.getContext(), KT02_Loggin_Search.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("somay", g_soxe);
+                    bundle.putString("bophan", g_bophan);
+                    bundle.putString("LAYOUT", "notlogin");
+                    QR020.putExtras(bundle);
+                    v.getContext().startActivity(QR020);
+                    dialog.dismiss();
+                    break;
+                }
             }
         }
     };
+    private String docNoiDung_Tu_URL(String theUrl) {
+        StringBuilder content = new StringBuilder();
+        try {
+            // create a url object
+            URL url = new URL(theUrl);
+            // create a urlconnection object
+            URLConnection urlConnection = url.openConnection();
+            // wrap the urlconnection in a bufferedreader
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+            String line;
+            // read from the urlconnection via the bufferedreader
+            while ((line = bufferedReader.readLine()) != null) {
+                content.append(line + "\n");
+                //content.append(line);
+            }
+            bufferedReader.close();
+        } catch (Exception e) {
+            firstDetected = true;
+            e.printStackTrace();
+        }
+        return content.toString();
+    }
 }

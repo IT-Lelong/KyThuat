@@ -108,9 +108,10 @@
     /*loginKT02*/
     <string name="soxe">Số máy</string>
     <string name="bophan">Bộ phận</string>
+    <string name="tenbophan">Tên bộ phận</string>
     <string name="btninsert">Thực hiện</string>
     <string name="diem">Điểm</string>
-
+    <string name="kiemtra">Xe hư</string>
     /*kt01bophan*/
     <string name="btn_addnew">Thêm mới</string>
     <string name="btn_updatesever">Kết chuyển</string>

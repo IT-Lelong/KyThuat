@@ -33,8 +33,10 @@
     <Spinner
         android:id="@+id/cbxbophan"
         android:layout_width="match_parent"
-        android:layout_height="53dp"
-        android:gravity="center" />
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:theme="@style/Spinner"
+        />
 
 
     <LinearLayout
@@ -53,6 +55,16 @@
             android:text="@string/btn_insert"
             android:textColor="@color/white"
             android:textSize="15sp" />
+        <Button
+            android:id="@+id/btnsearch"
+            android:layout_width="100dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:background="@drawable/button_type_nomal"
+            android:text="@string/btn_query"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:layout_marginLeft="20dp"/>
 
     </LinearLayout>
 
@@ -114,15 +126,6 @@
                 android:theme="@style/title"
                 android:textSize="18sp"/>
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="@string/diem"
-                android:textStyle="bold"
-                android:theme="@style/title"
-                android:textSize="18sp"/>
         </LinearLayout>
 
         <ListView
