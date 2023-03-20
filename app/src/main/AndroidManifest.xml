@@ -2,13 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission
-        android:name="android.permission.CAMERA"
+    <uses-permission android:name="android.permission.CAMERA"
         android:required="true"
-        android:requiredFeature="true" />
-
+        android:requiredFeature="true"/>
     <uses-feature android:name="android.hardware.camera" />
-
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
@@ -32,15 +29,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:targetApi="31">
-        <activity
-            android:name=".KT02_CheckDate"
-            android:exported="false" />
-        <activity
-            android:name=".KT02.KT02_Loggin_Search"
-            android:exported="false" />
-        <activity
-            android:name=".KT02.KT02_Loggin_SearchRow"
-            android:exported="false" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -59,38 +47,45 @@
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".Menu"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"/>
         <activity
-            android:name=".KT03.KT03_main_activity"
-            android:exported="true"
+            android:name=".KT03.kt03_main_activity"
+            android:exported="false"
             android:screenOrientation="landscape"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".KT02.KT02_activity"
             android:exported="true"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="adjustPan" />
+
         <activity
             android:name=".KT01.login_kt01"
+            android:windowSoftInputMode="adjustPan"
             android:exported="true"
-            android:screenOrientation="landscape"
-            android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".KT01.kt01_camera" />
-        <activity android:name=".KT01.Log_BoPhan" />
-        <activity android:name=".KT01.kt01_update" />
-        <activity android:name=".KT01.kt01_listbophan" />
+            android:screenOrientation="landscape"/>
+
+        <activity
+            android:name=".KT01.kt01_camera"/>
+        <activity
+            android:name=".KT01.Log_BoPhan"/>
+        <activity
+            android:name=".KT01.kt01_update"/>
+        <activity
+            android:name=".KT01.kt01_listbophan"/>
+
         <activity
             android:name=".KT04.KT04_main_activity"
             android:exported="false"
             android:screenOrientation="landscape"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize"/>
+
     </application>
 
 </manifest>

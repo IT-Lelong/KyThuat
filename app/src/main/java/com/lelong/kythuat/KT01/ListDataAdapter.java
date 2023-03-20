@@ -139,7 +139,6 @@ public class ListDataAdapter extends RecyclerView.Adapter<ListDataAdapter.ViewHo
             gradientDrawable.setStroke(4, Color.RED); // set border color and width
             gradientDrawable.setCornerRadius(20); // set border corner radius
             layers[1] = gradientDrawable;
-
             LayerDrawable layerDrawable = new LayerDrawable(layers);
             holder.btn1.setBackground(layerDrawable);
         }
@@ -166,8 +165,31 @@ public class ListDataAdapter extends RecyclerView.Adapter<ListDataAdapter.ViewHo
             LocalDate currentDate = LocalDate.now();
             bienngay = String.valueOf(currentDate);
         }
-
         holder.btn1.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public
+            void onClick(View v) {
+                ;
+                // Xóa giá trị của EditText
+                //  holder.ghichu1.setText("");
+                DULIEU =mangLV.get(position).getTc_fac004();
+                Intent intent = new Intent(applicationContext, kt01_camera.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("ID", DULIEU);
+                bundle.putString("l_ngay", bienngay);
+                bundle.putString("l_bp", ID2);
+                intent.putExtras(bundle);
+
+
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // add this line
+                applicationContext.startActivity(intent);
+
+
+            }
+        });
+
+       /* holder.btn1.setOnClickListener(new View.OnClickListener() {
 
             @SuppressLint("Range")
             @Override
@@ -202,7 +224,7 @@ public class ListDataAdapter extends RecyclerView.Adapter<ListDataAdapter.ViewHo
                     SpannableStringBuilder message = new SpannableStringBuilder();
                     //message.append("Xác Nhận kết chuyễn?");
 
-
+                   //
                     //AlertDialog dialog = builder.create();
                     // dialog.show();
 
@@ -226,7 +248,7 @@ public class ListDataAdapter extends RecyclerView.Adapter<ListDataAdapter.ViewHo
 
                             kt01Interface.takefoto(applicationContext,DULIEU);
                         }
-                    });
+                    });;
 
                     builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                         @Override
@@ -234,6 +256,7 @@ public class ListDataAdapter extends RecyclerView.Adapter<ListDataAdapter.ViewHo
                             return;
                         }
                     });
+
 
                     AlertDialog dialog = builder.create();
                     dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#669999")));
@@ -250,7 +273,7 @@ public class ListDataAdapter extends RecyclerView.Adapter<ListDataAdapter.ViewHo
 
 
             }
-        });
+        });*/
 
 
 
@@ -302,6 +325,7 @@ public class ListDataAdapter extends RecyclerView.Adapter<ListDataAdapter.ViewHo
                     DULIEUnew =mangLV.get(position).getTc_fac004();
                     db.appendUPDAE(DULIEUnew,newText,bienngay,ID2,"tc_faa006");
                     holder.ghichu1.setText("");
+
 
                     // Nếu người dùng rời khỏi EditText, thì đặt giá trị của EditText là rỗng
                 }

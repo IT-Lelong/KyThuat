@@ -180,43 +180,57 @@ class Log_BoPhan extends AppCompatActivity {
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
+                                File dir = new File("/storage/emulated/0/Pictures/"); // thay đổi đường dẫn tới thư mục chứa hình ảnh tương ứng
+                                File[] files = dir.listFiles();
 
-                                cursor_1 = db.getAll_tc_faa("KT01");
-                                cursor_1.moveToFirst();
-                                int num = cursor_1.getCount();
-                                for (int i = 0; i < num; i++) {
-                                    try {
-                                        @SuppressLint("Range") String tc_faa005 = cursor_1.getString(cursor_1.getColumnIndex("tc_faa005"));
-                                        // String   a = "/storage/emulated/0/Pictures/KT010103_2023-02-25_13_45_37_ABI3100000.jpg";
-                                        String a = "/storage/emulated/0/Pictures/" + tc_faa005 + "" + ".jpg" + "";
-                                        File file = new File(a);
-                                        String File_path = file.getAbsolutePath();
-                                        String[] mangtenfile = File_path.split("\\.");
-                                        File_path = mangtenfile[0] + System.currentTimeMillis() + "." + mangtenfile[1];
-                                        RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/from-data"), file);
-                                        MultipartBody.Part body = MultipartBody.Part.createFormData("uploaded_file", File_path, requestBody);
-                                        DataClient dataClient = APIYtils.getData();
-                                        Call<String> callback = dataClient.UploadPhot(body);
-                                        callback.enqueue(new Callback<String>() {
-                                            @Override
-                                            public void onResponse(Call<String> call, Response<String> response) {
-                                                if (response != null) {
-                                                    String message = response.body();
-                                                    Log.d("BBB", message);
-                                                }
-                                            }
+                                String imageName = null;
+                                for (File file : files) {
+                                    String kiemtratenanh = file.getName().toString().trim().substring(0,2);
+                                  if  (kiemtratenanh.equals("KT")){
+                                      String File_path = file.getAbsolutePath();
+                                      String[] mangtenfile = File_path.split("\\.");
+                                      File_path = mangtenfile[0] + System.currentTimeMillis() + "." + mangtenfile[1];
+                                      RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/from-data"), file);
+                                      MultipartBody.Part body = MultipartBody.Part.createFormData("uploaded_file", File_path, requestBody);
+                                      DataClient dataClient = APIYtils.getData();
+                                      Call<String> callback = dataClient.UploadPhot(body);
+                                      callback.enqueue(new Callback<String>() {
+                                          @Override
+                                          public void onResponse(Call<String> call, Response<String> response) {
+                                              if (response != null) {
+                                                  String message = response.body();
+                                                  Log.d("BBB", message);
+                                                  // Xóa tấm ảnh sau khi upload thành công
+                                                  boolean deleted = file.delete();
+                                                  if (deleted) {
+                                                      Log.d("BBB", "Deleted file: " + file.getAbsolutePath());
+                                                  } else {
+                                                      Log.d("BBB", "Failed to delete file: " + file.getAbsolutePath());
+                                                  }
 
-                                            @Override
-                                            public void onFailure(Call<String> call, Throwable t) {
-                                                Log.d("BBB", t.getMessage());
-                                            }
-                                        });
-                                    } catch (Exception e) {
-                                        String err = e.toString();
-                                    }
+                                              }
+                                          }
 
-                                    cursor_1.moveToNext();
+                                          @Override
+                                          public void onFailure(Call<String> call, Throwable t) {
+                                              Log.d("BBB", t.getMessage());
+                                              // Xóa tấm ảnh sau khi upload thành công
+                                              boolean deleted = file.delete();
+                                              if (deleted) {
+                                                  Log.d("BBB", "Deleted file: " + file.getAbsolutePath());
+                                              } else {
+                                                  Log.d("BBB", "Failed to delete file: " + file.getAbsolutePath());
+                                              }
+                                          }
+                                      });
+
+                                    };
+
                                 }
+
+
+
+
                                 String bien = "A";
                                 DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
                                 Date date = new Date();

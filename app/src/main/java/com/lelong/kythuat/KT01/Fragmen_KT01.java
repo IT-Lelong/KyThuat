@@ -24,6 +24,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.crashlytics.buildtools.reloc.javax.annotation.concurrent.GuardedBy;
 import com.lelong.kythuat.Create_Table;
 import com.lelong.kythuat.R;
 
@@ -173,7 +174,7 @@ public class Fragmen_KT01 extends Fragment implements KT01_Interface{
 
         }
 
-       // load1(view);
+        load1(view);
     }
 
 
@@ -272,7 +273,7 @@ public class Fragmen_KT01 extends Fragment implements KT01_Interface{
                     @SuppressLint("Range") String tc_fac007 = cursor_1.getString(cursor_1.getColumnIndex("tc_fac007"));
                     @SuppressLint("Range") String tc_fac001 = cursor_1.getString(cursor_1.getColumnIndex("tc_fac001"));
                     mangLV.add(new TabLayout(view,tc_fac003,tc_fac004,tc_fac006, tc_fac007,"",false, dkcamera));
-                    db.append(tc_fac004,bienngay,ID2,"","","",tc_fac007,tc_fac006,tc_fac003,tc_fac001);
+                    db.append(tc_fac004,bienngay,ID2,"","","",tc_fac007,tc_fac006,tc_fac003,tc_fac001,"");
                 } catch (Exception e) {
                     String err = e.toString();
                 }
@@ -355,7 +356,6 @@ public class Fragmen_KT01 extends Fragment implements KT01_Interface{
 
      //   ID = getbundle.getString("ID");
         tenanh = key1 +"_"+l_ngay+"_"+formattedTime+"_"+ID1;
-
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(cameraIntent, CAMERA_REQUEST);
 
@@ -436,7 +436,7 @@ public class Fragmen_KT01 extends Fragment implements KT01_Interface{
                 }
 
                 mangLV.add(new TabLayout(view,tc_fac003,tc_fac004,tc_fac006, tc_fac007,ghichu,checkBox,dkcamera));
-                db.append(tc_fac004,bienngay,ID2,"","","",tc_fac007,tc_fac006,tc_fac003,tc_fac001);
+                db.append(tc_fac004,bienngay,ID2,"","","",tc_fac007,tc_fac006,tc_fac003,tc_fac001,"");
             } catch (Exception e) {
                 String err = e.toString();
             }
