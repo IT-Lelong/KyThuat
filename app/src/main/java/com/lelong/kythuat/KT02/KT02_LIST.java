@@ -36,7 +36,7 @@ public class KT02_LIST extends RecyclerView.ViewHolder implements Serializable {
     private String somay;
     //private String tc_fac009;
 
-
+    private  String tenhinh;
     /*public String getCheckBox1() {
         return checkBox1;
     }
@@ -125,9 +125,17 @@ public class KT02_LIST extends RecyclerView.ViewHolder implements Serializable {
         this.checkBox1 = checkBox1;
     }
 
+    public String getTenhinh() {
+        return tenhinh;
+    }
+
+    public void setTenhinh(String tenhinh) {
+        this.tenhinh = tenhinh;
+    }
+
     public KT02_LIST(@NonNull View itemView, String tc_fac003, String tc_fac006, String tc_fac004, Boolean checkBox1, Boolean checkBox2,
-                             Boolean checkBox3, Boolean checkBox4, Boolean checkBox5,Boolean checkBox6, String user, String ngay,
-                             String tc_fac009, String somay) {
+                     Boolean checkBox3, Boolean checkBox4, Boolean checkBox5, Boolean checkBox6, String user, String ngay,
+                     String tc_fac009, String somay, String tenhinh) {
         super(itemView);
         this.tc_fac003 = tc_fac003;
         this.tc_fac006 = tc_fac006;
@@ -142,6 +150,7 @@ public class KT02_LIST extends RecyclerView.ViewHolder implements Serializable {
         this.ngay = ngay;
         this.tc_fac009 = tc_fac009;
         this.somay = somay;
+        this.tenhinh=tenhinh;
     }
 
     public String getTc_fac003() {

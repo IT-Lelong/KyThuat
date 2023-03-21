@@ -20,12 +20,15 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.lelong.kythuat.Create_Table;
 import com.lelong.kythuat.R;
 
 import java.io.BufferedReader;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
@@ -33,7 +36,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class login_kt02 {
+public class login_kt02 extends AppCompatActivity {
     SimpleDateFormat dateFormatKT02 = new SimpleDateFormat("yyyy/MM/dd");
     private Create_Table createTable = null;
     private KT02_DB kt02Db = null;
@@ -44,12 +47,14 @@ public class login_kt02 {
     ArrayList<List_Bophan> mangbp;
 
     String g_soxe, g_bophan, mabp, tenbp;
-    Button btnins, btnsearch;
+    Button btnins, btnsearch,btnfia;
     private Activity activity;
     ListView lv_query02;
     private Context context;
     Dialog dialog;
     boolean firstDetected = true;
+    private final String FILENAME = "mydata.txt";
+
     public void login_dialogkt02(Context context, String menuID, Activity activity) {
         this.activity = activity;
         this.context=context;
@@ -61,6 +66,8 @@ public class login_kt02 {
         btnins.setOnClickListener(btnlistener1);
         btnsearch=dialog.findViewById(R.id.btnsearch);
         btnsearch.setOnClickListener(btnlistener1);
+        btnfia=dialog.findViewById(R.id.btnfia);
+        btnfia.setOnClickListener(btnlistener1);
         lv_query02 = dialog.findViewById(R.id.lv_query02);
         createTable = new Create_Table(dialog.getContext());
         createTable.open();
@@ -299,6 +306,29 @@ public class login_kt02 {
                     dialog.dismiss();
                     break;
                 }
+                case R.id.btnfia: {
+
+                    Intent QR020 = new Intent();
+                    QR020.setClass(v.getContext(), KT02_Search_fia.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("somay", g_soxe);
+                    bundle.putString("bophan", g_bophan);
+                    bundle.putString("LAYOUT", "notlogin");
+                    QR020.putExtras(bundle);
+                    v.getContext().startActivity(QR020);
+                    dialog.dismiss();
+                    break;
+                }
+            }
+        }
+        private void nutchucnang() {
+            try {
+                //FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
+                FileOutputStream fos = openFileOutput(FILENAME,Context.MODE_PRIVATE);
+                fos.write(g_bophan.getBytes());
+                fos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     };

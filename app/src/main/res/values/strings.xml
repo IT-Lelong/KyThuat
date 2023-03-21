@@ -12,6 +12,10 @@
     <string name="btn_insert">新增</string>
     <string name="btn_query">查詢</string>
     <string name="btn_upload">結轉</string>
+    <string name="btn_query1">查詢</string>
+    <string name="btn_capnhat">Cập nhật</string>
+    <string name="btn_search1">DS chưa kiểm tra</string>
+    <string name="btn_search2">DS xe hư</string>
 
     <string name="tt_stt">序號</string>
     <string name="tt_hangmuc">項目</string>
@@ -108,6 +112,7 @@
     <string name="loai5">很差</string>
     <string name="loai6">特差</string>
     <string name="ghichu1">問題補充說明</string>
+    <string name="trangthai">Trạng thái</string>
     /*loginKT02*/
     <string name="soxe">機台號碼</string>
     <string name="bophan">負責部門</string>

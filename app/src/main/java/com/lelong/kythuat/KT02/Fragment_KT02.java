@@ -45,6 +45,7 @@ public class Fragment_KT02 extends Fragment {
     String somay;
     String bophan;
     String ngay;
+    String tenhinh;
     private int position;
 
     String matab, g_lang;
@@ -124,7 +125,6 @@ public class Fragment_KT02 extends Fragment {
         resources.updateConfiguration(configuration, displayMetrics);
     }
 
-
     @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -175,7 +175,7 @@ public class Fragment_KT02 extends Fragment {
                 @SuppressLint("Range") String tc_fac009 = cursor_1.getString(cursor_1.getColumnIndex("tc_fac009"));
 
                 mangLV02.add(new KT02_LIST(view, tc_fac003, tc_fac006, tc_fac004, checkbox1, checkbox2,
-                        checkbox3, checkbox4, checkbox5, checkbox6, bophan, ngay, tc_fac009, somay));
+                        checkbox3, checkbox4, checkbox5, checkbox6, bophan, ngay, tc_fac009, somay,tenhinh));
             } catch (Exception e) {
                 String err = e.toString();
             }

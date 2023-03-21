@@ -61,7 +61,18 @@
             android:layout_height="60dp"
             android:layout_gravity="center"
             android:background="@drawable/button_type_nomal"
-            android:text="@string/btn_query"
+            android:text="@string/btn_search1"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:layout_marginLeft="20dp"/>
+
+        <Button
+            android:id="@+id/btnfia"
+            android:layout_width="100dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:background="@drawable/button_type_nomal"
+            android:text="@string/btn_search2"
             android:textColor="@color/white"
             android:textSize="15sp"
             android:layout_marginLeft="20dp"/>
