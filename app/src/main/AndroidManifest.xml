@@ -72,7 +72,9 @@
             android:screenOrientation="landscape"/>
 
         <activity
-            android:name=".KT01.kt01_camera"/>
+            android:name=".KT01.kt01_camera"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".KT01.Log_BoPhan"/>
         <activity
