@@ -55,7 +55,7 @@
             android:exported="false"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".KT03.kt03_main_activity"
+            android:name=".KT03.KT03_main_activity"
             android:exported="false"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="adjustResize"/>
@@ -64,7 +64,18 @@
             android:exported="true"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="adjustPan" />
-
+        <activity
+            android:name=".KT02.KT02_Search_fia"
+            android:exported="false" />
+        <activity
+            android:name=".KT02.KT02_Loggin_Search"
+            android:exported="false" />
+        <activity
+            android:name=".KT02.KT02_Loggin_SearchRow"
+            android:exported="false" />
+        <activity
+            android:name=".KT02.KT02_camera"
+            android:exported="false" />
         <activity
             android:name=".KT01.login_kt01"
             android:windowSoftInputMode="adjustPan"

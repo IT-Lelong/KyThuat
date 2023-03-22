@@ -1,11 +1,18 @@
 package com.lelong.kythuat.KT02;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.LayerDrawable;
+import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -14,8 +21,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.lelong.kythuat.KT01.kt01_camera;
 import com.lelong.kythuat.R;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class ListDataAdapter_KT02 extends RecyclerView.Adapter<ListDataAdapter_KT02.ViewHolder> {
@@ -23,14 +36,19 @@ public class ListDataAdapter_KT02 extends RecyclerView.Adapter<ListDataAdapter_K
     private Context applicationContext;
     private int resource;
     private ArrayList<KT02_LIST> mangLV02;
-
+    String ID2;
+    String DULIEU;
+    String DULIEUnew,DULIEUnew1;
+    String g_date;
+    String g_bp;
+    String bienngay;
 
     //private TextView user, ngay;
     String g_ghichu,user,ngay,somay,g_checkbox1,g_checkbox2,g_checkbox3,g_checkbox4,g_checkbox5,g_checkbox6,mahangmuc;
 
 
     public ListDataAdapter_KT02(Context context, int resource, ArrayList<KT02_LIST> mangLV02) {
-        this.applicationContext = applicationContext;
+        this.applicationContext = context;
         this.resource = resource;
         this.mangLV02 = mangLV02;
 
@@ -61,6 +79,63 @@ public class ListDataAdapter_KT02 extends RecyclerView.Adapter<ListDataAdapter_K
         user=mangLV02.get(position).getUser();
         somay=mangLV02.get(position).getSomay();
         ngay=mangLV02.get(position).getNgay();
+//S
+        if (mangLV02.get(position).getTenhinh() == "TRUE"){
+            Drawable[] layers = new Drawable[2];
+            layers[0] = applicationContext.getDrawable(R.drawable.camera1); // replace R.drawable.button_image with your button image
+            GradientDrawable gradientDrawable = new GradientDrawable();
+            gradientDrawable.setStroke(4, Color.RED); // set border color and width
+            gradientDrawable.setCornerRadius(20); // set border corner radius
+            layers[1] = gradientDrawable;
+            LayerDrawable layerDrawable = new LayerDrawable(layers);
+            holder.btn1.setBackground(layerDrawable);
+        }
+        if (g_date != null){
+            ID2 = g_bp;
+            bienngay  = g_date;
+        }else
+        {
+            try {
+                //InputStream is = applicationContext.getApplicationContext().openFileInput("mydata.txt");
+                InputStream is=applicationContext.getApplicationContext().openFileInput("mydata.txt");
+                InputStreamReader isr = new InputStreamReader(is);
+                BufferedReader br = new BufferedReader(isr);
+                StringBuilder sb = new StringBuilder();
+                String line;
+                while ((line = br.readLine()) != null) {
+                    sb.append(line);
+                }
+                ID2 = sb.toString();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            LocalDate currentDate = LocalDate.now();
+            bienngay = String.valueOf(currentDate);
+        }
+        holder.btn1.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public
+            void onClick(View v) {
+                ;
+                // Xóa giá trị của EditText
+                //  holder.ghichu1.setText("");
+                //String mahangmuc= mangLV02.get(holder.getPosition()).getTc_fac004();
+                DULIEU =mangLV02.get(holder.getPosition()).getTc_fac004();
+                Intent intent = new Intent(applicationContext, KT02_camera.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("ID", DULIEU);
+                bundle.putString("l_ngay", ngay);
+                bundle.putString("l_bp", user);
+                bundle.putString("l_somay", somay);
+                intent.putExtras(bundle);
+
+
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // add this line
+                applicationContext.startActivity(intent);
+
+            }
+        });
         /*update cột ghi chu (S)*/
         holder.tc_fac009.addTextChangedListener(new TextWatcher() {
             @Override
@@ -249,7 +324,7 @@ public class ListDataAdapter_KT02 extends RecyclerView.Adapter<ListDataAdapter_K
         TextView tc_fac003, tc_fac006, tc_fac004;
 
         EditText tc_fac009;
-
+        Button btn1;
 
         public ViewHolder(View view) {
             super(view);
@@ -263,7 +338,7 @@ public class ListDataAdapter_KT02 extends RecyclerView.Adapter<ListDataAdapter_K
             checkBox5 = (CheckBox) view.findViewById(R.id.checkBox5);
             checkBox6 = (CheckBox) view.findViewById(R.id.checkBox6);
             tc_fac009 = (EditText) view.findViewById(R.id.tc_fac009);
-
+            btn1 = (Button ) view.findViewById(R.id.btn1);
         }
     }
 }

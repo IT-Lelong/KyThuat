@@ -30,13 +30,31 @@ public class KT02_DB {
 
     private final static String tc_fac005 = "tc_fac005"; //Tên hạng mục (tiếng hoa)
     private final static String tc_fac006 = "tc_fac006"; //Tên hạng mục (tiếng việt)
+    private final static String tenhinh = "tenhinh"; //Tên hình
+    private final static String soluong = "soluong"; //Số lượng hình
+    private final static String ghichu = "ghichu"; //
+
+
+    //KT02(S)
+    private final static String TABLE_NAME_FIA_UP = "fia_up_file";
+    private final static String somay_up = "somay_up"; //Số máy
+    private final static String mabp_up = "mabp_up"; //Bộ phận
+    private final static String tebp_up = "tebp_up"; //Tên bộ phận
+    private final static String ngay_up = "ngay_up"; //Ngày
+    private final static String ghichu_up = "ghichu_up"; //Ghi chú
+    private final static String trangthai_up = "trangthai_up"; //Trạng thái
+
+    String CREATE_TABLE_NAME_FIA_UP = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_FIA_UP + " ("
+            + somay_up + " TEXT," + mabp_up + " TEXT," + tebp_up + " TEXT,"
+            + ngay_up + " TEXT," + ghichu_up + " TEXT," + trangthai_up + " TEXT )";
+    //KT02(E)
 
     //Bảng ảo lưu biểu KT02 (S)
     String CREATE_TABLE_NAME_TC_FAC_KT02 = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_TC_FAC_KT02 + " ("
             + tc_fac004 + " TEXT," + tc_fac009 + " TEXT,"
             + checkbox1 + " TEXT ," + checkbox2 + " TEXT," + checkbox3 + " TEXT," + checkbox4 + " TEXT,"
             + checkbox5 + " TEXT," + checkbox6 + " TEXT," + user + " TEXT," + ngay + " TEXT," + somay + " TEXT,"
-            + tc_fac003 + " TEXT," + tc_fac005 + " TEXT," + tc_fac006 + " TEXT)";
+            + tc_fac003 + " TEXT," + tc_fac005 + " TEXT," + tc_fac006 + " TEXT," + tenhinh + " TEXT," + soluong + " TEXT," + ghichu + " TEXT )";
     //Bảng ảo lưu biểu KT02 (E)
 
     public KT02_DB(Context ctx) {
@@ -60,6 +78,7 @@ public class KT02_DB {
             //db.execSQL(CREATE_TABLE_FAC);
             //db.execSQL(attachQuery);
             db.execSQL(CREATE_TABLE_NAME_TC_FAC_KT02);
+            db.execSQL(CREATE_TABLE_NAME_FIA_UP);
         } catch (Exception e) {
 
         }
@@ -70,6 +89,8 @@ public class KT02_DB {
     public void close() {
         try {
             final String DROP_TABLE_NAME_TC_FAC_KT02 = "DROP TABLE IF EXISTS " + TABLE_NAME_TC_FAC_KT02;
+            db.execSQL(DROP_TABLE_NAME_TC_FAC_KT02);
+            final String DROP_TABLE_NAME_FIA_UP = "DROP TABLE IF EXISTS " + TABLE_NAME_FIA_UP;
             db.execSQL(DROP_TABLE_NAME_TC_FAC_KT02);
             db.close();
         } catch (Exception e) {
@@ -193,6 +214,122 @@ public class KT02_DB {
             db.execSQL(DEL_TABLE1);
         } catch (Exception e) {
 
+        }
+    }
+    public long ins_tc_fia_file(
+            String is_ngay, String is_soxe, String is_bophan,String is_tenbp, String is_ghichu) {
+        try {
+            int count = 0;
+            ContentValues argsA = new ContentValues();
+            Cursor mCount = db.rawQuery("SELECT count(*) FROM " + TABLE_NAME_FIA_UP + " WHERE somay_up='" + is_soxe + "' AND mabp_up='" + is_bophan + "' AND ngay_up='" + is_ngay + "'", null);
+            mCount.moveToFirst();
+            count = mCount.getInt(0);
+            if (count <= 0) {
+                argsA.put(somay_up, is_soxe);
+                argsA.put(mabp_up, is_bophan);
+                argsA.put(tebp_up, is_tenbp);
+                argsA.put(ngay_up, is_ngay);
+                argsA.put(ghichu_up, is_ghichu);
+                db.insert(TABLE_NAME_FIA_UP, null, argsA);
+                return 1;
+            }else {
+                return 0;
+            }
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+
+    public Boolean KT_fia_up(String is_soxe, String is_bophan) {
+        Cursor a;
+        try {
+            int count = 0;
+            ContentValues argsA = new ContentValues();
+            //SQLiteDatabase db = this.getWritableDatabase();
+            String selectQuery = "SELECT count(*) as dem FROM " + TABLE_NAME_FIA_UP + " WHERE somay_up='" + is_soxe + "' AND mabp_up='" + is_bophan + "' ";
+            Cursor mCount=db.rawQuery(selectQuery, null);
+            mCount.moveToFirst();
+            count = mCount.getInt(0);
+            if (count > 0) {
+                return true;
+            }else {
+                return false;
+            }
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public Cursor getAll_fiaup() {
+        Cursor a;
+        try {
+
+            //SQLiteDatabase db = this.getWritableDatabase();
+            String selectQuery = "SELECT count(*) AS _id,fiaud03,fia15,fka02,ngay_up,trangthai_up FROM fia_up_file,fia_file WHERE somay_up=fiaud03 AND mabp_up=fia15 " +
+                                 " group by fiaud03,fia15,fka02,ngay_up " +
+                                 " order by fiaud03,fia15,ngay_up ";
+            return db.rawQuery(selectQuery, null);
+
+        } catch (Exception e) {
+            return null;
+        }
+    }
+    public static long update_tc_fiaup(String ud_soxe, String ud_bophan,String ud_ngay,String ud_trangthai) {
+        try {
+            db.execSQL("UPDATE " + TABLE_NAME_FIA_UP + " SET "+trangthai_up+"='" + ud_trangthai + "'" +
+                    " WHERE somay_up='" + ud_soxe + "' AND mabp_up='" + ud_bophan + "' AND ngay_up='" + ud_ngay + "' ");
+            return 1;
+        }catch (Exception e){
+            return 0;
+        }
+    }
+    public Cursor getAll_fiaupnot() {
+        Cursor a;
+        try {
+
+            //SQLiteDatabase db = this.getWritableDatabase();
+            String selectQuery = "SELECT count(*) AS _id,fiaud03,fia15,fka02,ngay_up FROM fia_up_file,fia_file WHERE somay_up=fiaud03 AND mabp_up=fia15 AND (trangthai_up is null OR trangthai_up='Chưa chuyển')" +
+                    " group by fiaud03,fia15,fka02,ngay_up " +
+                    " order by fiaud03,fia15,ngay_up ";
+            return db.rawQuery(selectQuery, null);
+
+        } catch (Exception e) {
+            return null;
+        }
+    }
+    public String appendUPDAEhinhanh(String key,String date,String bp,String xsomay,String tencothinh,String tencotstt,String l_check,int stt){
+        try{
+            ContentValues args=new ContentValues();
+            //   args.put(no1,xno1);
+            //  args.put(ip,xip);
+            //  Cursor mCursor=db.query(TABLE_NAME,new String[]{no1},no1+"=?",new String[]{xno1},null,null,null,null);
+            //  if(mCursor.getCount()>0){
+            db.execSQL("UPDATE " + TABLE_NAME_TC_FAC_KT02 + " SET "+tencothinh+"='"+l_check+"',"+tencotstt+"='"+stt+"' " +
+                    " WHERE tc_fac004='" + key + "' AND user='" + bp + "' AND somay='" + xsomay  + "' AND ngay='" + date + "'");
+            return "TRUE";
+            //  }else{
+            //    db.insert(TABLE_NAME,null,args);
+            //     return "TRUE";
+            // }
+        }catch (Exception e){
+            return "FALSE";
+        }
+    }
+    Cursor demsttanh(String KEY,String bp,String ngay,String xsomay) {
+        try {
+            return db.rawQuery("SELECT  soluong FROM " + TABLE_NAME_TC_FAC_KT02 + " WHERE tc_fac004='" + KEY + "' AND user='" + bp + "' AND somay='" + xsomay  + "' AND ngay='" + ngay + "' ", null);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+    public
+    Cursor xuathinhanh(String key,String l_ngay,String l_bp,String xsomay) {
+        try {
+            return db.rawQuery("SELECT * "
+
+                    + " FROM " + TABLE_NAME_TC_FAC_KT02 + "  WHERE tc_fac004='" + key + "' AND user='" + l_bp + "' AND somay='" + xsomay  + "' AND ngay='" + l_ngay + "'", null);
+        } catch (Exception e) {
+            return null;
         }
     }
 }

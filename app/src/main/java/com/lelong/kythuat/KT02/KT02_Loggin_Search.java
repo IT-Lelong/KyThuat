@@ -62,8 +62,7 @@ public class KT02_Loggin_Search extends AppCompatActivity {
         List_Bophan listBophan = new List_Bophan(dialog.getContext(),
                 R.layout.kt02_search_row, cursor_1,
                 new String[]{"_id","fiaud03", "fia15", "fka02"},
-                new int[]{R.id.tv_stt, R.id.tv_somay, R.id.tv_mabp,R.id.tv_tenbp},
-                List_Bophan.FLAG_REGISTER_CONTENT_OBSERVER);
+                new int[]{R.id.tv_stt, R.id.tv_somay, R.id.tv_mabp,R.id.tv_tenbp});
 
 
 
