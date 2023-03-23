@@ -69,8 +69,6 @@ public class KT02_Loggin_Search extends AppCompatActivity implements KT02_Interf
                 new String[]{"_id","fiaud03", "fia15", "fka02"},
                 new int[]{R.id.tv_stt, R.id.tv_somay, R.id.tv_mabp,R.id.tv_tenbp},this);
 
-
-
         listBophan.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
             @Override
             public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
