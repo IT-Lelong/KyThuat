@@ -1,6 +1,5 @@
 package com.lelong.kythuat.KT02;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -14,11 +13,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.lelong.kythuat.MainActivity;
 import com.lelong.kythuat.R;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -41,23 +36,6 @@ public class List_Bophan extends SimpleCursorAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        //View view = super.getView(position, convertView, parent);
-
-       /* Button button = view.findViewById(R.id.btnkt);
-        button.setTag(position);
-        button.setOnClickListener(btnlistener1);
-
-
-        //Search_List search_list=(Search_List) getItem(position);
-        // Example: @listItemLayoutResource: R.layout.spinner_item_layout_resource
-        // (File: layout/spinner_item_layout_resourcerce.xml)
-        //View rowView = this.flater.inflate(this.listItemLayoutResource, null, true);
-
-        // Example: @textViewItemNameId: R.id.textView_item_name
-        // (A TextView in file layout/spinner_item_layout_resourcerce.xml)
-
-        return super.getView(position, convertView, parent);*/
-
         View view = super.getView(position, convertView, parent);
 
         btnkt = view.findViewById(R.id.btnkt);
@@ -135,15 +113,9 @@ public class List_Bophan extends SimpleCursorAdapter {
             public void onClick(View v) {
                 String ngay = tv_date.getText().toString();
                 String g_ghichu = tv_ghichu.getText().toString().trim();
-                //kt02Db = new KT02_DB(dialog.getContext());
-                //kt02Db.open();
                 kt02Db.ins_tc_fia_file(ngay, g_somay, g_bophan, g_tenbp, g_ghichu);
                 dialog.dismiss();
                 kt02_interface.loadData();
-                /*Boolean chk_qrb = kt02Db.KT_fia_up(g_somay, g_bophan);
-                if (chk_qrb == true) {
-                    btnkt.setBackgroundColor(Color.BLUE);
-                }*/
             }
         });
 

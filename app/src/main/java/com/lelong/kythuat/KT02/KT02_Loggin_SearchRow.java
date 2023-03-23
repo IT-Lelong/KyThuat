@@ -22,7 +22,7 @@ public class KT02_Loggin_SearchRow extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.kt02_search_row);
-        dialog = new Dialog(KT02_Loggin_SearchRow.this);
+        dialog = new Dialog(this);
         dialog.setContentView(R.layout.kt02_search_row);
         btnkt = dialog.findViewById(R.id.btnkt);
         btnkt.setOnClickListener(btnlistener1);
