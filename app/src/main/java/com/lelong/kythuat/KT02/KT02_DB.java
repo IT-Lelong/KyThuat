@@ -288,8 +288,7 @@ public class KT02_DB {
         try {
 
             //SQLiteDatabase db = this.getWritableDatabase();
-            String selectQuery = "SELECT count(*) AS _id,fiaud03,fia15,fka02,ngay_up FROM fia_up_file,fia_file WHERE somay_up=fiaud03 AND mabp_up=fia15 AND (trangthai_up is null OR trangthai_up='Chưa chuyển')" +
-                    " group by fiaud03,fia15,fka02,ngay_up " +
+            String selectQuery = "SELECT fiaud03,fia15,fka02,ngay_up FROM fia_up_file,fia_file WHERE somay_up=fiaud03 AND mabp_up=fia15 AND (trangthai_up is null OR trangthai_up='Chưa chuyển')" +
                     " order by fiaud03,fia15,ngay_up ";
             return db.rawQuery(selectQuery, null);
 

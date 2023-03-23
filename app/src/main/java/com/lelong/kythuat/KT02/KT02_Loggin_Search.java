@@ -29,7 +29,7 @@ import com.lelong.kythuat.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KT02_Loggin_Search extends AppCompatActivity {
+public class KT02_Loggin_Search extends AppCompatActivity implements KT02_Interface{
     private Create_Table createTable = null;
     Cursor cursor_1, cursor_2;
     private Activity activity;
@@ -53,6 +53,11 @@ public class KT02_Loggin_Search extends AppCompatActivity {
         createTable = new Create_Table(getApplicationContext());
 
         createTable.open();
+        LV_Detail();
+    }
+
+    private void LV_Detail(){
+
         //List<Search_List> search_lists = new ArrayList<>();
 
 
@@ -62,7 +67,7 @@ public class KT02_Loggin_Search extends AppCompatActivity {
         List_Bophan listBophan = new List_Bophan(dialog.getContext(),
                 R.layout.kt02_search_row, cursor_1,
                 new String[]{"_id","fiaud03", "fia15", "fka02"},
-                new int[]{R.id.tv_stt, R.id.tv_somay, R.id.tv_mabp,R.id.tv_tenbp});
+                new int[]{R.id.tv_stt, R.id.tv_somay, R.id.tv_mabp,R.id.tv_tenbp},this);
 
 
 
@@ -80,5 +85,10 @@ public class KT02_Loggin_Search extends AppCompatActivity {
 
         });
         lv_search02.setAdapter(listBophan);
+    }
+
+    @Override
+    public void loadData() {
+        LV_Detail();
     }
 }

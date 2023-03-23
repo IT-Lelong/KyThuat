@@ -37,7 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class login_kt02 extends AppCompatActivity {
-    SimpleDateFormat dateFormatKT02 = new SimpleDateFormat("yyyy/MM/dd");
+    SimpleDateFormat dateFormatKT02 = new SimpleDateFormat("yyyy-MM-dd");
     private Create_Table createTable = null;
     private KT02_DB kt02Db = null;
     //private KT03_DB kt03Db = null;
@@ -54,12 +54,16 @@ public class login_kt02 extends AppCompatActivity {
     Dialog dialog;
     boolean firstDetected = true;
     private final String FILENAME = "mydata.txt";
-
+    String g_server = "";
     public void login_dialogkt02(Context context, String menuID, Activity activity) {
         this.activity = activity;
         this.context=context;
         dialog = new Dialog(context);
         dialog.setContentView(R.layout.kt02_activity_loginsetting);
+
+        //Bundle getbundle = getIntent().getExtras();
+        //g_server = getbundle.getString("SERVER");
+        //g_server = getString(R.string.server);
 
         Spinner cbxsoxe = dialog.findViewById(R.id.cbxsoxe);
         btnins = dialog.findViewById(R.id.btninsert);
@@ -314,6 +318,7 @@ public class login_kt02 extends AppCompatActivity {
                     bundle.putString("somay", g_soxe);
                     bundle.putString("bophan", g_bophan);
                     bundle.putString("LAYOUT", "notlogin");
+                    //bundle.putString("SERVER", g_server);
                     QR020.putExtras(bundle);
                     v.getContext().startActivity(QR020);
                     dialog.dismiss();

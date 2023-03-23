@@ -60,7 +60,7 @@ public class Fragment_KT02 extends Fragment {
     private Create_Table createTable_fac02 = null;
 
     private KT02_DB createTable_fac02_detail = null;
-    SimpleDateFormat dateFormatKT02 = new SimpleDateFormat("yyyy/MM/dd");
+    SimpleDateFormat dateFormatKT02 = new SimpleDateFormat("yyyy-MM-dd");
 
     DecimalFormat decimalFormat = new DecimalFormat("00");
     ListDataAdapter_KT02 adapter;

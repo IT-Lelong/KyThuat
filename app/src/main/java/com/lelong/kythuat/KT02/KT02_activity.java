@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -17,6 +18,8 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.lelong.kythuat.Create_Table;
+import com.lelong.kythuat.KT01.Retrofit2.APIYtils;
+import com.lelong.kythuat.KT01.Retrofit2.DataClient;
 import com.lelong.kythuat.R;
 
 import org.json.JSONArray;
@@ -25,6 +28,7 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -32,6 +36,13 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class KT02_activity extends AppCompatActivity {
     String somay, bophan, g_lang;
@@ -47,7 +58,7 @@ public class KT02_activity extends AppCompatActivity {
     int chk_dialog = -1;
     String g_server = "";
     String g_ngay, g_soxe, g_user, g_layout,ngay ;
-    SimpleDateFormat dateFormatKT02 = new SimpleDateFormat("yyyy/MM/dd");
+    SimpleDateFormat dateFormatKT02 = new SimpleDateFormat("yyyy-MM-dd");
     KT02_Interface kt02_interface;
     Fragment_KT02 fragmentKt02 = null;
     private Fragment_KT02 context;
@@ -163,6 +174,56 @@ public class KT02_activity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
+
+                File dir = new File("/storage/emulated/0/Pictures/"); // thay đổi đường dẫn tới thư mục chứa hình ảnh tương ứng
+                File[] files = dir.listFiles();
+
+                String imageName = null;
+                for (File file : files) {
+                    String kiemtratenanh = file.getName().toString().trim().substring(0,2);
+                    if  (kiemtratenanh.equals("KT")){
+                        String File_path = file.getAbsolutePath();
+                        String[] mangtenfile = File_path.split("\\.");
+                        File_path = mangtenfile[0] + System.currentTimeMillis() + "." + mangtenfile[1];
+                        RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/from-data"), file);
+                        MultipartBody.Part body = MultipartBody.Part.createFormData("uploaded_file", File_path, requestBody);
+                        DataClient dataClient = APIYtils.getData();
+                        Call<String> callback = dataClient.UploadPhot(body);
+                        callback.enqueue(new Callback<String>() {
+                            @Override
+                            public void onResponse(Call<String> call, Response<String> response) {
+                                if (response != null) {
+                                    String message = response.body();
+                                    Log.d("BBB", message);
+                                    // Xóa tấm ảnh sau khi upload thành công
+                                    boolean deleted = file.delete();
+                                    if (deleted) {
+                                        Log.d("BBB", "Deleted file: " + file.getAbsolutePath());
+                                    } else {
+                                        Log.d("BBB", "Failed to delete file: " + file.getAbsolutePath());
+                                    }
+
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<String> call, Throwable t) {
+                                Log.d("BBB", t.getMessage());
+                                // Xóa tấm ảnh sau khi upload thành công
+                                boolean deleted = file.delete();
+                                if (deleted) {
+                                    Log.d("BBB", "Deleted file: " + file.getAbsolutePath());
+                                } else {
+                                    Log.d("BBB", "Failed to delete file: " + file.getAbsolutePath());
+                                }
+                            }
+                        });
+
+                    };
+
+                }
+
+                //insert tb tc_fad_file
                 //String ngay = dateFormatKT02.format(new Date()).toString();
                 //tham số Y , biểu thị cập nhật dữ liệu tới chương trình gốc, và save đến qrf_file
                 Cursor upl = createTable.getAll_instc_fad(bophan, somay, ngay);

@@ -6,6 +6,9 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
 public class Create_Table {
 
     private Context mCtx = null;

@@ -56,8 +56,8 @@ public class KT02_Search_fia extends AppCompatActivity {
         dialog.setContentView(R.layout.kt02_searchfia_row);
         //btnkt = dialog.findViewById(R.id.btnkt);
         //btnkt.setOnClickListener(btnlistener1);
-        Bundle getbundle = getIntent().getExtras();
-        g_server = getbundle.getString("SERVER");
+        //Bundle getbundle = getIntent().getExtras();
+        g_server  = getString(R.string.server);;
 
         kt02Db = new KT02_DB(getApplicationContext());
 
@@ -131,7 +131,7 @@ public class KT02_Search_fia extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                final String res = upload_all("http://172.16.40.20/" + g_server + "/TechAPP/upload.php");
+                final String res = upload_all("http://172.16.40.20/" + g_server + "/TechAPP/upload_tc_fan.php");
                 runOnUiThread(new Runnable() { //Vì Toast không thể chạy đc nếu không phải UI Thread nên sử dụng runOnUIThread.
                     @Override
                     public void run() {
@@ -139,7 +139,7 @@ public class KT02_Search_fia extends AppCompatActivity {
                             //tvStatus.setText(getString(R.string.E10));
                             //tvStatus.setText(getString(R.string.ERRORtvStatus_false));
                             //tvStatus.setTextColor(getResources().getColor(R.color.red));
-                            kt02Db.update_tc_fiaup("","","","Chưa chuyển");
+                            //kt02Db.update_tc_fiaup("","","","Chưa chuyển");
                         }
                         if (res.contains("ERROINS")) {
                             //tvStatus.setText("đã được insert");
@@ -152,7 +152,7 @@ public class KT02_Search_fia extends AppCompatActivity {
                             //tvStatus.setText(getString(R.string.ERRORtvStatus_true));
                             //tvStatus.setTextColor(getResources().getColor(R.color.purple_200));
                             //createTable2.delete_table(ngay, somay, bophan);
-                            kt02Db.update_tc_fiaup("","","","Đã chuyển");
+                            //kt02Db.update_tc_fiaup("","","","Đã chuyển");
                         }
                     }
                 });

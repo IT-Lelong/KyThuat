@@ -27,9 +27,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.Random;
 
 public
@@ -52,6 +54,7 @@ class KT02_camera extends AppCompatActivity {
     String tenanh,luutenanh;
     TextView menuID;
     private static final int CAMERA_REQUEST = 1888;
+    SimpleDateFormat dateFormatKT02 = new SimpleDateFormat("yyyy-MM-dd");
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -150,7 +153,7 @@ class KT02_camera extends AppCompatActivity {
                 }
                 ID1 = sb.toString();
                 currentDate = LocalDate.now();
-                l_ngay = String.valueOf(currentDate);
+                l_ngay = String.valueOf(dateFormatKT02.format(new Date()).toString());
             } catch (IOException e) {
                 e.printStackTrace();
             }

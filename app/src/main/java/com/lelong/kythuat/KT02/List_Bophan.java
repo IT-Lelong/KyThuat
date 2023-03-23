@@ -30,13 +30,15 @@ public class List_Bophan extends SimpleCursorAdapter {
     private final String[] from;
     private final int[] to;
     Dialog dialog;
-    String s_somay,s_bophan,s_tenbp;
+    String s_somay, s_bophan, s_tenbp;
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
     TextView tv_date;
     EditText tv_ghichu;
-    Button btn_Date,btn_Insert,btnkt;
+    Button btn_Date, btn_Insert,btnkt;
     private KT02_DB kt02Db = null;
     Cursor cursor_1;
+    KT02_Interface kt02_interface;
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         //View view = super.getView(position, convertView, parent);
@@ -67,8 +69,8 @@ public class List_Bophan extends SimpleCursorAdapter {
 
         kt02Db = new KT02_DB(context.getApplicationContext());
         kt02Db.open();
-        Boolean chk_qrb = kt02Db.KT_fia_up(s_somay,s_bophan);
-        if (chk_qrb == true){
+        Boolean chk_qrb = kt02Db.KT_fia_up(s_somay, s_bophan);
+        if (chk_qrb == true) {
             btnkt.setBackgroundColor(Color.BLUE);
         }
 
@@ -78,42 +80,24 @@ public class List_Bophan extends SimpleCursorAdapter {
                 int position = (int) v.getTag();
                 mCursor.moveToPosition(position);
                 // Do something with the data at the clicked position
-                 s_somay = mCursor.getString(mCursor.getColumnIndexOrThrow("fiaud03"));
-                 s_bophan = mCursor.getString(mCursor.getColumnIndexOrThrow("fia15"));
-               s_tenbp = mCursor.getString(mCursor.getColumnIndexOrThrow("fka02"));
+                s_somay = mCursor.getString(mCursor.getColumnIndexOrThrow("fiaud03"));
+                s_bophan = mCursor.getString(mCursor.getColumnIndexOrThrow("fia15"));
+                s_tenbp = mCursor.getString(mCursor.getColumnIndexOrThrow("fka02"));
 
-
-                switch (v.getId()) {
-
-                    case R.id.btnkt: {
-                        /*Intent QR020 = new Intent();
-                        QR020.setClass(v.getContext(), KT02_CheckDate.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putString("s_somay", s_somay);
-                        bundle.putString("s_bophan", s_bophan);
-                        QR020.putExtras(bundle);
-                        v.getContext().startActivity(QR020);*/
-                        openDialog(s_somay,s_bophan,s_tenbp);
-
-                        break;
-                    }
-                }
-
+                openDialog(s_somay, s_bophan, s_tenbp,position);
             }
         });
 
-
         return view;
-
     }
 
-    private void openDialog(String g_somay,String g_bophan,String g_tenbp) {
+    private void openDialog(String g_somay, String g_bophan, String g_tenbp,int vitri) {
         dialog = new Dialog(context);
         dialog.setContentView(R.layout.kt02_checkdate);
         tv_date = dialog.findViewById(R.id.tv_date);
-        tv_ghichu=dialog.findViewById(R.id.tv_ghichu);
+        tv_ghichu = dialog.findViewById(R.id.tv_ghichu);
         btn_Date = dialog.findViewById(R.id.btn_Date);
-        btn_Insert=dialog.findViewById(R.id.btninsert);
+        btn_Insert = dialog.findViewById(R.id.btninsert);
 
         tv_date.setText(dateFormat.format(new Date()).toString());
 
@@ -149,30 +133,30 @@ public class List_Bophan extends SimpleCursorAdapter {
         btn_Insert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String ngay=tv_date.getText().toString();
-                String g_ghichu=tv_ghichu.getText().toString().trim();
+                String ngay = tv_date.getText().toString();
+                String g_ghichu = tv_ghichu.getText().toString().trim();
                 //kt02Db = new KT02_DB(dialog.getContext());
                 //kt02Db.open();
-                kt02Db.ins_tc_fia_file(ngay,g_somay,g_bophan,g_tenbp,g_ghichu);
-
-                Boolean chk_qrb = kt02Db.KT_fia_up(s_somay,s_bophan);
-                if (chk_qrb == true){
-                    btnkt.setBackgroundColor(Color.BLUE);
-                }
-
+                kt02Db.ins_tc_fia_file(ngay, g_somay, g_bophan, g_tenbp, g_ghichu);
                 dialog.dismiss();
+                kt02_interface.loadData();
+                /*Boolean chk_qrb = kt02Db.KT_fia_up(g_somay, g_bophan);
+                if (chk_qrb == true) {
+                    btnkt.setBackgroundColor(Color.BLUE);
+                }*/
             }
         });
 
         dialog.show();
     }
 
-    public List_Bophan(Context context, int layout, Cursor c, String[] from, int[] to) {
+    public List_Bophan(Context context, int layout, Cursor c, String[] from, int[] to,KT02_Interface kt02Interface) {
         super(context, layout, c, from, to);
         this.context = context;
         this.layout = layout;
         this.mCursor = c;
         this.from = from;
         this.to = to;
+        this.kt02_interface= kt02Interface;
     }
 }
