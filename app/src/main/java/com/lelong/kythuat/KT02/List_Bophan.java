@@ -6,9 +6,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +33,8 @@ public class List_Bophan extends SimpleCursorAdapter {
     EditText tv_ghichu;
     Button btn_Date, btn_Insert,btnkt;
     private KT02_DB kt02Db = null;
+    private final Drawable drawable_blue;
+    private final Drawable drawable_green;
     KT02_Interface kt02_interface;
     Drawable drawButton;
 
@@ -51,8 +51,11 @@ public class List_Bophan extends SimpleCursorAdapter {
 
         Boolean chk_qrb = kt02Db.KT_fia_up(s_somay, s_bophan);
         if (chk_qrb == true) {
-            drawButton = new BitmapDrawable(view.getResources(), BitmapFactory.decodeResource(view.getResources(), R.drawable.button_kt_green));
-            btnkt.setBackground(drawButton);
+           // drawButton = new BitmapDrawable(getResources(), BitmapFactory.decodeResource(context.getResources(), R.drawable.button_kt_green));
+            btnkt.setBackground(drawable_green);
+        }else{
+            //drawButton = new BitmapDrawable(getResources(), BitmapFactory.decodeResource(context.getResources(), R.drawable.button_kt_blue));
+            btnkt.setBackground(drawable_blue);
         }
 
         btnkt.setOnClickListener(new View.OnClickListener() {
@@ -125,7 +128,7 @@ public class List_Bophan extends SimpleCursorAdapter {
         dialog.show();
     }
 
-    public List_Bophan(Context context, int layout, Cursor c, String[] from, int[] to,KT02_Interface kt02Interface) {
+    public List_Bophan(Context context, int layout, Cursor c, String[] from, int[] to, KT02_Interface kt02Interface, Drawable drawable_blue, Drawable drawable_green) {
         super(context, layout, c, from, to);
         this.context = context;
         this.layout = layout;
@@ -135,6 +138,8 @@ public class List_Bophan extends SimpleCursorAdapter {
         this.kt02_interface= kt02Interface;
 
         kt02Db = new KT02_DB(context);
+        this.drawable_blue = drawable_blue;
+        this.drawable_green = drawable_green;
         kt02Db.open();
     }
 }

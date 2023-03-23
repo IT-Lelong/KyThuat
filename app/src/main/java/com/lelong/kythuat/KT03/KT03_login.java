@@ -10,7 +10,10 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Looper;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
@@ -297,6 +300,7 @@ public class KT03_login {
                 new int[]{R.id.tv_stt, R.id.tv_ngay, R.id.tv_ca},
                 SimpleCursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
 
+
         simpleCursorAdapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
             @Override
             public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
@@ -305,6 +309,7 @@ public class KT03_login {
                     ((TextView) view).setText(String.valueOf(rowNumber));
                     return true;
                 }
+
                 return false;
             }
         });
