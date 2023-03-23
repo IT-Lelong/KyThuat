@@ -58,7 +58,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1.5"
             android:adjustViewBounds="true"
-            android:background="@drawable/button_kt"
+            android:background="@drawable/button_kt_blue"
             android:text="@string/btn_capnhat"
             android:textColor="@color/white"
             android:textSize="12sp"

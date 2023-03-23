@@ -241,11 +241,8 @@ public class KT02_DB {
     }
 
     public Boolean KT_fia_up(String is_soxe, String is_bophan) {
-        Cursor a;
         try {
             int count = 0;
-            ContentValues argsA = new ContentValues();
-            //SQLiteDatabase db = this.getWritableDatabase();
             String selectQuery = "SELECT count(*) as dem FROM " + TABLE_NAME_FIA_UP + " WHERE somay_up='" + is_soxe + "' AND mabp_up='" + is_bophan + "' ";
             Cursor mCount=db.rawQuery(selectQuery, null);
             mCount.moveToFirst();

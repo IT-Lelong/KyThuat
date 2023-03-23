@@ -5,7 +5,11 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -31,8 +35,8 @@ public class List_Bophan extends SimpleCursorAdapter {
     EditText tv_ghichu;
     Button btn_Date, btn_Insert,btnkt;
     private KT02_DB kt02Db = null;
-    Cursor cursor_1;
     KT02_Interface kt02_interface;
+    Drawable drawButton;
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -45,11 +49,10 @@ public class List_Bophan extends SimpleCursorAdapter {
         s_bophan = mCursor.getString(mCursor.getColumnIndexOrThrow("fia15"));
         s_tenbp = mCursor.getString(mCursor.getColumnIndexOrThrow("fka02"));
 
-        kt02Db = new KT02_DB(context.getApplicationContext());
-        kt02Db.open();
         Boolean chk_qrb = kt02Db.KT_fia_up(s_somay, s_bophan);
         if (chk_qrb == true) {
-            btnkt.setBackgroundColor(Color.BLUE);
+            drawButton = new BitmapDrawable(view.getResources(), BitmapFactory.decodeResource(view.getResources(), R.drawable.button_kt_green));
+            btnkt.setBackground(drawButton);
         }
 
         btnkt.setOnClickListener(new View.OnClickListener() {
@@ -130,5 +133,8 @@ public class List_Bophan extends SimpleCursorAdapter {
         this.from = from;
         this.to = to;
         this.kt02_interface= kt02Interface;
+
+        kt02Db = new KT02_DB(context);
+        kt02Db.open();
     }
 }

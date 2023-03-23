@@ -338,10 +338,7 @@ public class Create_Table {
     }
 
     public Cursor getAll_fiaud03() {
-        Cursor a;
         try {
-
-            //SQLiteDatabase db = this.getWritableDatabase();
             String selectQuery = "select count(*) AS _id,fiaud03,fia15,fka02 from fia_file " +
                     " where fiaud03 not in (select distinct somay from tc_fac_table_kt02) AND ta_fia02_1='Xe nâng dầu' group by fiaud03,fia15,fka02 order by fiaud03";
             return db.rawQuery(selectQuery, null);
