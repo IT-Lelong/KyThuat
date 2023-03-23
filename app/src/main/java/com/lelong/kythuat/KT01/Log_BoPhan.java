@@ -75,6 +75,7 @@ class Log_BoPhan extends AppCompatActivity {
     private static final int REQUEST_CODE = 1;
     String lbophan1, ID, BP;
     String L_BP, g_lang;
+    String lbophandelete;
     ListView lis1;
     ListView lv_query;
     JSONArray jsonupload;
@@ -259,6 +260,7 @@ class Log_BoPhan extends AppCompatActivity {
                                             } else {
                                                 //Toast.makeText(getApplicationContext(), getString(R.string.M08), Toast.LENGTH_SHORT).show();
                                                 Toast.makeText(getApplicationContext(), "Kết chuyễn dữ liệu thành công: ", Toast.LENGTH_SHORT).show();
+                                                db.delete_tenhinh();
                                                 load();
                                             }
                                         }
@@ -462,9 +464,20 @@ class Log_BoPhan extends AppCompatActivity {
 
         SimpleCursorAdapter simpleCursorAdapter = new SimpleCursorAdapter(this,
                 R.layout.kt01_login_dialog_lvrow, cursor,
-                new String[]{"_id", "tc_faa002", "tc_faa003", "tc_faa007"},
-                new int[]{R.id.tv_stt, R.id.tv_ngay, R.id.tv_BP, R.id.tv_diem},
+                new String[]{"_id", "tc_faa002", "tc_faa003"},
+                new int[]{R.id.tv_stt, R.id.tv_ngay, R.id.tv_BP},
                 SimpleCursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
+        simpleCursorAdapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
+            @Override
+            public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
+                if (view.getId() == R.id.tv_stt) {
+                    int rowNumber = cursor.getPosition() + 1;
+                    ((TextView) view).setText(String.valueOf(rowNumber));
+                    return true;
+                }
+                return false;
+            }
+        });
         lis1.setAdapter(simpleCursorAdapter);
         lis1.setOnItemClickListener((parent, view, position, id) -> {
 
@@ -500,6 +513,31 @@ class Log_BoPhan extends AppCompatActivity {
                         return true;
                     case R.id.clearKT01:
                         db.delete_table1(qry_ngay.getText().toString(), qry_BP.getText().toString());
+                        lbophandelete = qry_BP.getText().toString();
+                        File dir = new File("/storage/emulated/0/Pictures/"); // thay đổi đường dẫn tới thư mục chứa hình ảnh tương ứng
+                        File[] files = dir.listFiles();
+
+                        String imageName = null;
+                        for (File file : files) {
+                            String kiemtratenanh = file.getName().toString().trim().substring(0,2);
+                            if  (kiemtratenanh.equals("KT")) {
+                                String fileName = file.getName(); // Lấy tên của tệp
+                                String[] parts = fileName.split("_"); // Tách tên thành các phần
+                                String result = parts[2]; // Lấy phần tử thứ 3
+                                if (result.equals(lbophandelete)) {
+                                    boolean deleted = file.delete();
+                                    if (deleted) {
+                                        Log.d("BBB", "Deleted file: " + file.getAbsolutePath());
+                                        finish();
+                                    } else {
+                                        Log.d("BBB", "Failed to delete file: " + file.getAbsolutePath());
+                                    }
+                                }
+                                ;
+                            }
+
+                        }
+                        db.delete_tenhinh();
                         //  dialog.dismiss();
                         load();
                         return true;

@@ -11,20 +11,28 @@ class KT01_DB {
     String DATABASE_NAME = "KyThuatDB.db";
     public  SQLiteDatabase db = null;
 
+
+    String TABLE_NAME_Ten_anh = "Ten_anh";
+    String key1  = "key1" ; //Tên ảnh
+    String ngay  = "ngay" ; //Tên ảnh
+    String bophan  = "bophan" ; //Tên ảnh
+    String stt  = "stt" ; //Số thứ tự
+    String tenanh  = "tenanh" ; //Tên ảnh
+
     String TABLE_NAME_TC_FAA = "tc_faa_file";
     String tc_faa001  = "tc_faa001" ; //Mã hạng mục
-    String tc_faa002 = "tc_faa002"; //Nội dung khảo hạch
-    String tc_faa003 = "tc_faa003"; //điểm đạt
-    String tc_faa004 = "tc_faa004"; //Ghi chép khảo hạch
+    String tc_faa002 = "tc_faa002"; //Ngày
+    String tc_faa003 = "tc_faa003"; //Bộ Phận
+    String tc_faa004 = "tc_faa004"; //Trạng thái
 
-    String tc_faa005 = "tc_faa005"; //Ghi chép khảo hạch
+    String tc_faa005 = "tc_faa005"; //Tên ảnh
 
     String tc_faa006 = "tc_faa006"; //Ghi chép khảo hạch
-    String tc_faa007 = "tc_faa007"; //Ghi chép khảo hạch
-    String tc_faa008 = "tc_faa008"; //Ghi chép khảo hạch
-    String tc_faa009 = "tc_faa009"; //Ghi chép khảo hạch
-    String tc_faa010 = "tc_faa010"; //Ghi chép khảo hạch
-    String tc_faa011 = "tc_faa011"; //Ghi chép khảo hạch
+    String tc_faa007 = "tc_faa007"; //Số điểm
+    String tc_faa008 = "tc_faa008"; //
+    String tc_faa009 = "tc_faa009"; //
+    String tc_faa010 = "tc_faa010"; //
+    String tc_faa011 = "tc_faa011"; // ds du lieu
 
     String TABLE_NAME_GEM = "gem_file";
     String gem01 = "gem01"; //Mã bộ phận
@@ -36,6 +44,8 @@ class KT01_DB {
             + tc_faa003 + " TEXT ," + tc_faa004 + " TEXT," + tc_faa005 + " TEXT," + tc_faa006 + " TEXT,"+ tc_faa007 + " TEXT,"+ tc_faa008 + " TEXT,"+ tc_faa009 + " TEXT,"+ tc_faa010 + " TEXT,"+ tc_faa011 + " TEXT,"
             + "PRIMARY KEY (" + tc_faa001 + ", " + tc_faa003 + "))";
 
+    String CREATE_Ten_anh = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_Ten_anh + " ("
+            + stt + " TEXT, " + tenanh + " TEXT, " + key1 + " TEXT, " + bophan + " TEXT, " + ngay + " TEXT," +"PRIMARY KEY (" + ngay + ", " + stt + "))";
 
     public KT01_DB(Context ctx) {
         this.mCtx = ctx;
@@ -45,10 +55,12 @@ class KT01_DB {
         db = mCtx.openOrCreateDatabase(DATABASE_NAME, 0, null);
         try {
             db.execSQL(CREATE_TABLE_FAA);
+            db.execSQL(CREATE_Ten_anh);
         } catch (Exception e) {
 
         }
     }
+
     public void close() {
         try {
             String DROP_TABLE_TC_FAA = "DROP TABLE IF EXISTS " + TABLE_NAME_TC_FAA;
@@ -75,6 +87,37 @@ class KT01_DB {
             db.insert(TABLE_NAME_TC_FAA, null, args);
             return "TRUE";
         } catch (Exception e) {
+            return "FALSE";
+        }
+    }
+    public String append1(String g_key,String g_ngay,String g_bp,String g_stt, String g_tenanh) {
+        try {
+            ContentValues args = new ContentValues();
+            args.put(key1, g_key);
+            args.put(ngay, g_ngay);
+            args.put(bophan, g_bp);
+            args.put(stt, g_stt);
+            args.put(tenanh, g_tenanh);
+            db.insert(TABLE_NAME_Ten_anh, null, args);
+            return "TRUE";
+        } catch (Exception e) {
+            return "FALSE";
+        }
+    }
+    public String appendUPDAE1(String stt,String tenanh){
+        try{
+            ContentValues args=new ContentValues();
+            //   args.put(no1,xno1);
+            //  args.put(ip,xip);
+            //  Cursor mCursor=db.query(TABLE_NAME,new String[]{no1},no1+"=?",new String[]{xno1},null,null,null,null);
+            //  if(mCursor.getCount()>0){
+            db.execSQL("UPDATE " + TABLE_NAME_Ten_anh + " SET "+stt+"='"+stt+"' WHERE tenanh='"+tenanh+"' ");
+            return "TRUE";
+            //  }else{
+            //    db.insert(TABLE_NAME,null,args);
+            //     return "TRUE";
+            // }
+        }catch (Exception e){
             return "FALSE";
         }
     }
@@ -109,7 +152,7 @@ class KT01_DB {
     public
     Cursor getAll_tc_faa1(String app) {
         try {
-            return db.rawQuery("SELECT  COUNT(*)  as _id,SUM(CASE WHEN tc_faa004='Y' THEN tc_faa007 ELSE 0 END) AS tc_faa007  ,tc_faa002,tc_faa003"
+            return db.rawQuery("SELECT  COUNT(*)  as _id ,tc_faa002,tc_faa003"
 
                     + " FROM " + TABLE_NAME_TC_FAA + " group by tc_faa003 ", null);
         } catch (Exception e) {
@@ -159,12 +202,20 @@ class KT01_DB {
     public void delete_table() {
         db.delete(TABLE_NAME_TC_FAA, null  , null);
     }
+    public void delete_tenhinh() {
+        db.delete(TABLE_NAME_Ten_anh, null  , null);
+    }
 
 
     public void delete_table1(String qry_ngay, String qry_bp) {
         String whereClause_hm0102 = "tc_faa002=? AND tc_faa003=?";
         String[] strings = new String[]{qry_ngay, qry_bp};
         db.delete(TABLE_NAME_TC_FAA, whereClause_hm0102, strings);
+    }
+    public void delete_tenanh(String tenanh1) {
+        String whereClause_hm0102 = "tenanh=? ";
+        String[] strings = new String[]{tenanh1};
+        db.delete(TABLE_NAME_Ten_anh, whereClause_hm0102, strings);
     }
     public
     Cursor checkxemdacochupdanhcua(String ngay,String bp ,String key) {
@@ -211,6 +262,38 @@ class KT01_DB {
             return null;
         }
     }
+    public
+    Cursor lananh(String key,String l_ngay,String l_bp) {
+        try {
+            return db.rawQuery("SELECT stt,tenanh"
+
+                    + " FROM " + TABLE_NAME_Ten_anh + "  WHERE ngay='" +l_ngay+ "' AND bophan='" +l_bp+"'AND key1='" +key+"'", null);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+    public
+    Cursor lananh1(String key,String l_ngay,String l_bp,int bien) {
+        try {
+            return db.rawQuery("SELECT (max(stt) - "+ bien +" ) as stt,tenanh"
+
+                    + " FROM " + TABLE_NAME_Ten_anh + "  WHERE ngay='" +l_ngay+ "' AND bophan='" +l_bp+"'AND key1='" +key+"'  ", null);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+    public
+    Cursor lananh2(String key,String l_ngay,String l_bp) {
+        try {
+            //SQLiteDatabase db = this.getWritableDatabase();
+            String selectQuery = "SELECT stt,tenanh FROM " + TABLE_NAME_Ten_anh + " WHERE ngay='" +l_ngay+ "' AND bophan='" +l_bp+"'AND key1='" +key+"' ORDER BY stt DESC ";
+            return db.rawQuery(selectQuery, null);
+        } catch (Exception e) {
+            return null;
+        }
+
+    }
+
 
 
 

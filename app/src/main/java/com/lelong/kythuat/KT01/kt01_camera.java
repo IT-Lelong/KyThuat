@@ -2,18 +2,24 @@ package com.lelong.kythuat.KT01;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -40,6 +46,8 @@ class kt01_camera  extends AppCompatActivity {
     private  KT01_DB db=null;
     String ID,b;
     Cursor cursor_3;
+    Cursor cursor_4;
+    Cursor cursor_5;
     String ID1;
     int STT,demso;
     String l_bp;
@@ -61,6 +69,433 @@ class kt01_camera  extends AppCompatActivity {
         imageViews[3] = (ImageView) findViewById(R.id.imageView4);
         imageViews[4] = (ImageView) findViewById(R.id.imageView5);
         imageViews[5] = (ImageView) findViewById(R.id.imageView6);
+        imageViews[0].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Create dialog to show enlarged image
+                Dialog dialog = new Dialog(kt01_camera.this);
+                dialog.setContentView(R.layout.kt01_dialog_enlarged_image);
+                ImageView imageView = dialog.findViewById(R.id.imageView);
+                Button btn1 = dialog.findViewById(R.id.btn1);
+                Button btn2 = dialog.findViewById(R.id.btn2);
+                TextView textView1 = dialog.findViewById(R.id.menuID11);
+                imageView.setImageDrawable(imageViews[0].getDrawable());
+                textView1.setText(luutenanh);
+                textView1.setTextColor(Color.parseColor("#669999"));
+       btn2.setOnClickListener(new View.OnClickListener() {
+        @Override
+       public void onClick(View v) {
+            dialog.dismiss();
+       }
+          });
+                btn1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(kt01_camera.this);
+                        builder.setMessage("Bạn có chắc chắn muốn xóa không?");
+                        builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                cursor_4 = db.lananh1(ID,l_ngay,ID1,0);
+                                cursor_4.moveToFirst();
+                                int num = cursor_4.getCount();
+                                @SuppressLint("Range") String tenanh = cursor_4.getString(cursor_4.getColumnIndex("tenanh"));
+                                String a = "/storage/emulated/0/Pictures/" + tenanh + ".jpg" + "";
+                                //int num2 = cursor_3.getInt(cursor_3.getColumnIndexOrThrow("tc_faa011"));
+
+                                File fileToDelete = new File(a);
+                                boolean deleted = fileToDelete.delete();
+                                if (deleted) {
+                                    Log.d("BBB", "Deleted file: " + fileToDelete.getAbsolutePath());
+                                    db.delete_tenanh(tenanh);
+                                    Cursor cursor = db.demsttanh(ID,ID1,l_ngay);
+                                    cursor.moveToFirst();
+                                    int num23 = cursor.getInt(cursor.getColumnIndexOrThrow("tc_faa011"));
+                                    int loadhinh = num23 - 1;
+                                    if (loadhinh == 0 ) {
+                                        db.appendUPDAEhinhanh(ID, "",loadhinh, l_ngay,ID1,"TC_FAA005","TC_FAA011");
+                                    }
+                                    db.appendUPDAEhinhanh(ID, luutenanh,loadhinh, l_ngay,ID1,"TC_FAA005","TC_FAA011");
+
+                                } else {
+                                    Log.d("BBB", "Failed to delete file: " + fileToDelete.getAbsolutePath());
+                                }
+                                // Xóa ở đây
+                                Toast.makeText(kt01_camera.this, "Bạn đã xóa", Toast.LENGTH_SHORT).show();
+                                //dialog.dismiss();
+
+                                onResume();
+                            }
+
+                        });    dialog.dismiss();
+
+                        builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                               // dialog.dismiss();
+                            }
+                        });
+                        builder.show();
+
+                    }
+                });
+
+
+                dialog.show();
+
+            }
+
+        });
+        imageViews[1].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Create dialog to show enlarged image
+                Dialog dialog = new Dialog(kt01_camera.this);
+                dialog.setContentView(R.layout.kt01_dialog_enlarged_image);
+                ImageView imageView = dialog.findViewById(R.id.imageView);
+                Button btn1 = dialog.findViewById(R.id.btn1);
+                TextView textView1 = dialog.findViewById(R.id.menuID11);
+                imageView.setImageDrawable(imageViews[1].getDrawable());
+                textView1.setText(luutenanh);
+                textView1.setTextColor(Color.parseColor("#669999"));
+
+                btn1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(kt01_camera.this);
+                        builder.setMessage("Bạn có chắc chắn muốn xóa không?");
+                        builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                cursor_4 = db.lananh1(ID,l_ngay,ID1,1);
+                                cursor_4.moveToFirst();
+                                int num = cursor_4.getCount();
+                                @SuppressLint("Range") String tenanh = cursor_4.getString(cursor_4.getColumnIndex("tenanh"));
+                                String a = "/storage/emulated/0/Pictures/" + tenanh + ".jpg" + "";
+                                //int num2 = cursor_3.getInt(cursor_3.getColumnIndexOrThrow("tc_faa011"));
+
+                                File fileToDelete = new File(a);
+                                boolean deleted = fileToDelete.delete();
+                                if (deleted) {
+                                    Log.d("BBB", "Deleted file: " + fileToDelete.getAbsolutePath());
+                                    db.delete_tenanh(tenanh);
+                                    Cursor cursor = db.demsttanh(ID,ID1,l_ngay);
+                                    cursor.moveToFirst();
+                                    int num23 = cursor.getInt(cursor.getColumnIndexOrThrow("tc_faa011"));
+                                    int loadhinh = num23 - 1;
+                                    if (loadhinh == 0 ) {
+                                        db.appendUPDAEhinhanh(ID, "",loadhinh, l_ngay,ID1,"TC_FAA005","TC_FAA011");
+                                    }
+                                    db.appendUPDAEhinhanh(ID, luutenanh,loadhinh, l_ngay,ID1,"TC_FAA005","TC_FAA011");
+
+                                } else {
+                                    Log.d("BBB", "Failed to delete file: " + fileToDelete.getAbsolutePath());
+                                }
+                                // Xóa ở đây
+                                Toast.makeText(kt01_camera.this, "Bạn đã xóa", Toast.LENGTH_SHORT).show();
+                                dialog.dismiss();
+                                onResume();
+
+                            }
+
+                        });    dialog.dismiss();
+
+                        builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // dialog.dismiss();
+                            }
+                        });
+                        builder.show();
+
+                    }
+                });
+
+                dialog.show();
+
+            }
+
+        });
+        imageViews[2].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Create dialog to show enlarged image
+                Dialog dialog = new Dialog(kt01_camera.this);
+                dialog.setContentView(R.layout.kt01_dialog_enlarged_image);
+                ImageView imageView = dialog.findViewById(R.id.imageView);
+                Button btn1 = dialog.findViewById(R.id.btn1);
+                TextView textView1 = dialog.findViewById(R.id.menuID11);
+                imageView.setImageDrawable(imageViews[2].getDrawable());
+                textView1.setText(luutenanh);
+                textView1.setTextColor(Color.parseColor("#669999"));
+
+                btn1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(kt01_camera.this);
+                        builder.setMessage("Bạn có chắc chắn muốn xóa không?");
+                        builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                cursor_4 = db.lananh1(ID,l_ngay,ID1,2);
+                                cursor_4.moveToFirst();
+                                int num = cursor_4.getCount();
+                                @SuppressLint("Range") String tenanh = cursor_4.getString(cursor_4.getColumnIndex("tenanh"));
+                                String a = "/storage/emulated/0/Pictures/" + tenanh + ".jpg" + "";
+                                //int num2 = cursor_3.getInt(cursor_3.getColumnIndexOrThrow("tc_faa011"));
+
+                                File fileToDelete = new File(a);
+                                boolean deleted = fileToDelete.delete();
+                                if (deleted) {
+                                    Log.d("BBB", "Deleted file: " + fileToDelete.getAbsolutePath());
+                                    db.delete_tenanh(tenanh);
+                                    Cursor cursor = db.demsttanh(ID,ID1,l_ngay);
+                                    cursor.moveToFirst();
+                                    int num23 = cursor.getInt(cursor.getColumnIndexOrThrow("tc_faa011"));
+                                    int loadhinh = num23 - 1;
+                                    if (loadhinh == 0 ) {
+                                        db.appendUPDAEhinhanh(ID, "",loadhinh, l_ngay,ID1,"TC_FAA005","TC_FAA011");
+                                    }
+                                    db.appendUPDAEhinhanh(ID, luutenanh,loadhinh, l_ngay,ID1,"TC_FAA005","TC_FAA011");
+
+                                } else {
+                                    Log.d("BBB", "Failed to delete file: " + fileToDelete.getAbsolutePath());
+                                }
+                                // Xóa ở đây
+                                Toast.makeText(kt01_camera.this, "Bạn đã xóa", Toast.LENGTH_SHORT).show();
+                                dialog.dismiss();
+                                onResume();
+
+                            }
+
+                        });    dialog.dismiss();
+
+                        builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // dialog.dismiss();
+                            }
+                        });
+                        builder.show();
+
+                    }
+                });
+
+                dialog.show();
+
+            }
+
+        });
+        imageViews[3].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Create dialog to show enlarged image
+                Dialog dialog = new Dialog(kt01_camera.this);
+                dialog.setContentView(R.layout.kt01_dialog_enlarged_image);
+                ImageView imageView = dialog.findViewById(R.id.imageView);
+                Button btn1 = dialog.findViewById(R.id.btn1);
+                TextView textView1 = dialog.findViewById(R.id.menuID11);
+                imageView.setImageDrawable(imageViews[3].getDrawable());
+                textView1.setText(luutenanh);
+                textView1.setTextColor(Color.parseColor("#669999"));
+
+                btn1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(kt01_camera.this);
+                        builder.setMessage("Bạn có chắc chắn muốn xóa không?");
+                        builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                cursor_4 = db.lananh1(ID,l_ngay,ID1,3);
+                                cursor_4.moveToFirst();
+                                int num = cursor_4.getCount();
+                                @SuppressLint("Range") String tenanh = cursor_4.getString(cursor_4.getColumnIndex("tenanh"));
+                                String a = "/storage/emulated/0/Pictures/" + tenanh + ".jpg" + "";
+                                //int num2 = cursor_3.getInt(cursor_3.getColumnIndexOrThrow("tc_faa011"));
+                                cursor_4.close();
+                                File fileToDelete = new File(a);
+                                boolean deleted = fileToDelete.delete();
+                                if (deleted) {
+                                    Log.d("BBB", "Deleted file: " + fileToDelete.getAbsolutePath());
+                                    db.delete_tenanh(tenanh);
+                                    Cursor cursor = db.demsttanh(ID,ID1,l_ngay);
+                                    cursor.moveToFirst();
+                                    int num23 = cursor.getInt(cursor.getColumnIndexOrThrow("tc_faa011"));
+                                    int loadhinh = num23 - 1;
+                                    if (loadhinh == 0 ) {
+                                        db.appendUPDAEhinhanh(ID, "",loadhinh, l_ngay,ID1,"TC_FAA005","TC_FAA011");
+                                    }
+                                    db.appendUPDAEhinhanh(ID, luutenanh,loadhinh, l_ngay,ID1,"TC_FAA005","TC_FAA011");
+                                    cursor.close();
+                                } else {
+                                    Log.d("BBB", "Failed to delete file: " + fileToDelete.getAbsolutePath());
+                                }
+                                // Xóa ở đây
+                                Toast.makeText(kt01_camera.this, "ảnh đã được xóa thanh công", Toast.LENGTH_SHORT).show();
+                                dialog.dismiss();
+                                onResume();
+
+                            }
+
+                        });    dialog.dismiss();
+
+                        builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // dialog.dismiss();
+                            }
+                        });
+                        builder.show();
+
+                    }
+                });
+
+                dialog.show();
+
+            }
+
+        });
+        imageViews[4].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Create dialog to show enlarged image
+                Dialog dialog = new Dialog(kt01_camera.this);
+                dialog.setContentView(R.layout.kt01_dialog_enlarged_image);
+                ImageView imageView = dialog.findViewById(R.id.imageView);
+                Button btn1 = dialog.findViewById(R.id.btn1);
+                TextView textView1 = dialog.findViewById(R.id.menuID11);
+                imageView.setImageDrawable(imageViews[4].getDrawable());
+                textView1.setText(luutenanh);
+                textView1.setTextColor(Color.parseColor("#669999"));
+
+                btn1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(kt01_camera.this);
+                        builder.setMessage("Bạn có chắc chắn muốn xóa không?");
+                        builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                cursor_4 = db.lananh1(ID,l_ngay,ID1,4);
+                                cursor_4.moveToFirst();
+                                int num = cursor_4.getCount();
+                                @SuppressLint("Range") String tenanh = cursor_4.getString(cursor_4.getColumnIndex("tenanh"));
+                                String a = "/storage/emulated/0/Pictures/" + tenanh + ".jpg" + "";
+                                //int num2 = cursor_3.getInt(cursor_3.getColumnIndexOrThrow("tc_faa011"));
+
+                                File fileToDelete = new File(a);
+                                boolean deleted = fileToDelete.delete();
+                                if (deleted) {
+                                    Log.d("BBB", "Deleted file: " + fileToDelete.getAbsolutePath());
+                                    db.delete_tenanh(tenanh);
+                                    Cursor cursor = db.demsttanh(ID,ID1,l_ngay);
+                                    cursor.moveToFirst();
+                                    int num23 = cursor.getInt(cursor.getColumnIndexOrThrow("tc_faa011"));
+                                    int loadhinh = num23 - 1;
+                                    if (loadhinh == 0 ) {
+                                        db.appendUPDAEhinhanh(ID, "",loadhinh, l_ngay,ID1,"TC_FAA005","TC_FAA011");
+                                    }
+                                    db.appendUPDAEhinhanh(ID, luutenanh,loadhinh, l_ngay,ID1,"TC_FAA005","TC_FAA011");
+
+                                } else {
+                                    Log.d("BBB", "Failed to delete file: " + fileToDelete.getAbsolutePath());
+                                }
+                                // Xóa ở đây
+                                Toast.makeText(kt01_camera.this, "Bạn đã xóa", Toast.LENGTH_SHORT).show();
+                                dialog.dismiss();
+                                onResume();
+
+                            }
+
+                        });    dialog.dismiss();
+
+                        builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // dialog.dismiss();
+                            }
+                        });
+                        builder.show();
+
+                    }
+                });
+
+                dialog.show();
+
+            }
+
+        });
+        imageViews[5].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Create dialog to show enlarged image
+                Dialog dialog = new Dialog(kt01_camera.this);
+                dialog.setContentView(R.layout.kt01_dialog_enlarged_image);
+                ImageView imageView = dialog.findViewById(R.id.imageView);
+                Button btn1 = dialog.findViewById(R.id.btn1);
+                TextView textView1 = dialog.findViewById(R.id.menuID11);
+                imageView.setImageDrawable(imageViews[5].getDrawable());
+                textView1.setText(luutenanh);
+                textView1.setTextColor(Color.parseColor("#669999"));
+
+                btn1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(kt01_camera.this);
+                        builder.setMessage("Bạn có chắc chắn muốn xóa không?");
+                        builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                cursor_4 = db.lananh1(ID,l_ngay,ID1,5);
+                                cursor_4.moveToFirst();
+                                int num = cursor_4.getCount();
+                                @SuppressLint("Range") String tenanh = cursor_4.getString(cursor_4.getColumnIndex("tenanh"));
+                                String a = "/storage/emulated/0/Pictures/" + tenanh + ".jpg" + "";
+                                //int num2 = cursor_3.getInt(cursor_3.getColumnIndexOrThrow("tc_faa011"));
+
+                                File fileToDelete = new File(a);
+                                boolean deleted = fileToDelete.delete();
+                                if (deleted) {
+                                    Log.d("BBB", "Deleted file: " + fileToDelete.getAbsolutePath());
+                                    db.delete_tenanh(tenanh);
+                                    Cursor cursor = db.demsttanh(ID,ID1,l_ngay);
+                                    cursor.moveToFirst();
+                                    int num23 = cursor.getInt(cursor.getColumnIndexOrThrow("tc_faa011"));
+                                    int loadhinh = num23 - 1;
+                                    if (loadhinh == 0 ) {
+                                        db.appendUPDAEhinhanh(ID, "",loadhinh, l_ngay,ID1,"TC_FAA005","TC_FAA011");
+                                    }
+                                    db.appendUPDAEhinhanh(ID, luutenanh,loadhinh, l_ngay,ID1,"TC_FAA005","TC_FAA011");
+
+                                } else {
+                                    Log.d("BBB", "Failed to delete file: " + fileToDelete.getAbsolutePath());
+                                }
+                                // Xóa ở đây
+                                Toast.makeText(kt01_camera.this, "Bạn đã xóa", Toast.LENGTH_SHORT).show();
+                                dialog.dismiss();
+                                onResume();
+
+                            }
+
+                        });    dialog.dismiss();
+
+                        builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // dialog.dismiss();
+                            }
+                        });
+                        builder.show();
+
+                    }
+                });
+
+                dialog.show();
+
+            }
+
+        });
 
         btnTakePicture = findViewById(R.id.btn_take_picture12);
        // if (num >= 1) {
@@ -72,9 +507,7 @@ class kt01_camera  extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                db=new KT01_DB(v.getContext());
-                db.open();
-                db.appendUPDAEhinhanh(ID, luutenanh,STT, String.valueOf(currentDate),ID1,"TC_FAA005","TC_FAA011");
+
                 Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(cameraIntent, CAMERA_REQUEST);
             }
@@ -87,6 +520,7 @@ class kt01_camera  extends AppCompatActivity {
         if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
             Bitmap photo = (Bitmap) data.getExtras().get("data");
            // imageView.setImageBitmap(photo);
+            luudulieuanh();
             saveImage(photo);
         }
 
@@ -113,6 +547,12 @@ class kt01_camera  extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    private void luudulieuanh(){
+        db=new KT01_DB(this);
+        db.open();
+        db.append1(ID,l_ngay,ID1,String.valueOf(STT),tenanh);
+        db.appendUPDAEhinhanh(ID, luutenanh,STT, l_ngay,ID1,"TC_FAA005","TC_FAA011");
     }
     @Override
     protected void onResume() {
@@ -166,6 +606,12 @@ class kt01_camera  extends AppCompatActivity {
         luutenanh = ID+"_"+l_ngay+"_"+ID1;
         ttxtview  = findViewById(R.id.menuID);
         ttxtview.setText(tenanh);
+        imageViews[0].setImageDrawable(null);
+        imageViews[1].setImageDrawable(null);
+        imageViews[2].setImageDrawable(null);
+        imageViews[3].setImageDrawable(null);
+        imageViews[4].setImageDrawable(null);
+        imageViews[5].setImageDrawable(null);
         if (num >= 1){
             loadanh(ID,l_ngay,ID1);
         }
@@ -192,38 +638,48 @@ class kt01_camera  extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }*/
   private void loadanh(String key ,String l_ngay, String l_bp) {
-      cursor_3 = db.xuathinhanh(key,l_ngay,l_bp);
+      cursor_3 = db.lananh(key,l_ngay,l_bp);
       cursor_3.moveToFirst();
-      int num2 = cursor_3.getInt(cursor_3.getColumnIndexOrThrow("tc_faa011"));
-      //int num = cursor_3.getCount();
-      @SuppressLint("Range") String tc_faa005 = cursor_3.getString(cursor_3.getColumnIndex("tc_faa005"));
-      int tong = ((num2 - 6) + 1);
+      //int num2 = cursor_3.getInt(cursor_3.getColumnIndexOrThrow("tc_faa011"));
+      int num = cursor_3.getCount();
+      if (num > 6){
+          num = 6;
+      }
+      cursor_5 = db.lananh2(key,l_ngay,l_bp);
+      cursor_5.moveToFirst();
+      //int tong = ((num2 - 6) + 1);
       int showanh = 0;
-      for (int i = tong; i <= num2 ; i ++) {
-          try {
+      if(num > 0){
+          for (int i = 1; i <= num ; i ++) {
+              try {
+                  @SuppressLint("Range") String tenanh = cursor_5.getString(cursor_5.getColumnIndex("tenanh"));
+                  // String   a = "/storage/emulated/0/Pictures/KT010103_2023-02-25_13_45_37_ABI3100000.jpg";
+                  String a = "/storage/emulated/0/Pictures/" + tenanh + ".jpg" + "";
+                  //num2 = num2 - 1;
+                  File imgFile = new File(a);
 
-              // String   a = "/storage/emulated/0/Pictures/KT010103_2023-02-25_13_45_37_ABI3100000.jpg";
-              String a = "/storage/emulated/0/Pictures/" + tc_faa005 + "_"+ i +"" + ".jpg" + "";
-              //num2 = num2 - 1;
-              File imgFile = new File(a);
+                  if (imgFile.exists()) {
+                      try {
+                          BitmapFactory.Options options = new BitmapFactory.Options();
+                          options.inPreferredConfig = Bitmap.Config.RGB_565;
+                          Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath(), options);
+                          imageViews[showanh].setImageBitmap(myBitmap);
+                          showanh = showanh +1;
 
-              if (imgFile.exists()) {
-                  try {
-                      BitmapFactory.Options options = new BitmapFactory.Options();
-                      options.inPreferredConfig = Bitmap.Config.RGB_565;
-                      Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath(), options);
-                      imageViews[showanh].setImageBitmap(myBitmap);
-                      showanh = showanh +1;
-                  } catch (Exception e) {
-                      e.printStackTrace();
+                      } catch (Exception e) {
+                          e.printStackTrace();
+                      }
                   }
+              }catch (Exception e) {
+                  String err = e.toString();
               }
-          }catch (Exception e) {
-              String err = e.toString();
+              cursor_5.moveToNext();
           }
       }
 
+
   }
+
 
 
 }

@@ -34,13 +34,5 @@
         android:paddingLeft="5dp"
         android:background="@drawable/border_listview"
         android:textColor="@color/black" />
-    <TextView
-        android:id="@+id/tv_diem"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:paddingLeft="5dp"
-        android:background="@drawable/border_listview"
-        android:textColor="@color/black" />
+
 </LinearLayout>

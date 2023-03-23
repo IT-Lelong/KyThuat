@@ -151,7 +151,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:paddingLeft="5dp"
-                android:text="@string/ls01"
+                android:text="@string/tt_stt"
                 android:textStyle="bold"
                 android:theme="@style/title" />
 
@@ -175,15 +175,7 @@
                 android:text="@string/ls03"
                 android:textStyle="bold"
                 android:theme="@style/title" />
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:paddingLeft="5dp"
-                android:text="@string/ls04"
-                android:textStyle="bold"
-                android:theme="@style/title" />
+
         </LinearLayout>
 
         <ListView
