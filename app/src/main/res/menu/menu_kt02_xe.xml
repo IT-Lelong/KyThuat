@@ -6,6 +6,6 @@
         android:title="@string/btn_upload"/>
     <item
         android:id="@+id/menu3"
-        android:title="@string/btn_cancel"/>
+        android:title="@string/btn_cancel1"/>
 
 </menu>

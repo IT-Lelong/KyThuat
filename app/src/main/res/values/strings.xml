@@ -16,6 +16,7 @@
     <string name="btn_capnhat">Cập nhật</string>
     <string name="btn_search1">DS chưa kiểm tra</string>
     <string name="btn_search2">DS xe hư</string>
+    <string name="btn_cancel1">Xóa đã chuyển</string>
 
     <string name="tt_stt">序號</string>
     <string name="tt_hangmuc">項目</string>
