@@ -36,7 +36,6 @@ public class List_Bophan extends SimpleCursorAdapter {
     private final Drawable drawable_blue;
     private final Drawable drawable_green;
     KT02_Interface kt02_interface;
-    Drawable drawButton;
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -51,10 +50,8 @@ public class List_Bophan extends SimpleCursorAdapter {
 
         Boolean chk_qrb = kt02Db.KT_fia_up(s_somay, s_bophan);
         if (chk_qrb == true) {
-           // drawButton = new BitmapDrawable(getResources(), BitmapFactory.decodeResource(context.getResources(), R.drawable.button_kt_green));
             btnkt.setBackground(drawable_green);
         }else{
-            //drawButton = new BitmapDrawable(getResources(), BitmapFactory.decodeResource(context.getResources(), R.drawable.button_kt_blue));
             btnkt.setBackground(drawable_blue);
         }
 
@@ -113,6 +110,8 @@ public class List_Bophan extends SimpleCursorAdapter {
                 pic.show();
             }
         });
+
+
 
         btn_Insert.setOnClickListener(new View.OnClickListener() {
             @Override

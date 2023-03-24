@@ -12,7 +12,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             android:gravity="center"
             android:text="@string/tt_stt"
             android:textStyle="bold"
@@ -22,7 +22,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1.5"
+            android:layout_weight="1"
             android:gravity="center"
             android:text="@string/soxe"
             android:textStyle="bold"
@@ -31,7 +31,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1.5"
+            android:layout_weight="1"
             android:gravity="center"
             android:text="@string/bophan"
             android:textStyle="bold"
@@ -40,7 +40,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="4"
+            android:layout_weight="3"
             android:gravity="center"
             android:text="@string/tenbophan"
             android:textStyle="bold"
@@ -49,7 +49,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_weight="1.5"
             android:gravity="center"
             android:text="@string/tt_ngay"
             android:textStyle="bold"
@@ -58,7 +58,16 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_weight="1.5"
+            android:gravity="center"
+            android:text="@string/ghichu"
+            android:textStyle="bold"
+            android:theme="@style/title"
+            android:textSize="18sp"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.5"
             android:gravity="center"
             android:text="@string/trangthai"
             android:textStyle="bold"

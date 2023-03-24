@@ -307,7 +307,7 @@ public class login_kt02 extends AppCompatActivity {
                     bundle.putString("LAYOUT", "notlogin");
                     QR020.putExtras(bundle);
                     v.getContext().startActivity(QR020);
-                    dialog.dismiss();
+                    //dialog.dismiss();
                     break;
                 }
                 case R.id.btnfia: {

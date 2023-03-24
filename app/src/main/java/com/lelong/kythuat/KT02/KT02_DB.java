@@ -208,14 +208,13 @@ public class KT02_DB {
         String[] strings = new String[]{qry_ngay, qry_somay, qry_user};
         db.delete(TABLE_NAME_TC_FAC_KT02, where_loggin, strings);
     }
-    public void del_db(String xuser, String xngay, String xsomay) {
-        try {
-            final String DEL_TABLE1 = "DELETE FROM " + TABLE_NAME_TC_FAC_KT02 + " WHERE user = '" + xuser + "' and ngay = '" + xngay + "' and somay = '" + xsomay + "'";
-            db.execSQL(DEL_TABLE1);
-        } catch (Exception e) {
 
-        }
+    public void del_fiaup() {
+        String where_loggin = "trangthai_up=? ";
+        String[] strings = new String[]{"Đã chuyển"};
+        db.delete(TABLE_NAME_FIA_UP , where_loggin, strings);
     }
+
     public long ins_tc_fia_file(
             String is_ngay, String is_soxe, String is_bophan,String is_tenbp, String is_ghichu) {
         try {
@@ -262,7 +261,7 @@ public class KT02_DB {
         try {
 
             //SQLiteDatabase db = this.getWritableDatabase();
-            String selectQuery = "SELECT count(*) AS _id,fiaud03,fia15,fka02,ngay_up,trangthai_up FROM fia_up_file,fia_file WHERE somay_up=fiaud03 AND mabp_up=fia15 " +
+            String selectQuery = "SELECT count(*) AS _id,fiaud03,fia15,fka02,ngay_up,ghichu_up,trangthai_up FROM fia_up_file,fia_file WHERE somay_up=fiaud03 AND mabp_up=fia15 " +
                                  " group by fiaud03,fia15,fka02,ngay_up " +
                                  " order by fiaud03,fia15,ngay_up ";
             return db.rawQuery(selectQuery, null);
@@ -273,13 +272,24 @@ public class KT02_DB {
     }
     public static long update_tc_fiaup(String ud_soxe, String ud_bophan,String ud_ngay,String ud_trangthai) {
         try {
-            db.execSQL("UPDATE " + TABLE_NAME_FIA_UP + " SET "+trangthai_up+"='" + ud_trangthai + "'" +
+            db.execSQL("UPDATE " + TABLE_NAME_FIA_UP + " SET trangthai_up ='" + ud_trangthai + "'" +
                     " WHERE somay_up='" + ud_soxe + "' AND mabp_up='" + ud_bophan + "' AND ngay_up='" + ud_ngay + "' ");
             return 1;
         }catch (Exception e){
             return 0;
         }
     }
+
+    public static long update_tc_fiaup1() {
+        try {
+            db.execSQL("UPDATE " + TABLE_NAME_FIA_UP + " SET trangthai_up ='Chưa chuyển'" +
+                    " WHERE trangthai_up IS NULL ");
+            return 1;
+        }catch (Exception e){
+            return 0;
+        }
+    }
+
     public Cursor getAll_fiaupnot() {
         Cursor a;
         try {

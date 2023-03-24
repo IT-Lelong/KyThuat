@@ -18,8 +18,8 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.lelong.kythuat.Create_Table;
-import com.lelong.kythuat.KT01.Retrofit2.APIYtils;
-import com.lelong.kythuat.KT01.Retrofit2.DataClient;
+import com.lelong.kythuat.KT02.Retrofit2.APIYtils;
+import com.lelong.kythuat.KT02.Retrofit2.DataClient;
 import com.lelong.kythuat.R;
 
 import org.json.JSONArray;
