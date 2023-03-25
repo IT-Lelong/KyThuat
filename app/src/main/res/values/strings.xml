@@ -1,5 +1,5 @@
 <resources>
-    <string name="server">PHPtop</string>
+    <string name="server">PHP</string>
     <string name="app_name">KyThuat</string>
 
     <string name="btn_ok">確定</string>

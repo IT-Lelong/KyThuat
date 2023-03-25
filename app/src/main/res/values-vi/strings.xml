@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="server">PHPtop</string>
+    <string name="server">PHP</string>
     <string name="app_name">KyThuat</string>
 
     <string name="btn_ok">Xác nhận</string>

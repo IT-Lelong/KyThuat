@@ -197,7 +197,7 @@ public class Menu extends AppCompatActivity {
         Thread api = new Thread(new Runnable() {
             @Override
             public void run() {
-                String res_fab = get_DataTable("http://172.16.40.20/PHPtest/TechAPP/getDataTable.php?item=fab");
+                String res_fab = get_DataTable("http://172.16.40.20/" + g_server + "/TechAPP/getDataTable.php?item=fab");
                 if (!res_fab.equals("FALSE")) {
                     try {
                         JSONArray jsonarray = new JSONArray(res_fab);
@@ -214,7 +214,7 @@ public class Menu extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
-                    String res_fac = get_DataTable("http://172.16.40.20/PHPtest/TechAPP/getDataTable.php?item=fac");
+                    String res_fac = get_DataTable("http://172.16.40.20/" + g_server + "/TechAPP/getDataTable.php?item=fac");
                     if (!res_fac.equals("FALSE")) {
                         try {
                             JSONArray jsonarray = new JSONArray(res_fac);
@@ -238,7 +238,7 @@ public class Menu extends AppCompatActivity {
                             e.printStackTrace();
                         }
 
-                        String res_gem = get_DataTable("http://172.16.40.20/PHPtest/TechAPP/getDataTable.php?item=gem");
+                        String res_gem = get_DataTable("http://172.16.40.20/" + g_server + "/TechAPP/getDataTable.php?item=gem");
                         if (!res_gem.equals("FALSE")) {
                             try {
                                 JSONArray jsonarray = new JSONArray(res_gem);
@@ -253,7 +253,7 @@ public class Menu extends AppCompatActivity {
                             }
                         }
 
-                        String res_fia = get_DataTable("http://172.16.40.20/PHPtest/TechAPP/getDataTable.php?item=fia");
+                        String res_fia = get_DataTable("http://172.16.40.20/" + g_server + "/TechAPP/getDataTable.php?item=fia");
                         if (!res_fia.equals("FALSE")) {
                             try {
                                 JSONArray jsonarray = new JSONArray(res_fia);
