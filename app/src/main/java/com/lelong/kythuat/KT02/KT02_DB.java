@@ -211,7 +211,8 @@ public class KT02_DB {
 
     public void del_fiaup() {
         String where_loggin = "trangthai_up=? ";
-        String[] strings = new String[]{"Đã chuyển"};
+        //String[] strings = new String[]{"Đã chuyển"};
+        String[] strings = new String[]{"Chưa chuyển"};
         db.delete(TABLE_NAME_FIA_UP , where_loggin, strings);
     }
 
@@ -283,7 +284,7 @@ public class KT02_DB {
     public static long update_tc_fiaup1() {
         try {
             db.execSQL("UPDATE " + TABLE_NAME_FIA_UP + " SET trangthai_up ='Chưa chuyển'" +
-                    " WHERE trangthai_up IS NULL ");
+                    " WHERE trangthai_up IS NULL OR trangthai_up ='Chưa chuyển'");
             return 1;
         }catch (Exception e){
             return 0;

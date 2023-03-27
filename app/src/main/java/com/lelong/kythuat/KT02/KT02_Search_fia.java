@@ -73,11 +73,12 @@ public class KT02_Search_fia extends AppCompatActivity {
         kt02Db = new KT02_DB(getApplicationContext());
 
         kt02Db.open();
-        //List<Search_List> search_lists = new ArrayList<>();
+        getLVData();
 
 
-        //cbxbophan.setAdapter(bophan_adapter);
 
+    }
+    private void getLVData(){
         cursor_1 = kt02Db.getAll_fiaup();
         SimpleCursorAdapter simpleCursorAdapter = new SimpleCursorAdapter(dialog.getContext(),
                 R.layout.kt02_searchfia_row, cursor_1,
@@ -100,7 +101,6 @@ public class KT02_Search_fia extends AppCompatActivity {
 
         });
         lv_search02.setAdapter(simpleCursorAdapter);
-
     }
 
     //Khởi tạo menu trên thanh tiêu đề (S)
@@ -117,10 +117,11 @@ public class KT02_Search_fia extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.menu2:
                 Update_tc_faiup();
-                dialog.dismiss();
+                //getLVData();
                 break;
             case R.id.menu3:
                 delete_data();
+                //getLVData();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -145,8 +146,8 @@ public class KT02_Search_fia extends AppCompatActivity {
                 }
 
                 final String res = upload_all("http://172.16.40.20/" + g_server + "/TechAPP/upload_tc_fan.php");
-                    if (!res.equals("FALSE")){
-                        if (!res.equals("TRUE")){
+                    if (!res.equals("False")){
+                        if(res.length()>6 ){
                             runOnUiThread(new Runnable() { //Vì Toast không thể chạy đc nếu không phải UI Thread nên sử dụng runOnUIThread.
                                 @Override
                                 public void run() {
@@ -162,9 +163,9 @@ public class KT02_Search_fia extends AppCompatActivity {
                                             kt02Db.update_tc_fiaup(g_tc_fan001,g_tc_fan002,g_tc_fan004,"Đã chuyển");
 
                                             //trangthai.setText("Chưa chuyển");
-
                                         }
                                         kt02Db.update_tc_fiaup1();
+                                        getLVData();
                                     } catch (JSONException e) {
                                         String abc = e.toString();
                                         e.printStackTrace();
@@ -173,6 +174,7 @@ public class KT02_Search_fia extends AppCompatActivity {
                             });
                         }else {
                             kt02Db.update_tc_fiaup1();
+                            getLVData();
                         }
                     }
             }
@@ -182,6 +184,7 @@ public class KT02_Search_fia extends AppCompatActivity {
 
     private void delete_data() {
         kt02Db.del_fiaup();
+        getLVData();
     }
 
     public JSONArray cur2Json(Cursor cursor) {
@@ -232,7 +235,7 @@ public class KT02_Search_fia extends AppCompatActivity {
             reader.close();
             return result;
         } catch (Exception ex) {
-            return "false";
+            return "False";
         } finally {
             if (conn != null) {
                 conn.disconnect();

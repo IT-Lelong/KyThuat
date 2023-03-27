@@ -257,7 +257,7 @@ public class Create_Table {
         try {
 
             //SQLiteDatabase db = this.getWritableDatabase();
-            String selectQuery = "SELECT distinct fiaud03 FROM fia_file WHERE ta_fia02_1='Xe nâng dầu' ORDER BY fiaud03";
+            String selectQuery = "SELECT distinct fiaud03 FROM fia_file WHERE ta_fia02_1='Xe nâng dầu' AND fia15 NOT LIKE 'B%' ORDER BY fiaud03";
             return db.rawQuery(selectQuery, null);
 
         } catch (Exception e) {
@@ -272,7 +272,7 @@ public class Create_Table {
         try {
 
             //SQLiteDatabase db = this.getWritableDatabase();
-            String selectQuery = "SELECT distinct fia15,fka02 FROM fia_file WHERE fiaud03='" + g_fiaud03+"' AND ta_fia02_1='Xe nâng dầu' ORDER BY fia15";
+            String selectQuery = "SELECT distinct fia15,fka02 FROM fia_file WHERE fiaud03='" + g_fiaud03+"' AND ta_fia02_1='Xe nâng dầu' AND fia15 NOT LIKE 'B%' ORDER BY fia15";
             return db.rawQuery(selectQuery, null);
 
         } catch (Exception e) {
@@ -340,7 +340,8 @@ public class Create_Table {
     public Cursor getAll_fiaud03() {
         try {
             String selectQuery = "select count(*) AS _id,fiaud03,fia15,fka02 from fia_file " +
-                    " where fiaud03 not in (select distinct somay from tc_fac_table_kt02) AND ta_fia02_1='Xe nâng dầu' group by fia15,fiaud03,fka02 order by fia15,fiaud03";
+                    " where fiaud03 not in (select distinct somay from tc_fac_table_kt02) AND ta_fia02_1='Xe nâng dầu' AND fia15 NOT LIKE 'B%' " +
+                    " group by fia15,fiaud03,fka02 order by fia15,fiaud03";
             return db.rawQuery(selectQuery, null);
 
         } catch (Exception e) {
