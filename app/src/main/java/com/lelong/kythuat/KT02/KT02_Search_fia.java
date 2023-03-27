@@ -11,6 +11,7 @@ import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Looper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -60,28 +61,33 @@ public class KT02_Search_fia extends AppCompatActivity {
     }
 
     private void getLVData() {
-        cursor_1 = kt02Db.getAll_fiaup();
-        SimpleCursorAdapter simpleCursorAdapter = new SimpleCursorAdapter(getApplicationContext(),
-                R.layout.kt02_searchfia_row, cursor_1,
-                new String[]{"_id", "fiaud03", "fia15", "fka02", "ngay_up", "ghichu_up", "trangthai_up"},
-                new int[]{R.id.tv_stt, R.id.tv_somay, R.id.tv_mabp, R.id.tv_tenbp, R.id.tv_ngay, R.id.tv_ghichu, R.id.tv_trangthai},
-                SimpleCursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
-
-
-        simpleCursorAdapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
+        runOnUiThread(new Runnable() {
             @Override
-            public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
-                if (view.getId() == R.id.tv_stt) {
-                    int rowNumber = cursor.getPosition() + 1;
-                    ((TextView) view).setText(String.valueOf(rowNumber));
-                    return true;
-                }
+            public void run() {
+                cursor_1 = kt02Db.getAll_fiaup();
+                SimpleCursorAdapter simpleCursorAdapter = new SimpleCursorAdapter(getApplicationContext(),
+                        R.layout.kt02_searchfia_row, cursor_1,
+                        new String[]{"_id", "fiaud03", "fia15", "fka02", "ngay_up", "ghichu_up", "trangthai_up"},
+                        new int[]{R.id.tv_stt, R.id.tv_somay, R.id.tv_mabp, R.id.tv_tenbp, R.id.tv_ngay, R.id.tv_ghichu, R.id.tv_trangthai},
+                        SimpleCursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
 
-                return false;
+
+                simpleCursorAdapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
+                    @Override
+                    public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
+                        if (view.getId() == R.id.tv_stt) {
+                            int rowNumber = cursor.getPosition() + 1;
+                            ((TextView) view).setText(String.valueOf(rowNumber));
+                            return true;
+                        }
+
+                        return false;
+                    }
+
+                });
+                lv_search02.setAdapter(simpleCursorAdapter);
             }
-
         });
-        lv_search02.setAdapter(simpleCursorAdapter);
     }
 
     //Khởi tạo menu trên thanh tiêu đề (S)
@@ -110,12 +116,10 @@ public class KT02_Search_fia extends AppCompatActivity {
     }
 
     private void Update_tc_faiup() {
-
-
         Thread UpLoad_fia = new Thread(new Runnable() {
             @Override
             public void run() {
-//String ngay = dateFormatKT02.format(new Date()).toString();
+                //String ngay = dateFormatKT02.format(new Date()).toString();
                 //tham số Y , biểu thị cập nhật dữ liệu tới chương trình gốc, và save đến qrf_file
                 Cursor upl = kt02Db.getAll_fiaupnot();
                 jsonupload = cur2Json(upl);
@@ -165,7 +169,9 @@ public class KT02_Search_fia extends AppCompatActivity {
         Thread Load_fia = new Thread(new Runnable() {
             @Override
             public void run() {
+                Looper.prepare(); // Chuẩn bị luồng để chạy vòng lặp sự kiện
                 getLVData();
+                Looper.loop(); // Bắt đầu vòng lặp sự kiện
             }
         });
         //dialog.dismiss();
