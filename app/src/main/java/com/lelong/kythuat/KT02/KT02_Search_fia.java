@@ -40,50 +40,31 @@ import java.util.ArrayList;
 public class KT02_Search_fia extends AppCompatActivity {
 
     private KT02_DB kt02Db = null;
-    Cursor cursor_1, cursor_2;
+    Cursor cursor_1;
     private Activity activity;
     ListView lv_search02;
     private Context context;
-    Dialog dialog;
-    Button btnkt;
     JSONObject ujobject;
     JSONArray jsonupload;
     String g_server = "";
-    Bundle bundle;
-    ArrayList<KT02_fiaupdate_ListData> kt02_fiaupdate_listData;
-    String uptc_fan004, uptc_fan001,uptc_fan002;
-    TextView trangthai;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_kt02_searchfia);
         lv_search02 = findViewById(R.id.lv_search02);
-        this.activity = activity;
-        /*this.context=context;
-        dialog = new Dialog(context);
-        dialog.setContentView(R.layout.kt02_loggin_search);*/
-        dialog = new Dialog(KT02_Search_fia.this);
-        dialog.setContentView(R.layout.kt02_searchfia_row);
-        //btnkt = dialog.findViewById(R.id.btnkt);
-        //btnkt.setOnClickListener(btnlistener1);
-        //Bundle getbundle = getIntent().getExtras();
-        g_server  = getString(R.string.server);;
-        trangthai= dialog.findViewById(R.id.tv_trangthai);
-
+        g_server = getString(R.string.server);
         kt02Db = new KT02_DB(getApplicationContext());
-
         kt02Db.open();
         getLVData();
-
-
-
     }
-    private void getLVData(){
+
+    private void getLVData() {
         cursor_1 = kt02Db.getAll_fiaup();
-        SimpleCursorAdapter simpleCursorAdapter = new SimpleCursorAdapter(dialog.getContext(),
+        SimpleCursorAdapter simpleCursorAdapter = new SimpleCursorAdapter(getApplicationContext(),
                 R.layout.kt02_searchfia_row, cursor_1,
-                new String[]{"_id", "fiaud03", "fia15", "fka02", "ngay_up","ghichu_up","trangthai_up"},
-                new int[]{R.id.tv_stt, R.id.tv_somay, R.id.tv_mabp, R.id.tv_tenbp, R.id.tv_ngay,R.id.tv_ghichu,R.id.tv_trangthai},
+                new String[]{"_id", "fiaud03", "fia15", "fka02", "ngay_up", "ghichu_up", "trangthai_up"},
+                new int[]{R.id.tv_stt, R.id.tv_somay, R.id.tv_mabp, R.id.tv_tenbp, R.id.tv_ngay, R.id.tv_ghichu, R.id.tv_trangthai},
                 SimpleCursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
 
 
@@ -129,7 +110,9 @@ public class KT02_Search_fia extends AppCompatActivity {
     }
 
     private void Update_tc_faiup() {
-        new Thread(new Runnable() {
+
+
+        Thread UpLoad_fia = new Thread(new Runnable() {
             @Override
             public void run() {
 //String ngay = dateFormatKT02.format(new Date()).toString();
@@ -146,40 +129,62 @@ public class KT02_Search_fia extends AppCompatActivity {
                 }
 
                 final String res = upload_all("http://172.16.40.20/" + g_server + "/TechAPP/upload_tc_fan.php");
-                    if (!res.equals("False")){
-                        if(res.length()>6 ){
-                            runOnUiThread(new Runnable() { //Vì Toast không thể chạy đc nếu không phải UI Thread nên sử dụng runOnUIThread.
-                                @Override
-                                public void run() {
-                                    try {
+                if (!res.equals("False")) {
+                    if (res.length() > 6) {
+                        runOnUiThread(new Runnable() { //Vì Toast không thể chạy đc nếu không phải UI Thread nên sử dụng runOnUIThread.
+                            @Override
+                            public void run() {
+                                try {
 
-                                        JSONArray jsonarray = new JSONArray(res);
-                                        for (int i = 0; i < jsonarray.length(); i++) {
-                                            JSONObject jsonObject = jsonarray.getJSONObject(i);
-                                            String g_tc_fan001 = jsonObject.getString("TC_FAN001"); //Số máy
-                                            String g_tc_fan002 = jsonObject.getString("TC_FAN002"); //Mã bộ phận
-                                            String g_tc_fan004 = jsonObject.getString("TC_FAN004"); //Ngay
+                                    JSONArray jsonarray = new JSONArray(res);
+                                    for (int i = 0; i < jsonarray.length(); i++) {
+                                        JSONObject jsonObject = jsonarray.getJSONObject(i);
+                                        String g_tc_fan001 = jsonObject.getString("TC_FAN001"); //Số máy
+                                        String g_tc_fan002 = jsonObject.getString("TC_FAN002"); //Mã bộ phận
+                                        String g_tc_fan004 = jsonObject.getString("TC_FAN004"); //Ngay
 
-                                            kt02Db.update_tc_fiaup(g_tc_fan001,g_tc_fan002,g_tc_fan004,"Đã chuyển");
+                                        kt02Db.update_tc_fiaup(g_tc_fan001, g_tc_fan002, g_tc_fan004, "Đã chuyển");
 
-                                            //trangthai.setText("Chưa chuyển");
-                                        }
-                                        kt02Db.update_tc_fiaup1();
-                                        getLVData();
-                                    } catch (JSONException e) {
-                                        String abc = e.toString();
-                                        e.printStackTrace();
+                                        //trangthai.setText("Chưa chuyển");
                                     }
-                                }
-                            });
-                        }else {
-                            kt02Db.update_tc_fiaup1();
-                            getLVData();
-                        }
-                    }
-            }
-        }).start();
+                                    kt02Db.update_tc_fiaup1();
 
+                                } catch (JSONException e) {
+                                    String abc = e.toString();
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                    } else {
+                        kt02Db.update_tc_fiaup1();
+                    }
+                }
+            }
+        });
+
+        Thread Load_fia = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                getLVData();
+            }
+        });
+        //dialog.dismiss();
+
+        new Thread() {
+            @Override
+            public void run() {
+                UpLoad_fia.start();
+                try {
+                    UpLoad_fia.join();
+                } catch (InterruptedException e) {
+                }
+                Load_fia.start();
+                try {
+                    Load_fia.join();
+                } catch (InterruptedException e) {
+                }
+            }
+        }.start();
     }
 
     private void delete_data() {
@@ -265,7 +270,7 @@ public class KT02_Search_fia extends AppCompatActivity {
                         String tc_fan001 = jsonObject.getString("TC_FAN001"); //Số máy
                         String tc_fan002 = jsonObject.getString("TC_FAN002"); //Mã bộ phận
                         String tc_fan004 = jsonObject.getString("TC_FAN004");//Ngày
-                        kt02Db.update_tc_fiaup(tc_fan001,tc_fan002,tc_fan004,"Chưa chuyển");
+                        kt02Db.update_tc_fiaup(tc_fan001, tc_fan002, tc_fan004, "Chưa chuyển");
                     }
 
                 }
@@ -276,6 +281,7 @@ public class KT02_Search_fia extends AppCompatActivity {
 
         }
     }
+
     private String docNoiDung_Tu_URL(String theUrl) {
         StringBuilder content = new StringBuilder();
         try {

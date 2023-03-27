@@ -61,7 +61,7 @@
             android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".KT02.KT02_activity"
-            android:exported="true"
+            android:exported="false"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="adjustPan" />
         <activity
