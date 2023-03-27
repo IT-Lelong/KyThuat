@@ -48,6 +48,7 @@ public class KT02_Search_fia extends AppCompatActivity {
     JSONObject ujobject;
     JSONArray jsonupload;
     String g_server = "";
+    String a;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,7 +153,7 @@ public class KT02_Search_fia extends AppCompatActivity {
                                         //trangthai.setText("Chưa chuyển");
                                     }
                                     kt02Db.update_tc_fiaup1();
-
+                                    a = "ok";
                                 } catch (JSONException e) {
                                     String abc = e.toString();
                                     e.printStackTrace();
@@ -161,6 +162,7 @@ public class KT02_Search_fia extends AppCompatActivity {
                         });
                     } else {
                         kt02Db.update_tc_fiaup1();
+                        a = "ok";
                     }
                 }
             }
@@ -184,11 +186,14 @@ public class KT02_Search_fia extends AppCompatActivity {
                     UpLoad_fia.join();
                 } catch (InterruptedException e) {
                 }
-                Load_fia.start();
-                try {
-                    Load_fia.join();
-                } catch (InterruptedException e) {
+                if(a == "ok"){
+                    Load_fia.start();
+                    try {
+                        Load_fia.join();
+                    } catch (InterruptedException e) {
+                    }
                 }
+
             }
         }.start();
     }

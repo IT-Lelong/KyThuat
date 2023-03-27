@@ -211,8 +211,8 @@ public class KT02_DB {
 
     public void del_fiaup() {
         String where_loggin = "trangthai_up=? ";
-        //String[] strings = new String[]{"Đã chuyển"};
-        String[] strings = new String[]{"Chưa chuyển"};
+        String[] strings = new String[]{"Đã chuyển"};
+        //String[] strings = new String[]{"Chưa chuyển"};
         db.delete(TABLE_NAME_FIA_UP , where_loggin, strings);
     }
 
