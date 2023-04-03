@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -19,22 +20,41 @@ import android.widget.PopupMenu;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.lelong.kythuat.Create_Table;
+import com.lelong.kythuat.KT02.Retrofit2.APIYtils;
+import com.lelong.kythuat.KT02.Retrofit2.DataClient;
 import com.lelong.kythuat.R;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class login_kt02 extends AppCompatActivity {
     SimpleDateFormat dateFormatKT02 = new SimpleDateFormat("yyyy-MM-dd");
@@ -47,14 +67,16 @@ public class login_kt02 extends AppCompatActivity {
     ArrayList<List_Bophan> mangbp;
 
     String g_soxe, g_bophan, mabp, tenbp;
-    Button btnins, btnsearch,btnfia;
+    Button btnins, btnsearch,btnfia,btnuploaddata;
     private Activity activity;
     ListView lv_query02;
     private Context context;
     Dialog dialog;
     boolean firstDetected = true;
     private final String FILENAME = "mydata.txt";
-    String g_server = "";
+    String g_server = "PHP";
+    JSONArray jsonupload;
+    JSONObject ujobject;
     public void login_dialogkt02(Context context, String menuID, Activity activity) {
         this.activity = activity;
         this.context=context;
@@ -72,6 +94,8 @@ public class login_kt02 extends AppCompatActivity {
         btnsearch.setOnClickListener(btnlistener1);
         btnfia=dialog.findViewById(R.id.btnfia);
         btnfia.setOnClickListener(btnlistener1);
+        btnuploaddata=dialog.findViewById(R.id.btn_uploaddata);
+        btnuploaddata.setOnClickListener(btnlistener1);
         lv_query02 = dialog.findViewById(R.id.lv_query02);
         createTable = new Create_Table(dialog.getContext());
         createTable.open();
@@ -129,15 +153,16 @@ public class login_kt02 extends AppCompatActivity {
                         @SuppressLint("Range") String fia15 = cursor_2.getString(cursor_2.getColumnIndex("fia15"));
                         @SuppressLint("Range") String fka02 = cursor_2.getString(cursor_2.getColumnIndex("fka02"));
                         qrReScanIpLists.add(new Loggin_List(fia15, fka02));
-
+                        g_bophan = fia15;
                     } catch (Exception e) {
                         String err = e.toString();
                     }
                     cursor_2.moveToNext();
                 }
-                qrReScanIpLists.add(new Loggin_List("", ""));
+                //qrReScanIpLists.add(new Loggin_List("", ""));
                 bophan_adapter.notifyDataSetChanged();
                 cbxbophan.setSelection(0);
+
             }
 
             @Override
@@ -324,7 +349,140 @@ public class login_kt02 extends AppCompatActivity {
                     dialog.dismiss();
                     break;
                 }
+                case R.id.btn_uploaddata: {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setMessage(context.getString(R.string.M02))
+                            .setPositiveButton(context.getString(R.string.btn_ok), null)
+                            .setNegativeButton(context.getString(R.string.btn_cancel), null);
+
+
+                    AlertDialog al_dialog = builder.create();
+                    al_dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                        @Override
+                        public void onShow(DialogInterface dialogInterface) {
+                            TextView messageView = ((AlertDialog) dialogInterface).findViewById(android.R.id.message);
+                            messageView.setTextSize(30);
+
+                            Button positiveButton = ((AlertDialog) dialogInterface).getButton(DialogInterface.BUTTON_POSITIVE);
+                            positiveButton.setTextColor(ContextCompat.getColor(context, R.color.blue));
+                            positiveButton.setTextSize(15);
+                            //positiveButton.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimary));
+                            Button negativeButton = ((AlertDialog) dialogInterface).getButton(DialogInterface.BUTTON_NEGATIVE);
+                            negativeButton.setTextColor(ContextCompat.getColor(context, R.color.red));
+                            negativeButton.setTextSize(15);
+                            //negativeButton.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimary));
+
+                            positiveButton.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Update_tc_fad();
+                                    al_dialog.dismiss();
+
+                                }
+                            });
+                        }
+                    });
+
+                    al_dialog.show();
+                    break;
+                }
             }
+        }
+        private void Update_tc_fad() {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    File dir = new File("/storage/emulated/0/Pictures/"); // thay đổi đường dẫn tới thư mục chứa hình ảnh tương ứng
+                    File[] files = dir.listFiles();
+
+                    String imageName = null;
+
+
+                    for (File file : files) {
+                        String kiemtratenanh = file.getName().toString().trim().substring(0,2);
+                        if  (kiemtratenanh.equals("KT")){
+                            String File_path = file.getAbsolutePath();
+                            String[] mangtenfile = File_path.split("\\.");
+                            File_path = mangtenfile[0] + System.currentTimeMillis() + "." + mangtenfile[1];
+                            RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/from-data"), file);
+                            MultipartBody.Part body = MultipartBody.Part.createFormData("uploaded_file", File_path, requestBody);
+                            DataClient dataClient = APIYtils.getData();
+                            Call<String> callback = dataClient.UploadPhot(body);
+                            callback.enqueue(new Callback<String>() {
+                                @Override
+                                public void onResponse(Call<String> call, Response<String> response) {
+                                    if (response != null) {
+                                        String message = response.body();
+                                        Log.d("BBB", message);
+                                        // Xóa tấm ảnh sau khi upload thành công
+                                    /*boolean deleted = file.delete();
+                                    if (deleted) {
+                                        Log.d("BBB", "Deleted file: " + file.getAbsolutePath());
+                                    } else {
+                                        Log.d("BBB", "Failed to delete file: " + file.getAbsolutePath());
+                                    }*/
+
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<String> call, Throwable t) {
+                                    //Log.d("onFailurePIC", t.getMessage());
+                                    Log.d("onFailurePIC", "Timeout error: " + t.getMessage());
+                                    //String a =t.getMessage().toString();
+                                    // Xóa tấm ảnh sau khi upload thành công
+                                /*boolean deleted = file.delete();
+                                if (deleted) {
+                                    Log.d("BBB", "Deleted file: " + file.getAbsolutePath());
+                                } else {
+                                    Log.d("BBB", "Failed to delete file: " + file.getAbsolutePath());
+                                }*/
+                                }
+                            });
+
+                        };
+
+                    }
+
+                    //insert tb tc_fad_file
+                    //String ngay = dateFormatKT02.format(new Date()).toString();
+                    //tham số Y , biểu thị cập nhật dữ liệu tới chương trình gốc, và save đến qrf_file
+                    Cursor upl = createTable.getAll_instc_fad();
+                    jsonupload = cur2Json(upl);
+
+                    try {
+                        ujobject = new JSONObject();
+                        //ujobject.put("docNum", edt_maCT.getText().toString());
+                        ujobject.put("ujson", jsonupload);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    final String res = upload_all("http://172.16.40.20/" + g_server + "/TechAPP/upload.php");
+                    runOnUiThread(new Runnable() { //Vì Toast không thể chạy đc nếu không phải UI Thread nên sử dụng runOnUIThread.
+                        @Override
+                        public void run() {
+                            if (res.contains("FALSE")) {
+                                //tvStatus.setText(getString(R.string.E10));
+                                Toast.makeText(dialog.getContext(), R.string.ERRORtvStatus_false, Toast.LENGTH_SHORT).show();
+                            }
+                            if (res.contains("ERROINS")) {
+                                //tvStatus.setText("đã được insert");
+                                Toast.makeText(dialog.getContext(),R.string.ERRORtvStatus_errorins, Toast.LENGTH_SHORT).show();
+                                kt02Db.delete_table();
+                                getLVData();
+                            }
+                            if (res.contains("TRUE")) {
+                                //tvStatus.setText(g_server);
+                                Toast.makeText(dialog.getContext(),R.string.ERRORtvStatus_true, Toast.LENGTH_SHORT).show();
+                                kt02Db.delete_table();
+                                getLVData();
+                            }
+                        }
+                    });
+                }
+            }).start();
+
         }
         private void nutchucnang() {
             try {
@@ -337,6 +495,59 @@ public class login_kt02 extends AppCompatActivity {
             }
         }
     };
+    public JSONArray cur2Json(Cursor cursor) {
+        JSONArray resultSet = new JSONArray();
+        cursor.moveToFirst();
+        while (cursor.isAfterLast() == false) {
+            int totalColumn = cursor.getColumnCount();
+            JSONObject rowObject = new JSONObject();
+            for (int i = 0; i < totalColumn; i++) {
+                if (cursor.getColumnName(i) != null) {
+                    try {
+                        rowObject.put(cursor.getColumnName(i),
+                                cursor.getString(i));
+                    } catch (Exception e) {
+                    }
+                }
+            }
+            resultSet.put(rowObject);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return resultSet;
+    }
+    public String upload_all(String apiUrl) {
+        HttpURLConnection conn = null;
+        try {
+            URL url = new URL(apiUrl);
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+            conn.setRequestProperty("Accept", "application/json");
+            conn.setRequestMethod("POST");
+            conn.setConnectTimeout(999999);
+            conn.setReadTimeout(999999);
+            conn.setDoInput(true); //允許輸入流，即允許下載
+            conn.setDoOutput(true); //允許輸出流，即允許上傳
+
+            OutputStream os = conn.getOutputStream();
+            DataOutputStream writer = new DataOutputStream(os);
+            writer.write(ujobject.toString().getBytes("UTF-8"));
+            writer.flush();
+            writer.close();
+            os.close();
+            InputStream is = conn.getInputStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+            String result = reader.readLine();
+            reader.close();
+            return result;
+        } catch (Exception ex) {
+            return "false";
+        } finally {
+            if (conn != null) {
+                conn.disconnect();
+            }
+        }
+    }
     private String docNoiDung_Tu_URL(String theUrl) {
         StringBuilder content = new StringBuilder();
         try {

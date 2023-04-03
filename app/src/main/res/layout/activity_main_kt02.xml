@@ -14,13 +14,7 @@
         android:background="#1db995"
         android:layout_weight="0.7">
     </com.google.android.material.tabs.TabLayout>
-    <TextView
-        android:id="@+id/tvStatus"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:textSize="20sp"/>
+
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewPager"
         android:layout_width="wrap_content"

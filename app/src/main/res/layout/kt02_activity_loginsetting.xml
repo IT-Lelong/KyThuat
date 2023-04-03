@@ -33,7 +33,7 @@
     <Spinner
         android:id="@+id/cbxbophan"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="50dp"
         android:gravity="center"
         android:theme="@style/Spinner"
         />
@@ -73,6 +73,17 @@
             android:layout_gravity="center"
             android:background="@drawable/button_type_nomal"
             android:text="@string/btn_search2"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:layout_marginLeft="20dp"/>
+
+        <Button
+            android:id="@+id/btn_uploaddata"
+            android:layout_width="100dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:background="@drawable/button_type_nomal"
+            android:text="@string/btn_upload"
             android:textColor="@color/white"
             android:textSize="15sp"
             android:layout_marginLeft="20dp"/>
@@ -142,7 +153,8 @@
         <ListView
             android:id="@+id/lv_query02"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="0dp"
+            android:layout_weight="3"/>
     </LinearLayout>
 
 </LinearLayout>

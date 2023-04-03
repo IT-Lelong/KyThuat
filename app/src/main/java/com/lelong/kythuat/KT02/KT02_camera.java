@@ -166,8 +166,8 @@ class KT02_camera extends AppCompatActivity {
         cursor.moveToFirst();
         int num = cursor.getInt(cursor.getColumnIndexOrThrow("soluong"));
         STT = num + 1;
-        tenanh = ID+"_"+l_ngay+"_"+ID1+"_"+STT;
-        luutenanh = ID+"_"+l_ngay+"_"+ID1;
+        tenanh = ID+"_"+l_ngay+"_"+ID1+"_"+l_somay+"_"+STT;
+        luutenanh = ID+"_"+l_ngay+"_"+ID1+"_"+l_somay;
         ttxtview  = findViewById(R.id.menuID);
         ttxtview.setText(tenanh);
         if (num >= 1){

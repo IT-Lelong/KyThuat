@@ -89,15 +89,15 @@ public class KT02_activity extends AppCompatActivity {
             somay = g_soxe;
             bophan = g_user;
             ngay=g_ngay;
-            tvStatus = findViewById(R.id.tvStatus);
-            tvStatus.setText(null);
+            //tvStatus = findViewById(R.id.tvStatus);
+            //tvStatus.setText(null);
         }else {
             Bundle getBundle = getIntent().getExtras();
             somay = getBundle.getString("somay");
             bophan = getBundle.getString("bophan");
             ngay = dateFormatKT02.format(new Date()).toString();
-            tvStatus = findViewById(R.id.tvStatus);
-            tvStatus.setText(null);
+            //tvStatus = findViewById(R.id.tvStatus);
+            //tvStatus.setText(null);
         }
 
         fragmentKt02 = new Fragment_KT02(somay, bophan,ngay, 0);
@@ -148,180 +148,5 @@ public class KT02_activity extends AppCompatActivity {
 
     }
 
-    //Khởi tạo menu trên thanh tiêu đề (S)
 
-    @Override
-    public boolean onCreateOptionsMenu(@NonNull Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_kt02, menu);
-
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu1:
-                Update_tc_fad();
-                break;
-            /*case R.id.menu2:
-                update_data();
-                break;*/
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void Update_tc_fad() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-
-                File dir = new File("/storage/emulated/0/Pictures/"); // thay đổi đường dẫn tới thư mục chứa hình ảnh tương ứng
-                File[] files = dir.listFiles();
-
-                String imageName = null;
-                for (File file : files) {
-                    String kiemtratenanh = file.getName().toString().trim().substring(0,2);
-                    if  (kiemtratenanh.equals("KT")){
-                        String File_path = file.getAbsolutePath();
-                        String[] mangtenfile = File_path.split("\\.");
-                        File_path = mangtenfile[0] + System.currentTimeMillis() + "." + mangtenfile[1];
-                        RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/from-data"), file);
-                        MultipartBody.Part body = MultipartBody.Part.createFormData("uploaded_file", File_path, requestBody);
-                        DataClient dataClient = APIYtils.getData();
-                        Call<String> callback = dataClient.UploadPhot(body);
-                        callback.enqueue(new Callback<String>() {
-                            @Override
-                            public void onResponse(Call<String> call, Response<String> response) {
-                                if (response != null) {
-                                    String message = response.body();
-                                    Log.d("BBB", message);
-                                    // Xóa tấm ảnh sau khi upload thành công
-                                    boolean deleted = file.delete();
-                                    if (deleted) {
-                                        Log.d("BBB", "Deleted file: " + file.getAbsolutePath());
-                                    } else {
-                                        Log.d("BBB", "Failed to delete file: " + file.getAbsolutePath());
-                                    }
-
-                                }
-                            }
-
-                            @Override
-                            public void onFailure(Call<String> call, Throwable t) {
-                                Log.d("BBB", t.getMessage());
-                                // Xóa tấm ảnh sau khi upload thành công
-                                boolean deleted = file.delete();
-                                if (deleted) {
-                                    Log.d("BBB", "Deleted file: " + file.getAbsolutePath());
-                                } else {
-                                    Log.d("BBB", "Failed to delete file: " + file.getAbsolutePath());
-                                }
-                            }
-                        });
-
-                    };
-
-                }
-
-                //insert tb tc_fad_file
-                //String ngay = dateFormatKT02.format(new Date()).toString();
-                //tham số Y , biểu thị cập nhật dữ liệu tới chương trình gốc, và save đến qrf_file
-                Cursor upl = createTable.getAll_instc_fad(bophan, somay, ngay);
-                jsonupload = cur2Json(upl);
-
-                try {
-                    ujobject = new JSONObject();
-                    //ujobject.put("docNum", edt_maCT.getText().toString());
-                    ujobject.put("ujson", jsonupload);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                final String res = upload_all("http://172.16.40.20/" + g_server + "/TechAPP/upload.php");
-                runOnUiThread(new Runnable() { //Vì Toast không thể chạy đc nếu không phải UI Thread nên sử dụng runOnUIThread.
-                    @Override
-                    public void run() {
-                        if (res.contains("FALSE")) {
-                            //tvStatus.setText(getString(R.string.E10));
-                            tvStatus.setText(getString(R.string.ERRORtvStatus_false));
-                            tvStatus.setTextColor(getResources().getColor(R.color.red));
-                        }
-                        if (res.contains("ERROINS")) {
-                            //tvStatus.setText("đã được insert");
-                            tvStatus.setText(getString(R.string.ERRORtvStatus_errorins));
-                            tvStatus.setTextColor(getResources().getColor(R.color.red));
-                            createTable2.delete_table(ngay,somay,bophan);
-                        }
-                        if (res.contains("TRUE")) {
-                            //tvStatus.setText(g_server);
-                            tvStatus.setText(getString(R.string.ERRORtvStatus_true));
-                            tvStatus.setTextColor(getResources().getColor(R.color.purple_200));
-                            createTable2.delete_table(ngay,somay,bophan);
-
-                        }
-                    }
-                });
-            }
-        }).start();
-
-    }
-
-    public JSONArray cur2Json(Cursor cursor) {
-        JSONArray resultSet = new JSONArray();
-        cursor.moveToFirst();
-        while (cursor.isAfterLast() == false) {
-            int totalColumn = cursor.getColumnCount();
-            JSONObject rowObject = new JSONObject();
-            for (int i = 0; i < totalColumn; i++) {
-                if (cursor.getColumnName(i) != null) {
-                    try {
-                        rowObject.put(cursor.getColumnName(i),
-                                cursor.getString(i));
-                    } catch (Exception e) {
-                    }
-                }
-            }
-            resultSet.put(rowObject);
-            cursor.moveToNext();
-        }
-        cursor.close();
-        return resultSet;
-    }
-
-
-    public String upload_all(String apiUrl) {
-        HttpURLConnection conn = null;
-        try {
-            URL url = new URL(apiUrl);
-            conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-            conn.setRequestProperty("Accept", "application/json");
-            conn.setRequestMethod("POST");
-            conn.setConnectTimeout(999999);
-            conn.setReadTimeout(999999);
-            conn.setDoInput(true); //允許輸入流，即允許下載
-            conn.setDoOutput(true); //允許輸出流，即允許上傳
-
-            OutputStream os = conn.getOutputStream();
-            DataOutputStream writer = new DataOutputStream(os);
-            writer.write(ujobject.toString().getBytes("UTF-8"));
-            writer.flush();
-            writer.close();
-            os.close();
-            InputStream is = conn.getInputStream();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-            String result = reader.readLine();
-            reader.close();
-            return result;
-        } catch (Exception ex) {
-            return "false";
-        } finally {
-            if (conn != null) {
-                conn.disconnect();
-            }
-        }
-    }
-
-
-    //Khởi tạo menu trên thanh tiêu đề (E)
 }

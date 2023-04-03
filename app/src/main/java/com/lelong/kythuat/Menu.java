@@ -141,6 +141,8 @@ public class Menu extends AppCompatActivity {
 
                 case R.id.btn_KT02: {
                     Activity activity = Menu.this;
+                    Bundle bundle = new Bundle();
+                    bundle.putString("SERVER", g_server);
                     loginkt02.login_dialogkt02(v.getContext(),
                             menuID.getText().toString(),activity);
                     break;
