@@ -108,6 +108,7 @@ class KT02_camera extends AppCompatActivity {
         int n = 10000;
         n = generator.nextInt(n);
         String fname = "Image-" + n + ".jpg";
+        //String fname = "Image.jpg";
         File file = new File(savedImageURL, fname);
         if (file.exists()) file.delete();
         try {

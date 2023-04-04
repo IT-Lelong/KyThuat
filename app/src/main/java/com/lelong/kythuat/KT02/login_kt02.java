@@ -8,7 +8,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -24,7 +27,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 
+import com.google.firebase.crashlytics.buildtools.reloc.org.apache.commons.io.FileUtils;
 import com.lelong.kythuat.Create_Table;
 import com.lelong.kythuat.KT02.Retrofit2.APIYtils;
 import com.lelong.kythuat.KT02.Retrofit2.DataClient;
@@ -67,7 +72,7 @@ public class login_kt02 extends AppCompatActivity {
     ArrayList<List_Bophan> mangbp;
 
     String g_soxe, g_bophan, mabp, tenbp;
-    Button btnins, btnsearch,btnfia,btnuploaddata;
+    Button btnins, btnsearch, btnfia, btnuploaddata;
     private Activity activity;
     ListView lv_query02;
     private Context context;
@@ -77,9 +82,10 @@ public class login_kt02 extends AppCompatActivity {
     String g_server = "PHP";
     JSONArray jsonupload;
     JSONObject ujobject;
+
     public void login_dialogkt02(Context context, String menuID, Activity activity) {
         this.activity = activity;
-        this.context=context;
+        this.context = context;
         dialog = new Dialog(context);
         dialog.setContentView(R.layout.kt02_activity_loginsetting);
 
@@ -90,11 +96,11 @@ public class login_kt02 extends AppCompatActivity {
         Spinner cbxsoxe = dialog.findViewById(R.id.cbxsoxe);
         btnins = dialog.findViewById(R.id.btninsert);
         btnins.setOnClickListener(btnlistener1);
-        btnsearch=dialog.findViewById(R.id.btnsearch);
+        btnsearch = dialog.findViewById(R.id.btnsearch);
         btnsearch.setOnClickListener(btnlistener1);
-        btnfia=dialog.findViewById(R.id.btnfia);
+        btnfia = dialog.findViewById(R.id.btnfia);
         btnfia.setOnClickListener(btnlistener1);
-        btnuploaddata=dialog.findViewById(R.id.btn_uploaddata);
+        btnuploaddata = dialog.findViewById(R.id.btn_uploaddata);
         btnuploaddata.setOnClickListener(btnlistener1);
         lv_query02 = dialog.findViewById(R.id.lv_query02);
         createTable = new Create_Table(dialog.getContext());
@@ -122,7 +128,6 @@ public class login_kt02 extends AppCompatActivity {
             cbxsoxe.setSelection(0);
             cursor_1.moveToNext();
         }
-
 
 
 //Bộ phận
@@ -174,8 +179,8 @@ public class login_kt02 extends AppCompatActivity {
         cbxbophan.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                int dem= bophan_adapter.getCount();
-                if (position+1< dem){
+                int dem = bophan_adapter.getCount();
+                if (position + 1 < dem) {
                     if (position >= 0) {
                         //get IP
                         Loggin_List res = bophan_adapter.getItem(position);
@@ -259,7 +264,7 @@ public class login_kt02 extends AppCompatActivity {
                                 positiveButton.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        kt02Db.delete_table(qry_ngay.getText().toString(), qry_somay.getText().toString(),qry_user.getText().toString());
+                                        kt02Db.delete_table(qry_ngay.getText().toString(), qry_somay.getText().toString(), qry_user.getText().toString());
                                         al_dialog.dismiss();
                                         getLVData();
                                     }
@@ -286,7 +291,7 @@ public class login_kt02 extends AppCompatActivity {
         SimpleCursorAdapter simpleCursorAdapter = new SimpleCursorAdapter(context,
                 R.layout.kt02_login_lvrow, cursor,
                 new String[]{"_id", "ngay", "somay", "user"},
-                new int[]{R.id.tv_stt, R.id.tv_ngay, R.id.tv_soxe,R.id.tv_bophan},
+                new int[]{R.id.tv_stt, R.id.tv_ngay, R.id.tv_soxe, R.id.tv_bophan},
                 SimpleCursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
 
         simpleCursorAdapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
@@ -388,6 +393,7 @@ public class login_kt02 extends AppCompatActivity {
                 }
             }
         }
+
         private void Update_tc_fad() {
             new Thread(new Runnable() {
                 @Override
@@ -399,11 +405,12 @@ public class login_kt02 extends AppCompatActivity {
 
 
                     for (File file : files) {
-                        String kiemtratenanh = file.getName().toString().trim().substring(0,2);
-                        if  (kiemtratenanh.equals("KT")){
+                        String kiemtratenanh = file.getName().toString().trim().substring(0, 2);
+                        if (kiemtratenanh.equals("KT")) {
                             String File_path = file.getAbsolutePath();
                             String[] mangtenfile = File_path.split("\\.");
-                            File_path = mangtenfile[0] + System.currentTimeMillis() + "." + mangtenfile[1];
+                            //File_path = mangtenfile[0] + System.currentTimeMillis() + "." + mangtenfile[1];
+                            File_path = mangtenfile[0] + "." + mangtenfile[1];
                             RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/from-data"), file);
                             MultipartBody.Part body = MultipartBody.Part.createFormData("uploaded_file", File_path, requestBody);
                             DataClient dataClient = APIYtils.getData();
@@ -421,6 +428,10 @@ public class login_kt02 extends AppCompatActivity {
                                     } else {
                                         Log.d("BBB", "Failed to delete file: " + file.getAbsolutePath());
                                     }*/
+                                        //File file = new File(filePath); // thay đổi đường dẫn tới file hình cần xóa
+                                        //if (file.exists()) {
+
+                                        //}
 
                                     }
                                 }
@@ -437,10 +448,48 @@ public class login_kt02 extends AppCompatActivity {
                                 } else {
                                     Log.d("BBB", "Failed to delete file: " + file.getAbsolutePath());
                                 }*/
+                                    //file.delete(); // xóa file
+                                    //Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file));
+                                    //sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file))); // thông báo đến hệ thống để quét lại thư viện media
+                                   /* Context context1 = dialog.getContext();
+                                    if (context1 != null) {
+                                        context1.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)));
+                                    }
+                                    file.delete(); // xóa file*/
+
+                                    //File fileToDelete = new File(filePath);
+                                    /*Context context1 = dialog.getContext();
+                                    boolean deleted = file.delete();
+                                    if (deleted) {
+                                        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                                        Uri contentUri = Uri.fromFile(file);
+                                        mediaScanIntent.setData(contentUri);
+                                        mediaScanIntent.putExtra(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, true);
+                                        context1.sendBroadcast(mediaScanIntent);
+                                    }*/
+
+
+                                    //File file = new File("Đường_dẫn_đến_file_hình_ảnh");
+                                    /*File trashDir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/.Trash");
+// Sử dụng FileUtils.moveToDirectory() để di chuyển file đến thùng rác lưu tạm
+                                    boolean isFileMoved = false;
+                                    try {
+                                        FileUtils.moveToDirectory(file, trashDir, true);
+                                    } catch (IOException e) {
+                                        throw new RuntimeException(e);
+                                    }
+
+                                    if (isFileMoved) {
+                                        // File đã được di chuyển vào thùng rác lưu tạm thành công
+                                    } else {
+                                        // File chưa được di chuyển vào thùng rác lưu tạm
+                                    }*/
+
                                 }
                             });
 
-                        };
+                        }
+                        ;
 
                     }
 
@@ -468,13 +517,13 @@ public class login_kt02 extends AppCompatActivity {
                             }
                             if (res.contains("ERROINS")) {
                                 //tvStatus.setText("đã được insert");
-                                Toast.makeText(dialog.getContext(),R.string.ERRORtvStatus_errorins, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(dialog.getContext(), R.string.ERRORtvStatus_errorins, Toast.LENGTH_SHORT).show();
                                 kt02Db.delete_table();
                                 getLVData();
                             }
                             if (res.contains("TRUE")) {
                                 //tvStatus.setText(g_server);
-                                Toast.makeText(dialog.getContext(),R.string.ERRORtvStatus_true, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(dialog.getContext(), R.string.ERRORtvStatus_true, Toast.LENGTH_SHORT).show();
                                 kt02Db.delete_table();
                                 getLVData();
                             }
@@ -484,10 +533,11 @@ public class login_kt02 extends AppCompatActivity {
             }).start();
 
         }
+
         private void nutchucnang() {
             try {
                 //FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
-                FileOutputStream fos = openFileOutput(FILENAME,Context.MODE_PRIVATE);
+                FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
                 fos.write(g_bophan.getBytes());
                 fos.close();
             } catch (IOException e) {
@@ -495,6 +545,7 @@ public class login_kt02 extends AppCompatActivity {
             }
         }
     };
+
     public JSONArray cur2Json(Cursor cursor) {
         JSONArray resultSet = new JSONArray();
         cursor.moveToFirst();
@@ -516,6 +567,7 @@ public class login_kt02 extends AppCompatActivity {
         cursor.close();
         return resultSet;
     }
+
     public String upload_all(String apiUrl) {
         HttpURLConnection conn = null;
         try {
@@ -548,6 +600,7 @@ public class login_kt02 extends AppCompatActivity {
             }
         }
     }
+
     private String docNoiDung_Tu_URL(String theUrl) {
         StringBuilder content = new StringBuilder();
         try {
