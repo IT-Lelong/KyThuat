@@ -41,7 +41,7 @@
                 android:layout_margin="10dp"
                 android:background="@drawable/button_type1"
                 android:theme="@style/btn_text_style"
-                android:enabled="false"
+                android:enabled="true"
                 android:text="@string/btn_KT01"
                 />
         </TableRow>
@@ -56,6 +56,30 @@
                 android:theme="@style/btn_text_style"
                 android:enabled="true"
                 android:text="@string/btn_KT02"/>
+        </TableRow>
+
+        <TableRow>
+            <Button
+                android:id="@+id/btn_KT05"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:background="@drawable/button_type1"
+                android:theme="@style/btn_text_style"
+                android:enabled="true"
+                android:text="@string/btn_KT05"/>
+        </TableRow>
+
+        <TableRow>
+            <Button
+                android:id="@+id/btn_KT06"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:background="@drawable/button_type1"
+                android:theme="@style/btn_text_style"
+                android:enabled="true"
+                android:text="@string/btn_KT06"/>
         </TableRow>
 
         <TableRow>

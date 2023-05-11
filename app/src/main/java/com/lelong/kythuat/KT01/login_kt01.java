@@ -14,6 +14,9 @@ import com.google.android.material.tabs.TabLayout;
 import com.lelong.kythuat.Create_Table;
 import com.lelong.kythuat.R;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 
 public class login_kt01 extends AppCompatActivity {
     TabLayout tabLayout;
@@ -24,6 +27,8 @@ public class login_kt01 extends AppCompatActivity {
     String g_lang;
 
     Cursor cursor_1, cursor_2;
+    SimpleDateFormat dateFormatKT01 = new SimpleDateFormat("yyyy-MM-dd");
+    String g_ngay, g_soxe, g_user, g_layout,ngay,g_tc_faa001 ;
     private Create_Table createTable = null;
     private KT01_DB createTable1 = null;
     @Override
@@ -35,10 +40,18 @@ public class login_kt01 extends AppCompatActivity {
         tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager);
         Bundle getbundle = getIntent().getExtras();
-        //actionBar = getSupportActionBar();
-        //actionBar.hide();
-        g_date = getbundle.getString("DATE");
-        g_BP = getbundle.getString("BP");
+        g_layout = getbundle.getString("LAYOUT");
+        if (g_layout.length() <6) {
+            g_date = getbundle.getString("DATE");
+            g_BP = getbundle.getString("BP");
+        }else {
+            g_date = dateFormatKT01.format(new Date()).toString();
+            g_BP = getbundle.getString("BOPHAN");
+        }
+
+        //g_date = getbundle.getString("DATE");
+        //ngay = dateFormatKT01.format(new Date()).toString();
+        //g_BP = getbundle.getString("BOPHAN");
         ID = getbundle.getString("ID");
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
@@ -53,7 +66,7 @@ public class login_kt01 extends AppCompatActivity {
         createTable = new Create_Table(getApplicationContext());
         createTable.open();
 
-         createTable1 = new KT01_DB(this);
+        createTable1 = new KT01_DB(this);
         cursor_1=createTable.getAll_tc_fab("KT01");
         cursor_1.moveToFirst();
         int num = cursor_1.getCount();

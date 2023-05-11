@@ -182,7 +182,7 @@ public class KT02_DB {
     }
 
 
-    public Cursor getAll_lvQuery() {
+    public Cursor getAll_lvQuery(String tenxe) {
         String selectQuery = " select COUNT(*) AS _id ,ngay,somay,user" +
                 " from (select ngay,somay,user, " +
                 "      (select count(checkbox1)  from tc_fac_table_kt02 where checkbox1='true' and ngay=a.ngay and somay =a.somay and user = a.user ) AS loai1," +
@@ -191,7 +191,7 @@ public class KT02_DB {
                 "      (select count(checkbox4)  from tc_fac_table_kt02 where checkbox4='true' and ngay=a.ngay and somay =a.somay and user = a.user ) AS loai4," +
                 "      (select count(checkbox5)  from tc_fac_table_kt02 where checkbox5='true' and ngay=a.ngay and somay =a.somay and user = a.user ) AS loai5," +
                 "      (select count(checkbox6)  from tc_fac_table_kt02 where checkbox6='true' and ngay=a.ngay and somay =a.somay and user = a.user ) AS loai6" +
-                "       from tc_fac_table_kt02 a" +
+                "       from tc_fac_table_kt02 a ,fia_file where a.somay=fiaud03 and fia15=a.user and ta_fia02_1='" + tenxe + "' " +
                 "       GROUP BY ngay,somay,user ) " +
                 " GROUP BY ngay,somay,user" +
                 " ORDER BY ngay,somay,user";
@@ -206,6 +206,12 @@ public class KT02_DB {
     public void delete_table(String qry_ngay, String qry_somay,String qry_user) {
         String where_loggin = "ngay=? AND somay=? AND user=?";
         String[] strings = new String[]{qry_ngay, qry_somay, qry_user};
+        db.delete(TABLE_NAME_TC_FAC_KT02, where_loggin, strings);
+    }
+
+    public void delete_table_fac_kt(String l_tc_fac004) {
+        String where_loggin = "substr(tc_fac004,1,4)=? ";
+        String[] strings = new String[]{l_tc_fac004};
         db.delete(TABLE_NAME_TC_FAC_KT02, where_loggin, strings);
     }
 
@@ -257,12 +263,12 @@ public class KT02_DB {
         }
     }
 
-    public Cursor getAll_fiaup() {
+    public Cursor getAll_fiaup(String tenxe) {
         Cursor a;
         try {
 
             //SQLiteDatabase db = this.getWritableDatabase();
-            String selectQuery = "SELECT count(*) AS _id,fiaud03,fia15,fka02,ngay_up,ghichu_up,trangthai_up FROM fia_up_file,fia_file WHERE somay_up=fiaud03 AND mabp_up=fia15 " +
+            String selectQuery = "SELECT count(*) AS _id,fiaud03,fia15,fka02,ngay_up,ghichu_up,trangthai_up FROM fia_up_file,fia_file WHERE somay_up=fiaud03 AND mabp_up=fia15 AND ta_fia02_1='" + tenxe + "'" +
                                  " group by fiaud03,fia15,fka02,ngay_up " +
                                  " order by fiaud03,fia15,ngay_up ";
             return db.rawQuery(selectQuery, null);
@@ -291,12 +297,13 @@ public class KT02_DB {
         }
     }
 
-    public Cursor getAll_fiaupnot() {
+    public Cursor getAll_fiaupnot(String tenxe) {
         Cursor a;
         try {
 
             //SQLiteDatabase db = this.getWritableDatabase();
-            String selectQuery = "SELECT fiaud03,fia15,fka02,ngay_up FROM fia_up_file,fia_file WHERE somay_up=fiaud03 AND mabp_up=fia15 AND (trangthai_up is null OR trangthai_up='Chưa chuyển')" +
+            String selectQuery = "SELECT fiaud03,fia15,fka02,ngay_up FROM fia_up_file,fia_file " +
+                    " WHERE somay_up=fiaud03 AND mabp_up=fia15 AND (trangthai_up is null OR trangthai_up='Chưa chuyển') AND ta_fia02_1='" + tenxe + "' " +
                     " order by fiaud03,fia15,ngay_up ";
             return db.rawQuery(selectQuery, null);
 

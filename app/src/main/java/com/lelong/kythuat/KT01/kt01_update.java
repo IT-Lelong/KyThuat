@@ -50,7 +50,8 @@ class kt01_update extends AppCompatActivity {
 
                 db = new KT01_DB(v.getContext());
                 db.open();
-                cursor_1 = db.getAll_tc_faa("KT01");
+                //cursor_1 = db.getAll_tc_faa("KT01");
+                cursor_1 = db.getAll_tc_faa();
                 cursor_1.moveToFirst();
                 int num = cursor_1.getCount();
                 for (int i = 0; i < num; i++) {

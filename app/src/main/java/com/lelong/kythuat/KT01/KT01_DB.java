@@ -33,15 +33,31 @@ class KT01_DB {
     String tc_faa009 = "tc_faa009"; //
     String tc_faa010 = "tc_faa010"; //
     String tc_faa011 = "tc_faa011"; // ds du lieu
+    String tc_faa012 = "tc_faa012"; //Trạng thái1
+    String tc_faa013 = "tc_faa013"; //Trạng thái2
+    String tc_faa014 = "tc_faa014"; //Trạng thái3
+    String tc_faa015 = "tc_faa015"; //Trạng thái4
+    String tc_faa016 = "tc_faa016"; //Trạng thái5
+    String tc_faa017 = "tc_faa017";//Tên hinh cải thiện
+    String tc_faa018 = "tc_faa018";// So hình cải thiện
 
     String TABLE_NAME_GEM = "gem_file";
     String gem01 = "gem01"; //Mã bộ phận
     String gem02 = "gem02"; //Tên bộ phận
 
+    String TABLE_NAME_TC_FBA = "tc_fba_file";
+    String tc_fba007 = "tc_fba007"; //Mã bộ phận
+    String tc_fba009 = "tc_fba009"; //Tên bộ phận
+
+    String CREATE_TABLE_NAME_TC_FBA = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_TC_FBA + " ("
+            + tc_fba007 + " TEXT," + tc_fba009 + " TEXT )";
 
     String CREATE_TABLE_FAA = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_TC_FAA + " ("
             + tc_faa001 + " TEXT, " + tc_faa002 + " TEXT,"
-            + tc_faa003 + " TEXT ," + tc_faa004 + " TEXT," + tc_faa005 + " TEXT," + tc_faa006 + " TEXT,"+ tc_faa007 + " TEXT,"+ tc_faa008 + " TEXT,"+ tc_faa009 + " TEXT,"+ tc_faa010 + " TEXT,"+ tc_faa011 + " TEXT,"
+            + tc_faa003 + " TEXT ," + tc_faa004 + " TEXT," + tc_faa005 + " TEXT,"
+            + tc_faa006 + " TEXT,"+ tc_faa007 + " TEXT,"+ tc_faa008 + " TEXT,"
+            + tc_faa009 + " TEXT,"+ tc_faa010 + " TEXT,"+ tc_faa011 + " TEXT,"
+            + tc_faa012 + " TEXT," + tc_faa013 + " TEXT,"+ tc_faa014 + " TEXT,"+ tc_faa015 + " TEXT,"+ tc_faa016 + " TEXT,"+ tc_faa017 + " TEXT,"+ tc_faa018 + " TEXT,"
             + "PRIMARY KEY (" + tc_faa001 + ", " + tc_faa003 + "))";
 
     String CREATE_Ten_anh = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_Ten_anh + " ("
@@ -56,6 +72,7 @@ class KT01_DB {
         try {
             db.execSQL(CREATE_TABLE_FAA);
             db.execSQL(CREATE_Ten_anh);
+            db.execSQL(CREATE_TABLE_NAME_TC_FBA);
         } catch (Exception e) {
 
         }
@@ -70,7 +87,9 @@ class KT01_DB {
 
         }
     }
-    public String append(String g_tc_faa001, String g_tc_faa002, String g_tc_faa003, String g_tc_faa004, String g_tc_faa005, String g_tc_faa006, String g_tc_faa007, String g_tc_faa008, String g_tc_faa009, String g_tc_faa010, String g_tc_faa011) {
+    public String append(String g_tc_faa001, String g_tc_faa002, String g_tc_faa003, String g_tc_faa004, String g_tc_faa005,
+                         String g_tc_faa006, String g_tc_faa007, String g_tc_faa008, String g_tc_faa009, String g_tc_faa010, String g_tc_faa011
+            , String g_tc_faa012, String g_tc_faa013, String g_tc_faa014, String g_tc_faa015, String g_tc_faa016, String g_tc_faa017, String g_tc_faa018) {
         try {
             ContentValues args = new ContentValues();
             args.put(tc_faa001, g_tc_faa001);
@@ -84,6 +103,13 @@ class KT01_DB {
             args.put(tc_faa009, g_tc_faa009);
             args.put(tc_faa010, g_tc_faa010);
             args.put(tc_faa011, g_tc_faa011);
+            args.put(tc_faa012, g_tc_faa012);
+            args.put(tc_faa013, g_tc_faa013);
+            args.put(tc_faa014, g_tc_faa014);
+            args.put(tc_faa015, g_tc_faa015);
+            args.put(tc_faa016, g_tc_faa016);
+            args.put(tc_faa017, g_tc_faa017);
+            args.put(tc_faa018, g_tc_faa018);
             db.insert(TABLE_NAME_TC_FAA, null, args);
             return "TRUE";
         } catch (Exception e) {
@@ -139,10 +165,14 @@ class KT01_DB {
         }
     }
 
-    public
-    Cursor getAll_tc_faa(String app) {
+    //public Cursor getAll_tc_faa(String app) {
+        public Cursor getAll_tc_faa() {
         try {
-            return db.rawQuery("SELECT tc_faa001,tc_faa002,tc_faa003,tc_faa004,tc_faa005,tc_faa006,tc_faa007,tc_faa008,tc_faa011"
+            //return db.rawQuery("SELECT tc_faa001,tc_faa002,tc_faa003,tc_faa004,tc_faa005,tc_faa006,tc_faa007,tc_faa008,tc_faa011"
+
+                    //+ " FROM " + TABLE_NAME_TC_FAA + "", null);
+            return db.rawQuery("SELECT tc_faa001,tc_faa002,tc_faa003,tc_faa004,tc_faa005,tc_faa006,tc_faa008,tc_faa011,tc_faa012,tc_faa013" +
+                    ",tc_faa014,tc_faa015,tc_faa016,tc_faa017,tc_faa018"
 
                     + " FROM " + TABLE_NAME_TC_FAA + "", null);
         } catch (Exception e) {
@@ -191,13 +221,19 @@ class KT01_DB {
     public
     Cursor getAll_gem1() {
         try {
-            return db.rawQuery("SELECT  COUNT(*)  as _id, gem01,gem02" + " FROM " + TABLE_NAME_GEM + " group by gem01,gem02  ", null);
+            return db.rawQuery("SELECT  COUNT(*)  as _id, gem01,gem02" + " FROM " + TABLE_NAME_GEM + " WHERE gem01 LIKE 'ABJD%' group by gem01,gem02  ", null);
         } catch (Exception e) {
             return null;
         }
     }
 
-
+    public Cursor getAll_tc_fba() {
+        try {
+            return db.rawQuery("SELECT  COUNT(*)  as _id, tc_fba007,tc_fba009" + " FROM " + TABLE_NAME_TC_FBA + " group by tc_fba007  ", null);
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
     public void delete_table() {
         db.delete(TABLE_NAME_TC_FAA, null  , null);
@@ -229,7 +265,16 @@ class KT01_DB {
     public
     Cursor demsttanh(String KEY,String bp,String ngay) {
         try {
+
             return db.rawQuery("SELECT  tc_faa011 FROM " + TABLE_NAME_TC_FAA + " WHERE tc_faa001='" +KEY + "' AND tc_faa003='" +bp+"' AND tc_faa002='" +ngay+"' ", null);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+    Cursor demsttanhold(String KEY,String bp,String ngay) {
+        try {
+
+            return db.rawQuery("SELECT  tc_faa018 FROM " + TABLE_NAME_TC_FAA + " WHERE tc_faa001='" +KEY + "' AND tc_faa003='" +bp+"' AND tc_faa002='" +ngay+"' ", null);
         } catch (Exception e) {
             return null;
         }
@@ -255,7 +300,7 @@ class KT01_DB {
     public
     Cursor xuathinhanh(String key,String l_ngay,String l_bp) {
         try {
-            return db.rawQuery("SELECT tc_faa001,tc_faa002,tc_faa003,tc_faa004,tc_faa005,tc_faa006,tc_faa007,tc_faa008,tc_faa011"
+            return db.rawQuery("SELECT tc_faa001,tc_faa002,tc_faa003,tc_faa004,tc_faa005,tc_faa006,tc_faa007,tc_faa008,tc_faa011,tc_faa017,tc_faa018"
 
                     + " FROM " + TABLE_NAME_TC_FAA + "  WHERE tc_faa002='" +l_ngay+ "' AND tc_faa003='" +l_bp+"'AND tc_faa001='" +key+"'", null);
         } catch (Exception e) {
@@ -293,8 +338,5 @@ class KT01_DB {
         }
 
     }
-
-
-
 
 }

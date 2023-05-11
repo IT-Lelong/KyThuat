@@ -70,5 +70,12 @@
         <item name="android:dropDownHeight">200dp</item>
         <item name="android:textSize">50sp</item>
     </style>
+    <style name="Spinner1" parent="Widget.AppCompat.Light.DropDownItem.Spinner">
+        <item name="android:paddingStart">0dp</item>
+        <item name="android:paddingEnd">0dp</item>
+        <item name="android:dropDownHeight">100dp</item>
+        <item name="android:textSize">20sp</item>
+        <item name="backgroundColor">@color/black</item>
+    </style>
 
 </resources>

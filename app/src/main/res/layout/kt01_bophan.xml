@@ -2,94 +2,29 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="#41A5E9"
     android:orientation="vertical"
+    android:padding="5dp"
     tools:context=".Menu">
-
-
-    <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:stretchColumns="*"
-        android:shrinkColumns="*">
-
-        <TableRow>
-
-            <Button
-                android:id="@+id/btn_addnew"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="10dp"
-                android:background="@drawable/button_type1"
-                android:enabled="true"
-                android:text="@string/btn_addnew"
-                android:theme="@style/btn_text_style" />
-        </TableRow>
-
-        <TableRow>
-            <Button
-                android:id="@+id/btn_updatesever"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="10dp"
-                android:background="@drawable/button_type1"
-                android:theme="@style/btn_text_style"
-                android:enabled="true"
-                android:text="@string/btn_updatesever"/>
-        </TableRow>
-
-
-    </TableLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:gravity="center"
-        android:orientation="horizontal">
-
 
         <TextView
             android:id="@+id/viewID"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginLeft="15dp"
-            android:layout_weight="2"
             android:gravity="center"
             android:text="@string/ls03"
             android:textSize="20sp"
             android:textStyle="bold" />
 
-        <EditText
-            android:id="@+id/editID"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:inputType="textCapCharacters"
-            android:paddingRight="15dp"
-            android:minHeight="40dp"
-            android:textSize="25sp"
-            android:gravity="center"
-            tools:ignore="SpeakableTextPresentCheck" />
-        <Button
-            android:id="@+id/search"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginRight="20dp"
-            android:background="@drawable/button_type1"
-            android:theme="@style/btn_text_style"
-            android:padding="9dp"
-            android:text="@string/lk01"
-            android:textColor="#FFFFFF"
-            android:textSize="10sp" />
-
-
-    </LinearLayout>
-
-
+    <Spinner
+        android:id="@+id/cbxbophan"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:theme="@style/Spinner1"
+        />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -99,34 +34,33 @@
 
         <Button
             android:id="@+id/btnlogin"
-            android:layout_width="150dp"
-            android:layout_height="50sp"
-            android:layout_marginRight="59dp"
-            android:background="@drawable/button_type1"
-            android:theme="@style/btn_text_style"
-            android:padding="6dp"
+            android:layout_width="100dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:background="@drawable/button_type_nomal"
+            android:textColor="@color/white"
+            android:textSize="15sp"
             android:text="@string/main_ok"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp" />
-
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="20dp"/>
 
         <Button
-            android:id="@+id/btnback"
-            android:layout_width="150dp"
-            android:layout_height="50sp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="2dp"
-            android:background="@drawable/button_type1"
-            android:theme="@style/btn_text_style"
-            android:padding="6dp"
-            android:text="@string/main_cancel"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp" />
+            android:id="@+id/btn_updatesever"
+            android:layout_width="100dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:background="@drawable/button_type_nomal"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:text="@string/btn_updatesever"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="10dp"/>
 
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="4"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="5dp"
@@ -181,7 +115,7 @@
         <ListView
             android:id="@+id/lv_query"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="match_parent"/>
     </LinearLayout>
 
 

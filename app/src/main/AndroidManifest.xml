@@ -94,7 +94,8 @@
             android:name=".KT01.kt01_update"/>
         <activity
             android:name=".KT01.kt01_listbophan"/>
-
+        <activity
+            android:name="com.lelong.kythuat.KT01.kt01_cameramodify" />
         <activity
             android:name=".KT04.KT04_main_activity"
             android:exported="false"

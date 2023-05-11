@@ -66,8 +66,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public
-class Log_BoPhan extends AppCompatActivity {
+public class Log_BoPhan extends AppCompatActivity {
     private final String FILENAME = "mydata.txt";
     String g_server = "";
     TextView viewID;
@@ -112,17 +111,17 @@ class Log_BoPhan extends AppCompatActivity {
         g_server = getString(R.string.server);
         editText1 = findViewById(R.id.editID);
         btnlogin1 = findViewById(R.id.btnlogin);
-        btnaddnew = findViewById(R.id.btn_addnew);
+        //btnaddnew = findViewById(R.id.btn_addnew);
         btnaupdate = findViewById(R.id.btn_updatesever);
         lis1 = findViewById(R.id.lv_query);
         btnback = findViewById(R.id.btnback);
         viewID = findViewById(R.id.viewID);
-        search1 = findViewById(R.id.search);
-        editText1.setVisibility(View.GONE);
-        btnback.setVisibility(View.GONE);
-        search1.setVisibility(View.GONE);
-        viewID.setVisibility(View.GONE);
-        btnlogin1.setVisibility(View.GONE);
+        //search1 = findViewById(R.id.search);
+        //editText1.setVisibility(View.GONE);
+        //btnback.setVisibility(View.GONE);
+        //search1.setVisibility(View.GONE);
+        //viewID.setVisibility(View.GONE);
+        //btnlogin1.setVisibility(View.GONE);
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
 
@@ -135,23 +134,14 @@ class Log_BoPhan extends AppCompatActivity {
         }
 
 
-        btnaddnew.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editText1.setVisibility(View.VISIBLE);
-                viewID.setVisibility(View.VISIBLE);
-                btnlogin1.setVisibility(View.VISIBLE);
-                btnback.setVisibility(View.VISIBLE);
-                search1.setVisibility(View.VISIBLE);
-            }
-        });
+
         btnaupdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editText1.setVisibility(View.GONE);
-                btnback.setVisibility(View.GONE);
-                viewID.setVisibility(View.GONE);
-                btnlogin1.setVisibility(View.GONE);
+                //editText1.setVisibility(View.GONE);
+                //btnback.setVisibility(View.GONE);
+                //viewID.setVisibility(View.GONE);
+                //btnlogin1.setVisibility(View.GONE);
                 AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
                 builder.setTitle("Warning");
                 SpannableStringBuilder message = new SpannableStringBuilder();
@@ -235,9 +225,9 @@ class Log_BoPhan extends AppCompatActivity {
                                 String bien = "A";
                                 DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
                                 Date date = new Date();
-                                db.getAll_tc_faa(bien);
+                                db.getAll_tc_faa();
                                 //tham số Y , biểu thị cập nhật dữ liệu tới chương trình gốc, và save đến qrf_file
-                                Cursor upl = db.getAll_tc_faa(bien);
+                                Cursor upl = db.getAll_tc_faa();
                                 if (upl.getCount() > 0) {
 
                                     jsonupload = cur2Json(upl);
@@ -314,17 +304,6 @@ class Log_BoPhan extends AppCompatActivity {
             }
         });
 
-
-        btnback.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editText1.setVisibility(View.GONE);
-                btnback.setVisibility(View.GONE);
-                viewID.setVisibility(View.GONE);
-                btnlogin1.setVisibility(View.GONE);
-                search1.setVisibility(View.GONE);
-            }
-        });
         search1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -354,11 +333,10 @@ class Log_BoPhan extends AppCompatActivity {
                                                  intent.putExtras(bundle);
                                                  startActivity(intent);
                                                  nutchucnang();
-                                                 editText1.setVisibility(View.GONE);
-                                                 btnback.setVisibility(View.GONE);
-                                                 search1.setVisibility(View.GONE);
-                                                 viewID.setVisibility(View.GONE);
-                                                 btnlogin1.setVisibility(View.GONE);
+                                                 //editText1.setVisibility(View.GONE);
+                                                 //search1.setVisibility(View.GONE);
+                                                 //viewID.setVisibility(View.GONE);
+                                                 //btnlogin1.setVisibility(View.GONE);
                                              } else {
                                                  Toast.makeText(view.getContext(), "Mã bộ phận không đúng vui lòng kiểm tra lại: ", Toast.LENGTH_SHORT).show();
                                              }

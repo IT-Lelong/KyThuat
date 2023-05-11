@@ -21,7 +21,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.lelong.kythuat.KT01.kt01_camera;
 import com.lelong.kythuat.R;
 
 import java.io.BufferedReader;
@@ -51,7 +50,6 @@ public class ListDataAdapter_KT02 extends RecyclerView.Adapter<ListDataAdapter_K
         this.applicationContext = context;
         this.resource = resource;
         this.mangLV02 = mangLV02;
-
     }
 
     @NonNull
@@ -79,7 +77,7 @@ public class ListDataAdapter_KT02 extends RecyclerView.Adapter<ListDataAdapter_K
         user=mangLV02.get(position).getUser();
         somay=mangLV02.get(position).getSomay();
         ngay=mangLV02.get(position).getNgay();
-//S
+
         if (mangLV02.get(position).getTenhinh() == "TRUE"){
             Drawable[] layers = new Drawable[2];
             layers[0] = applicationContext.getDrawable(R.drawable.camera1); // replace R.drawable.button_image with your button image

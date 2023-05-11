@@ -1,6 +1,8 @@
 package com.lelong.kythuat.KT01;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -50,8 +52,19 @@ public class kt01_listbophan extends AppCompatActivity {
 
                 Intent intent = new Intent();
                 intent.putExtra("selectedData", selectedData);
-                setResult(RESULT_OK, intent);
+                setResult(Activity.RESULT_OK, intent);
                 finish();
+                /*Cursor cursor = (Cursor) adapterView.getItemAtPosition(i);
+                @SuppressLint("Range") String selectedData = cursor.getString(cursor.getColumnIndex("gem01"));
+                AlertDialog.Builder builder = new AlertDialog.Builder(kt01_listbophan.this);
+                builder.setMessage("This is a message from the dialog");
+
+// Lưu nội dung của dialog vào Intent
+                Intent intent = new Intent(kt01_listbophan.this, kt01_loggin_search.class);
+                intent.putExtra("selectedData", selectedData);
+
+// Chuyển đến activity thứ hai
+                startActivity(intent);*/
             }
         });
 

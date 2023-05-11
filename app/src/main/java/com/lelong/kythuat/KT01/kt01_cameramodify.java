@@ -2,24 +2,17 @@ package com.lelong.kythuat.KT01;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -36,33 +29,25 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Random;
 
-public
-class kt01_camera  extends AppCompatActivity {
-    ImageView imageView1,imageView2,imageView3,imageView4,imageView5,imageView6;
+public class kt01_cameramodify extends AppCompatActivity {
     Button btnTakePicture;
     TextView ttxtview;
-    EditText eeditText;
-    Button savePicture;
     private  KT01_DB db=null;
     String ID,b;
     Cursor cursor_3;
-    Cursor cursor_4;
-    Cursor cursor_5;
     String ID1;
     int STT,demso;
-    String l_bp;
     String l_ngay;
     ImageView[] imageViews = new ImageView[6];
-    String lbophan1;
-    LocalDate  currentDate;
+    LocalDate currentDate;
     String tenanh,luutenanh;
-    TextView menuID;
     private static final int CAMERA_REQUEST = 1888;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.kt01_camera);
+        setContentView(R.layout.kt01_cameramodify);
         imageViews[0] = (ImageView) findViewById(R.id.imageView1);
         imageViews[1] = (ImageView) findViewById(R.id.imageView2);
         imageViews[2] = (ImageView) findViewById(R.id.imageView3);
@@ -71,12 +56,8 @@ class kt01_camera  extends AppCompatActivity {
         imageViews[5] = (ImageView) findViewById(R.id.imageView6);
 
 
-        btnTakePicture = findViewById(R.id.btn_take_picture12);
-        // if (num >= 1) {
-        // loadanh();
-        // }
+        btnTakePicture = findViewById(R.id.btn_take_picturemodi);
 
-        // new  IDname().execute(ID);
         btnTakePicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -126,25 +107,18 @@ class kt01_camera  extends AppCompatActivity {
         db=new KT01_DB(this);
         db.open();
         db.append1(ID,l_ngay,ID1,String.valueOf(STT),tenanh);
-        db.appendUPDAEhinhanh(ID, luutenanh,STT, l_ngay,ID1,"TC_FAA005","TC_FAA011");
+        db.appendUPDAEhinhanh(ID, luutenanh,STT, l_ngay,ID1,"TC_FAA017","TC_FAA018");
     }
     @Override
     protected void onResume() {
         super.onResume();
         Bundle getbundle = getIntent().getExtras();
-        //actionBar = getSupportActionBar();
-        //actionBar.hide();
-
-
-
 
         LocalTime now = LocalTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HHmmss");
         String formattedTime = now.format(formatter);
         System.out.println(formattedTime);
-        //Bundle bundle = new Bundle();
-        //lbophan1 = getbundle.getString("lbophan1");
-        // ID1 = getbundle.getString("ID1");
+
         l_ngay = getbundle.getString("l_ngay");
         if (l_ngay != null){
 
@@ -172,88 +146,25 @@ class kt01_camera  extends AppCompatActivity {
         db.open();
 
         ID = getbundle.getString("ID");
-        Cursor cursor = db.demsttanh(ID,ID1,l_ngay);
+        Cursor cursor = db.demsttanhold(ID,ID1,l_ngay);
         cursor.moveToFirst();
-        int num = cursor.getInt(cursor.getColumnIndexOrThrow("tc_faa011"));
+        int num = cursor.getInt(cursor.getColumnIndexOrThrow("tc_faa018"));
         STT = num + 1;
-        tenanh = ID+"_"+l_ngay+"_"+ID1+"_"+STT;
-        luutenanh = ID+"_"+l_ngay+"_"+ID1;
+        tenanh = ID+"_"+l_ngay+"_"+ID1+"_CT"+"_"+STT;
+        luutenanh = ID+"_"+l_ngay+"_"+ID1+"_CT";
         ttxtview  = findViewById(R.id.menuID);
         ttxtview.setText(tenanh);
         if (num >= 1){
             loadanh(ID,l_ngay,ID1);
         }
-
     }
 
-    /*  @Override
-      protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-              realpath = getRealPathFromURI(uri);
-              File imgFile = new  File(realpath);
-
-              if(imgFile.exists()){
-                  try {
-                      BitmapFactory.Options options = new BitmapFactory.Options();
-                      options.inPreferredConfig = Bitmap.Config.RGB_565;
-                      Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath(), options);
-                      imageView2.setImageBitmap(myBitmap);
-                  } catch (Exception e) {
-                      e.printStackTrace();
-                  }
-              }
-
-          super.onActivityResult(requestCode, resultCode, data);
-      }*/
-    /*private void loadanh(String key ,String l_ngay, String l_bp) {
-        cursor_3 = db.lananh(key,l_ngay,l_bp);
-        cursor_3.moveToFirst();
-        //int num2 = cursor_3.getInt(cursor_3.getColumnIndexOrThrow("tc_faa011"));
-        int num = cursor_3.getCount();
-        if (num > 6){
-            num = 6;
-        }
-        cursor_5 = db.lananh2(key,l_ngay,l_bp);
-        cursor_5.moveToFirst();
-        //int tong = ((num2 - 6) + 1);
-        int showanh = 0;
-        if(num > 0){
-            for (int i = 1; i <= num ; i ++) {
-                try {
-                    @SuppressLint("Range") String tenanh = cursor_5.getString(cursor_5.getColumnIndex("tenanh"));
-                    // String   a = "/storage/emulated/0/Pictures/KT010103_2023-02-25_13_45_37_ABI3100000.jpg";
-                    String a = "/storage/emulated/0/Pictures/" + tenanh + ".jpg" + "";
-                    //String a = "/storage/emulated/0/Pictures/" + tenanh + "_"+ i +"" + ".jpg" + "";
-                    //num2 = num2 - 1;
-                    File imgFile = new File(a);
-
-                    if (imgFile.exists()) {
-                        try {
-                            BitmapFactory.Options options = new BitmapFactory.Options();
-                            options.inPreferredConfig = Bitmap.Config.RGB_565;
-                            Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath(), options);
-                            imageViews[showanh].setImageBitmap(myBitmap);
-                            showanh = showanh +1;
-
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }catch (Exception e) {
-                    String err = e.toString();
-                }
-                cursor_5.moveToNext();
-            }
-        }
-
-
-    }*/
     private void loadanh(String key ,String l_ngay, String l_bp) {
         cursor_3 = db.xuathinhanh(key,l_ngay,l_bp);
         cursor_3.moveToFirst();
-        int num2 = cursor_3.getInt(cursor_3.getColumnIndexOrThrow("tc_faa011"));
+        int num2 = cursor_3.getInt(cursor_3.getColumnIndexOrThrow("tc_faa018"));
         //int num = cursor_3.getCount();
-        @SuppressLint("Range") String tenhinh = cursor_3.getString(cursor_3.getColumnIndex("tc_faa005"));
+        @SuppressLint("Range") String tenhinh = cursor_3.getString(cursor_3.getColumnIndex("tc_faa017"));
         int tong = ((num2 - 6) + 1);
         int showanh = 0;
         for (int i = tong; i <= num2 ; i ++) {
@@ -281,6 +192,4 @@ class kt01_camera  extends AppCompatActivity {
         }
 
     }
-
-
 }

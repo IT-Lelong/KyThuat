@@ -49,7 +49,7 @@ public class KT02_Search_fia extends AppCompatActivity {
     JSONArray jsonupload;
     String g_server = "";
     String a;
-
+    String g_tenxe ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +58,8 @@ public class KT02_Search_fia extends AppCompatActivity {
         g_server = getString(R.string.server);
         kt02Db = new KT02_DB(getApplicationContext());
         kt02Db.open();
+        Bundle getbundle = getIntent().getExtras();
+        g_tenxe = getbundle.getString("G_TENXE");
         getLVData();
     }
 
@@ -65,7 +67,7 @@ public class KT02_Search_fia extends AppCompatActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                cursor_1 = kt02Db.getAll_fiaup();
+                cursor_1 = kt02Db.getAll_fiaup(g_tenxe);
                 SimpleCursorAdapter simpleCursorAdapter = new SimpleCursorAdapter(getApplicationContext(),
                         R.layout.kt02_searchfia_row, cursor_1,
                         new String[]{"_id", "fiaud03", "fia15", "fka02", "ngay_up", "ghichu_up", "trangthai_up"},
@@ -120,9 +122,8 @@ public class KT02_Search_fia extends AppCompatActivity {
         Thread UpLoad_fia = new Thread(new Runnable() {
             @Override
             public void run() {
-                //String ngay = dateFormatKT02.format(new Date()).toString();
-                //tham số Y , biểu thị cập nhật dữ liệu tới chương trình gốc, và save đến qrf_file
-                Cursor upl = kt02Db.getAll_fiaupnot();
+
+                Cursor upl = kt02Db.getAll_fiaupnot(g_tenxe);
                 jsonupload = cur2Json(upl);
 
                 try {

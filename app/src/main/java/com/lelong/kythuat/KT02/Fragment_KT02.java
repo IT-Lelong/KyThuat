@@ -44,7 +44,7 @@ public class Fragment_KT02 extends Fragment {
     private String mParam2;
     String somay;
     String bophan;
-    String ngay;
+    String ngay,g_tc_faa001;
     String tenhinh;
     private int position;
 
@@ -65,11 +65,12 @@ public class Fragment_KT02 extends Fragment {
     DecimalFormat decimalFormat = new DecimalFormat("00");
     ListDataAdapter_KT02 adapter;
 
-    public Fragment_KT02(String somay, String bophan, String ngay, int position) {
+    public Fragment_KT02(String somay, String bophan, String ngay,String g_tc_faa001, int position) {
 
         this.somay = somay;
         this.bophan = bophan;
         this.ngay = ngay;
+        this.g_tc_faa001 = g_tc_faa001;
         this.position = position;
         matab = decimalFormat.format(position + 1);
     }
@@ -155,8 +156,8 @@ public class Fragment_KT02 extends Fragment {
         mangLV02 = new ArrayList<KT02_LIST>();
         createTable_fac02 = new Create_Table(getContext());
         createTable_fac02.open();
-        createTable_fac02.ins_fac_02("KT02", bophan, ngay, somay);
-        cursor_1 = createTable_fac02.getAll_tc_fac_02("KT02", matab, bophan, somay, ngay);
+        createTable_fac02.ins_fac_02(g_tc_faa001, bophan, ngay, somay);
+        cursor_1 = createTable_fac02.getAll_tc_fac_02(g_tc_faa001, matab, bophan, somay, ngay);
         cursor_1.moveToFirst();
 
 

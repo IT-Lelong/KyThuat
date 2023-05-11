@@ -16,6 +16,7 @@ public class KT02_Loggin_Search extends AppCompatActivity implements KT02_Interf
     private Create_Table createTable = null;
     Cursor cursor;
     ListView lv_search02;
+    String g_tc_faa001,g_tenxe ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,11 +24,14 @@ public class KT02_Loggin_Search extends AppCompatActivity implements KT02_Interf
         lv_search02 = findViewById(R.id.lv_search02);
         createTable = new Create_Table(getApplicationContext());
         createTable.open();
+        Bundle getbundle = getIntent().getExtras();
+        g_tenxe = getbundle.getString("G_TENXE");
+
         LV_Detail();
     }
 
     private void LV_Detail(){
-        cursor = createTable.getAll_fiaud03();
+        cursor = createTable.getAll_fiaud03(g_tenxe);
         Drawable drawable_blue = getResources().getDrawable(R.drawable.button_kt_blue);
         Drawable drawable_green = getResources().getDrawable(R.drawable.button_kt_green);
         List_Bophan listBophan = new List_Bophan(this,

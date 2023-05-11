@@ -57,7 +57,7 @@ public class KT02_activity extends AppCompatActivity {
     JSONObject ujobject;
     int chk_dialog = -1;
     String g_server = "";
-    String g_ngay, g_soxe, g_user, g_layout,ngay ;
+    String g_ngay, g_soxe, g_user, g_layout,ngay,g_tc_faa001 ;
     SimpleDateFormat dateFormatKT02 = new SimpleDateFormat("yyyy-MM-dd");
     KT02_Interface kt02_interface;
     Fragment_KT02 fragmentKt02 = null;
@@ -82,6 +82,7 @@ public class KT02_activity extends AppCompatActivity {
         g_soxe = getbundle.getString("SOMAY");
         g_user = getbundle.getString("USER");
         g_layout = getbundle.getString("LAYOUT");
+        g_tc_faa001 = getbundle.getString("G_TC_FAA001");
         kt02_interface = (KT02_Interface) context;
 
 
@@ -100,7 +101,7 @@ public class KT02_activity extends AppCompatActivity {
             //tvStatus.setText(null);
         }
 
-        fragmentKt02 = new Fragment_KT02(somay, bophan,ngay, 0);
+        fragmentKt02 = new Fragment_KT02(somay, bophan,ngay,g_tc_faa001, 0);
         //kt02_interface = (KT02_Interface) fragmentKt02.getApplicationContext();;
 
 
@@ -113,7 +114,7 @@ public class KT02_activity extends AppCompatActivity {
 
         createTable.open();
         createTable2.open();
-        cursor_1 = createTable.getAll_tc_fab("KT02");
+        cursor_1 = createTable.getAll_tc_fab(g_tc_faa001);
         cursor_1.moveToFirst();
         int num = cursor_1.getCount();
         for (int i = 0; i < num; i++) {
@@ -128,7 +129,7 @@ public class KT02_activity extends AppCompatActivity {
             cursor_1.moveToNext();
         }
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        final MyAdappter_KT02 adapter = new MyAdappter_KT02(this, getSupportFragmentManager(), tabLayout.getTabCount(), somay, bophan,ngay);
+        final MyAdappter_KT02 adapter = new MyAdappter_KT02(this, getSupportFragmentManager(), tabLayout.getTabCount(), somay, bophan,ngay,g_tc_faa001);
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {

@@ -102,7 +102,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             //images = (ImageView) view.findViewById(R.id.maso);
             tx_maso = (TextView) view.findViewById(R.id.tc_fac003);
             tx_noidung = (TextView) view.findViewById(R.id.tc_fac006);
-            tx_diemso = (TextView) view.findViewById(R.id.tc_fac007);
+            //tx_diemso = (TextView) view.findViewById(R.id.tc_fac007);
             mCheckedTextView = (CheckBox) view.findViewById(R.id.checkBox);
             tx_btn1 = (Button) view.findViewById(R.id.btn1);
 

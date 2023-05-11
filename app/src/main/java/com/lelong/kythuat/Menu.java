@@ -4,19 +4,18 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.lelong.kythuat.KT01.Log_BoPhan;
+import com.lelong.kythuat.KT01.kt01_loggin_search;
 import com.lelong.kythuat.KT02.login_kt02;
 import com.lelong.kythuat.KT03.KT03_login;
 import com.lelong.kythuat.KT04.KT04_login;
@@ -38,8 +37,10 @@ public class Menu extends AppCompatActivity {
     private KT03_login loginKt03 = null;
     private login_kt02 loginkt02 = null;
     private KT04_login loginKt04 = null;
+    private kt01_loggin_search kt01_loggin_search = null;
     String g_server = "";
-    Button btn_KT01, btn_KT02, btn_KT03, btn_KT04;
+
+    Button btn_KT01, btn_KT02, btn_KT03, btn_KT04,btn_KT05,btn_KT06;
     TextView menuID;
     String ID;
     Locale locale;
@@ -58,7 +59,8 @@ public class Menu extends AppCompatActivity {
         ID = getbundle.getString("ID");
         g_server= getString(R.string.server);
         menuID = (TextView) findViewById(R.id.menuID);
-        new IDname().execute("http://172.16.40.20/" + g_server + "/getid.php?ID=" + ID);
+        //new IDname().execute("http://172.16.40.20/" + g_server + "/getid.php?ID=" + ID);
+        getIDname("http://172.16.40.20/" + g_server + "/getidJson.php?ID=" + ID);
         dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 
         Cre_db = new Create_Table(this);
@@ -68,16 +70,21 @@ public class Menu extends AppCompatActivity {
         loginkt02 = new login_kt02();
         loginKt03 = new KT03_login();
         loginKt04 = new KT04_login();
+        kt01_loggin_search =new kt01_loggin_search();
 
         btn_KT01 = findViewById(R.id.btn_KT01);
         btn_KT02 = findViewById(R.id.btn_KT02);
         btn_KT03 = findViewById(R.id.btn_KT03);
         btn_KT04 = findViewById(R.id.btn_KT04);
+        btn_KT05 = findViewById(R.id.btn_KT05);
+        btn_KT06 = findViewById(R.id.btn_KT06);
 
         btn_KT01.setOnClickListener(btnlistener);
         btn_KT02.setOnClickListener(btnlistener);
         btn_KT03.setOnClickListener(btnlistener);
         btn_KT04.setOnClickListener(btnlistener);
+        btn_KT05.setOnClickListener(btnlistener);
+        btn_KT06.setOnClickListener(btnlistener);
 
     }
 
@@ -88,39 +95,57 @@ public class Menu extends AppCompatActivity {
         checkAppUpdate.checkVersion();
     }
 
-    //取得登入者姓名
-    private class IDname extends AsyncTask<String, Integer, String> {
-        String result = "";
+    private void getIDname(String apiUrl) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    String result = "";
+                    URL url = new URL(apiUrl);
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("GET");
+                    conn.setConnectTimeout(10000);
+                    conn.setReadTimeout(10000);
+                    conn.setDoInput(true);
+                    conn.setDoOutput(true);
+                    conn.connect();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+                    String jsonstring = reader.readLine();
+                    reader.close();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(!jsonstring.equals("FALSE")){
+                                try{
+                                    JSONArray jsonarray = new JSONArray(jsonstring);
+                                    for (int i = 0; i < jsonarray.length(); i++) {
+                                        JSONObject jsonObject = jsonarray.getJSONObject(i);
+                                        menuID.setText(ID + " " + jsonObject.getString("TA_CPF001") + "\n" + jsonObject.getString("GEM02") );
+                                        Constant_Class.UserID = ID;
+                                        Constant_Class.UserName_zh = jsonObject.getString("CPF02");;
+                                        Constant_Class.UserName_vn = jsonObject.getString("TA_CPF001");;
+                                        Constant_Class.UserDepID = jsonObject.getString("CPF29");;
+                                        Constant_Class.UserDepName = jsonObject.getString("GEM02");;
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
 
-        @Override
-        protected String doInBackground(String... params) {
-            try {
-                URL url = new URL(params[0]);
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setRequestMethod("GET");
-                conn.setConnectTimeout(10000);
-                conn.setReadTimeout(10000);
-                conn.setDoInput(true);
-                conn.setDoOutput(true);
-                conn.connect();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
-                result = reader.readLine();
-                reader.close();
-            } catch (Exception e) {
-                result = "";
-            } finally {
-                return result;
+                        }
+                    });
+
+                } catch (Exception e) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast alert = Toast.makeText(Menu.this, e.toString(), Toast.LENGTH_LONG);
+                            alert.show();
+                        }
+                    });
+                }
             }
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-
-        }
-
-        protected void onPostExecute(String result) {
-            menuID.setText(result);
-        }
+        }).start();
     }
 
     private final Button.OnClickListener btnlistener = new Button.OnClickListener() {
@@ -129,25 +154,42 @@ public class Menu extends AppCompatActivity {
             switch (v.getId()) {
 
                 case R.id.btn_KT01: {
-                    Intent KT01 = new Intent();
+                    /*Intent KT01 = new Intent();
                     KT01.setClass(Menu.this, Log_BoPhan.class);
                     Bundle bundle = new Bundle();
                     bundle.putString("ID", ID);
                     bundle.putString("SERVER", g_server);
                     KT01.putExtras(bundle);
-                    startActivity(KT01);
+                    startActivity(KT01);*/
+                    Activity activity = Menu.this;
+                    kt01_loggin_search.login_dialogkt01(v.getContext(),
+                            menuID.getText().toString(),activity);
+                    /*Activity activity = Menu.this;
+                    loginkt02.login_dialogkt02(v.getContext(),
+                            menuID.getText().toString(),activity,"KT01");*/
                     break;
                 }
 
                 case R.id.btn_KT02: {
                     Activity activity = Menu.this;
-                    Bundle bundle = new Bundle();
-                    bundle.putString("SERVER", g_server);
                     loginkt02.login_dialogkt02(v.getContext(),
-                            menuID.getText().toString(),activity);
+                            menuID.getText().toString(),activity,"KT02");
                     break;
                 }
 
+                case R.id.btn_KT05: {
+                    Activity activity = Menu.this;
+                    loginkt02.login_dialogkt02(v.getContext(),
+                            menuID.getText().toString(),activity,"KT05");
+                    break;
+                }
+
+                case R.id.btn_KT06: {
+                    Activity activity = Menu.this;
+                    loginkt02.login_dialogkt02(v.getContext(),
+                            menuID.getText().toString(),activity,"KT06");
+                    break;
+                }
 
                 case R.id.btn_KT03: {
                     loginKt03.login_dialog(v.getContext(),
@@ -267,6 +309,21 @@ public class Menu extends AppCompatActivity {
                                     String g_fia15 = jsonObject.getString("FIA15"); //Vị trí
                                     String g_fka02 = jsonObject.getString("FKA02"); //Tên bộ phận
                                     Cre_db.append(g_fia01,g_ta_fia02_1,g_fiaud03,g_fia15,g_fka02 );
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        String res_tc_fba = get_DataTable("http://172.16.40.20/" + g_server + "/TechAPP/getDataTable.php?item=tc_fba");
+                        if (!res_gem.equals("FALSE")) {
+                            try {
+                                JSONArray jsonarray = new JSONArray(res_tc_fba);
+                                for (int i = 0; i < jsonarray.length(); i++) {
+                                    JSONObject jsonObject = jsonarray.getJSONObject(i);
+                                    String g_tc_fba007 = jsonObject.getString("TC_FBA007"); //Mã bộ phận
+                                    String g_tc_fba009 = jsonObject.getString("TC_FBA009"); //Tên bộ phận
+                                    Cre_db.append1(g_tc_fba007,g_tc_fba009);
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();

@@ -71,7 +71,7 @@ public class login_kt02 extends AppCompatActivity {
     ArrayAdapter<String> stationlist;
     ArrayList<List_Bophan> mangbp;
 
-    String g_soxe, g_bophan, mabp, tenbp;
+    String g_soxe, g_bophan, mabp, tenbp, g_tenxe;
     Button btnins, btnsearch, btnfia, btnuploaddata;
     private Activity activity;
     ListView lv_query02;
@@ -82,15 +82,17 @@ public class login_kt02 extends AppCompatActivity {
     String g_server = "PHP";
     JSONArray jsonupload;
     JSONObject ujobject;
+    String g_tc_faa001 = "";
 
-    public void login_dialogkt02(Context context, String menuID, Activity activity) {
+    public void login_dialogkt02(Context context, String menuID, Activity activity, String g_tc_faa001) {
         this.activity = activity;
         this.context = context;
+        this.g_tc_faa001 = g_tc_faa001;
         dialog = new Dialog(context);
         dialog.setContentView(R.layout.kt02_activity_loginsetting);
 
         //Bundle getbundle = getIntent().getExtras();
-        //g_server = getbundle.getString("SERVER");
+        //g_tc_faa001 = getbundle.getString("G_TC_FAA001");
         //g_server = getString(R.string.server);
 
         Spinner cbxsoxe = dialog.findViewById(R.id.cbxsoxe);
@@ -107,8 +109,16 @@ public class login_kt02 extends AppCompatActivity {
         createTable.open();
         kt02Db = new KT02_DB(dialog.getContext());
         //kt03Db = new KT03_DB(dialog.getContext());
-
-        cursor_1 = createTable.getAll_fia_02();
+        if (g_tc_faa001 == "KT02") {
+            g_tenxe = "Xe nâng dầu";
+        }
+        if (g_tc_faa001 == "KT05") {
+            g_tenxe = "Xe nâng tay điện";
+        }
+        if (g_tc_faa001 == "KT06") {
+            g_tenxe = "Xe nâng điện";
+        }
+        cursor_1 = createTable.getAll_fia_02(g_tenxe);
         cursor_1.moveToFirst();
         int num = cursor_1.getCount();
         station = new String[num];
@@ -148,7 +158,7 @@ public class login_kt02 extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 g_soxe = cbxsoxe.getSelectedItem().toString().trim();
                 qrReScanIpLists.clear();
-                cursor_2 = createTable.getAll_fia_02_bp(g_soxe);
+                cursor_2 = createTable.getAll_fia_02_bp(g_soxe,g_tenxe);
                 cursor_2.moveToFirst();
                 int num1 = cursor_2.getCount();
                 station = new String[num1];
@@ -233,6 +243,7 @@ public class login_kt02 extends AppCompatActivity {
                         bundle.putString("SOMAY", qry_somay.getText().toString());
                         bundle.putString("USER", qry_user.getText().toString());
                         bundle.putString("LAYOUT", "login");
+                        bundle.putString("G_TC_FAA001", g_tc_faa001);
                         KT02.putExtras(bundle);
                         context.startActivity(KT02);
                         dialog.dismiss();
@@ -287,7 +298,7 @@ public class login_kt02 extends AppCompatActivity {
 
     private void getLVData() {
         kt02Db.open();
-        Cursor cursor = kt02Db.getAll_lvQuery();
+        Cursor cursor = kt02Db.getAll_lvQuery(g_tenxe);
         SimpleCursorAdapter simpleCursorAdapter = new SimpleCursorAdapter(context,
                 R.layout.kt02_login_lvrow, cursor,
                 new String[]{"_id", "ngay", "somay", "user"},
@@ -322,6 +333,8 @@ public class login_kt02 extends AppCompatActivity {
                     bundle.putString("somay", g_soxe);
                     bundle.putString("bophan", g_bophan);
                     bundle.putString("LAYOUT", "notlogin");
+                    bundle.putString("G_TC_FAA001", g_tc_faa001);
+                    bundle.putString("G_TENXE", g_tenxe);
                     QR020.putExtras(bundle);
                     v.getContext().startActivity(QR020);
                     dialog.dismiss();
@@ -335,6 +348,8 @@ public class login_kt02 extends AppCompatActivity {
                     bundle.putString("somay", g_soxe);
                     bundle.putString("bophan", g_bophan);
                     bundle.putString("LAYOUT", "notlogin");
+                    bundle.putString("G_TC_FAA001", g_tc_faa001);
+                    bundle.putString("G_TENXE", g_tenxe);
                     QR020.putExtras(bundle);
                     v.getContext().startActivity(QR020);
                     //dialog.dismiss();
@@ -348,6 +363,8 @@ public class login_kt02 extends AppCompatActivity {
                     bundle.putString("somay", g_soxe);
                     bundle.putString("bophan", g_bophan);
                     bundle.putString("LAYOUT", "notlogin");
+                    bundle.putString("G_TC_FAA001", g_tc_faa001);
+                    bundle.putString("G_TENXE", g_tenxe);
                     //bundle.putString("SERVER", g_server);
                     QR020.putExtras(bundle);
                     v.getContext().startActivity(QR020);
@@ -359,7 +376,6 @@ public class login_kt02 extends AppCompatActivity {
                     builder.setMessage(context.getString(R.string.M02))
                             .setPositiveButton(context.getString(R.string.btn_ok), null)
                             .setNegativeButton(context.getString(R.string.btn_cancel), null);
-
 
                     AlertDialog al_dialog = builder.create();
                     al_dialog.setOnShowListener(new DialogInterface.OnShowListener() {
@@ -413,6 +429,8 @@ public class login_kt02 extends AppCompatActivity {
                             File_path = mangtenfile[0] + "." + mangtenfile[1];
                             RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/from-data"), file);
                             MultipartBody.Part body = MultipartBody.Part.createFormData("uploaded_file", File_path, requestBody);
+
+
                             DataClient dataClient = APIYtils.getData();
                             Call<String> callback = dataClient.UploadPhot(body);
                             callback.enqueue(new Callback<String>() {
@@ -496,7 +514,7 @@ public class login_kt02 extends AppCompatActivity {
                     //insert tb tc_fad_file
                     //String ngay = dateFormatKT02.format(new Date()).toString();
                     //tham số Y , biểu thị cập nhật dữ liệu tới chương trình gốc, và save đến qrf_file
-                    Cursor upl = createTable.getAll_instc_fad();
+                    Cursor upl = createTable.getAll_instc_fad(g_tenxe);
                     jsonupload = cur2Json(upl);
 
                     try {
@@ -518,13 +536,15 @@ public class login_kt02 extends AppCompatActivity {
                             if (res.contains("ERROINS")) {
                                 //tvStatus.setText("đã được insert");
                                 Toast.makeText(dialog.getContext(), R.string.ERRORtvStatus_errorins, Toast.LENGTH_SHORT).show();
-                                kt02Db.delete_table();
+                                //kt02Db.delete_table();
+                                kt02Db.delete_table_fac_kt(g_tc_faa001);
                                 getLVData();
                             }
                             if (res.contains("TRUE")) {
                                 //tvStatus.setText(g_server);
                                 Toast.makeText(dialog.getContext(), R.string.ERRORtvStatus_true, Toast.LENGTH_SHORT).show();
-                                kt02Db.delete_table();
+                                //kt02Db.delete_table();
+                                kt02Db.delete_table_fac_kt(g_tc_faa001);
                                 getLVData();
                             }
                         }

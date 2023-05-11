@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#A9EDBB"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+
+    <Button
+        android:id="@+id/btncamera"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:background="@drawable/button_type_nomal"
+        android:text="@string/btn_cameranew"
+        android:textColor="@color/white"
+        android:textSize="15sp" />
+
+    <Button
+        android:id="@+id/btncameramodi"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:background="@drawable/button_type_nomal"
+        android:text="@string/btn_cameraold"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:layout_marginTop="10dp"/>
+</LinearLayout>

@@ -18,6 +18,8 @@
     <string name="btn_search1">DS chưa kiểm tra</string>
     <string name="btn_search2">DS xe hư</string>
     <string name="btn_cancel1">Xóa đã chuyển</string>
+    <string name="btn_cameranew">Chụp hình</string>
+    <string name="btn_cameraold">Chụp hình cải thiện</string>
 
     <string name="tt_stt">STT</string>
     <string name="tt_hangmuc">Hạng mục</string>
@@ -40,9 +42,11 @@
 
     /*Menu Button*/
     <string name="btn_KT01">BIỂU ĐIỂM KHẢO HẠCH QUẢN LÝ THIẾT BỊ</string>
-    <string name="btn_KT02">BIỂU GHI CHÉP  KIỂM TRA XE NÂNG DẦU (TUẦN)</string>
+    <string name="btn_KT02">BIỂU GHI CHÉP  KIỂM TRA XE NÂNG DẦU</string>
     <string name="btn_KT03">NHẬT KÝ VẬN HÀNH TRẠM NƯỚC THẢI</string>
-    <string name="btn_KT04">NHẬT KÝ VẬN HÀNH TRẠM QUAN TRẮC NƯỚC THẢI</string>
+    <string name="btn_KT04">NHẬT KÝ VẬN HÀNH TRẠM QUAN TRẮC NƯỚC THẢI </string>
+    <string name="btn_KT05">BIỂU GHI CHÉP KIỂM TRA XE NÂNG TAY ĐIỆN </string>
+    <string name="btn_KT06">BIỂU GHI CHÉP KIỂM TRA XE NÂNG ĐIỆN </string>
     <string name="Change_Data">Cập nhật dữ liệu hạng mục</string>
 
     /* activity_main */

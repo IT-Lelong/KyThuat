@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
+import com.lelong.kythuat.KT02.Fragment_KT02;
+
 public class MyAdapter extends FragmentPagerAdapter {
     Context context;
     int totalTabs;
@@ -43,8 +45,8 @@ public class MyAdapter extends FragmentPagerAdapter {
             default:
                 return null;
         }*/
-        Fragmen_KT01 fragmen_kt01 = Fragmen_KT01.newInstance(context,String.valueOf(position), g_date, g_BP);
-
+        //Fragmen_KT01 fragmen_kt01 = Fragmen_KT01.newInstance(context,String.valueOf(position), g_date, g_BP);
+        Fragmen_KT01 fragmen_kt01 = new Fragmen_KT01(position, g_date, g_BP);
         return fragmen_kt01;
 
 
