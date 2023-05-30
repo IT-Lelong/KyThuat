@@ -275,7 +275,9 @@ public class KT03_login {
                                             if (res.contains("FALSE")) {
                                                 Toast.makeText(view.getContext(), view.getContext().getString(R.string.M04), Toast.LENGTH_SHORT).show();
                                             } else {
+                                                kt03Db.delete_all_table();
                                                 Toast.makeText(view.getContext(), view.getContext().getString(R.string.M03), Toast.LENGTH_SHORT).show();
+                                                al_dialog.dismiss();
                                             }
                                         }
                                         Looper.loop();

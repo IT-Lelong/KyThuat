@@ -344,7 +344,7 @@ public class kt01_loggin_search extends AppCompatActivity {
                                     e.printStackTrace();
                                 }
 
-                                    final String res = upload_all("http://172.16.40.20/" + g_server + "/TechAPP/uploadtc_fae.php");
+                                    String res = upload_all("http://172.16.40.20/" + g_server + "/TechAPP/uploadtc_fae.php");
 
                                     runOnUiThread(new Runnable() { //Vì Toast không thể chạy đc nếu không phải UI Thread nên sử dụng runOnUIThread.
                                         @Override
@@ -353,14 +353,16 @@ public class kt01_loggin_search extends AppCompatActivity {
                                                 //Toast.makeText(getApplicationContext(), getString(R.string.M09), Toast.LENGTH_SHORT).show();
                                                 Toast.makeText(getApplicationContext(), "Kết chuyễn dữ liệu thất bại: ", Toast.LENGTH_SHORT).show();
                                             }*/
-                                            if (res.contains("true")) {
+                                            if (res.contains("TRUE")) {
                                                 //Toast.makeText(getApplicationContext(), getString(R.string.M08), Toast.LENGTH_SHORT).show();
                                                 //Toast.makeText(getApplicationContext(), "Kết chuyễn dữ liệu thành công: ", Toast.LENGTH_SHORT).show();
                                                 Toast.makeText(v.getContext(), R.string.ERRORtvStatus_errorins, Toast.LENGTH_SHORT).show();
                                                 db.delete_tenhinh();
+                                                db.delete_table_faa_kt("KT01");
                                                 load();
                                             }else {
                                                 Toast.makeText(v.getContext(), res.toString(), Toast.LENGTH_SHORT).show();
+                                                //Toast.makeText(v.getContext(), R.string.ERRORtvStatus_false, Toast.LENGTH_SHORT).show();
                                             }
                                             /*if (res.contains("ERROINS")) {
                                                 //tvStatus.setText("đã được insert");

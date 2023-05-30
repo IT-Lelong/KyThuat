@@ -310,13 +310,17 @@ public class Create_Table {
 
     /*KT02_loggin_somay*/
 
-    public Cursor getAll_fia_02(String tenxe) {
+    public Cursor getAll_fia_02(String tenxe, String bophan) {
         Cursor a;
         try {
 
             //SQLiteDatabase db = this.getWritableDatabase();
-            //String selectQuery = "SELECT distinct fiaud03 FROM fia_file WHERE ta_fia02_1='" + tenxe + "' AND fia15 NOT LIKE 'B%' ORDER BY fiaud03";
-            String selectQuery = "SELECT distinct fiaud03 FROM fia_file WHERE ta_fia02_1='" + tenxe + "' ORDER BY fiaud03";
+            String selectQuery = "SELECT distinct fiaud03 FROM fia_file WHERE ta_fia02_1='" + tenxe + "' ";
+            if (!(bophan == null)){
+                selectQuery=selectQuery + " AND Substr(fia15,1,1) = '" + bophan + "' ";
+            }
+            selectQuery=selectQuery + " ORDER BY fiaud03 ";
+            //String selectQuery = "SELECT distinct fiaud03 FROM fia_file WHERE ta_fia02_1='" + tenxe + "' ORDER BY fiaud03";
             return db.rawQuery(selectQuery, null);
 
         } catch (Exception e) {
@@ -326,13 +330,17 @@ public class Create_Table {
 
     /*KT02_loggin_bophan*/
 
-    public Cursor getAll_fia_02_bp(String g_fiaud03,String tenxe) {
+    public Cursor getAll_fia_02_bp(String g_fiaud03,String tenxe,String bophan) {
         Cursor a;
         try {
 
             //SQLiteDatabase db = this.getWritableDatabase();
-            //String selectQuery = "SELECT distinct fia15,fka02 FROM fia_file WHERE fiaud03='" + g_fiaud03+"' AND ta_fia02_1='" + tenxe + "' AND fia15 NOT LIKE 'B%' ORDER BY fia15";
-            String selectQuery = "SELECT distinct fia15,fka02 FROM fia_file WHERE fiaud03='" + g_fiaud03+"' AND ta_fia02_1='" + tenxe + "' ORDER BY fia15";
+            String selectQuery = "SELECT distinct fia15,fka02 FROM fia_file WHERE fiaud03='" + g_fiaud03+"' AND ta_fia02_1='" + tenxe + "' ";
+            //String selectQuery = "SELECT distinct fia15,fka02 FROM fia_file WHERE fiaud03='" + g_fiaud03+"' AND ta_fia02_1='" + tenxe + "' ORDER BY fia15";
+            if (!(bophan == null)){
+                selectQuery=selectQuery + " AND Substr(fia15,1,1) = '" + bophan + "' ";
+            }
+            selectQuery=selectQuery + " ORDER BY fia15 ";
             return db.rawQuery(selectQuery, null);
 
         } catch (Exception e) {
@@ -409,11 +417,19 @@ public class Create_Table {
         }
     }
 
-    public Cursor getAll_fiaud03(String tenxe) {
+    public Cursor getAll_fiaud03(String tenxe,String bophan) {
         try {
-            String selectQuery = "select count(*) AS _id,fiaud03,fia15,fka02 from fia_file " +
+           /* String selectQuery = "select count(*) AS _id,fiaud03,fia15,fka02 from fia_file " +
                     " where fiaud03 not in (select distinct somay from tc_fac_table_kt02) AND ta_fia02_1='" + tenxe + "' AND fia15 NOT LIKE 'B%' " +
-                    " group by fia15,fiaud03,fka02 order by fia15,fiaud03";
+                    " group by fia15,fiaud03,fka02 order by fia15,fiaud03";*/
+
+            String selectQuery = " select count(*) AS _id,fiaud03,fia15,fka02 from fia_file " +
+                    " where fiaud03 not in (select distinct somay from tc_fac_table_kt02) AND ta_fia02_1='" + tenxe + "' ";
+            if (!(bophan == null)){
+                selectQuery=selectQuery + " AND Substr(fia15,1,1) = '" + bophan + "' ";
+            }
+            selectQuery=selectQuery + " group by fia15,fiaud03,fka02 order by fia15,fiaud03 ";
+
             return db.rawQuery(selectQuery, null);
 
         } catch (Exception e) {
@@ -435,7 +451,7 @@ public class Create_Table {
         if (count == 0) {
             ContentValues argsC = new ContentValues();
             Cursor c=db.rawQuery("SELECT tc_fac004,'false' as tc_faa004 ,'' as tc_faa005,'' as tc_faa006,tc_fac007," +
-                    " tc_fac006,tc_fac003,tc_fac001,'' as tc_faa011,'false' as tc_faa0012,'true' as tc_faa0013,'false' as tc_faa0014,'false' as tc_faa0015,'false' as tc_faa0016  FROM " + TABLE_NAME_TC_FAC +
+                    " tc_fac006,tc_fac003,tc_fac001,0 as tc_faa011,'false' as tc_faa0012,'true' as tc_faa0013,'false' as tc_faa0014,'false' as tc_faa0015,'false' as tc_faa0016  FROM " + TABLE_NAME_TC_FAC +
                     " WHERE tc_fac002='" + g_kind + "'",null);
             if(c.getCount()>0){
                 c.moveToFirst();

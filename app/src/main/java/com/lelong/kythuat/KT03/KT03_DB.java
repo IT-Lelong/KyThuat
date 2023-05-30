@@ -93,6 +93,12 @@ public class KT03_DB {
         db.delete(KT03_04_TABLE, whereClause_hm04, strings);
     }
 
+    public void delete_all_table() {
+        db.delete(KT03_TABLE, null, null);
+        db.delete(KT03_03_TABLE, null, null);
+        db.delete(KT03_04_TABLE, null, null);
+    }
+
     public String ins_hm0102(String g_KT03_01_001, String g_KT03_01_002, String g_KT03_01_003, String g_KT03_01_004, String g_KT03_01_005, String g_KT03_01_006) {
         try {
             ContentValues args = new ContentValues();

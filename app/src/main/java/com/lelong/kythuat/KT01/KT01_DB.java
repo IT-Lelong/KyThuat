@@ -171,8 +171,8 @@ class KT01_DB {
             //return db.rawQuery("SELECT tc_faa001,tc_faa002,tc_faa003,tc_faa004,tc_faa005,tc_faa006,tc_faa007,tc_faa008,tc_faa011"
 
                     //+ " FROM " + TABLE_NAME_TC_FAA + "", null);
-            return db.rawQuery("SELECT tc_faa001,tc_faa002,tc_faa003,tc_faa004,tc_faa005,tc_faa006,tc_faa008,tc_faa011,tc_faa012,tc_faa013" +
-                    ",tc_faa014,tc_faa015,tc_faa016,tc_faa017,tc_faa018"
+            return db.rawQuery("SELECT tc_faa001,tc_faa002,tc_faa003,tc_faa004,tc_faa005,tc_faa006,tc_faa008,IFNULL(tc_faa011,0) tc_faa011,tc_faa012,tc_faa013" +
+                    ",tc_faa014,tc_faa015,tc_faa016,tc_faa017,IFNULL(tc_faa018,0) tc_faa018"
 
                     + " FROM " + TABLE_NAME_TC_FAA + "", null);
         } catch (Exception e) {
@@ -242,6 +242,11 @@ class KT01_DB {
         db.delete(TABLE_NAME_Ten_anh, null  , null);
     }
 
+    public void delete_table_faa_kt(String l_tc_faa001) {
+        String where_loggin = "substr(tc_faa001,1,4)=? ";
+        String[] strings = new String[]{l_tc_faa001};
+        db.delete(TABLE_NAME_TC_FAA, where_loggin, strings);
+    }
 
     public void delete_table1(String qry_ngay, String qry_bp) {
         String whereClause_hm0102 = "tc_faa002=? AND tc_faa003=?";

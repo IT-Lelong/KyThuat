@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
+
+import com.lelong.kythuat.Constant_Class;
 import com.lelong.kythuat.Create_Table;
 import com.lelong.kythuat.R;
 
@@ -16,7 +18,7 @@ public class KT02_Loggin_Search extends AppCompatActivity implements KT02_Interf
     private Create_Table createTable = null;
     Cursor cursor;
     ListView lv_search02;
-    String g_tc_faa001,g_tenxe ;
+    String g_tc_faa001,g_tenxe,g_fia15 ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,7 +33,14 @@ public class KT02_Loggin_Search extends AppCompatActivity implements KT02_Interf
     }
 
     private void LV_Detail(){
-        cursor = createTable.getAll_fiaud03(g_tenxe);
+        String g_bp= Constant_Class.UserFactory;
+        if (g_bp.equals("DH") ) {
+            g_fia15 = "D";
+        }
+        if (g_bp.equals("BL")){
+            g_fia15 = "B";
+        }
+        cursor = createTable.getAll_fiaud03(g_tenxe,g_fia15);
         Drawable drawable_blue = getResources().getDrawable(R.drawable.button_kt_blue);
         Drawable drawable_green = getResources().getDrawable(R.drawable.button_kt_green);
         List_Bophan listBophan = new List_Bophan(this,

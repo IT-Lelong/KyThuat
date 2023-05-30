@@ -28,6 +28,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -178,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
                     alert.show();
                 }
             } else {
-                login("http://172.16.40.20/" + g_server + "/login.php?ID=" + ID + "&PASSWORD=" + PASSWORD);
+                login("http://172.16.40.20/" + Constant_Class.server + "/loginJson.php?ID=" + ID + "&PASSWORD=" + PASSWORD);
             }
         }
     };
@@ -207,7 +211,8 @@ public class MainActivity extends AppCompatActivity {
                     BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
                     String result = reader.readLine();
                     reader.close();
-                    if (result.equals("pass")) {
+
+                    if (result.contains("PASS")) {
                         if (SaveCheck.isChecked()) {
                             db.execSQL("DELETE FROM " + TABLE_NAME + "");
                             ContentValues args = new ContentValues();
@@ -218,6 +223,18 @@ public class MainActivity extends AppCompatActivity {
                             db.execSQL("DELETE FROM " + TABLE_NAME + "");
                         }
 
+                        try{
+                            JSONArray jsonarray = new JSONArray(result);
+                            for (int i = 0; i < jsonarray.length(); i++) {
+                                JSONObject jsonObject = jsonarray.getJSONObject(i);
+                                Constant_Class.UserXuong = jsonObject.getString("TC_QRH003");
+                                Constant_Class.UserKhau= jsonObject.getString("TC_QRH005");
+                                Constant_Class.UserTramQR = jsonObject.getString("TC_QRH006");
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
                         Intent login = new Intent();
                         login.setClass(MainActivity.this, Menu.class);
                         Bundle bundle = new Bundle();
@@ -225,7 +242,7 @@ public class MainActivity extends AppCompatActivity {
                         bundle.putString("SERVER", g_server);
                         login.putExtras(bundle);
                         startActivity(login);
-                    } else if (result.equals("error")) {
+                    } else if (result.contains("FALSE")) {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -240,7 +257,8 @@ public class MainActivity extends AppCompatActivity {
                                 startActivity(login);
                             }
                         });
-                    } else {
+                    }
+                    else {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {

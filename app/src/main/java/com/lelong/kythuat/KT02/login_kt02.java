@@ -30,6 +30,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
 import com.google.firebase.crashlytics.buildtools.reloc.org.apache.commons.io.FileUtils;
+import com.lelong.kythuat.Constant_Class;
 import com.lelong.kythuat.Create_Table;
 import com.lelong.kythuat.KT02.Retrofit2.APIYtils;
 import com.lelong.kythuat.KT02.Retrofit2.DataClient;
@@ -83,6 +84,7 @@ public class login_kt02 extends AppCompatActivity {
     JSONArray jsonupload;
     JSONObject ujobject;
     String g_tc_faa001 = "";
+    String g_fia15;
 
     public void login_dialogkt02(Context context, String menuID, Activity activity, String g_tc_faa001) {
         this.activity = activity;
@@ -105,6 +107,15 @@ public class login_kt02 extends AppCompatActivity {
         btnuploaddata = dialog.findViewById(R.id.btn_uploaddata);
         btnuploaddata.setOnClickListener(btnlistener1);
         lv_query02 = dialog.findViewById(R.id.lv_query02);
+
+        String g_bp= Constant_Class.UserFactory;
+        if (g_bp.equals("DH") ) {
+            g_fia15 = "D";
+        }
+        if (g_bp.equals("BL")){
+            g_fia15 = "B";
+        }
+
         createTable = new Create_Table(dialog.getContext());
         createTable.open();
         kt02Db = new KT02_DB(dialog.getContext());
@@ -118,7 +129,7 @@ public class login_kt02 extends AppCompatActivity {
         if (g_tc_faa001 == "KT06") {
             g_tenxe = "Xe nâng điện";
         }
-        cursor_1 = createTable.getAll_fia_02(g_tenxe);
+        cursor_1 = createTable.getAll_fia_02(g_tenxe,g_fia15);
         cursor_1.moveToFirst();
         int num = cursor_1.getCount();
         station = new String[num];
@@ -158,7 +169,8 @@ public class login_kt02 extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 g_soxe = cbxsoxe.getSelectedItem().toString().trim();
                 qrReScanIpLists.clear();
-                cursor_2 = createTable.getAll_fia_02_bp(g_soxe,g_tenxe);
+
+                cursor_2 = createTable.getAll_fia_02_bp(g_soxe,g_tenxe,g_fia15);
                 cursor_2.moveToFirst();
                 int num1 = cursor_2.getCount();
                 station = new String[num1];

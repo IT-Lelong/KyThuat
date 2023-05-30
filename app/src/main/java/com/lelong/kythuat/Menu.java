@@ -60,7 +60,7 @@ public class Menu extends AppCompatActivity {
         g_server= getString(R.string.server);
         menuID = (TextView) findViewById(R.id.menuID);
         //new IDname().execute("http://172.16.40.20/" + g_server + "/getid.php?ID=" + ID);
-        getIDname("http://172.16.40.20/" + g_server + "/getidJson.php?ID=" + ID);
+        getIDname("http://172.16.40.20/" + Constant_Class.server + "/getidJson.php?ID=" + ID);
         dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 
         Cre_db = new Create_Table(this);
@@ -126,6 +126,7 @@ public class Menu extends AppCompatActivity {
                                         Constant_Class.UserName_vn = jsonObject.getString("TA_CPF001");;
                                         Constant_Class.UserDepID = jsonObject.getString("CPF29");;
                                         Constant_Class.UserDepName = jsonObject.getString("GEM02");;
+                                        Constant_Class.UserFactory = jsonObject.getString("CPF281");;
                                     }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
