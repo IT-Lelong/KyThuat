@@ -67,7 +67,7 @@ public class login_kt02 extends AppCompatActivity {
     private Create_Table createTable = null;
     private KT02_DB kt02Db = null;
     //private KT03_DB kt03Db = null;
-    Cursor cursor_1, cursor_2;
+    Cursor cursor_1, cursor_2, cursor_3;
     String[] station = new String[0];
     ArrayAdapter<String> stationlist;
     ArrayList<List_Bophan> mangbp;
@@ -188,7 +188,7 @@ public class login_kt02 extends AppCompatActivity {
                 }
                 //qrReScanIpLists.add(new Loggin_List("", ""));
                 bophan_adapter.notifyDataSetChanged();
-                cbxbophan.setSelection(0);
+                //cbxbophan.setSelection(position);
 
             }
 
@@ -201,8 +201,8 @@ public class login_kt02 extends AppCompatActivity {
         cbxbophan.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                int dem = bophan_adapter.getCount();
-                if (position + 1 < dem) {
+                int dem = bophan_adapter.getCount()+1;
+                if (position + 1 <= dem) {
                     if (position >= 0) {
                         //get IP
                         Loggin_List res = bophan_adapter.getItem(position);
@@ -526,7 +526,60 @@ public class login_kt02 extends AppCompatActivity {
                     //insert tb tc_fad_file
                     //String ngay = dateFormatKT02.format(new Date()).toString();
                     //tham số Y , biểu thị cập nhật dữ liệu tới chương trình gốc, và save đến qrf_file
-                    Cursor upl = createTable.getAll_instc_fad(g_tenxe);
+                    cursor_3 = kt02Db.Soxe(g_tc_faa001);
+                    cursor_3.moveToFirst();
+                    int num = cursor_3.getCount();
+                    //station = new String[num];
+                    for (int i = 0; i < num; i++) {
+
+                        try {
+                            @SuppressLint("Range") String g_somay = cursor_3.getString(cursor_3.getColumnIndex("somay"));
+                            String l_somay= g_somay;
+                            Cursor upl = createTable.getAll_instc_fad(g_tenxe,g_somay);
+                            jsonupload = cur2Json(upl);
+
+                            try {
+                                ujobject = new JSONObject();
+                                //ujobject.put("docNum", edt_maCT.getText().toString());
+                                ujobject.put("ujson", jsonupload);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                            final String res = upload_all("http://172.16.40.20/" + g_server + "/TechAPP/upload.php");
+                            runOnUiThread(new Runnable() { //Vì Toast không thể chạy đc nếu không phải UI Thread nên sử dụng runOnUIThread.
+                                @Override
+                                public void run() {
+                                    if (res.contains("FALSE")) {
+                                        //tvStatus.setText(getString(R.string.E10));
+                                        Toast.makeText(dialog.getContext(), R.string.ERRORtvStatus_false, Toast.LENGTH_SHORT).show();
+                                    }
+                                    if (res.contains("ERROINS")) {
+                                        //tvStatus.setText("đã được insert");
+                                        Toast.makeText(dialog.getContext(), R.string.ERRORtvStatus_errorins, Toast.LENGTH_SHORT).show();
+                                        //kt02Db.delete_table();
+                                        //kt02Db.delete_table_fac_kt(g_tc_faa001);
+                                        kt02Db.delete_table_fac_kt(g_tc_faa001,g_somay);
+                                        getLVData();
+                                    }
+                                    if (res.contains("TRUE")) {
+                                        //tvStatus.setText(g_server);
+                                        Toast.makeText(dialog.getContext(), R.string.ERRORtvStatus_true, Toast.LENGTH_SHORT).show();
+                                        //kt02Db.delete_table();
+                                        kt02Db.delete_table_fac_kt(g_tc_faa001,g_somay);
+                                        getLVData();
+                                    }
+                                }
+                            });
+                        } catch (Exception e) {
+                            String err = e.toString();
+                        }
+                        cursor_3.moveToNext();
+                    }
+
+
+
+                    /*Cursor upl = createTable.getAll_instc_fad(g_tenxe,"01");
                     jsonupload = cur2Json(upl);
 
                     try {
@@ -549,18 +602,19 @@ public class login_kt02 extends AppCompatActivity {
                                 //tvStatus.setText("đã được insert");
                                 Toast.makeText(dialog.getContext(), R.string.ERRORtvStatus_errorins, Toast.LENGTH_SHORT).show();
                                 //kt02Db.delete_table();
-                                kt02Db.delete_table_fac_kt(g_tc_faa001);
+                                //kt02Db.delete_table_fac_kt(g_tc_faa001);
                                 getLVData();
                             }
                             if (res.contains("TRUE")) {
                                 //tvStatus.setText(g_server);
                                 Toast.makeText(dialog.getContext(), R.string.ERRORtvStatus_true, Toast.LENGTH_SHORT).show();
                                 //kt02Db.delete_table();
-                                kt02Db.delete_table_fac_kt(g_tc_faa001);
+                                kt02Db.delete_table_fac_kt(g_tc_faa001,"01");
                                 getLVData();
                             }
                         }
                     });
+                    */
                 }
             }).start();
 

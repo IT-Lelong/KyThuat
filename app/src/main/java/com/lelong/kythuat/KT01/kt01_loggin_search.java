@@ -224,6 +224,7 @@ public class kt01_loggin_search extends AppCompatActivity {
 
                         }
                         db.delete_tenhinh();
+                        db.delete_tenhinhCT();
                         //  dialog.dismiss();
                         load();
                         return true;
@@ -501,8 +502,8 @@ public class kt01_loggin_search extends AppCompatActivity {
 
         SimpleCursorAdapter simpleCursorAdapter = new SimpleCursorAdapter(context,
                 R.layout.kt01_login_dialog_lvrow, cursor,
-                new String[]{"_id", "tc_faa002", "tc_faa003"},
-                new int[]{R.id.tv_stt, R.id.tv_ngay, R.id.tv_BP},
+                new String[]{"_id", "tc_faa002", "tc_faa003", "tc_fba009"},
+                new int[]{R.id.tv_stt, R.id.tv_ngay, R.id.tv_BP,R.id.tv_tenBP},
                 SimpleCursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
         simpleCursorAdapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
             @Override

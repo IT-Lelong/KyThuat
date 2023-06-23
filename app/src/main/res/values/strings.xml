@@ -134,6 +134,7 @@
     <string name="ls03">部分</string>
     <string name="ls04">观点</string>
     <string name="ls05">考核内容</string>
+    <string name="ls06">部門名稱</string>
 
     /*kt01fragment*/
     <string name="hang1">考核項目</string>

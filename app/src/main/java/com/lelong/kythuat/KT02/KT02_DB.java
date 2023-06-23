@@ -209,9 +209,9 @@ public class KT02_DB {
         db.delete(TABLE_NAME_TC_FAC_KT02, where_loggin, strings);
     }
 
-    public void delete_table_fac_kt(String l_tc_fac004) {
-        String where_loggin = "substr(tc_fac004,1,4)=? ";
-        String[] strings = new String[]{l_tc_fac004};
+    public void delete_table_fac_kt(String l_tc_fac004, String somay) {
+        String where_loggin = "substr(tc_fac004,1,4)=? AND somay=?";
+        String[] strings = new String[]{l_tc_fac004,somay};
         db.delete(TABLE_NAME_TC_FAC_KT02, where_loggin, strings);
     }
 
@@ -342,6 +342,19 @@ public class KT02_DB {
             return db.rawQuery("SELECT * "
 
                     + " FROM " + TABLE_NAME_TC_FAC_KT02 + "  WHERE tc_fac004='" + key + "' AND user='" + l_bp + "' AND somay='" + xsomay  + "' AND ngay='" + l_ngay + "'", null);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public Cursor Soxe(String tenxe) {
+        Cursor a;
+        try {
+
+            //SQLiteDatabase db = this.getWritableDatabase();
+            String selectQuery = "SELECT DISTINCT somay FROM tc_fac_table_kt02 WHERE substr(tc_fac004,1,4)='" + tenxe + "' ORDER BY 1";
+            return db.rawQuery(selectQuery, null);
+
         } catch (Exception e) {
             return null;
         }

@@ -361,13 +361,18 @@ public class Create_Table {
             return null;
         }
     }*/
-    public Cursor getAll_instc_fad(String tenxe) {
+    public Cursor getAll_instc_fad(String tenxe,String somay) {
         try {
+            /*String selectQuery = "SELECT  tc_fac_file.tc_fac001 as tc_fac001,tc_fac_file.tc_fac002 as tc_fac002,tc_fac_file.tc_fac003 as tc_fac003,tc_fac_file.tc_fac004 as tc_fac004,tc_fac_table_kt02.tc_fac005 as tc_fac005 ,tc_fac_file.tc_fac006 as tc_fac006 ,tc_fac_table_kt02.checkbox1 as checkbox1,tc_fac_table_kt02.checkbox2 as checkbox2," +
+                    "tc_fac_table_kt02.checkbox3 as checkbox3,tc_fac_table_kt02.checkbox4 as checkbox4,tc_fac_table_kt02.checkbox5 as checkbox5,tc_fac_table_kt02.checkbox6 as checkbox6,tc_fac_table_kt02.tc_fac009 as tc_fac009," +
+                    "tc_fac_table_kt02.user as user,tc_fac_table_kt02.ngay as ngay,tc_fac_table_kt02.somay as somay " +
+                    " FROM " + TABLE_NAME_TC_FAC + ","+TABLE_NAME_TC_FAC_KT02+",fia_file " +
+                    " WHERE tc_fac_table_kt02.tc_fac004=tc_fac_file.tc_fac004 and somay=fiaud03 and fia15=user and ta_fia02_1='" + tenxe + "' ";*/
             String selectQuery = "SELECT  tc_fac_file.tc_fac001 as tc_fac001,tc_fac_file.tc_fac002 as tc_fac002,tc_fac_file.tc_fac003 as tc_fac003,tc_fac_file.tc_fac004 as tc_fac004,tc_fac_table_kt02.tc_fac005 as tc_fac005 ,tc_fac_file.tc_fac006 as tc_fac006 ,tc_fac_table_kt02.checkbox1 as checkbox1,tc_fac_table_kt02.checkbox2 as checkbox2," +
                     "tc_fac_table_kt02.checkbox3 as checkbox3,tc_fac_table_kt02.checkbox4 as checkbox4,tc_fac_table_kt02.checkbox5 as checkbox5,tc_fac_table_kt02.checkbox6 as checkbox6,tc_fac_table_kt02.tc_fac009 as tc_fac009," +
                     "tc_fac_table_kt02.user as user,tc_fac_table_kt02.ngay as ngay,tc_fac_table_kt02.somay as somay " +
                     " FROM " + TABLE_NAME_TC_FAC + ","+TABLE_NAME_TC_FAC_KT02+",fia_file " +
-                    " WHERE tc_fac_table_kt02.tc_fac004=tc_fac_file.tc_fac004 and somay=fiaud03 and fia15=user and ta_fia02_1='" + tenxe + "' ";
+                    " WHERE tc_fac_table_kt02.tc_fac004=tc_fac_file.tc_fac004 and somay=fiaud03 and fia15=user and ta_fia02_1='" + tenxe + "' AND somay='" + somay + "'";
             return db.rawQuery(selectQuery, null);
         } catch (Exception e) {
             return null;

@@ -130,6 +130,7 @@
     <string name="ls03">Bộ phận</string>
     <string name="ls04">Tổng Điểm</string>
     <string name="ls05">Nội dung</string>
+    <string name="ls06">Tên bộ phận</string>
 
     /*kt01fragment*/
     <string name="hang1">Hạng mục</string>
