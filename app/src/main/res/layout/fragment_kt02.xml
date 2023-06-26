@@ -131,7 +131,7 @@
         android:id="@+id/recyclerView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#228BC34A"
+
         android:orientation="vertical" />
 
 </LinearLayout>

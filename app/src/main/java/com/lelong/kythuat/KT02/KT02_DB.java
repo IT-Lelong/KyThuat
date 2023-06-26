@@ -49,6 +49,23 @@ public class KT02_DB {
             + ngay_up + " TEXT," + ghichu_up + " TEXT," + trangthai_up + " TEXT )";
     //KT02(E)
 
+    //KT02(S)sigture
+    private final static String TABLE_NAME_FIA_UP_SIG = "fia_up_sig_file";
+    private final static String somay_sig = "somay_sig"; //Số máy
+    private final static String mabp_sig = "mabp_sig"; //Bộ phận
+    private final static String tebp_sig = "tebp_sig"; //Tên bộ phận
+    private final static String ngay_sig = "ngay_sig"; //Ngày
+    private final static String ghichu_sig = "ghichu_sig"; //Ghi chú
+    private final static String trangthai_sig = "trangthai_sig"; //Trạng thái
+    private final static String manv_sig = "manv_sig"; //Số thẻ
+    private final static String sogio_sig = "sogio_sig"; //Số giờ hoạt động
+    private final static String tenhinh_sig = "tenhinh_sig"; //Số giờ hoạt động
+
+    String CREATE_TABLE_NAME_FIA_UP_SIG = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_FIA_UP_SIG + " ("
+            + somay_sig + " TEXT," + mabp_sig + " TEXT," + tebp_sig + " TEXT,"
+            + ngay_sig + " TEXT," + ghichu_sig + " TEXT," + trangthai_sig + " TEXT," + manv_sig + " TEXT," + sogio_sig + " TEXT," + tenhinh_sig +" TEXT )";
+    //KT02(E)
+
     //Bảng ảo lưu biểu KT02 (S)
     String CREATE_TABLE_NAME_TC_FAC_KT02 = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_TC_FAC_KT02 + " ("
             + tc_fac004 + " TEXT," + tc_fac009 + " TEXT,"
@@ -79,6 +96,7 @@ public class KT02_DB {
             //db.execSQL(attachQuery);
             db.execSQL(CREATE_TABLE_NAME_TC_FAC_KT02);
             db.execSQL(CREATE_TABLE_NAME_FIA_UP);
+            db.execSQL(CREATE_TABLE_NAME_FIA_UP_SIG);
         } catch (Exception e) {
 
         }
@@ -91,7 +109,9 @@ public class KT02_DB {
             final String DROP_TABLE_NAME_TC_FAC_KT02 = "DROP TABLE IF EXISTS " + TABLE_NAME_TC_FAC_KT02;
             db.execSQL(DROP_TABLE_NAME_TC_FAC_KT02);
             final String DROP_TABLE_NAME_FIA_UP = "DROP TABLE IF EXISTS " + TABLE_NAME_FIA_UP;
-            db.execSQL(DROP_TABLE_NAME_TC_FAC_KT02);
+            db.execSQL(DROP_TABLE_NAME_FIA_UP);
+            final String DROP_TABLE_NAME_FIA_UP_SIG = "DROP TABLE IF EXISTS " + TABLE_NAME_FIA_UP_SIG;
+            db.execSQL(DROP_TABLE_NAME_FIA_UP_SIG);
             db.close();
         } catch (Exception e) {
 
@@ -246,10 +266,53 @@ public class KT02_DB {
         }
     }
 
+    public long ins_sig(
+            String is_ngay, String is_soxe, String is_bophan,String is_tenbp, String is_ghichu, String is_manv, String is_sogio) {
+        try {
+            int count = 0;
+            ContentValues argsA = new ContentValues();
+            Cursor mCount = db.rawQuery("SELECT count(*) FROM " + TABLE_NAME_FIA_UP_SIG + " WHERE somay_sig='" + is_soxe + "' AND mabp_sig='" + is_bophan + "' AND ngay_sig='" + is_ngay + "'", null);
+            mCount.moveToFirst();
+            count = mCount.getInt(0);
+            if (count <= 0) {
+                argsA.put(somay_sig, is_soxe);
+                argsA.put(mabp_sig, is_bophan);
+                argsA.put(tebp_sig, is_tenbp);
+                argsA.put(ngay_sig, is_ngay);
+                argsA.put(ghichu_sig, is_ghichu);
+                argsA.put(manv_sig, is_manv);
+                argsA.put(sogio_sig, is_sogio);
+                db.insert(TABLE_NAME_FIA_UP_SIG, null, argsA);
+                return 1;
+            }else {
+                return 0;
+            }
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+
     public Boolean KT_fia_up(String is_soxe, String is_bophan) {
         try {
             int count = 0;
             String selectQuery = "SELECT count(*) as dem FROM " + TABLE_NAME_FIA_UP + " WHERE somay_up='" + is_soxe + "' AND mabp_up='" + is_bophan + "' ";
+            Cursor mCount=db.rawQuery(selectQuery, null);
+            mCount.moveToFirst();
+            count = mCount.getInt(0);
+            if (count > 0) {
+                return true;
+            }else {
+                return false;
+            }
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public Boolean KT_ndhinh(String key,String l_bp, String xsomay,String l_ngay) {
+        try {
+            int count = 0;
+            String selectQuery = "SELECT count(*) as dem FROM " + TABLE_NAME_TC_FAC_KT02 + " WHERE tc_fac004='" + key + "' AND user='" + l_bp + "' AND somay='" + xsomay  + "' AND ngay='" + l_ngay + "' AND tenhinh is not null";
             Cursor mCount=db.rawQuery(selectQuery, null);
             mCount.moveToFirst();
             count = mCount.getInt(0);

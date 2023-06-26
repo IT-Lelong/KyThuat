@@ -35,6 +35,7 @@ import com.lelong.kythuat.Create_Table;
 import com.lelong.kythuat.KT02.Retrofit2.APIYtils;
 import com.lelong.kythuat.KT02.Retrofit2.DataClient;
 import com.lelong.kythuat.R;
+import com.lelong.kythuat.SignaturePad;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -73,7 +74,7 @@ public class login_kt02 extends AppCompatActivity {
     ArrayList<List_Bophan> mangbp;
 
     String g_soxe, g_bophan, mabp, tenbp, g_tenxe;
-    Button btnins, btnsearch, btnfia, btnuploaddata;
+    Button btnins, btnsearch, btnfia, btnuploaddata, btnsignature;
     private Activity activity;
     ListView lv_query02;
     private Context context;
@@ -106,6 +107,8 @@ public class login_kt02 extends AppCompatActivity {
         btnfia.setOnClickListener(btnlistener1);
         btnuploaddata = dialog.findViewById(R.id.btn_uploaddata);
         btnuploaddata.setOnClickListener(btnlistener1);
+        btnsignature = dialog.findViewById(R.id.btn_signature);
+        btnsignature.setOnClickListener(btnlistener1);
         lv_query02 = dialog.findViewById(R.id.lv_query02);
 
         String g_bp= Constant_Class.UserFactory;
@@ -340,7 +343,8 @@ public class login_kt02 extends AppCompatActivity {
                 case R.id.btninsert: {
 
                     Intent QR020 = new Intent();
-                    QR020.setClass(v.getContext(), KT02_activity.class);
+                    //QR020.setClass(v.getContext(), KT02_activity.class);
+                    QR020.setClass(v.getContext(), SignaturePad.class);
                     Bundle bundle = new Bundle();
                     bundle.putString("somay", g_soxe);
                     bundle.putString("bophan", g_bophan);
@@ -417,6 +421,22 @@ public class login_kt02 extends AppCompatActivity {
                     });
 
                     al_dialog.show();
+                    break;
+                }
+                case R.id.btn_signature: {
+
+                    Intent QR020 = new Intent();
+                    QR020.setClass(v.getContext(), KT02_Signature_List.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("somay", g_soxe);
+                    bundle.putString("bophan", g_bophan);
+                    bundle.putString("LAYOUT", "notlogin");
+                    bundle.putString("G_TC_FAA001", g_tc_faa001);
+                    bundle.putString("G_TENXE", g_tenxe);
+                    //bundle.putString("SERVER", g_server);
+                    QR020.putExtras(bundle);
+                    v.getContext().startActivity(QR020);
+                    dialog.dismiss();
                     break;
                 }
             }

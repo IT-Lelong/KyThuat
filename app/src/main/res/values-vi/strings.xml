@@ -20,6 +20,7 @@
     <string name="btn_cancel1">Xóa đã chuyển</string>
     <string name="btn_cameranew">Chụp hình</string>
     <string name="btn_cameraold">Chụp hình cải thiện</string>
+    <string name="btn_signature">Ký tên</string>
 
     <string name="tt_stt">STT</string>
     <string name="tt_hangmuc">Hạng mục</string>
@@ -33,6 +34,7 @@
     <string name="tt_gio">Thời gian</string>
     <string name="tt_ca">Ca</string>
     <string name="tt_tenNV">Tên</string>
+    <string name="tt_manv">Mã NV</string>
 
     <string name="M01">Tải dữ liệu</string>
     <string name="M02">Xác nhận tải dữ liệu lên hệ thống?</string>
@@ -82,6 +84,7 @@
     <string name="khongtot">Không tốt</string>
     <string name="ghichu">Ghi chú</string>
     <string name="Danhsach">Danh sách đã kiểm tra</string>
+    <string name="sogio">Số giờ hoạt động</string>
 
     <string name="tenmaymoc">Tên máy móc, thiết bị</string>
     <string name="tinhtrang">Tình trạng thiết bị</string>
@@ -122,6 +125,8 @@
     <string name="btninsert">Thực hiện</string>
     <string name="diem">Điểm</string>
     <string name="kiemtra">Xe hư</string>
+    <string name="kyten1">Ký tên</string>
+
     /*kt01bophan*/
     <string name="btn_addnew">Thêm mới</string>
     <string name="btn_updatesever">Kết chuyển</string>

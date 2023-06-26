@@ -19,6 +19,7 @@
     <string name="btn_cancel1">Xóa đã chuyển</string>
     <string name="btn_cameranew">Chụp hình</string>
     <string name="btn_cameraold">Chụp hình cải thiện</string>
+    <string name="btn_signature">Ký tên</string>
 
     <string name="tt_stt">序號</string>
     <string name="tt_hangmuc">項目</string>
@@ -32,6 +33,7 @@
     <string name="tt_gio">時間</string>
     <string name="tt_ca">班別</string>
     <string name="tt_tenNV">人員名稱</string>
+    <string name="tt_manv">Mã NV</string>
 
     <string name="M01">資料上傳</string>
     <string name="M02">確定上傳資料?</string>
@@ -82,6 +84,7 @@
     <string name="khongtot">不好</string>
     <string name="ghichu">備註</string>
     <string name="Danhsach">已稽查名冊</string>
+    <string name="sogio">Số giờ hoạt động</string>
 
     <string name="tenmaymoc">清潔、整理位置</string>
     <string name="tinhtrang">審核</string>
@@ -125,6 +128,7 @@
     <string name="btninsert">執行</string>
     <string name="diem">總分</string>
     <string name="kiemtra">Xe hư</string>
+    <string name="kyten1">Ký tên</string>
 
     /*kt01bophan*/
     <string name="btn_addnew">新增</string>

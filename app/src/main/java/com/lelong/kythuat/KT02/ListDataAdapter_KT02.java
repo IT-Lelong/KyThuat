@@ -43,8 +43,8 @@ public class ListDataAdapter_KT02 extends RecyclerView.Adapter<ListDataAdapter_K
     String bienngay;
 
     //private TextView user, ngay;
-    String g_ghichu,user,ngay,somay,g_checkbox1,g_checkbox2,g_checkbox3,g_checkbox4,g_checkbox5,g_checkbox6,mahangmuc;
-
+    String g_ghichu,user,ngay,somay,g_checkbox1,g_checkbox2,g_checkbox3,g_checkbox4,g_checkbox5,g_checkbox6,mahangmuc,tenhinh;
+    private KT02_DB kt02Db = null;
 
     public ListDataAdapter_KT02(Context context, int resource, ArrayList<KT02_LIST> mangLV02) {
         this.applicationContext = context;
@@ -73,12 +73,35 @@ public class ListDataAdapter_KT02 extends RecyclerView.Adapter<ListDataAdapter_K
         holder.checkBox5.setChecked(mangLV02.get(position).getCheckBox5());
         holder.checkBox6.setChecked(mangLV02.get(position).getCheckBox6());
         holder.tc_fac009.setText(mangLV02.get(position).getTc_fac009());
-
+kt02Db=new KT02_DB(applicationContext.getApplicationContext());
         user=mangLV02.get(position).getUser();
         somay=mangLV02.get(position).getSomay();
         ngay=mangLV02.get(position).getNgay();
+        mahangmuc=mangLV02.get(holder.getPosition()).getTc_fac004();
+        //if (mangLV02.get(position).getTenhinh() == "TRUE"){
 
-        if (mangLV02.get(position).getTenhinh() == "TRUE"){
+        Boolean chk_qrb = kt02Db.KT_ndhinh(mahangmuc,user,somay,ngay);
+        if (chk_qrb == true) {
+            Drawable[] layers = new Drawable[2];
+            layers[0] = applicationContext.getDrawable(R.drawable.camera1); // replace R.drawable.button_image with your button image
+            GradientDrawable gradientDrawable = new GradientDrawable();
+            gradientDrawable.setStroke(4, Color.RED); // set border color and width
+            gradientDrawable.setCornerRadius(20); // set border corner radius
+            layers[1] = gradientDrawable;
+            LayerDrawable layerDrawable = new LayerDrawable(layers);
+            holder.btn1.setBackground(layerDrawable);
+        }else {
+            Drawable[] layers = new Drawable[2];
+            layers[0] = applicationContext.getDrawable(R.drawable.camera1); // replace R.drawable.button_image with your button image
+            GradientDrawable gradientDrawable = new GradientDrawable();
+            gradientDrawable.setStroke(4, Color.WHITE); // set border color and width
+            gradientDrawable.setCornerRadius(20); // set border corner radius
+            layers[1] = gradientDrawable;
+            LayerDrawable layerDrawable = new LayerDrawable(layers);
+            holder.btn1.setBackground(layerDrawable);
+        }
+
+        if (mangLV02.get(holder.getPosition()).getTenhinh() == "TRUE"){
             Drawable[] layers = new Drawable[2];
             layers[0] = applicationContext.getDrawable(R.drawable.camera1); // replace R.drawable.button_image with your button image
             GradientDrawable gradientDrawable = new GradientDrawable();
@@ -110,6 +133,8 @@ public class ListDataAdapter_KT02 extends RecyclerView.Adapter<ListDataAdapter_K
             LocalDate currentDate = LocalDate.now();
             bienngay = String.valueOf(currentDate);
         }
+
+
         holder.btn1.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -134,6 +159,7 @@ public class ListDataAdapter_KT02 extends RecyclerView.Adapter<ListDataAdapter_K
 
             }
         });
+
         /*update cột ghi chu (S)*/
         holder.tc_fac009.addTextChangedListener(new TextWatcher() {
             @Override

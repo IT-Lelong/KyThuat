@@ -47,8 +47,8 @@ public class CheckAppUpdate {
     String g_package = "";
 
 
-    public CheckAppUpdate(Context ctx, String g_server) {
-        this.g_server = g_server;
+    public CheckAppUpdate(Context ctx) {
+        this.g_server = Constant_Class.server;
         this.mCtxAPI = ctx;
         g_package = mCtxAPI.getPackageName().toString();
     }

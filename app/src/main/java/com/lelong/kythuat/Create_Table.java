@@ -442,7 +442,25 @@ public class Create_Table {
         }
     }
    //KT02(E)
+   public Cursor getAll_fiaud03_sig(String tenxe,String bophan, String ngay) {
+       try {
+           /* String selectQuery = "select count(*) AS _id,fiaud03,fia15,fka02 from fia_file " +
+                    " where fiaud03 not in (select distinct somay from tc_fac_table_kt02) AND ta_fia02_1='" + tenxe + "' AND fia15 NOT LIKE 'B%' " +
+                    " group by fia15,fiaud03,fka02 order by fia15,fiaud03";*/
 
+           String selectQuery = " select count(*) AS _id,fiaud03,fia15,fka02,'"+ ngay +"' AS ngaysig from fia_file " +
+                   " where ta_fia02_1='" + tenxe + "' ";
+           if (!(bophan == null)){
+               selectQuery=selectQuery + " AND Substr(fia15,1,1) = '" + bophan + "' ";
+           }
+           selectQuery=selectQuery + " group by fia15,fiaud03,fka02 order by fiaud03,fia15 ";
+
+           return db.rawQuery(selectQuery, null);
+
+       } catch (Exception e) {
+           return null;
+       }
+   }
 
     public boolean ins_fac_01(String g_kind,String xuser,String xngay){
         //db=mCtx.openOrCreateDatabase(DATABASE_NAME,0,null);
