@@ -33,7 +33,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="6"
-            android:hint="Số gờ"
+            android:hint="Mã số nv"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
             android:ems="10"/>
@@ -65,7 +65,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="6"
-            android:hint="Số gờ"
+            android:hint="Số giờ"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
             android:ems="10"/>

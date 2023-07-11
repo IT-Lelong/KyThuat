@@ -108,6 +108,7 @@
     <string name="ERRORtvStatus_false">出現錯誤，不能插入資料到tc_fad_file</string>
     <string name="ERRORtvStatus_true">更新資料成功</string>
     <string name="ERRORtvStatus_errorins">資料已更新</string>
+    <string name="ERRORtvStatus_false_sig">出現錯誤，不能插入資料到tc_fao_file</string>
 
     /*Fragment_KT02*/
     <string name="maso1">項次</string>
@@ -139,6 +140,7 @@
     <string name="ls04">观点</string>
     <string name="ls05">考核内容</string>
     <string name="ls06">部門名稱</string>
+    <string name="ls07">Tổ chấm</string>
 
     /*kt01fragment*/
     <string name="hang1">考核項目</string>

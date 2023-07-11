@@ -36,6 +36,7 @@ import com.lelong.kythuat.Create_Table;
 import com.lelong.kythuat.KT01.Retrofit2.APIYtils;
 import com.lelong.kythuat.KT01.Retrofit2.DataClient;
 import com.lelong.kythuat.KT02.Bophan_Adapter;
+import com.lelong.kythuat.KT02.KT02_Signature_List;
 import com.lelong.kythuat.KT02.KT02_activity;
 import com.lelong.kythuat.KT02.Loggin_List;
 import com.lelong.kythuat.Menu;
@@ -80,7 +81,7 @@ public class kt01_loggin_search extends AppCompatActivity {
     Button btnlogin1;
     Button search1;
     Button btnback;
-    Button btnaupdate;
+    Button btnaupdate,btnsignature;
     Locale locale;
     TextView viewID;
     String L_BP;
@@ -94,7 +95,7 @@ public class kt01_loggin_search extends AppCompatActivity {
     private final String FILENAME = "mydata.txt";
     Cursor cursor_1, cursor_2;
     String[] station = new String[0];
-    String g_soxe, g_bophan, mabp, tenbp, g_tenxe;
+    String g_soxe, g_bophan, mabp, tenbp, g_tenxe,g_to;
 
     public void login_dialogkt01(Context context, String menuID, Activity activity) {
         this.activity = activity;
@@ -105,6 +106,7 @@ public class kt01_loggin_search extends AppCompatActivity {
         editText1 = dialog.findViewById(R.id.editID);
         btnlogin1 = dialog.findViewById(R.id.btnlogin);
         btnaupdate = dialog.findViewById(R.id.btn_updatesever);
+        btnsignature = dialog.findViewById(R.id.btn_signature);
         lis1 = dialog.findViewById(R.id.lv_query);
         btnback = dialog.findViewById(R.id.btnback);
         viewID = dialog.findViewById(R.id.viewID);
@@ -114,6 +116,7 @@ public class kt01_loggin_search extends AppCompatActivity {
         db.open();
 
         Spinner cbxbophan = dialog.findViewById(R.id.cbxbophan);
+        Spinner cbxto = dialog.findViewById(R.id.cbxto);
 
         List<kt01_Loggin_List> qrReScanIpLists = new ArrayList<>();
 
@@ -163,6 +166,25 @@ public class kt01_loggin_search extends AppCompatActivity {
             }
         });
 
+        //Spinner cbxto = dialog.findViewById(R.id.cbxto);
+
+        String[] list_to = {"Tổ A", "Tổ B", "Tổ C", "Tổ D"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this.activity, android.R.layout.simple_spinner_item, list_to);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        cbxto.setAdapter(adapter);
+
+        cbxto.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                g_to=adapter.getItem(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         load();
 
         lis1.setOnItemClickListener((parent, view, position, id) -> {
@@ -192,6 +214,7 @@ public class kt01_loggin_search extends AppCompatActivity {
                         bundle.putString("DATE", qry_ngay.getText().toString());
                         bundle.putString("BP", qry_BP.getText().toString());
                         bundle.putString("LAYOUT", "login");
+                        bundle.putString("TO", g_to);
                         KT01.putExtras(bundle);
                         context.startActivity(KT01);
                         dialog.dismiss();
@@ -428,12 +451,32 @@ public class kt01_loggin_search extends AppCompatActivity {
                                              Bundle bundle = new Bundle();
                                              bundle.putString("BOPHAN", g_bophan);
                                              bundle.putString("LAYOUT", "notlogin");
+                                             bundle.putString("TO", g_to);
                                              intent.putExtras(bundle);
                                              view.getContext().startActivity(intent);
                                              dialog.dismiss();
                                          }
                                      }
         );
+
+        btnsignature.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent QR020 = new Intent();
+                QR020.setClass(v.getContext(), KT01_Signature_List.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("somay", g_soxe);
+                bundle.putString("bophan", g_bophan);
+                bundle.putString("LAYOUT", "notlogin");
+                //bundle.putString("G_TC_FAA001", g_tc_faa001);
+                bundle.putString("G_TENXE", g_tenxe);
+                //bundle.putString("SERVER", g_server);
+                QR020.putExtras(bundle);
+                v.getContext().startActivity(QR020);
+                dialog.dismiss();
+            }
+        });
+
         dialog.show();
     }
 

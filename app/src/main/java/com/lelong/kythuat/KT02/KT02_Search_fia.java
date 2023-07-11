@@ -252,7 +252,7 @@ public class KT02_Search_fia extends AppCompatActivity {
             reader.close();
             return result;
         } catch (Exception ex) {
-            return "False";
+            return "FAlSE";
         } finally {
             if (conn != null) {
                 conn.disconnect();

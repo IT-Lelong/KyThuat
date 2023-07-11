@@ -343,8 +343,8 @@ public class login_kt02 extends AppCompatActivity {
                 case R.id.btninsert: {
 
                     Intent QR020 = new Intent();
-                    //QR020.setClass(v.getContext(), KT02_activity.class);
-                    QR020.setClass(v.getContext(), SignaturePad.class);
+                    QR020.setClass(v.getContext(), KT02_activity.class);
+                    //QR020.setClass(v.getContext(), SignaturePad.class);
                     Bundle bundle = new Bundle();
                     bundle.putString("somay", g_soxe);
                     bundle.putString("bophan", g_bophan);
@@ -699,7 +699,7 @@ public class login_kt02 extends AppCompatActivity {
             reader.close();
             return result;
         } catch (Exception ex) {
-            return "false";
+            return "FALSE";
         } finally {
             if (conn != null) {
                 conn.disconnect();

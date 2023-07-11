@@ -22,7 +22,7 @@ public class login_kt01 extends AppCompatActivity {
     TabLayout tabLayout;
     ViewPager viewPager;
     String lbophan1;
-    String ID,g_date, g_BP ;
+    String ID,g_date, g_BP ,g_tobp;
 
     String g_lang;
 
@@ -44,9 +44,11 @@ public class login_kt01 extends AppCompatActivity {
         if (g_layout.length() <6) {
             g_date = getbundle.getString("DATE");
             g_BP = getbundle.getString("BP");
+            g_tobp=getbundle.getString("TO");
         }else {
             g_date = dateFormatKT01.format(new Date()).toString();
             g_BP = getbundle.getString("BOPHAN");
+            g_tobp=getbundle.getString("TO");
         }
 
         //g_date = getbundle.getString("DATE");
@@ -85,7 +87,7 @@ public class login_kt01 extends AppCompatActivity {
         //tabLayout.addTab(tabLayout.newTab().setText("NBA"));
 
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        final MyAdapter adapter = new MyAdapter(this,getSupportFragmentManager(), tabLayout.getTabCount(),g_date,g_BP);
+        final MyAdapter adapter = new MyAdapter(this,getSupportFragmentManager(), tabLayout.getTabCount(),g_date,g_BP,g_tobp);
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {

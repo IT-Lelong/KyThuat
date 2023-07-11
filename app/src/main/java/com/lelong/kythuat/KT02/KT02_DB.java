@@ -242,6 +242,13 @@ public class KT02_DB {
         db.delete(TABLE_NAME_FIA_UP , where_loggin, strings);
     }
 
+    public void del_fiaup_sig() {
+        String where_loggin = "trangthai_sig=? ";
+        String[] strings = new String[]{"Đã chuyển"};
+        //String[] strings = new String[]{"Chưa chuyển"};
+        db.delete(TABLE_NAME_FIA_UP_SIG , where_loggin, strings);
+    }
+
     public long ins_tc_fia_file(
             String is_ngay, String is_soxe, String is_bophan,String is_tenbp, String is_ghichu) {
         try {
@@ -267,7 +274,7 @@ public class KT02_DB {
     }
 
     public long ins_sig(
-            String is_ngay, String is_soxe, String is_bophan,String is_tenbp, String is_ghichu, String is_manv, String is_sogio) {
+            String is_ngay, String is_soxe, String is_bophan,String is_tenbp, String is_ghichu, String is_manv, String is_sogio, String is_tenhinh) {
         try {
             int count = 0;
             ContentValues argsA = new ContentValues();
@@ -282,6 +289,7 @@ public class KT02_DB {
                 argsA.put(ghichu_sig, is_ghichu);
                 argsA.put(manv_sig, is_manv);
                 argsA.put(sogio_sig, is_sogio);
+                argsA.put(tenhinh_sig, is_tenhinh);
                 db.insert(TABLE_NAME_FIA_UP_SIG, null, argsA);
                 return 1;
             }else {
@@ -296,6 +304,24 @@ public class KT02_DB {
         try {
             int count = 0;
             String selectQuery = "SELECT count(*) as dem FROM " + TABLE_NAME_FIA_UP + " WHERE somay_up='" + is_soxe + "' AND mabp_up='" + is_bophan + "' ";
+            Cursor mCount=db.rawQuery(selectQuery, null);
+            mCount.moveToFirst();
+            count = mCount.getInt(0);
+            if (count > 0) {
+                return true;
+            }else {
+                return false;
+            }
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public Boolean KT_fia_up_sig(String is_soxe, String is_bophan) {
+        try {
+            int count = 0;
+            //String selectQuery = "SELECT count(*) as dem FROM " + TABLE_NAME_FIA_UP_SIG + " WHERE somay_sig='" + is_soxe + "' AND mabp_sig='" + is_bophan + "' AND ngay_sig='" + is_ngay + "' ";
+            String selectQuery = "SELECT count(*) as dem FROM " + TABLE_NAME_FIA_UP_SIG + " WHERE somay_sig='" + is_soxe + "' AND mabp_sig='" + is_bophan + "' ";
             Cursor mCount=db.rawQuery(selectQuery, null);
             mCount.moveToFirst();
             count = mCount.getInt(0);
@@ -350,10 +376,30 @@ public class KT02_DB {
         }
     }
 
+    public static long update_tc_fiaup_sig(String ud_soxe, String ud_bophan,String ud_ngay,String ud_trangthai) {
+        try {
+            db.execSQL("UPDATE " + TABLE_NAME_FIA_UP_SIG + " SET trangthai_sig ='" + ud_trangthai + "'" +
+                    " WHERE somay_sig='" + ud_soxe + "' AND mabp_sig='" + ud_bophan + "' AND ngay_sig='" + ud_ngay + "' ");
+            return 1;
+        }catch (Exception e){
+            return 0;
+        }
+    }
+
     public static long update_tc_fiaup1() {
         try {
             db.execSQL("UPDATE " + TABLE_NAME_FIA_UP + " SET trangthai_up ='Chưa chuyển'" +
                     " WHERE trangthai_up IS NULL OR trangthai_up ='Chưa chuyển'");
+            return 1;
+        }catch (Exception e){
+            return 0;
+        }
+    }
+
+    public static long update_tc_fiaup1_sig() {
+        try {
+            db.execSQL("UPDATE " + TABLE_NAME_FIA_UP_SIG + " SET trangthai_sig ='Chưa chuyển'" +
+                    " WHERE trangthai_sig IS NULL OR trangthai_sig ='Chưa chuyển'");
             return 1;
         }catch (Exception e){
             return 0;
@@ -374,6 +420,22 @@ public class KT02_DB {
             return null;
         }
     }
+
+    public Cursor getAll_fiaupnot_sig(String tenxe) {
+        Cursor a;
+        try {
+
+            //SQLiteDatabase db = this.getWritableDatabase();
+            String selectQuery = "SELECT somay_sig,mabp_sig,tebp_sig,ngay_sig,ghichu_sig,'Đã chuyển' AS trangthai_sig,manv_sig,sogio_sig,tenhinh_sig FROM fia_up_sig_file,fia_file " +
+                    " WHERE somay_sig=fiaud03 AND mabp_sig=fia15 AND (trangthai_sig is null OR trangthai_sig='Chưa chuyển') AND ta_fia02_1='" + tenxe + "' " +
+                    " order by somay_sig,mabp_sig,ngay_sig ";
+            return db.rawQuery(selectQuery, null);
+
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     public String appendUPDAEhinhanh(String key,String date,String bp,String xsomay,String tencothinh,String tencotstt,String l_check,int stt){
         try{
             ContentValues args=new ContentValues();

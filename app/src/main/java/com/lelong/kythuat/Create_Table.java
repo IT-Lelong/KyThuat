@@ -462,7 +462,22 @@ public class Create_Table {
        }
    }
 
-    public boolean ins_fac_01(String g_kind,String xuser,String xngay){
+    public Cursor getAll_bp(String tenxe,String bophan, String ngay) {
+        try {
+           /* String selectQuery = "select count(*) AS _id,fiaud03,fia15,fka02 from fia_file " +
+                    " where fiaud03 not in (select distinct somay from tc_fac_table_kt02) AND ta_fia02_1='" + tenxe + "' AND fia15 NOT LIKE 'B%' " +
+                    " group by fia15,fiaud03,fka02 order by fia15,fiaud03";*/
+
+            String selectQuery = " select count(*) AS _id,tc_fba007,tc_fba009,'"+ ngay +"' AS ngaysig from tc_fba_file group by tc_fba007 order by tc_fba007" ;
+
+            return db.rawQuery(selectQuery, null);
+
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public boolean ins_fac_01(String g_kind,String xuser,String xngay,String xto){
         //db=mCtx.openOrCreateDatabase(DATABASE_NAME,0,null);
         //將上傳資料彙整至json_table
         int count = 0;
@@ -495,6 +510,7 @@ public class Create_Table {
                     argsC.put("tc_faa014", c.getString(11));
                     argsC.put("tc_faa015", c.getString(12));
                     argsC.put("tc_faa016", c.getString(13));
+                    argsC.put("tc_faa019", xto);
                     db.insert(TABLE_NAME_TC_FAA, null, argsC);
                 }while (c.moveToNext());
             }else {

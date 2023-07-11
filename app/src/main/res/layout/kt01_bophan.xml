@@ -8,23 +8,39 @@
     android:padding="5dp"
     tools:context=".Menu">
 
-        <TextView
-            android:id="@+id/viewID"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:text="@string/ls03"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+    <TextView
+        android:id="@+id/txt_to"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="@string/ls07"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <Spinner
+        android:id="@+id/cbxto"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:theme="@style/Spinner2" />
+
+    <TextView
+        android:id="@+id/viewID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="@string/ls03"
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
     <Spinner
         android:id="@+id/cbxbophan"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:gravity="center"
-        android:theme="@style/Spinner1"
-        />
+        android:theme="@style/Spinner1" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -37,33 +53,46 @@
             android:layout_width="100dp"
             android:layout_height="60dp"
             android:layout_gravity="center"
-            android:background="@drawable/button_type_nomal"
-            android:textColor="@color/white"
-            android:textSize="15sp"
-            android:text="@string/main_ok"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="20dp"/>
+            android:layout_marginRight="20dp"
+            android:background="@drawable/button_type_nomal"
+            android:text="@string/main_ok"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
 
         <Button
             android:id="@+id/btn_updatesever"
             android:layout_width="100dp"
             android:layout_height="60dp"
             android:layout_gravity="center"
-            android:background="@drawable/button_type_nomal"
-            android:textColor="@color/white"
-            android:textSize="15sp"
-            android:text="@string/btn_updatesever"
             android:layout_marginLeft="20dp"
-            android:layout_marginRight="10dp"/>
+            android:layout_marginRight="10dp"
+            android:background="@drawable/button_type_nomal"
+            android:text="@string/btn_updatesever"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
+        <Button
+            android:id="@+id/btn_signature"
+            android:layout_width="100dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/button_type_nomal"
+            android:text="@string/btn_signature"
+            android:textColor="@color/white"
+            android:textSize="15sp"/>
 
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="4"
         android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
         android:layout_marginTop="5dp"
+        android:layout_marginRight="10dp"
+        android:layout_weight="4"
         android:orientation="vertical">
 
         <TextView
@@ -93,8 +122,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
-                android:paddingLeft="5dp"
                 android:gravity="center"
+                android:paddingLeft="5dp"
                 android:text="@string/ls02"
                 android:textStyle="bold"
                 android:theme="@style/title" />
@@ -104,17 +133,18 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
-                android:paddingLeft="5dp"
                 android:gravity="center"
+                android:paddingLeft="5dp"
                 android:text="@string/ls03"
                 android:textStyle="bold"
                 android:theme="@style/title" />
+
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="3.3"
-                android:paddingLeft="5dp"
                 android:gravity="center"
+                android:paddingLeft="5dp"
                 android:text="@string/ls06"
                 android:textStyle="bold"
                 android:theme="@style/title" />
@@ -124,7 +154,7 @@
         <ListView
             android:id="@+id/lv_query"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent" />
     </LinearLayout>
 
 

@@ -79,12 +79,12 @@ public class ListDataAdapter extends RecyclerView.Adapter<ListDataAdapter.ViewHo
     String lbophan1;
     String bien;
     String value;
-    String bienngay, ngay, bophan;
+    String bienngay, ngay, bophan,mahangmuc;
     String ID2;
     String DULIEU;
     String DULIEUnew, DULIEUnew1;
     String g_date;
-    String g_bp;
+    String g_bp,g_to;
     private int resource;
     private ArrayList<TabLayout> mangLV;
     private Object buttonView;
@@ -103,6 +103,7 @@ public class ListDataAdapter extends RecyclerView.Adapter<ListDataAdapter.ViewHo
         this.mangLV = mangLV;
         this.g_date = g_date;
         this.g_bp = g_bp;
+        //this.g_to = g_to;
         db = new KT01_DB(this.applicationContext);
         db.open();
         this.kt01Interface = (KT01_Interface) kt01Interface;
@@ -143,10 +144,11 @@ public class ListDataAdapter extends RecyclerView.Adapter<ListDataAdapter.ViewHo
         holder.checkBox5.setChecked(mangLV.get(position).getCheckBox5());
         holder.ghichu1.setText(mangLV.get(position).getTc_ghichu());
 
+
         ngay = mangLV.get(position).getNgay();
         bophan = mangLV.get(position).getBophan();
-
-        if (mangLV.get(position).getTc_dkcamera() == "TRUE") {
+        mahangmuc=mangLV.get(holder.getPosition()).getTc_fac004();
+        /*if (mangLV.get(position).getTc_dkcamera() == "TRUE") {
             Drawable[] layers = new Drawable[2];
             layers[0] = applicationContext.getDrawable(R.drawable.camera1); // replace R.drawable.button_image with your button image
             GradientDrawable gradientDrawable = new GradientDrawable();
@@ -155,8 +157,38 @@ public class ListDataAdapter extends RecyclerView.Adapter<ListDataAdapter.ViewHo
             layers[1] = gradientDrawable;
             LayerDrawable layerDrawable = new LayerDrawable(layers);
             holder.btn1.setBackground(layerDrawable);
-        }
+        }*/
 
+        Boolean chk_qrb = db.KT_ndhinh(mahangmuc,bophan,"",ngay);
+        if (chk_qrb == true) {
+            Drawable[] layers = new Drawable[2];
+            layers[0] = applicationContext.getDrawable(R.drawable.camera1); // replace R.drawable.button_image with your button image
+            GradientDrawable gradientDrawable = new GradientDrawable();
+            gradientDrawable.setStroke(4, Color.RED); // set border color and width
+            gradientDrawable.setCornerRadius(20); // set border corner radius
+            layers[1] = gradientDrawable;
+            LayerDrawable layerDrawable = new LayerDrawable(layers);
+            holder.btn1.setBackground(layerDrawable);
+        }else {
+            Drawable[] layers = new Drawable[2];
+            layers[0] = applicationContext.getDrawable(R.drawable.camera1); // replace R.drawable.button_image with your button image
+            GradientDrawable gradientDrawable = new GradientDrawable();
+            gradientDrawable.setStroke(4, Color.WHITE); // set border color and width
+            gradientDrawable.setCornerRadius(20); // set border corner radius
+            layers[1] = gradientDrawable;
+            LayerDrawable layerDrawable = new LayerDrawable(layers);
+            holder.btn1.setBackground(layerDrawable);
+        }
+        /*if (mangLV.get(holder.getPosition()).getTenhinh() == "TRUE"){
+            Drawable[] layers = new Drawable[2];
+            layers[0] = applicationContext.getDrawable(R.drawable.camera1); // replace R.drawable.button_image with your button image
+            GradientDrawable gradientDrawable = new GradientDrawable();
+            gradientDrawable.setStroke(4, Color.RED); // set border color and width
+            gradientDrawable.setCornerRadius(20); // set border corner radius
+            layers[1] = gradientDrawable;
+            LayerDrawable layerDrawable = new LayerDrawable(layers);
+            holder.btn1.setBackground(layerDrawable);
+        }*/
         try {
             InputStream is = applicationContext.getApplicationContext().openFileInput("mydata.txt");
             InputStreamReader isr = new InputStreamReader(is);
@@ -189,7 +221,8 @@ public class ListDataAdapter extends RecyclerView.Adapter<ListDataAdapter.ViewHo
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // add this line
                 applicationContext.startActivity(intent);*/
                 DULIEU = mangLV.get(position).getTc_fac004();
-                openDialog(DULIEU);
+                g_to= mangLV.get(position).getTobp();
+                openDialog(DULIEU,g_to);
             }
         });
 
@@ -336,7 +369,7 @@ public class ListDataAdapter extends RecyclerView.Adapter<ListDataAdapter.ViewHo
 
     }
 
-    private void openDialog(String DULIEU) {
+    private void openDialog(String DULIEU,String xto) {
         dialog = new Dialog(applicationContext);
         dialog.setContentView(R.layout.kt01_checkcamera);
         btn_cameranew = dialog.findViewById(R.id.btncamera);
@@ -350,6 +383,7 @@ public class ListDataAdapter extends RecyclerView.Adapter<ListDataAdapter.ViewHo
                 bundle.putString("ID", DULIEU);
                 bundle.putString("l_ngay", ngay);
                 bundle.putString("l_bp", bophan);
+                bundle.putString("l_to", xto);
                 intent.putExtras(bundle);
 
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // add this line

@@ -1,12 +1,12 @@
-package com.lelong.kythuat.KT02;
+package com.lelong.kythuat.KT01;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Looper;
-import android.os.Message;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,9 +17,10 @@ import android.widget.Toast;
 
 import com.lelong.kythuat.Constant_Class;
 import com.lelong.kythuat.Create_Table;
-import com.lelong.kythuat.KT02.Retrofit2.APIYtils;
+import com.lelong.kythuat.KT02.KT02_DB;
+import com.lelong.kythuat.KT02.KT02_Interface;
+import com.lelong.kythuat.KT02.List_Signature;
 import com.lelong.kythuat.KT02.Retrofit2.APIYtils_Sig;
-import com.lelong.kythuat.KT02.Retrofit2.DataClient;
 import com.lelong.kythuat.KT02.Retrofit2.DataClient_Sig;
 import com.lelong.kythuat.R;
 
@@ -45,9 +46,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class KT02_Signature_List extends AppCompatActivity implements KT02_Interface{
+public class KT01_Signature_List extends AppCompatActivity implements KT01_Interface {
     private Create_Table createTable = null;
-    private KT02_DB kt02Db = null;
+    private KT01_DB kt01Db = null;
     Cursor cursor;
     ListView lv_searchsig;
     String g_tc_faa001,g_tenxe,g_fia15 ;
@@ -56,16 +57,15 @@ public class KT02_Signature_List extends AppCompatActivity implements KT02_Inter
     JSONArray jsonupload;
     String g_server = "";
     String a;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.kt02_signature_list);
+        setContentView(R.layout.kt01_signature_list);
         lv_searchsig = findViewById(R.id.lv_search_signature);
         createTable = new Create_Table(getApplicationContext());
         createTable.open();
-        kt02Db = new KT02_DB(getApplicationContext());
-        kt02Db.open();
+        kt01Db = new KT01_DB(getApplicationContext());
+        kt01Db.open();
         Bundle getbundle = getIntent().getExtras();
         g_tenxe = getbundle.getString("G_TENXE");
         g_server = getString(R.string.server);
@@ -81,15 +81,15 @@ public class KT02_Signature_List extends AppCompatActivity implements KT02_Inter
             g_fia15 = "B";
         }
         String ngaysig = dateFormatKT02.format(new Date()).toString();
-        cursor = createTable.getAll_fiaud03_sig(g_tenxe,g_fia15,ngaysig);
+        cursor = createTable.getAll_bp(g_tenxe,g_fia15,ngaysig);
         Drawable drawable_blue = getResources().getDrawable(R.drawable.button_kt_blue);
         Drawable drawable_green = getResources().getDrawable(R.drawable.button_kt_green);
-        List_Signature listSignature = new List_Signature(this,
-                R.layout.kt02_signature_row, cursor,
-                new String[]{"_id","fiaud03", "fia15", "fka02","ngaysig"},
-                new int[]{R.id.tv_stt, R.id.tv_somay, R.id.tv_mabp,R.id.tv_tenbp,R.id.tv_ngaysig},this,drawable_blue,drawable_green,g_tenxe);
+        KT01_List_Signature kt01ListSignature = new KT01_List_Signature(this,
+                R.layout.kt01_signature_row, cursor,
+                new String[]{"_id", "tc_fba007", "tc_fba009","ngaysig"},
+                new int[]{R.id.tv_stt, R.id.tv_mabp,R.id.tv_tenbp,R.id.tv_ngaysig},this,drawable_blue,drawable_green,g_tenxe);
 
-        listSignature.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
+        kt01ListSignature.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
             @Override
             public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
                 if (view.getId() == R.id.tv_stt) {
@@ -100,11 +100,11 @@ public class KT02_Signature_List extends AppCompatActivity implements KT02_Inter
                 return false;
             }
         });
-        lv_searchsig.setAdapter(listSignature);
+        lv_searchsig.setAdapter(kt01ListSignature);
     }
 
     @Override
-    public void loadData() {
+    public void takefoto(Context applicationContext, String key) {
 
     }
 
@@ -148,7 +148,7 @@ public class KT02_Signature_List extends AppCompatActivity implements KT02_Inter
 
                 for (File file : files) {
                     String kiemtratenanh = file.getName().toString().trim().substring(0, 2);
-                    if (kiemtratenanh.equals("Xe")) {
+                    if (kiemtratenanh.equals("TB")) {
                         String File_path = file.getAbsolutePath();
                         String[] mangtenfile = File_path.split("\\.");
                         //File_path = mangtenfile[0] + System.currentTimeMillis() + "." + mangtenfile[1];
@@ -237,7 +237,7 @@ public class KT02_Signature_List extends AppCompatActivity implements KT02_Inter
 
                 }
 //INSERT TB TC_FAO
-                Cursor upl = kt02Db.getAll_fiaupnot_sig(g_tenxe);
+                Cursor upl = kt01Db.getAll_fiaupnot_sig(g_tenxe);
                 jsonupload = cur2Json(upl);
 
                 try {
@@ -263,12 +263,12 @@ public class KT02_Signature_List extends AppCompatActivity implements KT02_Inter
                                         String g_tc_faO002 = jsonObject.getString("TC_FAO002"); //Mã bộ phận
                                         String g_tc_faO004 = jsonObject.getString("TC_FAO004"); //Ngay
 
-                                        kt02Db.update_tc_fiaup_sig(g_tc_faO001, g_tc_faO002, g_tc_faO004, "Đã chuyển");
+                                        kt01Db.update_tc_fiaup_sig(g_tc_faO001, g_tc_faO002, g_tc_faO004, "Đã chuyển");
 
                                         //trangthai.setText("Chưa chuyển");
                                     }
                                     Toast.makeText(getApplicationContext(), R.string.ERRORtvStatus_errorins, Toast.LENGTH_SHORT).show();
-                                    kt02Db.update_tc_fiaup1_sig();
+                                    kt01Db.update_tc_fiaup1_sig();
                                     a = "ok";
                                 } catch (JSONException e) {
                                     String abc = e.toString();
@@ -327,7 +327,7 @@ public class KT02_Signature_List extends AppCompatActivity implements KT02_Inter
     }
 
     private void delete_data() {
-        kt02Db.del_fiaup_sig();
+        kt01Db.del_fiaup_sig();
         LV_Detail_sig();
     }
 

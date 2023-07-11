@@ -63,6 +63,7 @@ public class Fragmen_KT01 extends Fragment implements KT01_Interface {
     private String g_date;
     private static final int CAMERA_REQUEST = 1888;
     private String g_BP;
+    private String g_TO;
     String position;
     boolean checkBox;
     private Context mContext;
@@ -92,14 +93,15 @@ public class Fragmen_KT01 extends Fragment implements KT01_Interface {
     private Create_Table createTable_fac = null;
     private Context Fragmen_KT01;
     String bophan;
-    String ngay;
+    String ngay,tobp;
     private int s;
     DecimalFormat decimalFormat = new DecimalFormat("00");
-    public Fragmen_KT01(int s, String ngay, String bophan) {
+    public Fragmen_KT01(int s, String ngay, String bophan,String tobp) {
         // Required empty public constructor
         this.bophan = bophan;
         this.ngay = ngay;
         this.s = s;
+        this.tobp=tobp;
         position1 = decimalFormat.format(s + 1);
         //g_date = g_date1.toString();
         //g_BP = g_BP1.toString();
@@ -130,14 +132,14 @@ public class Fragmen_KT01 extends Fragment implements KT01_Interface {
         //this.g_context = context;
     }
 
-    public static Fragmen_KT01 newInstance(Context context, String param2, String g_date1, String g_BP1) {
+    public static Fragmen_KT01 newInstance(Context context, String param2, String g_date1, String g_BP1, String g_toBP1) {
         Fragmen_KT01 fragment = new Fragmen_KT01(context);
 
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param2);
         args.putString(ARG_PARAM2, g_date1);
         args.putString(ARG_PARAM3, g_BP1);
-
+        args.putString(ARG_PARAM3, g_toBP1);
         fragment.setArguments(args);
         return fragment;
 
@@ -162,6 +164,7 @@ public class Fragmen_KT01 extends Fragment implements KT01_Interface {
             position = getArguments().getString(ARG_PARAM1);
             g_date = getArguments().getString(ARG_PARAM2);
             g_BP = getArguments().getString(ARG_PARAM3);
+            g_TO = getArguments().getString(ARG_PARAM3);
         }
 
 
@@ -237,7 +240,7 @@ public class Fragmen_KT01 extends Fragment implements KT01_Interface {
         {*/
         createTable_fac = new Create_Table(getContext());
         createTable_fac.open();
-        createTable_fac.ins_fac_01("KT01",bophan,ngay);
+        createTable_fac.ins_fac_01("KT01",bophan,ngay,tobp);
         cursor_1 = createTable_fac.getAll_tc_fac_01("KT01", position1,bophan,ngay);
         cursor_1.moveToFirst();
         int num = cursor_1.getCount();
@@ -255,7 +258,7 @@ public class Fragmen_KT01 extends Fragment implements KT01_Interface {
                 @SuppressLint("Range") Boolean checkbox3 = Boolean.valueOf(cursor_1.getString(cursor_1.getColumnIndex("checkbox3")));
                 @SuppressLint("Range") Boolean checkbox4 = Boolean.valueOf(cursor_1.getString(cursor_1.getColumnIndex("checkbox4")));
                 @SuppressLint("Range") Boolean checkbox5 = Boolean.valueOf(cursor_1.getString(cursor_1.getColumnIndex("checkbox5")));
-                mangLV.add(new TabLayout(view,ngay,bophan, tc_fac003, tc_fac004, tc_fac006, tc_faa006, checkbox, checkbox1, checkbox2, checkbox3, checkbox4, checkbox5, dkcamera));
+                mangLV.add(new TabLayout(view,ngay,bophan, tc_fac003, tc_fac004, tc_fac006, tc_faa006, checkbox, checkbox1, checkbox2, checkbox3, checkbox4, checkbox5, dkcamera,tobp));
                 //db.append(tc_fac004,bienngay,ID2,"","","",tc_fac007,tc_fac006,tc_fac003,tc_fac001,"");
             } catch (Exception e) {
                 String err = e.toString();
@@ -339,6 +342,11 @@ public class Fragmen_KT01 extends Fragment implements KT01_Interface {
         tenanh = key1 + "_" + l_ngay + "_" + formattedTime + "_" + ID1;
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(cameraIntent, CAMERA_REQUEST);
+
+    }
+
+    @Override
+    public void loadData_Sig() {
 
     }
 

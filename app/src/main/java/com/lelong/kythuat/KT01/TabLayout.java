@@ -23,6 +23,7 @@ public class TabLayout extends RecyclerView.ViewHolder implements Serializable {
     private String tc_fac003;
     private String tc_fac004;
     private  String dkcamera;
+    private  String tobp;
     // private String tc_fac005;
     private String tc_fac006;
     //private String tc_fac007;
@@ -104,7 +105,15 @@ public class TabLayout extends RecyclerView.ViewHolder implements Serializable {
         this.checkBox5 = checkBox5;
     }
 
-    public TabLayout(@NonNull View itemView, String ngay, String bophan, String tc_fac003, String tc_fac004, String tc_fac006, String ghichu, boolean checkBox, boolean checkBox1, boolean checkBox2, boolean checkBox3, boolean checkBox4, boolean checkBox5, String dkcamera) {
+    public String getTobp() {
+        return tobp;
+    }
+
+    public void setTobp(String tobp) {
+        this.tobp = tobp;
+    }
+
+    public TabLayout(@NonNull View itemView, String ngay, String bophan, String tc_fac003, String tc_fac004, String tc_fac006, String ghichu, boolean checkBox, boolean checkBox1, boolean checkBox2, boolean checkBox3, boolean checkBox4, boolean checkBox5, String dkcamera, String tobp) {
         super(itemView);
         this.ngay = ngay;
         this.bophan = bophan;
@@ -113,6 +122,7 @@ public class TabLayout extends RecyclerView.ViewHolder implements Serializable {
         this.tc_fac006 = tc_fac006;
         //this.tc_fac007 = tc_fac007;
         this.dkcamera =dkcamera;
+        this.tobp =tobp;
         this.ghichu = ghichu;
         this.checkBox = checkBox;
         this.checkBox1 = checkBox1;

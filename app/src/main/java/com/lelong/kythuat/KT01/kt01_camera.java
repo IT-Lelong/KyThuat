@@ -52,7 +52,7 @@ public class kt01_camera extends AppCompatActivity {
     String ID1;
     int STT, demso;
     String l_bp;
-    String l_ngay;
+    String l_ngay,l_to;
     ImageView[] imageViews = new ImageView[6];
     String lbophan1;
     LocalDate currentDate;
@@ -74,22 +74,7 @@ public class kt01_camera extends AppCompatActivity {
         imageViews[4] = (ImageView) findViewById(R.id.imageView5);
         imageViews[5] = (ImageView) findViewById(R.id.imageView6);
 
-        /*imageViews[0].setOnClickListener(btnimgview);
-        imageViews[1].setOnClickListener(btnimgview);
-        imageViews[2].setOnClickListener(btnimgview);
-        imageViews[3].setOnClickListener(btnimgview);
-        imageViews[4].setOnClickListener(btnimgview);
-        imageViews[5].setOnClickListener(btnimgview);*/
 
-        /*imageViews[0].setOnClickListener(this);
-        imageViews[1].setOnClickListener(this);
-        imageViews[2].setOnClickListener(this);
-        imageViews[3].setOnClickListener(this);
-        imageViews[4].setOnClickListener(this);
-        imageViews[5].setOnClickListener(this);*/
-
-        //private final Button.OnClickListener btnlistener = new Button.OnClickListener() {    }
-        //imageViews[0].setOnClickListener(new View.OnClickListener() {
 
         imageViews[0].setOnClickListener(new View.OnClickListener() {
             @Override
@@ -924,129 +909,6 @@ public class kt01_camera extends AppCompatActivity {
         });
     }
 
-    /*
-        @Override
-        public void onClick(View v) {
-            l_checkdk = "";
-            aa = 0;
-            Dialog dialog = new Dialog(kt01_camera.this);
-            dialog.setContentView(R.layout.kt01_dialog_enlarged_image);
-            ImageView imageView = dialog.findViewById(R.id.imageView);
-            Button btn1 = dialog.findViewById(R.id.btn1);
-            Button btn2 = dialog.findViewById(R.id.btn2);
-            //Button btn3 = dialog.findViewById(R.id.btn3);
-            //Button btn4 = dialog.findViewById(R.id.btn4);
-            TextView textView1 = dialog.findViewById(R.id.menuID11);
-            imageView.setImageDrawable(imageViews[0].getDrawable());
-
-            textView1.setText(myArray[0]);
-            textView1.setTextColor(Color.parseColor("#669999"));
-
-            btn1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (l_checkdk == "TRUE") {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(kt01_camera.this);
-                        builder.setMessage("Bạn có chắc chắn muốn xóa không?");
-                        builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                String tenanh = myArray[aa];
-                                String a = "/storage/emulated/0/Pictures/" + tenanh + ".jpg" + "";
-                                //int num2 = cursor_3.getInt(cursor_3.getColumnIndexOrThrow("tc_faa011"));
-
-                                File fileToDelete = new File(a);
-                                boolean deleted = fileToDelete.delete();
-                                if (deleted) {
-                                    Log.d("BBB", "Deleted file: " + fileToDelete.getAbsolutePath());
-                                    db.delete_tenanh(tenanh);
-                                    Cursor cursor = db.demsttanh(ID, ID1, l_ngay);
-                                    cursor.moveToFirst();
-                                    int num23 = cursor.getInt(cursor.getColumnIndexOrThrow("tc_faa011"));
-                                    int loadhinh = num23 - 1;
-                                    if (loadhinh == 0) {
-                                        db.appendUPDAEhinhanh(ID, "", loadhinh, l_ngay, ID1, "TC_FAA005", "TC_FAA011");
-                                    }
-                                    db.appendUPDAEhinhanh(ID, luutenanh, loadhinh, l_ngay, ID1, "TC_FAA005", "TC_FAA011");
-
-                                } else {
-                                    Log.d("BBB", "Failed to delete file: " + fileToDelete.getAbsolutePath());
-                                }
-                                // Xóa ở đây
-                                Toast.makeText(kt01_camera.this, "Anh đã được xóa", Toast.LENGTH_SHORT).show();
-                                //dialog.dismiss();
-
-                                onResume();
-                            }
-
-                        });
-                        dialog.dismiss();
-
-                        builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                // dialog.dismiss();
-                            }
-                        });
-                        builder.show();
-                    } else {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(kt01_camera.this);
-                        builder.setMessage("Bạn có chắc chắn muốn xóa không?");
-                        builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                String tenanh = myArray[aa];
-                                String a = "/storage/emulated/0/Pictures/" + tenanh + ".jpg" + "";
-                                //int num2 = cursor_3.getInt(cursor_3.getColumnIndexOrThrow("tc_faa011"));
-
-                                File fileToDelete = new File(a);
-                                boolean deleted = fileToDelete.delete();
-                                if (deleted) {
-                                    Log.d("BBB", "Deleted file: " + fileToDelete.getAbsolutePath());
-                                    db.delete_tenanh(tenanh);
-                                    Cursor cursor = db.demsttanh(ID, ID1, l_ngay);
-                                    cursor.moveToFirst();
-                                    int num23 = cursor.getInt(cursor.getColumnIndexOrThrow("tc_faa011"));
-                                    int loadhinh = num23 - 1;
-                                    if (loadhinh == 0) {
-                                        db.appendUPDAEhinhanh(ID, "", loadhinh, l_ngay, ID1, "TC_FAA005", "TC_FAA011");
-                                    }
-                                    db.appendUPDAEhinhanh(ID, luutenanh, loadhinh, l_ngay, ID1, "TC_FAA005", "TC_FAA011");
-
-                                } else {
-                                    Log.d("BBB", "Failed to delete file: " + fileToDelete.getAbsolutePath());
-                                }
-                                // Xóa ở đây
-                                Toast.makeText(kt01_camera.this, "Anh đã được xóa", Toast.LENGTH_SHORT).show();
-                                //dialog.dismiss();
-
-                                onResume();
-                            }
-
-                        });
-                        dialog.dismiss();
-
-                        builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                // dialog.dismiss();
-                            }
-                        });
-                        builder.show();
-                    }
-                    ;
-    //////////
-                }
-            });
-        }
-    */
-    /*private final ImageView.OnClickListener btnimgview = new ImageView.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-
-        }
-    };
-*/
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -1086,7 +948,11 @@ public class kt01_camera extends AppCompatActivity {
     private void luudulieuanh() {
         db = new KT01_DB(this);
         db.open();
-        db.append1(ID, l_ngay, ID1, String.valueOf(STT), tenanh);
+        Cursor cursor = db.getstt(ID, ID1, l_ngay);
+        cursor.moveToFirst();
+        int num = cursor.getInt(cursor.getColumnIndexOrThrow("stt"));
+        demso=num+1;
+        db.append1(ID, l_ngay, ID1, String.valueOf(demso), tenanh);
         db.appendUPDAEhinhanh(ID, luutenanh, STT, l_ngay, ID1, "TC_FAA005", "TC_FAA011");
     }
 
@@ -1113,6 +979,7 @@ public class kt01_camera extends AppCompatActivity {
         //lbophan1 = getbundle.getString("lbophan1");
         // ID1 = getbundle.getString("ID1");
         l_ngay = getbundle.getString("l_ngay");
+        l_to = getbundle.getString("l_to");
         if (l_ngay != null) {
 
             ID1 = getbundle.getString("l_bp");
@@ -1137,13 +1004,29 @@ public class kt01_camera extends AppCompatActivity {
         db = new KT01_DB(this);
         db.open();
 
+        if (l_to.equals("Tổ A")){
+            l_to="ToA";
+        }
+        if (l_to.equals("Tổ B")){
+            l_to="ToB";
+        }
+        if (l_to.equals("Tổ C")){
+            l_to="ToC";
+        }
+        if (l_to.equals("Tổ D")){
+            l_to="ToD";
+        }
         ID = getbundle.getString("ID");
         Cursor cursor = db.demsttanh(ID, ID1, l_ngay);
+        //Cursor cursor = db.getstt(ID, ID1, l_ngay);
         cursor.moveToFirst();
         int num = cursor.getInt(cursor.getColumnIndexOrThrow("tc_faa011"));
+        //int num = cursor.getInt(cursor.getColumnIndexOrThrow("stt"));
         STT = num + 1;
-        tenanh = ID + "_" + l_ngay + "_" + ID1 + "_" + STT;
-        luutenanh = ID + "_" + l_ngay + "_" + ID1;
+        //tenanh = ID + "_" + l_ngay + "_" + ID1 + "_" + STT;
+        //tenanh = l_to + "_" +ID + "_" + l_ngay + "_" + ID1 + "_" + STT;
+        tenanh = ID + "_" +l_to + "_" + l_ngay + "_" + ID1 + "_" + STT;
+        luutenanh = ID + "_" +l_to + "_" + l_ngay + "_" + ID1;
         ttxtview = findViewById(R.id.menuID);
         ttxtview.setText(tenanh);
         if (num >= 1) {

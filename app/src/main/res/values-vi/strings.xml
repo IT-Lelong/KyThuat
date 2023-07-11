@@ -106,6 +106,7 @@
     <string name="ERRORtvStatus_false">Không insert được table tc_fad_file</string>
     <string name="ERRORtvStatus_true">Insert table tc_fad_file thành công</string>
     <string name="ERRORtvStatus_errorins">Dữ liệu đã được insert</string>
+    <string name="ERRORtvStatus_false_sig">Không insert được table tc_fao_file</string>
     /*Fragment_KT02*/
     <string name="maso1">STT</string>
     <string name="chitiet1">Nội dung kiểm tra</string>
@@ -136,6 +137,7 @@
     <string name="ls04">Tổng Điểm</string>
     <string name="ls05">Nội dung</string>
     <string name="ls06">Tên bộ phận</string>
+    <string name="ls07">Tổ chấm</string>
 
     /*kt01fragment*/
     <string name="hang1">Hạng mục</string>
