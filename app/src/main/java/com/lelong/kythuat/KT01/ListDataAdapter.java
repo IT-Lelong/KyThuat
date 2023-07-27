@@ -401,6 +401,7 @@ public class ListDataAdapter extends RecyclerView.Adapter<ListDataAdapter.ViewHo
                 bundle.putString("ID", DULIEU);
                 bundle.putString("l_ngay", ngay);
                 bundle.putString("l_bp", bophan);
+                bundle.putString("l_to", xto);
                 intent.putExtras(bundle);
 
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // add this line

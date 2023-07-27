@@ -149,7 +149,7 @@ public class kt01_loggin_search extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 int dem = kt01_bophan_adapter.getCount();
-                if (position + 1 < dem) {
+                if (position + 1 <= dem) {
                     if (position >= 0) {
                         //get IP
                         kt01_Loggin_List res = kt01_bophan_adapter.getItem(position);

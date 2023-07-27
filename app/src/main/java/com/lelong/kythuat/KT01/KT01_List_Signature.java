@@ -70,7 +70,7 @@ public class KT01_List_Signature extends SimpleCursorAdapter {
         s_ngay = mCursor.getString(mCursor.getColumnIndexOrThrow("ngaysig"));
 
         //Boolean chk_qrb = kt02Db.KT_fia_up_sig(s_somay, s_bophan,s_ngay);
-        Boolean chk_qrb = kt01Db.KT_fia_up_sig01(s_somay, s_bophan);
+        Boolean chk_qrb = kt01Db.KT_fia_up_sig01(s_somay, s_bophan,s_ngay);
         if (chk_qrb == true) {
             btnkt.setBackground(drawable_green);
         } else {

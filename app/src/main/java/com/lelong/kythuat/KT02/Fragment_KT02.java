@@ -168,7 +168,7 @@ public class Fragment_KT02 extends Fragment {
                 @SuppressLint("Range") String tc_fac006 = cursor_1.getString(cursor_1.getColumnIndex(g_lang));
                 @SuppressLint("Range") String tc_fac004 = cursor_1.getString(cursor_1.getColumnIndex("tc_fac004"));
                 @SuppressLint("Range") Boolean checkbox1 = Boolean.valueOf(cursor_1.getString(cursor_1.getColumnIndex("checkbox1")));
-                @SuppressLint("Range") Boolean checkbox2 = Boolean.valueOf(cursor_1.getString(cursor_1.getColumnIndex("checkbox2")));
+                @SuppressLint("Range") Boolean checkbox2 = Boolean.valueOf(cursor_1. getString(cursor_1.getColumnIndex("checkbox2")));
                 @SuppressLint("Range") Boolean checkbox3 = Boolean.valueOf(cursor_1.getString(cursor_1.getColumnIndex("checkbox3")));
                 @SuppressLint("Range") Boolean checkbox4 = Boolean.valueOf(cursor_1.getString(cursor_1.getColumnIndex("checkbox4")));
                 @SuppressLint("Range") Boolean checkbox5 = Boolean.valueOf(cursor_1.getString(cursor_1.getColumnIndex("checkbox5")));

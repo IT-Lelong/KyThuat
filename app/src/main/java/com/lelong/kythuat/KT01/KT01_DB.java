@@ -344,6 +344,15 @@ class KT01_DB {
         }
     }
     public
+    Cursor getsttCT(String KEY,String bp,String ngay) {
+        try {
+
+            return db.rawQuery("SELECT  max(sttCT) AS stt FROM " + TABLE_NAME_Ten_anhCT+ " ", null);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+    public
     Cursor demsttanhCT(String KEY,String bp,String ngay) {
         try {
 
@@ -459,11 +468,11 @@ class KT01_DB {
         }
     }
 
-    public Boolean KT_fia_up_sig01(String is_soxe, String is_bophan) {
+    public Boolean KT_fia_up_sig01(String is_soxe, String is_bophan,String is_ngay) {
         try {
             int count = 0;
             //String selectQuery = "SELECT count(*) as dem FROM " + TABLE_NAME_FIA_UP_SIG + " WHERE somay_sig='" + is_soxe + "' AND mabp_sig='" + is_bophan + "' AND ngay_sig='" + is_ngay + "' ";
-            String selectQuery = "SELECT count(*) as dem FROM " + TABLE_NAME_FIA_UP_SIG01 + " WHERE mabp_sig='" + is_bophan + "' ";
+            String selectQuery = "SELECT count(*) as dem FROM " + TABLE_NAME_FIA_UP_SIG01 + " WHERE mabp_sig='" + is_bophan + "' and ngay_sig='" + is_ngay + "' ";
             Cursor mCount=db.rawQuery(selectQuery, null);
             mCount.moveToFirst();
             count = mCount.getInt(0);

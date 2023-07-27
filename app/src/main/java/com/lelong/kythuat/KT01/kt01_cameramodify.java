@@ -44,7 +44,7 @@ public class kt01_cameramodify extends AppCompatActivity {
     Cursor cursor_3,cursor_5;
     String ID1;
     int STT,demso;
-    String l_ngay;
+    String l_ngay,l_to;
     ImageView[] imageViews = new ImageView[6];
     LocalDate currentDate;
     String tenanh,luutenanh;
@@ -932,7 +932,11 @@ public class kt01_cameramodify extends AppCompatActivity {
     private void luudulieuanh(){
         db=new KT01_DB(this);
         db.open();
-        db.append2(ID,l_ngay,ID1,String.valueOf(STT),tenanh);
+        Cursor cursor = db.getsttCT(ID, ID1, l_ngay);
+        cursor.moveToFirst();
+        int num = cursor.getInt(cursor.getColumnIndexOrThrow("stt"));
+        demso=num+1;
+        db.append2(ID,l_ngay,ID1,String.valueOf(demso),tenanh);
         db.appendUPDAEhinhanh(ID, luutenanh,STT, l_ngay,ID1,"TC_FAA017","TC_FAA018");
     }
     @Override
@@ -946,6 +950,7 @@ public class kt01_cameramodify extends AppCompatActivity {
         System.out.println(formattedTime);
 
         l_ngay = getbundle.getString("l_ngay");
+        l_to = getbundle.getString("l_to");
         if (l_ngay != null){
 
             ID1 = getbundle.getString("l_bp");
@@ -971,13 +976,28 @@ public class kt01_cameramodify extends AppCompatActivity {
         db = new KT01_DB(this);
         db.open();
 
+        if (l_to.equals("Tổ A")){
+            l_to="ToA";
+        }
+        if (l_to.equals("Tổ B")){
+            l_to="ToB";
+        }
+        if (l_to.equals("Tổ C")){
+            l_to="ToC";
+        }
+        if (l_to.equals("Tổ D")){
+            l_to="ToD";
+        }
+
         ID = getbundle.getString("ID");
         Cursor cursor = db.demsttanhold(ID,ID1,l_ngay);
         cursor.moveToFirst();
         int num = cursor.getInt(cursor.getColumnIndexOrThrow("tc_faa018"));
         STT = num + 1;
-        tenanh = ID+"_"+l_ngay+"_"+ID1+"_CT"+"_"+STT;
-        luutenanh = ID+"_"+l_ngay+"_"+ID1+"_CT";
+        //tenanh = ID+"_"+l_ngay+"_"+ID1+"_CT"+"_"+STT;
+        //luutenanh = ID+"_"+l_ngay+"_"+ID1+"_CT";
+        tenanh = ID+"_"+l_to+"_"+l_ngay+"_"+ID1+"_CT"+"_"+STT;
+        luutenanh = ID+"_"+l_to+"_"+l_ngay+"_"+ID1+"_CT";
         ttxtview  = findViewById(R.id.menuID);
         ttxtview.setText(tenanh);
         if (num >= 1){
