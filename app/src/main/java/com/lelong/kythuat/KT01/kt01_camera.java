@@ -914,8 +914,27 @@ public class kt01_camera extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
             Bitmap photo = (Bitmap) data.getExtras().get("data");
+
+            /*int desiredWidth = 1000; // Đặt kích thước mong muốn
+            int desiredHeight = 1000;
+
+            Bitmap resizedBitmap = Bitmap.createScaledBitmap(photo, desiredWidth, desiredHeight, false);
+            imageViews[0].setImageBitmap(resizedBitmap);
+            imageViews[1].setImageBitmap(resizedBitmap);
+            imageViews[2].setImageBitmap(resizedBitmap);
+            imageViews[3].setImageBitmap(resizedBitmap);
+            imageViews[4].setImageBitmap(resizedBitmap);
+            imageViews[5].setImageBitmap(resizedBitmap);*/
             // imageView.setImageBitmap(photo);
             //luudulieuanh();
+            // Lấy kích thước của tấm hình
+            /*int width = photo.getWidth();
+            int height = photo.getHeight();
+
+            // Hiển thị thông tin kích thước
+            Log.d("Photo Size", "Width: " + width + " Height: " + height);*/
+
+            //saveImage(resizedBitmap);
             saveImage(photo);
         }
 

@@ -241,7 +241,7 @@ public class Create_Table {
                         " AND tc_faa002='" + ngay+"'";
                 return db.rawQuery(selectQuery, null);
             }else {
-                String selectQuery1 = "SELECT tc_fac001,tc_fac003,tc_fac004,tc_fac005,tc_fac006,'false' as checkbox,'false' as checkbox1,'true' as checkbox2,'false' as checkbox3,'false' as checkbox4,'false' as checkbox5,'' as tc_faa06  FROM " + TABLE_NAME_TC_FAC + " " +
+                String selectQuery1 = "SELECT tc_fac001,tc_fac003,tc_fac004,tc_fac005,tc_fac006,'false' as checkbox,'false' as checkbox1,'true' as checkbox2,'false' as checkbox3,'false' as checkbox4,'false' as checkbox5,'' as tc_faa006  FROM " + TABLE_NAME_TC_FAC + " " +
                         " WHERE tc_fac002='" + g_kind + "' AND tc_fac001='" + g_kind1+"'";
                 return db.rawQuery(selectQuery1, null);
             }

@@ -68,6 +68,15 @@
                 android:text="@string/btn_date"
                 android:textColor="#FFFFFF" />
 
+            <Button
+                android:id="@+id/btn_camera"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="@drawable/button_type_nomal"
+                android:text="Kiểm tra"
+                android:textColor="#FFFFFF" />
+
         </TableRow>
 
         <TableRow>
@@ -137,6 +146,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

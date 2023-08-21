@@ -168,7 +168,8 @@ public class kt01_loggin_search extends AppCompatActivity {
 
         //Spinner cbxto = dialog.findViewById(R.id.cbxto);
 
-        String[] list_to = {"Tổ A", "Tổ B", "Tổ C", "Tổ D"};
+        //String[] list_to = {"Tổ A", "Tổ B", "Tổ C", "Tổ D"};
+        String[] list_to = {"Tổ D"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this.activity, android.R.layout.simple_spinner_item, list_to);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         cbxto.setAdapter(adapter);

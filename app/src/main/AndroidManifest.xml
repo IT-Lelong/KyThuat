@@ -28,6 +28,9 @@
         android:theme="@style/AppTheme"
         tools:targetApi="31">
         <activity
+            android:name=".MainActivity2"
+            android:exported="false" />
+        <activity
             android:name=".KT01.KT01_Signature_List"
             android:exported="false" />
         <activity
