@@ -15,15 +15,16 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:text="@string/ls07"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"/>
 
     <Spinner
         android:id="@+id/cbxto"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:gravity="center"
-        android:theme="@style/Spinner2" />
+        android:theme="@style/Spinner1" />
 
     <TextView
         android:id="@+id/viewID"
@@ -32,8 +33,9 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:text="@string/ls03"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"/>
 
     <Spinner
         android:id="@+id/cbxbophan"

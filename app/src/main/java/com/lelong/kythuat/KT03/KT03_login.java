@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 
+import com.lelong.kythuat.MainActivity2;
 import com.lelong.kythuat.R;
 import com.lelong.kythuat.UploadToServer;
 
@@ -52,7 +53,7 @@ public class KT03_login {
     ListView lv_query;
     TextView tv_name, tv_date;
     RadioButton radio_a, radio_b;
-    Button btn_Date, btn_Insert, btn_Upload;
+    Button btn_Date, btn_Insert, btn_Upload,btn_Camera;
     final String[] g_ca = {""};
     private Context context;
 
@@ -71,6 +72,8 @@ public class KT03_login {
         btn_Insert = dialog.findViewById(R.id.btn_Insert);
         btn_Upload = dialog.findViewById(R.id.btn_Upload);
         lv_query = dialog.findViewById(R.id.lv_query);
+
+        btn_Camera = dialog.findViewById(R.id.btn_camera);
 
         tv_name.setText(menuID);
         tv_date.setText(dateFormat.format(new Date()).toString());
@@ -215,6 +218,21 @@ public class KT03_login {
                 } else {
                     Toast.makeText(context, "Xin chọn ca làm việc", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        btn_Camera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                    Intent KT03 = new Intent();
+                    KT03.setClass(context, MainActivity2.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("ID", ID);
+                    bundle.putString("CA", g_ca[0].toString());
+                    bundle.putString("DATE", tv_date.getText().toString());
+                    KT03.putExtras(bundle);
+                    context.startActivity(KT03);
+                    dialog.dismiss();
             }
         });
 

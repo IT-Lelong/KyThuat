@@ -17,6 +17,7 @@
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" /> <!-- cài đặt ứng dụng không xác định -->
     <uses-permission android:name="com.symbol.emdk.permission.EMDK" />
 
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
