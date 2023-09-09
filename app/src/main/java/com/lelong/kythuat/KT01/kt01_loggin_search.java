@@ -32,6 +32,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.lelong.kythuat.Constant_Class;
 import com.lelong.kythuat.Create_Table;
 import com.lelong.kythuat.KT01.Retrofit2.APIYtils;
 import com.lelong.kythuat.KT01.Retrofit2.DataClient;
@@ -83,7 +84,7 @@ public class kt01_loggin_search extends AppCompatActivity {
     Button btnback;
     Button btnaupdate,btnsignature;
     Locale locale;
-    TextView viewID;
+    TextView viewID,textView;
     String L_BP;
     JSONArray jsonupload;
     JSONObject ujobject;
@@ -110,6 +111,7 @@ public class kt01_loggin_search extends AppCompatActivity {
         lis1 = dialog.findViewById(R.id.lv_query);
         btnback = dialog.findViewById(R.id.btnback);
         viewID = dialog.findViewById(R.id.viewID);
+        TextView textView = dialog.findViewById(R.id.txt_to);
         //search1 = dialog.findViewById(R.id.search);
 
         db = new KT01_DB(dialog.getContext());
@@ -120,7 +122,13 @@ public class kt01_loggin_search extends AppCompatActivity {
 
         List<kt01_Loggin_List> qrReScanIpLists = new ArrayList<>();
 
-        cursor_2 = db.getAll_tc_fba();
+        if (Constant_Class.UserFactory.equals("DH")) {
+            cursor_2 = db.getAll_tc_fba();
+        } else {
+            cursor_2 = db.getAll_tc_fbaBL();
+        }
+
+        //cursor_2 = db.getAll_tc_fba();
         cursor_2.moveToFirst();
         int num1 = cursor_2.getCount();
         station = new String[num1];
@@ -174,6 +182,14 @@ public class kt01_loggin_search extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         cbxto.setAdapter(adapter);
 
+        if (Constant_Class.UserFactory.equals("DH")) {
+            cbxto.setVisibility(View.VISIBLE); // Hiện Spinner nếu UserFactory là "DH"
+            textView.setVisibility(View.VISIBLE);
+        } else {
+            cbxto.setVisibility(View.GONE); // Ẩn Spinner nếu UserFactory không phải là "DH"
+            textView.setVisibility(View.GONE);
+        }
+
         cbxto.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -185,6 +201,8 @@ public class kt01_loggin_search extends AppCompatActivity {
 
             }
         });
+
+
 
         load();
 

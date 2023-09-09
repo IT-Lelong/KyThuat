@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.crashlytics.buildtools.reloc.javax.annotation.concurrent.GuardedBy;
+import com.lelong.kythuat.Constant_Class;
 import com.lelong.kythuat.Create_Table;
 import com.lelong.kythuat.KT02.Fragment_KT02;
 import com.lelong.kythuat.R;
@@ -240,7 +241,12 @@ public class Fragmen_KT01 extends Fragment implements KT01_Interface {
         {*/
         createTable_fac = new Create_Table(getContext());
         createTable_fac.open();
-        createTable_fac.ins_fac_01("KT01",bophan,ngay,tobp);
+        if (Constant_Class.UserFactory.equals("DH")) {
+            createTable_fac.ins_fac_01("KT01",bophan,ngay,tobp);
+        }else {
+            createTable_fac.ins_fac_01("KT01",bophan,ngay,"Bến Lức");
+        }
+        //createTable_fac.ins_fac_01("KT01",bophan,ngay,tobp);
         cursor_1 = createTable_fac.getAll_tc_fac_01("KT01", position1,bophan,ngay);
         cursor_1.moveToFirst();
         int num = cursor_1.getCount();

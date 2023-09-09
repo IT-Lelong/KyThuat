@@ -10,6 +10,7 @@ import android.os.Message;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
@@ -71,6 +72,13 @@ public class KT02_Signature_List extends AppCompatActivity implements KT02_Inter
         g_server = getString(R.string.server);
 
         LV_Detail_sig();
+
+        lv_searchsig.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+        });
     }
     private void LV_Detail_sig(){
         String g_bp= Constant_Class.UserFactory;
@@ -101,6 +109,19 @@ public class KT02_Signature_List extends AppCompatActivity implements KT02_Inter
             }
         });
         lv_searchsig.setAdapter(listSignature);
+
+        lv_searchsig.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String selectedItem = (String) listSignature.getItem(position);
+                // Ở đây, bạn có thể thực hiện các hành động liên quan đến dòng đã chọn trong dialog
+
+                // Ví dụ: hiển thị thông báo khi chọn dòng
+                Toast.makeText(getApplicationContext(), "Bạn đã chọn: " + selectedItem, Toast.LENGTH_SHORT).show();
+
+
+            }
+        });
     }
 
 

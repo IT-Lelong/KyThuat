@@ -468,7 +468,22 @@ public class Create_Table {
                     " where fiaud03 not in (select distinct somay from tc_fac_table_kt02) AND ta_fia02_1='" + tenxe + "' AND fia15 NOT LIKE 'B%' " +
                     " group by fia15,fiaud03,fka02 order by fia15,fiaud03";*/
 
-            String selectQuery = " select count(*) AS _id,tc_fba007,tc_fba009,'"+ ngay +"' AS ngaysig from tc_fba_file group by tc_fba007 order by tc_fba007" ;
+            String selectQuery = " select count(*) AS _id,tc_fba007,tc_fba009,'"+ ngay +"' AS ngaysig from tc_fba_file WHERE substr(tc_fba007,1,2) not in ('04','05') group by tc_fba007 order by tc_fba007" ;
+
+            return db.rawQuery(selectQuery, null);
+
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public Cursor getAll_bp_BL(String tenxe,String bophan, String ngay) {
+        try {
+           /* String selectQuery = "select count(*) AS _id,fiaud03,fia15,fka02 from fia_file " +
+                    " where fiaud03 not in (select distinct somay from tc_fac_table_kt02) AND ta_fia02_1='" + tenxe + "' AND fia15 NOT LIKE 'B%' " +
+                    " group by fia15,fiaud03,fka02 order by fia15,fiaud03";*/
+
+            String selectQuery = " select count(*) AS _id,tc_fba007,tc_fba009,'"+ ngay +"' AS ngaysig from tc_fba_file WHERE substr(tc_fba007,1,2) in ('04','05') group by tc_fba007 order by tc_fba007" ;
 
             return db.rawQuery(selectQuery, null);
 

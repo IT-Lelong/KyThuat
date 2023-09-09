@@ -276,9 +276,25 @@ class KT01_DB {
         }
     }
 
-    public Cursor getAll_tc_fba() {
+    /*public Cursor getAll_tc_fba() {
         try {
             return db.rawQuery("SELECT  COUNT(*)  as _id, tc_fba007,tc_fba009" + " FROM " + TABLE_NAME_TC_FBA + " group by tc_fba007  ", null);
+        } catch (Exception e) {
+            return null;
+        }
+    }*/
+
+    public Cursor getAll_tc_fba() {
+        try {
+            return db.rawQuery("SELECT  COUNT(*)  as _id, tc_fba007,tc_fba009" + " FROM " + TABLE_NAME_TC_FBA + " WHERE substr(tc_fba007,1,2) not in ('04','05') group by tc_fba007  ", null);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public Cursor getAll_tc_fbaBL() {
+        try {
+            return db.rawQuery("SELECT  COUNT(*)  as _id, tc_fba007,tc_fba009" + " FROM " + TABLE_NAME_TC_FBA + " WHERE substr(tc_fba007,1,2) in ('04','05') group by tc_fba007  ", null);
         } catch (Exception e) {
             return null;
         }

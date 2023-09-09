@@ -24,6 +24,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.util.TextUtils;
+import com.lelong.kythuat.Constant_Class;
 import com.lelong.kythuat.R;
 
 import java.io.BufferedReader;
@@ -1023,34 +1024,58 @@ public class kt01_camera extends AppCompatActivity {
         db = new KT01_DB(this);
         db.open();
 
-        if (l_to.equals("Tổ A")){
-            l_to="ToA";
+        if (Constant_Class.UserFactory.equals("DH")) {
+            if (l_to.equals("Tổ A")){
+                l_to="ToA";
+            }
+            if (l_to.equals("Tổ B")){
+                l_to="ToB";
+            }
+            if (l_to.equals("Tổ C")){
+                l_to="ToC";
+            }
+            if (l_to.equals("Tổ D")){
+                l_to="ToD";
+            }
+
+            ID = getbundle.getString("ID");
+            Cursor cursor = db.demsttanh(ID, ID1, l_ngay);
+            //Cursor cursor = db.getstt(ID, ID1, l_ngay);
+            cursor.moveToFirst();
+            int num = cursor.getInt(cursor.getColumnIndexOrThrow("tc_faa011"));
+            //int num = cursor.getInt(cursor.getColumnIndexOrThrow("stt"));
+            STT = num + 1;
+            //tenanh = ID + "_" + l_ngay + "_" + ID1 + "_" + STT;
+            //tenanh = l_to + "_" +ID + "_" + l_ngay + "_" + ID1 + "_" + STT;
+            tenanh = ID + "_" +l_to + "_" + l_ngay + "_" + ID1 + "_" + STT;
+            luutenanh = ID + "_" +l_to + "_" + l_ngay + "_" + ID1;
+            ttxtview = findViewById(R.id.menuID);
+            ttxtview.setText(tenanh);
+            if (num >= 1) {
+                loadanh(ID, l_ngay, ID1);
+            }
+        }else {
+                l_to="XBL";
+            ID = getbundle.getString("ID");
+            Cursor cursor = db.demsttanh(ID, ID1, l_ngay);
+            //Cursor cursor = db.getstt(ID, ID1, l_ngay);
+            cursor.moveToFirst();
+            int num = cursor.getInt(cursor.getColumnIndexOrThrow("tc_faa011"));
+            //int num = cursor.getInt(cursor.getColumnIndexOrThrow("stt"));
+            STT = num + 1;
+            //tenanh = ID + "_" + l_ngay + "_" + ID1 + "_" + STT;
+            //tenanh = l_to + "_" +ID + "_" + l_ngay + "_" + ID1 + "_" + STT;
+            tenanh = ID + "_" +l_to + "_" + l_ngay + "_" + ID1 + "_" + STT;
+            luutenanh = ID + "_" +l_to + "_" + l_ngay + "_" + ID1;
+            ttxtview = findViewById(R.id.menuID);
+            ttxtview.setText(tenanh);
+            if (num >= 1) {
+                loadanh(ID, l_ngay, ID1);
+            }
         }
-        if (l_to.equals("Tổ B")){
-            l_to="ToB";
-        }
-        if (l_to.equals("Tổ C")){
-            l_to="ToC";
-        }
-        if (l_to.equals("Tổ D")){
-            l_to="ToD";
-        }
-        ID = getbundle.getString("ID");
-        Cursor cursor = db.demsttanh(ID, ID1, l_ngay);
-        //Cursor cursor = db.getstt(ID, ID1, l_ngay);
-        cursor.moveToFirst();
-        int num = cursor.getInt(cursor.getColumnIndexOrThrow("tc_faa011"));
-        //int num = cursor.getInt(cursor.getColumnIndexOrThrow("stt"));
-        STT = num + 1;
-        //tenanh = ID + "_" + l_ngay + "_" + ID1 + "_" + STT;
-        //tenanh = l_to + "_" +ID + "_" + l_ngay + "_" + ID1 + "_" + STT;
-        tenanh = ID + "_" +l_to + "_" + l_ngay + "_" + ID1 + "_" + STT;
-        luutenanh = ID + "_" +l_to + "_" + l_ngay + "_" + ID1;
-        ttxtview = findViewById(R.id.menuID);
-        ttxtview.setText(tenanh);
-        if (num >= 1) {
-            loadanh(ID, l_ngay, ID1);
-        }
+
+
+
 
     }
 

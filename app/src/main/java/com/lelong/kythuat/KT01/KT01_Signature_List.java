@@ -81,7 +81,14 @@ public class KT01_Signature_List extends AppCompatActivity implements KT01_Inter
             g_fia15 = "B";
         }
         String ngaysig = dateFormatKT02.format(new Date()).toString();
-        cursor = createTable.getAll_bp(g_tenxe,g_fia15,ngaysig);
+        //cursor = createTable.getAll_bp(g_tenxe,g_fia15,ngaysig);
+
+        if (Constant_Class.UserFactory.equals("DH")) {
+            cursor = createTable.getAll_bp(g_tenxe,g_fia15,ngaysig);
+        } else {
+            cursor = createTable.getAll_bp_BL(g_tenxe,g_fia15,ngaysig);
+        }
+
         Drawable drawable_blue = getResources().getDrawable(R.drawable.button_kt_blue);
         Drawable drawable_green = getResources().getDrawable(R.drawable.button_kt_green);
         KT01_List_Signature kt01ListSignature = new KT01_List_Signature(this,
