@@ -90,7 +90,7 @@
                 android:layout_margin="10dp"
                 android:background="@drawable/button_type1"
                 android:theme="@style/btn_text_style"
-                android:enabled="false"
+                android:enabled="true"
                 android:text="@string/btn_KT03"/>
         </TableRow>
 

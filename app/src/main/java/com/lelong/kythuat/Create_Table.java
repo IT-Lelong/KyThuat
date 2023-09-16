@@ -328,6 +328,8 @@ public class Create_Table {
         }
     }
 
+
+
     /*KT02_loggin_bophan*/
 
     public Cursor getAll_fia_02_bp(String g_fiaud03,String tenxe,String bophan) {
@@ -462,6 +464,26 @@ public class Create_Table {
        }
    }
 
+    public Cursor getAll_fiaud_sig_search(String tenxe,String bophan, String ngay) {
+        try {
+           /* String selectQuery = "select count(*) AS _id,fiaud03,fia15,fka02 from fia_file " +
+                    " where fiaud03 not in (select distinct somay from tc_fac_table_kt02) AND ta_fia02_1='" + tenxe + "' AND fia15 NOT LIKE 'B%' " +
+                    " group by fia15,fiaud03,fka02 order by fia15,fiaud03";*/
+
+            String selectQuery = " select count(*) AS _id,somay_sig,mabp_sig,tebp_sig,ngay_sig,manv_sig from fia_up_sig_file " +
+                    " where tenhinh_sig LIKE '%" + tenxe + "%' ";
+            if (!(bophan == null)){
+                selectQuery=selectQuery + " AND mabp_sig LIKE '" + bophan + "%' ";
+            }
+            selectQuery=selectQuery + " group by mabp_sig,somay_sig,tebp_sig,tenhinh_sig order by somay_sig,mabp_sig ";
+
+            return db.rawQuery(selectQuery, null);
+
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     public Cursor getAll_bp(String tenxe,String bophan, String ngay) {
         try {
            /* String selectQuery = "select count(*) AS _id,fiaud03,fia15,fka02 from fia_file " +
@@ -469,6 +491,20 @@ public class Create_Table {
                     " group by fia15,fiaud03,fka02 order by fia15,fiaud03";*/
 
             String selectQuery = " select count(*) AS _id,tc_fba007,tc_fba009,'"+ ngay +"' AS ngaysig from tc_fba_file WHERE substr(tc_fba007,1,2) not in ('04','05') group by tc_fba007 order by tc_fba007" ;
+
+            return db.rawQuery(selectQuery, null);
+
+        } catch (Exception e) {
+            return null;
+        }
+    }
+    public Cursor getAll_bp_search(String tenxe,String bophan, String ngay) {
+        try {
+           /* String selectQuery = "select count(*) AS _id,fiaud03,fia15,fka02 from fia_file " +
+                    " where fiaud03 not in (select distinct somay from tc_fac_table_kt02) AND ta_fia02_1='" + tenxe + "' AND fia15 NOT LIKE 'B%' " +
+                    " group by fia15,fiaud03,fka02 order by fia15,fiaud03";*/
+
+            String selectQuery = " select count(*) AS _id,mabp_sig,tebp_sig,ngay_sig,manv_sig from fia_up_sigkt01_file WHERE substr(mabp_sig,1,2) not in ('04','05') group by mabp_sig,manv_sig order by mabp_sig" ;
 
             return db.rawQuery(selectQuery, null);
 
@@ -491,7 +527,20 @@ public class Create_Table {
             return null;
         }
     }
+    public Cursor getAll_bp_BL_search(String tenxe,String bophan, String ngay) {
+        try {
+           /* String selectQuery = "select count(*) AS _id,fiaud03,fia15,fka02 from fia_file " +
+                    " where fiaud03 not in (select distinct somay from tc_fac_table_kt02) AND ta_fia02_1='" + tenxe + "' AND fia15 NOT LIKE 'B%' " +
+                    " group by fia15,fiaud03,fka02 order by fia15,fiaud03";*/
 
+            String selectQuery = " select count(*) AS _id,mabp_sig,tebp_sig,ngay_sig,manv_sig from fia_up_sigkt01_file WHERE substr(mabp_sig,1,2) in ('04','05') group by mabp_sig,manv_sig order by mabp_sig" ;
+
+            return db.rawQuery(selectQuery, null);
+
+        } catch (Exception e) {
+            return null;
+        }
+    }
     public boolean ins_fac_01(String g_kind,String xuser,String xngay,String xto){
         //db=mCtx.openOrCreateDatabase(DATABASE_NAME,0,null);
         //將上傳資料彙整至json_table

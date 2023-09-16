@@ -3,6 +3,7 @@ package com.lelong.kythuat.KT01;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -17,12 +18,10 @@ import android.widget.Toast;
 
 import com.lelong.kythuat.Constant_Class;
 import com.lelong.kythuat.Create_Table;
-import com.lelong.kythuat.KT02.KT02_DB;
-import com.lelong.kythuat.KT02.KT02_Interface;
-import com.lelong.kythuat.KT02.List_Signature;
 import com.lelong.kythuat.KT02.Retrofit2.APIYtils_Sig;
 import com.lelong.kythuat.KT02.Retrofit2.DataClient_Sig;
 import com.lelong.kythuat.R;
+import com.lelong.kythuat.KT02.Search_Signature_KT02;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -120,6 +119,11 @@ public class KT01_Signature_List extends AppCompatActivity implements KT01_Inter
         LV_Detail_sig();
     }
 
+    @Override
+    public void loadData_Search_Sig() {
+
+    }
+
     //Khởi tạo menu trên thanh tiêu đề (S)
     @Override
     public boolean onCreateOptionsMenu(android.view.Menu menu) {
@@ -137,6 +141,14 @@ public class KT01_Signature_List extends AppCompatActivity implements KT01_Inter
             case R.id.menu3:
                 delete_data();
                 //getLVData();
+                break;
+            case R.id.menu4:
+                Intent intent = new Intent(this, Search_Signature_KT01.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("G_TENXE", g_tenxe);
+                //bundle.putString("SERVER", g_server);
+                intent.putExtras(bundle);
+                startActivity(intent);
                 break;
         }
         return super.onOptionsItemSelected(item);

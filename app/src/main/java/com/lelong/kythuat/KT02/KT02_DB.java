@@ -273,7 +273,7 @@ public class KT02_DB {
         }
     }
 
-    public long ins_sig(
+    /*public long ins_sig(
             String is_ngay, String is_soxe, String is_bophan,String is_tenbp, String is_ghichu, String is_manv, String is_sogio, String is_tenhinh) {
         try {
             int count = 0;
@@ -295,6 +295,27 @@ public class KT02_DB {
             }else {
                 return 0;
             }
+        } catch (Exception e) {
+            return 0;
+        }
+    }*/
+
+    public long ins_sig(
+            String is_ngay, String is_soxe, String is_bophan,String is_tenbp, String is_ghichu, String is_manv, String is_sogio, String is_tenhinh) {
+        try {
+            int count = 0;
+            ContentValues argsA = new ContentValues();
+
+                argsA.put(somay_sig, is_soxe);
+                argsA.put(mabp_sig, is_bophan);
+                argsA.put(tebp_sig, is_tenbp);
+                argsA.put(ngay_sig, is_ngay);
+                argsA.put(ghichu_sig, is_ghichu);
+                argsA.put(manv_sig, is_manv);
+                argsA.put(sogio_sig, is_sogio);
+                argsA.put(tenhinh_sig, is_tenhinh);
+                db.insert(TABLE_NAME_FIA_UP_SIG, null, argsA);
+                return 1;
         } catch (Exception e) {
             return 0;
         }
@@ -478,6 +499,24 @@ public class KT02_DB {
 
             //SQLiteDatabase db = this.getWritableDatabase();
             String selectQuery = "SELECT DISTINCT somay FROM tc_fac_table_kt02 WHERE substr(tc_fac004,1,4)='" + tenxe + "' ORDER BY 1";
+            return db.rawQuery(selectQuery, null);
+
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public Cursor getAll_Sigture(String tenxe, String bophan, String ngay, String manv) {
+        Cursor a;
+        try {
+
+            //SQLiteDatabase db = this.getWritableDatabase();
+            String selectQuery = "SELECT manv_sig,sogio_sig,ghichu_sig,tenhinh_sig FROM fia_up_sig_file WHERE somay_sig='" + tenxe + "' ";
+            if (!(bophan == null)){
+                selectQuery=selectQuery + " AND mabp_sig = '" + bophan + "' AND ngay_sig= '" + ngay + "' AND manv_sig= '" + manv + "' ";
+            }
+            selectQuery=selectQuery + " ORDER BY manv_sig ";
+            //String selectQuery = "SELECT distinct fiaud03 FROM fia_file WHERE ta_fia02_1='" + tenxe + "' ORDER BY fiaud03";
             return db.rawQuery(selectQuery, null);
 
         } catch (Exception e) {

@@ -357,6 +357,11 @@ public class Fragmen_KT01 extends Fragment implements KT01_Interface {
     }
 
     @Override
+    public void loadData_Search_Sig() {
+
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {

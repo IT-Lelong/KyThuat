@@ -8,4 +8,8 @@
         android:id="@+id/menu3"
         android:title="@string/btn_cancel1"/>
 
+    <item
+        android:id="@+id/menu4"
+        android:title="@string/btn_search_sig"/>
+
 </menu>

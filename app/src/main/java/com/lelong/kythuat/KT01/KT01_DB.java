@@ -565,4 +565,21 @@ class KT01_DB {
             return 0;
         }
     }
+    public Cursor getAll_Sigture(String tenxe, String bophan, String ngay, String manv) {
+        Cursor a;
+        try {
+
+            //SQLiteDatabase db = this.getWritableDatabase();
+            String selectQuery = "SELECT manv_sig,sogio_sig,ghichu_sig,tenhinh_sig FROM fia_up_sigkt01_file WHERE ";
+            if (!(bophan == null)){
+                selectQuery=selectQuery + " mabp_sig = '" + bophan + "' AND ngay_sig= '" + ngay + "' AND manv_sig= '" + manv + "' ";
+            }
+            selectQuery=selectQuery + " ORDER BY manv_sig ";
+            //String selectQuery = "SELECT distinct fiaud03 FROM fia_file WHERE ta_fia02_1='" + tenxe + "' ORDER BY fiaud03";
+            return db.rawQuery(selectQuery, null);
+
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }

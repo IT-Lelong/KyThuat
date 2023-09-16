@@ -17,7 +17,6 @@
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" /> <!-- cài đặt ứng dụng không xác định -->
     <uses-permission android:name="com.symbol.emdk.permission.EMDK" />
 
-
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -28,6 +27,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:targetApi="31">
+        <activity
+            android:name=".KT01.Search_Signature_KT01"
+            android:exported="false" />
+        <activity
+            android:name=".KT02.Search_Signature_KT02"
+            android:exported="false" />
         <activity
             android:name=".MainActivity2"
             android:exported="false" />

@@ -20,6 +20,8 @@
     <string name="btn_cameranew">Chụp hình</string>
     <string name="btn_cameraold">Chụp hình cải thiện</string>
     <string name="btn_signature">Ký tên</string>
+    <string name="btn_info">Search</string>
+    <string name="btn_search_sig">Kiểm tra ds ký tên</string>
 
     <string name="tt_stt">序號</string>
     <string name="tt_hangmuc">項目</string>
@@ -130,6 +132,7 @@
     <string name="diem">總分</string>
     <string name="kiemtra">Xe hư</string>
     <string name="kyten1">Ký tên</string>
+    <string name="kyten2">Thông tin</string>
 
     /*kt01bophan*/
     <string name="btn_addnew">新增</string>

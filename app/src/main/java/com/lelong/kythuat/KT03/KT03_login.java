@@ -10,10 +10,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Looper;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
@@ -26,8 +23,8 @@ import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 
-import com.lelong.kythuat.MainActivity2;
 import com.lelong.kythuat.R;
+import com.lelong.kythuat.KT02.Search_Signature_KT02;
 import com.lelong.kythuat.UploadToServer;
 
 import org.json.JSONArray;
@@ -225,7 +222,8 @@ public class KT03_login {
             @Override
             public void onClick(View view) {
                     Intent KT03 = new Intent();
-                    KT03.setClass(context, MainActivity2.class);
+                    //KT03.setClass(context, MainActivity2.class);
+                    KT03.setClass(context, Search_Signature_KT02.class);
                     Bundle bundle = new Bundle();
                     bundle.putString("ID", ID);
                     bundle.putString("CA", g_ca[0].toString());

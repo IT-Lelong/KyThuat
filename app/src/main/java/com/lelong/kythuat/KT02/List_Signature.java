@@ -123,6 +123,8 @@ public class List_Signature extends SimpleCursorAdapter {
         tv_ghichu = dialog.findViewById(R.id.tv_ghichu);
         btn_Insert = dialog.findViewById(R.id.btninsert);
         signaturePad = dialog.findViewById(R.id.signaturePad);
+
+
         btn_Insert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

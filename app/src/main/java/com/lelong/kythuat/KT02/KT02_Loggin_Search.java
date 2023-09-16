@@ -71,4 +71,9 @@ public class KT02_Loggin_Search extends AppCompatActivity implements KT02_Interf
     public void loadData_Sig() {
 
     }
+
+    @Override
+    public void loadData_Search_Sig() {
+
+    }
 }
