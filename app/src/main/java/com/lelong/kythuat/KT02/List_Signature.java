@@ -128,6 +128,16 @@ public class List_Signature extends SimpleCursorAdapter {
         btn_Insert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (l_tenxe.equals("Xe nâng dầu")) {
+                    l_tenxe = "xenangdau";
+                }
+                if (l_tenxe.equals("Xe nâng tay điện")) {
+                    l_tenxe = "xenangtaydien";
+                }
+                if (l_tenxe.equals("Xe nâng điện")) {
+                    l_tenxe = "xenangdien";
+                }
+
                 String g_ghichu = tv_ghichu.getText().toString().trim();
                 String g_manv = tv_manv.getText().toString().trim();
                 String g_sogio = tv_sogio.getText().toString().trim();

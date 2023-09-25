@@ -64,6 +64,17 @@ public class Search_Signature_KT02 extends AppCompatActivity implements KT02_Int
         if (g_bp.equals("BL")){
             g_fia15 = "B";
         }
+
+        if (g_tenxe.equals("Xe nâng dầu")) {
+            g_tenxe = "xenangdau";
+        }
+        if (g_tenxe.equals("Xe nâng tay điện")) {
+            g_tenxe = "xenangtaydien";
+        }
+        if (g_tenxe.equals("Xe nâng điện")) {
+            g_tenxe = "xenangdien";
+        }
+
         String ngaysig = dateFormatKT02.format(new Date()).toString();
         cursor = createTable.getAll_fiaud_sig_search(g_tenxe,g_fia15,ngaysig);
         Drawable drawable_blue = getResources().getDrawable(R.drawable.button_kt_blue);

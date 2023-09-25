@@ -585,4 +585,23 @@ public class Create_Table {
             return false;
         }
     }
+
+
+    public void call_insertPhotoData(String selectedDetail, String selectedDate, String selectedDepartment, String g_user, String fileName) {
+
+        try {
+            ContentValues args = new ContentValues();
+            args.put("tc_fcf001", selectedDetail);
+            args.put("tc_fcf002", selectedDate);
+            args.put("tc_fcf003", selectedDepartment);
+            args.put("tc_fcf004", g_user);
+            args.put("tc_fcf005", fileName);
+            args.put("tc_fcfpost", "N");
+            //db.insert(TABLE_NAME_TC_FCF, null, args);
+
+            //Cập nhật table chứ dữ liệu đã kiểm tra
+            //call_update_tc_fce(selectedDetail, selectedDate, selectedDepartment, g_user);
+        } catch (Exception e) {
+        }
+    }
 }

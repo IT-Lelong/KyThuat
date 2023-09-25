@@ -181,7 +181,7 @@ public class KT02_Signature_List extends AppCompatActivity implements KT02_Inter
 
                 for (File file : files) {
                     String kiemtratenanh = file.getName().toString().trim().substring(0, 2);
-                    if (kiemtratenanh.equals("Xe")) {
+                    if (kiemtratenanh.equals("xe")) {
                         String File_path = file.getAbsolutePath();
                         String[] mangtenfile = File_path.split("\\.");
                         //File_path = mangtenfile[0] + System.currentTimeMillis() + "." + mangtenfile[1];

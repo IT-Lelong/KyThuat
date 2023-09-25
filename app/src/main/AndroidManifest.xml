@@ -28,6 +28,12 @@
         android:theme="@style/AppTheme"
         tools:targetApi="31">
         <activity
+            android:name=".KT01.OpenCameraModify"
+            android:exported="false" />
+        <activity
+            android:name=".KT01.OpenCamera"
+            android:exported="false" />
+        <activity
             android:name=".KT01.Search_Signature_KT01"
             android:exported="false" />
         <activity

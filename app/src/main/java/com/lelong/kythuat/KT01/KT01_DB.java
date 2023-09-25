@@ -360,6 +360,15 @@ class KT01_DB {
         }
     }
     public
+    Cursor getngay() {
+        try {
+
+            return db.rawQuery("SELECT  DISTINCT  tc_faa002 FROM " + TABLE_NAME_TC_FAA+ " ", null);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+    public
     Cursor getsttCT(String KEY,String bp,String ngay) {
         try {
 

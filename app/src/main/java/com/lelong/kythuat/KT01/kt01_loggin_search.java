@@ -6,7 +6,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -26,21 +25,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.lelong.kythuat.Constant_Class;
-import com.lelong.kythuat.Create_Table;
 import com.lelong.kythuat.KT01.Retrofit2.APIYtils;
 import com.lelong.kythuat.KT01.Retrofit2.DataClient;
-import com.lelong.kythuat.KT02.Bophan_Adapter;
-import com.lelong.kythuat.KT02.KT02_Signature_List;
-import com.lelong.kythuat.KT02.KT02_activity;
-import com.lelong.kythuat.KT02.Loggin_List;
-import com.lelong.kythuat.Menu;
 import com.lelong.kythuat.R;
 
 import org.json.JSONArray;
@@ -50,26 +42,24 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class kt01_loggin_search extends AppCompatActivity {
     private Activity activity;
@@ -240,31 +230,40 @@ public class kt01_loggin_search extends AppCompatActivity {
                         //load();
                         return true;
                     case R.id.clearKT01:
-                        db.delete_table1(qry_ngay.getText().toString(), qry_BP.getText().toString());
+                        //db.delete_table1(qry_ngay.getText().toString(), qry_BP.getText().toString());
                         lbophandelete = qry_BP.getText().toString();
-                        File dir = new File("/storage/emulated/0/Pictures/"); // thay đổi đường dẫn tới thư mục chứa hình ảnh tương ứng
+                       Cursor cursor = db.getngay();
+                        cursor.moveToFirst();
+                        @SuppressLint("Range") String ngay = cursor.getString(cursor.getColumnIndex("tc_faa002"));
+
+                        File newDirectory = new File(context.getExternalMediaDirs()[0],ngay.replace("-",""));
+                        File dir = new File(newDirectory + "/"); // thay đổi đường dẫn tới thư mục chứa hình ảnh tương ứng
+                        //File dir = new File("/storage/emulated/0/Pictures/"); // thay đổi đường dẫn tới thư mục chứa hình ảnh tương ứng
                         File[] files = dir.listFiles();
 
-                        String imageName = null;
-                        for (File file : files) {
-                            String kiemtratenanh = file.getName().toString().trim().substring(0, 2);
-                            if (kiemtratenanh.equals("KT")) {
-                                String fileName = file.getName(); // Lấy tên của tệp
-                                String[] parts = fileName.split("_"); // Tách tên thành các phần
-                                String result = parts[2]; // Lấy phần tử thứ 3
-                                if (result.equals(lbophandelete)) {
-                                    boolean deleted = file.delete();
-                                    if (deleted) {
-                                        Log.d("BBB", "Deleted file: " + file.getAbsolutePath());
-                                        finish();
-                                    } else {
-                                        Log.d("BBB", "Failed to delete file: " + file.getAbsolutePath());
+                        if (files != null) {
+                            String imageName = null;
+                            for (File file : files) {
+                                String kiemtratenanh = file.getName().toString().trim().substring(0, 2);
+                                if (kiemtratenanh.equals("KT")) {
+                                    String fileName = file.getName(); // Lấy tên của tệp
+                                    String[] parts = fileName.split("_"); // Tách tên thành các phần
+                                    String result = parts[2]; // Lấy phần tử thứ 3
+                                    if (result.equals(lbophandelete)) {
+                                        boolean deleted = file.delete();
+                                        if (deleted) {
+                                            Log.d("BBB", "Deleted file: " + file.getAbsolutePath());
+                                            finish();
+                                        } else {
+                                            Log.d("BBB", "Failed to delete file: " + file.getAbsolutePath());
+                                        }
                                     }
                                 }
-                                ;
                             }
-
                         }
+
+
+                        db.delete_table1(qry_ngay.getText().toString(), qry_BP.getText().toString());
                         db.delete_tenhinh();
                         db.delete_tenhinhCT();
                         //  dialog.dismiss();
@@ -307,26 +306,43 @@ public class kt01_loggin_search extends AppCompatActivity {
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
-                                File dir = new File("/storage/emulated/0/Pictures/"); // thay đổi đường dẫn tới thư mục chứa hình ảnh tương ứng
+                                //File dir = new File("/storage/emulated/0/Pictures/"); // thay đổi đường dẫn tới thư mục chứa hình ảnh tương ứng
+                                Cursor cursor = db.getngay();
+                                cursor.moveToFirst();
+                                @SuppressLint("Range") String ngay = cursor.getString(cursor.getColumnIndex("tc_faa002"));
+
+                                File newDirectory = new File(context.getExternalMediaDirs()[0],ngay.replace("-",""));
+
+                                File dir = new File(newDirectory + "/"); // thay đổi đường dẫn tới thư mục chứa hình ảnh tương ứng
                                 File[] files = dir.listFiles();
+
+                                Gson gson = new GsonBuilder().create();
+
+                                Retrofit retrofit = new Retrofit.Builder()
+                                        .baseUrl("http://172.16.40.20/PHP/Retrofit/")
+                                        .addConverterFactory(GsonConverterFactory.create(gson))
+                                        .build();
+
+                                DataClient  apiService = retrofit.create(DataClient.class);
 
                                 String imageName = null;
                                 for (File file : files) {
                                     String kiemtratenanh = file.getName().toString().trim().substring(0, 2);
                                     if (kiemtratenanh.equals("KT")) {
                                         String File_path = file.getAbsolutePath();
-                                        String[] mangtenfile = File_path.split("\\.");
+                                        String[] mangtenfile = File_path.split("/");
                                         //File_path = mangtenfile[0] + System.currentTimeMillis() + "." + mangtenfile[1];
-                                        File_path = mangtenfile[0] + "." + mangtenfile[1];
+                                        File_path = mangtenfile[8];
                                         RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/from-data"), file);
                                         MultipartBody.Part body = MultipartBody.Part.createFormData("uploaded_file", File_path, requestBody);
                                         DataClient dataClient = APIYtils.getData();
-                                        Call<String> callback = dataClient.UploadPhot(body);
-                                        callback.enqueue(new Callback<String>() {
+                                        //Call<String> callback = dataClient.UploadPhot(body);
+                                        Call<ResponseBody> callback = apiService.uploadImage(body);
+                                        callback.enqueue(new Callback<ResponseBody>() {
                                             @Override
-                                            public void onResponse(Call<String> call, Response<String> response) {
+                                            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                                                 if (response != null) {
-                                                    String message = response.body();
+                                                    String message = String.valueOf(response.body());
                                                     Log.d("BBB", message);
                                                     // Xóa tấm ảnh sau khi upload thành công
                                                     /*boolean deleted = file.delete();
@@ -340,7 +356,7 @@ public class kt01_loggin_search extends AppCompatActivity {
                                             }
 
                                             @Override
-                                            public void onFailure(Call<String> call, Throwable t) {
+                                            public void onFailure(Call<ResponseBody> call, Throwable t) {
                                                 Log.d("BBB", t.getMessage());
                                                 // Xóa tấm ảnh sau khi upload thành công
                                                 /*boolean deleted = file.delete();

@@ -10,7 +10,6 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -113,9 +112,10 @@ public class kt01_camera extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     String tenanh = myArray[aa];
-                                    String a = "/storage/emulated/0/Pictures/" + tenanh + ".jpg" + "";
+                                    //String a = "/storage/emulated/0/Pictures/" + tenanh + ".jpg" + "";
                                     //int num2 = cursor_3.getInt(cursor_3.getColumnIndexOrThrow("tc_faa011"));
-
+                                    File newDirectory = new File(getExternalMediaDirs()[0],l_ngay.replace("-",""));
+                                    String a = newDirectory + "/" + tenanh ;
                                     File fileToDelete = new File(a);
                                     boolean deleted = fileToDelete.delete();
                                     if (deleted) {
@@ -158,9 +158,10 @@ public class kt01_camera extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     String tenanh = myArray[aa];
-                                    String a = "/storage/emulated/0/Pictures/" + tenanh + ".jpg" + "";
+                                    //String a = "/storage/emulated/0/Pictures/" + tenanh + ".jpg" + "";
                                     //int num2 = cursor_3.getInt(cursor_3.getColumnIndexOrThrow("tc_faa011"));
-
+                                    File newDirectory = new File(getExternalMediaDirs()[0],l_ngay.replace("-",""));
+                                    String a = newDirectory + "/" + tenanh ;
                                     File fileToDelete = new File(a);
                                     boolean deleted = fileToDelete.delete();
                                     if (deleted) {
@@ -249,9 +250,10 @@ public class kt01_camera extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     String tenanh = myArray[aa];
-                                    String a = "/storage/emulated/0/Pictures/" + tenanh + ".jpg" + "";
+                                    //String a = "/storage/emulated/0/Pictures/" + tenanh + ".jpg" + "";
                                     //int num2 = cursor_3.getInt(cursor_3.getColumnIndexOrThrow("tc_faa011"));
-
+                                    File newDirectory = new File(getExternalMediaDirs()[0],l_ngay.replace("-",""));
+                                    String a = newDirectory + "/" + tenanh ;
                                     File fileToDelete = new File(a);
                                     boolean deleted = fileToDelete.delete();
                                     if (deleted) {
@@ -294,9 +296,10 @@ public class kt01_camera extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     String tenanh = myArray[aa];
-                                    String a = "/storage/emulated/0/Pictures/" + tenanh + ".jpg" + "";
+                                    //String a = "/storage/emulated/0/Pictures/" + tenanh + ".jpg" + "";
                                     //int num2 = cursor_3.getInt(cursor_3.getColumnIndexOrThrow("tc_faa011"));
-
+                                    File newDirectory = new File(getExternalMediaDirs()[0],l_ngay.replace("-",""));
+                                    String a = newDirectory + "/" + tenanh ;
                                     File fileToDelete = new File(a);
                                     boolean deleted = fileToDelete.delete();
                                     if (deleted) {
@@ -386,9 +389,10 @@ public class kt01_camera extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     String tenanh = myArray[aa];
-                                    String a = "/storage/emulated/0/Pictures/" + tenanh + ".jpg" + "";
+                                    //String a = "/storage/emulated/0/Pictures/" + tenanh + ".jpg" + "";
                                     //int num2 = cursor_3.getInt(cursor_3.getColumnIndexOrThrow("tc_faa011"));
-
+                                    File newDirectory = new File(getExternalMediaDirs()[0],l_ngay.replace("-",""));
+                                    String a = newDirectory + "/" + tenanh ;
                                     File fileToDelete = new File(a);
                                     boolean deleted = fileToDelete.delete();
                                     if (deleted) {
@@ -431,9 +435,10 @@ public class kt01_camera extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     String tenanh = myArray[aa];
-                                    String a = "/storage/emulated/0/Pictures/" + tenanh + ".jpg" + "";
+                                    //String a = "/storage/emulated/0/Pictures/" + tenanh + ".jpg" + "";
                                     //int num2 = cursor_3.getInt(cursor_3.getColumnIndexOrThrow("tc_faa011"));
-
+                                    File newDirectory = new File(getExternalMediaDirs()[0],l_ngay.replace("-",""));
+                                    String a = newDirectory + "/" + tenanh ;
                                     File fileToDelete = new File(a);
                                     boolean deleted = fileToDelete.delete();
                                     if (deleted) {
@@ -523,9 +528,10 @@ public class kt01_camera extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     String tenanh = myArray[aa];
-                                    String a = "/storage/emulated/0/Pictures/" + tenanh + ".jpg" + "";
+                                    //String a = "/storage/emulated/0/Pictures/" + tenanh + ".jpg" + "";
                                     //int num2 = cursor_3.getInt(cursor_3.getColumnIndexOrThrow("tc_faa011"));
-
+                                    File newDirectory = new File(getExternalMediaDirs()[0],l_ngay.replace("-",""));
+                                    String a = newDirectory + "/" + tenanh ;
                                     File fileToDelete = new File(a);
                                     boolean deleted = fileToDelete.delete();
                                     if (deleted) {
@@ -567,9 +573,10 @@ public class kt01_camera extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     String tenanh = myArray[aa];
-                                    String a = "/storage/emulated/0/Pictures/" + tenanh + ".jpg" + "";
+                                    //String a = "/storage/emulated/0/Pictures/" + tenanh + ".jpg" + "";
                                     //int num2 = cursor_3.getInt(cursor_3.getColumnIndexOrThrow("tc_faa011"));
-
+                                    File newDirectory = new File(getExternalMediaDirs()[0],l_ngay.replace("-",""));
+                                    String a = newDirectory + "/" + tenanh ;
                                     File fileToDelete = new File(a);
                                     boolean deleted = fileToDelete.delete();
                                     if (deleted) {
@@ -658,9 +665,10 @@ public class kt01_camera extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     String tenanh = myArray[aa];
-                                    String a = "/storage/emulated/0/Pictures/" + tenanh + ".jpg" + "";
+                                    //String a = "/storage/emulated/0/Pictures/" + tenanh + ".jpg" + "";
                                     //int num2 = cursor_3.getInt(cursor_3.getColumnIndexOrThrow("tc_faa011"));
-
+                                    File newDirectory = new File(getExternalMediaDirs()[0],l_ngay.replace("-",""));
+                                    String a = newDirectory + "/" + tenanh ;
                                     File fileToDelete = new File(a);
                                     boolean deleted = fileToDelete.delete();
                                     if (deleted) {
@@ -702,9 +710,10 @@ public class kt01_camera extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     String tenanh = myArray[aa];
-                                    String a = "/storage/emulated/0/Pictures/" + tenanh + ".jpg" + "";
+                                    //String a = "/storage/emulated/0/Pictures/" + tenanh + ".jpg" + "";
                                     //int num2 = cursor_3.getInt(cursor_3.getColumnIndexOrThrow("tc_faa011"));
-
+                                    File newDirectory = new File(getExternalMediaDirs()[0],l_ngay.replace("-",""));
+                                    String a = newDirectory + "/" + tenanh ;
                                     File fileToDelete = new File(a);
                                     boolean deleted = fileToDelete.delete();
                                     if (deleted) {
@@ -793,9 +802,10 @@ public class kt01_camera extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     String tenanh = myArray[aa];
-                                    String a = "/storage/emulated/0/Pictures/" + tenanh + ".jpg" + "";
+                                    //String a = "/storage/emulated/0/Pictures/" + tenanh + ".jpg" + "";
                                     //int num2 = cursor_3.getInt(cursor_3.getColumnIndexOrThrow("tc_faa011"));
-
+                                    File newDirectory = new File(getExternalMediaDirs()[0],l_ngay.replace("-",""));
+                                    String a = newDirectory + "/" + tenanh ;
                                     File fileToDelete = new File(a);
                                     boolean deleted = fileToDelete.delete();
                                     if (deleted) {
@@ -837,9 +847,10 @@ public class kt01_camera extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     String tenanh = myArray[aa];
-                                    String a = "/storage/emulated/0/Pictures/" + tenanh + ".jpg" + "";
+                                    //String a = "/storage/emulated/0/Pictures/" + tenanh + ".jpg" + "";
                                     //int num2 = cursor_3.getInt(cursor_3.getColumnIndexOrThrow("tc_faa011"));
-
+                                    File newDirectory = new File(getExternalMediaDirs()[0],l_ngay.replace("-",""));
+                                    String a = newDirectory + "/" + tenanh ;
                                     File fileToDelete = new File(a);
                                     boolean deleted = fileToDelete.delete();
                                     if (deleted) {
@@ -903,9 +914,16 @@ public class kt01_camera extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                luudulieuanh();
+                /*luudulieuanh();
                 Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(cameraIntent, CAMERA_REQUEST);
+                startActivityForResult(cameraIntent, CAMERA_REQUEST);*/
+                Intent intent = new Intent(getApplicationContext(), OpenCamera.class);
+                intent.putExtra("ngay", l_ngay);
+                intent.putExtra("bophan", ID1);
+                intent.putExtra("hangmuc", ID);
+                intent.putExtra("to", l_to);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // Thêm cờ vào Intent
+                startActivity(intent);
             }
         });
     }
@@ -951,13 +969,13 @@ public class kt01_camera extends AppCompatActivity {
         Random generator = new Random();
         int n = 10000;
         n = generator.nextInt(n);
-        String fname = "Image-" + n + ".jpg";
+        String fname = "Image-" + n + ".png";
         File file = new File(savedImageURL, fname);
         if (file.exists()) file.delete();
         try {
 
             FileOutputStream out = new FileOutputStream(file);
-            finalBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
+            finalBitmap.compress(Bitmap.CompressFormat.PNG, 90, out);
             out.flush();
             out.close();
         } catch (Exception e) {
@@ -1055,7 +1073,7 @@ public class kt01_camera extends AppCompatActivity {
                 loadanh(ID, l_ngay, ID1);
             }
         }else {
-                l_to="XBL";
+            l_to="XBL";
             ID = getbundle.getString("ID");
             Cursor cursor = db.demsttanh(ID, ID1, l_ngay);
             //Cursor cursor = db.getstt(ID, ID1, l_ngay);
@@ -1079,68 +1097,6 @@ public class kt01_camera extends AppCompatActivity {
 
     }
 
-    /*  @Override
-      protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-              realpath = getRealPathFromURI(uri);
-              File imgFile = new  File(realpath);
-
-              if(imgFile.exists()){
-                  try {
-                      BitmapFactory.Options options = new BitmapFactory.Options();
-                      options.inPreferredConfig = Bitmap.Config.RGB_565;
-                      Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath(), options);
-                      imageView2.setImageBitmap(myBitmap);
-                  } catch (Exception e) {
-                      e.printStackTrace();
-                  }
-              }
-
-          super.onActivityResult(requestCode, resultCode, data);
-      }*/
-    /*private void loadanh(String key ,String l_ngay, String l_bp) {
-        cursor_3 = db.lananh(key,l_ngay,l_bp);
-        cursor_3.moveToFirst();
-        //int num2 = cursor_3.getInt(cursor_3.getColumnIndexOrThrow("tc_faa011"));
-        int num = cursor_3.getCount();
-        if (num > 6){
-            num = 6;
-        }
-        cursor_5 = db.lananh2(key,l_ngay,l_bp);
-        cursor_5.moveToFirst();
-        //int tong = ((num2 - 6) + 1);
-        int showanh = 0;
-        if(num > 0){
-            for (int i = 1; i <= num ; i ++) {
-                try {
-                    @SuppressLint("Range") String tenanh = cursor_5.getString(cursor_5.getColumnIndex("tenanh"));
-                    // String   a = "/storage/emulated/0/Pictures/KT010103_2023-02-25_13_45_37_ABI3100000.jpg";
-                    String a = "/storage/emulated/0/Pictures/" + tenanh + ".jpg" + "";
-                    //String a = "/storage/emulated/0/Pictures/" + tenanh + "_"+ i +"" + ".jpg" + "";
-                    //num2 = num2 - 1;
-                    File imgFile = new File(a);
-
-                    if (imgFile.exists()) {
-                        try {
-                            BitmapFactory.Options options = new BitmapFactory.Options();
-                            options.inPreferredConfig = Bitmap.Config.RGB_565;
-                            Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath(), options);
-                            imageViews[showanh].setImageBitmap(myBitmap);
-                            showanh = showanh +1;
-
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }catch (Exception e) {
-                    String err = e.toString();
-                }
-                cursor_5.moveToNext();
-            }
-        }
-
-
-    }*/
     private void loadanh(String key, String l_ngay, String l_bp) {
         cursor_3 = db.lananh(key, l_ngay, l_bp);
         cursor_3.moveToFirst();
@@ -1158,7 +1114,9 @@ public class kt01_camera extends AppCompatActivity {
                 try {
                     @SuppressLint("Range") String tenanh = cursor_5.getString(cursor_5.getColumnIndex("tenanh"));
                     // String   a = "/storage/emulated/0/Pictures/KT010103_2023-02-25_13_45_37_ABI3100000.jpg";
-                    String a = "/storage/emulated/0/Pictures/" + tenanh + ".jpg" + "";
+                    File newDirectory = new File(getExternalMediaDirs()[0],l_ngay.replace("-",""));
+                    //String a = "/storage/emulated/0/Pictures/" + tenanh + ".jpg" + "";
+                    String a = newDirectory + "/" + tenanh ;
                     //num2 = num2 - 1;
                     File imgFile = new File(a);
 
