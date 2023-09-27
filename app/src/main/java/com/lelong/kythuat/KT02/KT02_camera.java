@@ -17,7 +17,9 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.lelong.kythuat.KT01.KT01_DB;
+import com.lelong.kythuat.KT01.OpenCamera;
 import com.lelong.kythuat.KT02.KT02_DB;
+import com.lelong.kythuat.KT02_OpenCamera;
 import com.lelong.kythuat.R;
 
 
@@ -36,22 +38,22 @@ import java.util.Random;
 
 public
 class KT02_camera extends AppCompatActivity {
-    ImageView imageView1,imageView2,imageView3,imageView4,imageView5,imageView6;
+    ImageView imageView1, imageView2, imageView3, imageView4, imageView5, imageView6;
     Button btnTakePicture;
     TextView ttxtview;
     EditText eeditText;
     Button savePicture;
-    private KT02_DB db=null;
-    String ID,b;
+    private KT02_DB db = null;
+    String ID, b;
     Cursor cursor_3;
     String ID1;
-    int STT,demso;
+    int STT, demso;
     String l_bp;
-    String l_ngay,l_somay;
+    String l_ngay, l_somay;
     ImageView[] imageViews = new ImageView[6];
     String lbophan1;
-    LocalDate  currentDate;
-    String tenanh,luutenanh;
+    LocalDate currentDate;
+    String tenanh, luutenanh;
     TextView menuID;
     private static final int CAMERA_REQUEST = 1888;
     SimpleDateFormat dateFormatKT02 = new SimpleDateFormat("yyyy-MM-dd");
@@ -69,20 +71,27 @@ class KT02_camera extends AppCompatActivity {
         imageViews[5] = (ImageView) findViewById(R.id.imageView6);
 
         btnTakePicture = findViewById(R.id.btn_take_picture12);
-       // if (num >= 1) {
-           // loadanh();
-       // }
+        // if (num >= 1) {
+        // loadanh();
+        // }
 
-       // new  IDname().execute(ID);
+        // new  IDname().execute(ID);
         btnTakePicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                db=new KT02_DB(v.getContext());
+                /*db=new KT02_DB(v.getContext());
                 db.open();
                 db.appendUPDAEhinhanh(ID, l_ngay,ID1,l_somay,"tenhinh","soluong", luutenanh,STT);
                 Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(cameraIntent, CAMERA_REQUEST);
+                startActivityForResult(cameraIntent, CAMERA_REQUEST);*/
+                Intent intent = new Intent(getApplicationContext(), KT02_OpenCamera.class);
+                intent.putExtra("ngay", l_ngay);
+                intent.putExtra("bophan", ID1);
+                intent.putExtra("hangmuc", ID);
+                intent.putExtra("somay", l_somay);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // Thêm cờ vào Intent
+                startActivity(intent);
             }
         });
     }
@@ -92,11 +101,12 @@ class KT02_camera extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
             Bitmap photo = (Bitmap) data.getExtras().get("data");
-           // imageView.setImageBitmap(photo);
+            // imageView.setImageBitmap(photo);
             saveImage(photo);
         }
 
     }
+
     private void saveImage(Bitmap finalBitmap) {
         String savedImageURL = MediaStore.Images.Media.insertImage(
                 getContentResolver(),
@@ -121,6 +131,7 @@ class KT02_camera extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -136,13 +147,12 @@ class KT02_camera extends AppCompatActivity {
         //lbophan1 = getbundle.getString("lbophan1");
         // ID1 = getbundle.getString("ID1");
         l_ngay = getbundle.getString("l_ngay");
-        if (l_ngay != null){
+        if (l_ngay != null) {
 
             ID1 = getbundle.getString("l_bp");
             l_ngay = getbundle.getString("l_ngay");
-            l_somay= getbundle.getString("l_somay");
-        }else
-        {
+            l_somay = getbundle.getString("l_somay");
+        } else {
             try {
                 InputStream is = getApplicationContext().openFileInput("mydata.txt");
                 InputStreamReader isr = new InputStreamReader(is);
@@ -163,53 +173,56 @@ class KT02_camera extends AppCompatActivity {
         db.open();
 
         ID = getbundle.getString("ID");
-        Cursor cursor = db.demsttanh(ID,ID1,l_ngay,l_somay);
+        Cursor cursor = db.demsttanh(ID, ID1, l_ngay, l_somay);
         cursor.moveToFirst();
         int num = cursor.getInt(cursor.getColumnIndexOrThrow("soluong"));
         STT = num + 1;
-        tenanh = ID+"_"+l_ngay+"_"+ID1+"_"+l_somay+"_"+STT;
-        luutenanh = ID+"_"+l_ngay+"_"+ID1+"_"+l_somay;
-        ttxtview  = findViewById(R.id.menuID);
+        tenanh = ID + "_" + l_ngay + "_" + ID1 + "_" + l_somay + "_" + STT;
+        luutenanh = ID + "_" + l_ngay + "_" + ID1 + "_" + l_somay;
+        ttxtview = findViewById(R.id.menuID);
         ttxtview.setText(tenanh);
-        if (num >= 1){
-            loadanh(ID,l_ngay,ID1);
+        if (num >= 1) {
+            loadanh(ID, l_ngay, ID1);
         }
 
     }
 
-  private void loadanh(String key ,String l_ngay, String l_bp) {
-      cursor_3 = db.xuathinhanh(key,l_ngay,l_bp,l_somay);
-      cursor_3.moveToFirst();
-      int num2 = cursor_3.getInt(cursor_3.getColumnIndexOrThrow("soluong"));
-      //int num = cursor_3.getCount();
-      @SuppressLint("Range") String tenhinh = cursor_3.getString(cursor_3.getColumnIndex("tenhinh"));
-      int tong = ((num2 - 6) + 1);
-      int showanh = 0;
-      for (int i = tong; i <= num2 ; i ++) {
-          try {
+    private void loadanh(String key, String l_ngay, String l_bp) {
+        cursor_3 = db.xuathinhanh(key, l_ngay, l_bp, l_somay);
+        cursor_3.moveToFirst();
+        int num2 = cursor_3.getInt(cursor_3.getColumnIndexOrThrow("soluong"));
+        //int num = cursor_3.getCount();
+        @SuppressLint("Range") String tenhinh = cursor_3.getString(cursor_3.getColumnIndex("tenhinh"));
+        int tong = ((num2 - 6) + 1);
+        int showanh = 0;
+        for (int i = tong; i <= num2 ; i ++) {
+        //for (int i = 1; i <= num2; i++) {
+            try {
 
-              // String   a = "/storage/emulated/0/Pictures/KT010103_2023-02-25_13_45_37_ABI3100000.jpg";
-              String a = "/storage/emulated/0/Pictures/" + tenhinh + "_"+ i +"" + ".jpg" + "";
-              //num2 = num2 - 1;
-              File imgFile = new File(a);
+                // String   a = "/storage/emulated/0/Pictures/KT010103_2023-02-25_13_45_37_ABI3100000.jpg";
+                //String a = "/storage/emulated/0/Pictures/" + tenhinh + "_"+ i +"" + ".jpg" + "";
+                //num2 = num2 - 1;
+                File newDirectory = new File(getExternalMediaDirs()[0], l_ngay.replace("-", ""));
+                String a = newDirectory + "/" + tenhinh + "_" + i + "" + ".png";
+                File imgFile = new File(a);
 
-              if (imgFile.exists()) {
-                  try {
-                      BitmapFactory.Options options = new BitmapFactory.Options();
-                      options.inPreferredConfig = Bitmap.Config.RGB_565;
-                      Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath(), options);
-                      imageViews[showanh].setImageBitmap(myBitmap);
-                      showanh = showanh +1;
-                  } catch (Exception e) {
-                      e.printStackTrace();
-                  }
-              }
-          }catch (Exception e) {
-              String err = e.toString();
-          }
-      }
+                if (imgFile.exists()) {
+                    try {
+                        BitmapFactory.Options options = new BitmapFactory.Options();
+                        options.inPreferredConfig = Bitmap.Config.RGB_565;
+                        Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath(), options);
+                        imageViews[showanh].setImageBitmap(myBitmap);
+                        showanh = showanh + 1;
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            } catch (Exception e) {
+                String err = e.toString();
+            }
+        }
 
-  }
+    }
 
 
 }

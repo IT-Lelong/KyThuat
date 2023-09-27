@@ -475,7 +475,7 @@ public class KT02_DB {
             return "FALSE";
         }
     }
-    Cursor demsttanh(String KEY,String bp,String ngay,String xsomay) {
+    public Cursor demsttanh(String KEY, String bp, String ngay, String xsomay) {
         try {
             return db.rawQuery("SELECT  soluong FROM " + TABLE_NAME_TC_FAC_KT02 + " WHERE tc_fac004='" + KEY + "' AND user='" + bp + "' AND somay='" + xsomay  + "' AND ngay='" + ngay + "' ", null);
         } catch (Exception e) {
@@ -519,6 +519,15 @@ public class KT02_DB {
             //String selectQuery = "SELECT distinct fiaud03 FROM fia_file WHERE ta_fia02_1='" + tenxe + "' ORDER BY fiaud03";
             return db.rawQuery(selectQuery, null);
 
+        } catch (Exception e) {
+            return null;
+        }
+    }
+    public
+    Cursor getngay() {
+        try {
+
+            return db.rawQuery("SELECT  DISTINCT  ngay FROM " + TABLE_NAME_TC_FAC_KT02+ " ", null);
         } catch (Exception e) {
             return null;
         }

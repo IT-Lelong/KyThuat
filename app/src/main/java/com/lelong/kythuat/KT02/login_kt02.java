@@ -30,6 +30,8 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
 import com.google.firebase.crashlytics.buildtools.reloc.org.apache.commons.io.FileUtils;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.lelong.kythuat.Constant_Class;
 import com.lelong.kythuat.Create_Table;
 import com.lelong.kythuat.KT02.Retrofit2.APIYtils;
@@ -59,9 +61,12 @@ import java.util.List;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class login_kt02 extends AppCompatActivity {
     SimpleDateFormat dateFormatKT02 = new SimpleDateFormat("yyyy-MM-dd");
@@ -446,8 +451,24 @@ public class login_kt02 extends AppCompatActivity {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    File dir = new File("/storage/emulated/0/Pictures/"); // thay đổi đường dẫn tới thư mục chứa hình ảnh tương ứng
+                    //File dir = new File("/storage/emulated/0/Pictures/"); // thay đổi đường dẫn tới thư mục chứa hình ảnh tương ứng
+                    Cursor cursor = kt02Db.getngay();
+                    cursor.moveToFirst();
+                    @SuppressLint("Range") String ngay = cursor.getString(cursor.getColumnIndex("ngay"));
+
+                    File newDirectory = new File(context.getExternalMediaDirs()[0],ngay.replace("-",""));
+
+                    File dir = new File(newDirectory + "/"); // thay đổi đường dẫn tới thư mục chứa hình ảnh tương ứng
                     File[] files = dir.listFiles();
+
+                    Gson gson = new GsonBuilder().create();
+
+                    Retrofit retrofit = new Retrofit.Builder()
+                            .baseUrl("http://172.16.40.20/PHP/Retrofit/")
+                            .addConverterFactory(GsonConverterFactory.create(gson))
+                            .build();
+
+                    com.lelong.kythuat.KT02.Retrofit2.DataClient apiService = retrofit.create(com.lelong.kythuat.KT02.Retrofit2.DataClient.class);
 
                     String imageName = null;
 
@@ -456,20 +477,23 @@ public class login_kt02 extends AppCompatActivity {
                         String kiemtratenanh = file.getName().toString().trim().substring(0, 2);
                         if (kiemtratenanh.equals("KT")) {
                             String File_path = file.getAbsolutePath();
-                            String[] mangtenfile = File_path.split("\\.");
+                            //String[] mangtenfile = File_path.split("\\.");
+                            String[] mangtenfile = File_path.split("/");
                             //File_path = mangtenfile[0] + System.currentTimeMillis() + "." + mangtenfile[1];
-                            File_path = mangtenfile[0] + "." + mangtenfile[1];
+                            //File_path = mangtenfile[0] + "." + mangtenfile[1];
+                            File_path = mangtenfile[8];
                             RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/from-data"), file);
                             MultipartBody.Part body = MultipartBody.Part.createFormData("uploaded_file", File_path, requestBody);
 
 
                             DataClient dataClient = APIYtils.getData();
-                            Call<String> callback = dataClient.UploadPhot(body);
-                            callback.enqueue(new Callback<String>() {
+                            //Call<String> callback = dataClient.UploadPhot(body);
+                            Call<ResponseBody> callback = apiService.uploadImage(body);
+                            callback.enqueue(new Callback<ResponseBody>() {
                                 @Override
-                                public void onResponse(Call<String> call, Response<String> response) {
+                                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                                     if (response != null) {
-                                        String message = response.body();
+                                        String message = String.valueOf(response.body());
                                         Log.d("BBB", message);
                                         // Xóa tấm ảnh sau khi upload thành công
                                     /*boolean deleted = file.delete();
@@ -487,7 +511,7 @@ public class login_kt02 extends AppCompatActivity {
                                 }
 
                                 @Override
-                                public void onFailure(Call<String> call, Throwable t) {
+                                public void onFailure(Call<ResponseBody> call, Throwable t) {
                                     //Log.d("onFailurePIC", t.getMessage());
                                     Log.d("onFailurePIC", "Timeout error: " + t.getMessage());
                                     //String a =t.getMessage().toString();

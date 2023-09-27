@@ -28,6 +28,9 @@
         android:theme="@style/AppTheme"
         tools:targetApi="31">
         <activity
+            android:name=".KT02_OpenCamera"
+            android:exported="false" />
+        <activity
             android:name=".KT01.OpenCameraModify"
             android:exported="false" />
         <activity
