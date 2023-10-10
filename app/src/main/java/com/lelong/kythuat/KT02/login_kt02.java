@@ -460,78 +460,78 @@ public class login_kt02 extends AppCompatActivity {
 
                     File dir = new File(newDirectory + "/"); // thay đổi đường dẫn tới thư mục chứa hình ảnh tương ứng
                     File[] files = dir.listFiles();
+                    if (files != null) {
+                        Gson gson = new GsonBuilder().create();
 
-                    Gson gson = new GsonBuilder().create();
+                        Retrofit retrofit = new Retrofit.Builder()
+                                .baseUrl("http://172.16.40.20/PHP/Retrofit/")
+                                .addConverterFactory(GsonConverterFactory.create(gson))
+                                .build();
 
-                    Retrofit retrofit = new Retrofit.Builder()
-                            .baseUrl("http://172.16.40.20/PHP/Retrofit/")
-                            .addConverterFactory(GsonConverterFactory.create(gson))
-                            .build();
+                        com.lelong.kythuat.KT02.Retrofit2.DataClient apiService = retrofit.create(com.lelong.kythuat.KT02.Retrofit2.DataClient.class);
 
-                    com.lelong.kythuat.KT02.Retrofit2.DataClient apiService = retrofit.create(com.lelong.kythuat.KT02.Retrofit2.DataClient.class);
-
-                    String imageName = null;
-
-
-                    for (File file : files) {
-                        String kiemtratenanh = file.getName().toString().trim().substring(0, 2);
-                        if (kiemtratenanh.equals("KT")) {
-                            String File_path = file.getAbsolutePath();
-                            //String[] mangtenfile = File_path.split("\\.");
-                            String[] mangtenfile = File_path.split("/");
-                            //File_path = mangtenfile[0] + System.currentTimeMillis() + "." + mangtenfile[1];
-                            //File_path = mangtenfile[0] + "." + mangtenfile[1];
-                            File_path = mangtenfile[8];
-                            RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/from-data"), file);
-                            MultipartBody.Part body = MultipartBody.Part.createFormData("uploaded_file", File_path, requestBody);
+                        String imageName = null;
 
 
-                            DataClient dataClient = APIYtils.getData();
-                            //Call<String> callback = dataClient.UploadPhot(body);
-                            Call<ResponseBody> callback = apiService.uploadImage(body);
-                            callback.enqueue(new Callback<ResponseBody>() {
-                                @Override
-                                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                                    if (response != null) {
-                                        String message = String.valueOf(response.body());
-                                        Log.d("BBB", message);
-                                        // Xóa tấm ảnh sau khi upload thành công
+                        for (File file : files) {
+                            String kiemtratenanh = file.getName().toString().trim().substring(0, 2);
+                            if (kiemtratenanh.equals("KT")) {
+                                String File_path = file.getAbsolutePath();
+                                //String[] mangtenfile = File_path.split("\\.");
+                                String[] mangtenfile = File_path.split("/");
+                                //File_path = mangtenfile[0] + System.currentTimeMillis() + "." + mangtenfile[1];
+                                //File_path = mangtenfile[0] + "." + mangtenfile[1];
+                                File_path = mangtenfile[8];
+                                RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/from-data"), file);
+                                MultipartBody.Part body = MultipartBody.Part.createFormData("uploaded_file", File_path, requestBody);
+
+
+                                DataClient dataClient = APIYtils.getData();
+                                //Call<String> callback = dataClient.UploadPhot(body);
+                                Call<ResponseBody> callback = apiService.uploadImage(body);
+                                callback.enqueue(new Callback<ResponseBody>() {
+                                    @Override
+                                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                        if (response != null) {
+                                            String message = String.valueOf(response.body());
+                                            Log.d("BBB", message);
+                                            // Xóa tấm ảnh sau khi upload thành công
                                     /*boolean deleted = file.delete();
                                     if (deleted) {
                                         Log.d("BBB", "Deleted file: " + file.getAbsolutePath());
                                     } else {
                                         Log.d("BBB", "Failed to delete file: " + file.getAbsolutePath());
                                     }*/
-                                        //File file = new File(filePath); // thay đổi đường dẫn tới file hình cần xóa
-                                        //if (file.exists()) {
+                                            //File file = new File(filePath); // thay đổi đường dẫn tới file hình cần xóa
+                                            //if (file.exists()) {
 
-                                        //}
+                                            //}
 
+                                        }
                                     }
-                                }
 
-                                @Override
-                                public void onFailure(Call<ResponseBody> call, Throwable t) {
-                                    //Log.d("onFailurePIC", t.getMessage());
-                                    Log.d("onFailurePIC", "Timeout error: " + t.getMessage());
-                                    //String a =t.getMessage().toString();
-                                    // Xóa tấm ảnh sau khi upload thành công
+                                    @Override
+                                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                                        //Log.d("onFailurePIC", t.getMessage());
+                                        Log.d("onFailurePIC", "Timeout error: " + t.getMessage());
+                                        //String a =t.getMessage().toString();
+                                        // Xóa tấm ảnh sau khi upload thành công
                                 /*boolean deleted = file.delete();
                                 if (deleted) {
                                     Log.d("BBB", "Deleted file: " + file.getAbsolutePath());
                                 } else {
                                     Log.d("BBB", "Failed to delete file: " + file.getAbsolutePath());
                                 }*/
-                                    //file.delete(); // xóa file
-                                    //Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file));
-                                    //sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file))); // thông báo đến hệ thống để quét lại thư viện media
+                                        //file.delete(); // xóa file
+                                        //Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file));
+                                        //sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file))); // thông báo đến hệ thống để quét lại thư viện media
                                    /* Context context1 = dialog.getContext();
                                     if (context1 != null) {
                                         context1.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)));
                                     }
                                     file.delete(); // xóa file*/
 
-                                    //File fileToDelete = new File(filePath);
+                                        //File fileToDelete = new File(filePath);
                                     /*Context context1 = dialog.getContext();
                                     boolean deleted = file.delete();
                                     if (deleted) {
@@ -543,7 +543,7 @@ public class login_kt02 extends AppCompatActivity {
                                     }*/
 
 
-                                    //File file = new File("Đường_dẫn_đến_file_hình_ảnh");
+                                        //File file = new File("Đường_dẫn_đến_file_hình_ảnh");
                                     /*File trashDir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/.Trash");
 // Sử dụng FileUtils.moveToDirectory() để di chuyển file đến thùng rác lưu tạm
                                     boolean isFileMoved = false;
@@ -559,13 +559,15 @@ public class login_kt02 extends AppCompatActivity {
                                         // File chưa được di chuyển vào thùng rác lưu tạm
                                     }*/
 
-                                }
-                            });
+                                    }
+                                });
+
+                            }
+                            ;
 
                         }
-                        ;
-
                     }
+
 
                     //insert tb tc_fad_file
                     //String ngay = dateFormatKT02.format(new Date()).toString();

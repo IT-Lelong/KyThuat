@@ -3,6 +3,8 @@ package com.lelong.kythuat.KT01;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.camera.core.Camera;
+import androidx.camera.core.CameraInfo;
 import androidx.camera.core.CameraSelector;
 import androidx.camera.core.ImageCapture;
 import androidx.camera.core.ImageCaptureException;
@@ -233,7 +235,7 @@ public class OpenCamera extends AppCompatActivity {
     }
 
     private void bindCameraUseCases(@NonNull ProcessCameraProvider cameraProvider) {
-        preview = new Preview.Builder().build();
+        /*preview = new Preview.Builder().build();
         imageCapture = new ImageCapture.Builder().build();
 
         cameraProvider.unbindAll();
@@ -242,6 +244,30 @@ public class OpenCamera extends AppCompatActivity {
                 .build();
 
         cameraProvider.bindToLifecycle((LifecycleOwner) this, cameraSelector, preview, imageCapture);
+
+        // Liên kết Preview với viewFinder
+        preview.setSurfaceProvider(viewFind.getSurfaceProvider());*/
+
+        preview = new Preview.Builder().build();
+        imageCapture = new ImageCapture.Builder().build();
+
+        cameraProvider.unbindAll();
+        CameraSelector cameraSelector = new CameraSelector.Builder()
+                .requireLensFacing(CameraSelector.LENS_FACING_BACK)
+                .build();
+
+        // Bind các use case vào lifecycle của ứng dụng
+        Camera camera = cameraProvider.bindToLifecycle((LifecycleOwner) this, cameraSelector, preview, imageCapture);
+
+        // Kiểm tra xem thiết bị có hỗ trợ flash hay không
+        CameraInfo cameraInfo = camera.getCameraInfo();
+        if (cameraInfo.hasFlashUnit()) {
+            // Bật đèn LED
+            camera.getCameraControl().enableTorch(true);
+
+            // Sau khi bạn đã hoàn thành việc sử dụng đèn LED, bạn có thể tắt nó bằng cách sử dụng:
+            // camera.getCameraControl().enableTorch(false);
+        }
 
         // Liên kết Preview với viewFinder
         preview.setSurfaceProvider(viewFind.getSurfaceProvider());

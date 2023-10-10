@@ -72,9 +72,9 @@ public class kt01_loggin_search extends AppCompatActivity {
     Button btnlogin1;
     Button search1;
     Button btnback;
-    Button btnaupdate,btnsignature;
+    Button btnaupdate, btnsignature;
     Locale locale;
-    TextView viewID,textView;
+    TextView viewID, textView;
     String L_BP;
     JSONArray jsonupload;
     JSONObject ujobject;
@@ -86,7 +86,7 @@ public class kt01_loggin_search extends AppCompatActivity {
     private final String FILENAME = "mydata.txt";
     Cursor cursor_1, cursor_2;
     String[] station = new String[0];
-    String g_soxe, g_bophan, mabp, tenbp, g_tenxe,g_to;
+    String g_soxe, g_bophan, mabp, tenbp, g_tenxe, g_to, g_xuong;
 
     public void login_dialogkt01(Context context, String menuID, Activity activity) {
         this.activity = activity;
@@ -167,7 +167,24 @@ public class kt01_loggin_search extends AppCompatActivity {
         //Spinner cbxto = dialog.findViewById(R.id.cbxto);
 
         //String[] list_to = {"Tổ A", "Tổ B", "Tổ C", "Tổ D"};
-        String[] list_to = {"Tổ D"};
+        if (Constant_Class.UserID.equals("H15330")) {
+            g_xuong="Tổ A";
+
+        }
+        if (Constant_Class.UserID.equals("H14430")) {
+            g_xuong="Tổ B";
+
+        }
+        if (Constant_Class.UserID.equals("H14398")) {
+            g_xuong="Tổ C";
+
+        }
+        if (Constant_Class.UserID.equals("H19588")) {
+            g_xuong="Tổ D";
+
+        }
+        //String[] list_to = {"Tổ A"};
+        String[] list_to = {g_xuong};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this.activity, android.R.layout.simple_spinner_item, list_to);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         cbxto.setAdapter(adapter);
@@ -183,7 +200,7 @@ public class kt01_loggin_search extends AppCompatActivity {
         cbxto.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                g_to=adapter.getItem(position);
+                g_to = adapter.getItem(position);
             }
 
             @Override
@@ -191,7 +208,6 @@ public class kt01_loggin_search extends AppCompatActivity {
 
             }
         });
-
 
 
         load();
@@ -232,11 +248,11 @@ public class kt01_loggin_search extends AppCompatActivity {
                     case R.id.clearKT01:
                         //db.delete_table1(qry_ngay.getText().toString(), qry_BP.getText().toString());
                         lbophandelete = qry_BP.getText().toString();
-                       Cursor cursor = db.getngay();
+                        Cursor cursor = db.getngay();
                         cursor.moveToFirst();
                         @SuppressLint("Range") String ngay = cursor.getString(cursor.getColumnIndex("tc_faa002"));
 
-                        File newDirectory = new File(context.getExternalMediaDirs()[0],ngay.replace("-",""));
+                        File newDirectory = new File(context.getExternalMediaDirs()[0], ngay.replace("-", ""));
                         File dir = new File(newDirectory + "/"); // thay đổi đường dẫn tới thư mục chứa hình ảnh tương ứng
                         //File dir = new File("/storage/emulated/0/Pictures/"); // thay đổi đường dẫn tới thư mục chứa hình ảnh tương ứng
                         File[] files = dir.listFiles();
@@ -311,40 +327,40 @@ public class kt01_loggin_search extends AppCompatActivity {
                                 cursor.moveToFirst();
                                 @SuppressLint("Range") String ngay = cursor.getString(cursor.getColumnIndex("tc_faa002"));
 
-                                File newDirectory = new File(context.getExternalMediaDirs()[0],ngay.replace("-",""));
+                                File newDirectory = new File(context.getExternalMediaDirs()[0], ngay.replace("-", ""));
 
                                 File dir = new File(newDirectory + "/"); // thay đổi đường dẫn tới thư mục chứa hình ảnh tương ứng
                                 File[] files = dir.listFiles();
+                                if (files != null) {
+                                    Gson gson = new GsonBuilder().create();
 
-                                Gson gson = new GsonBuilder().create();
+                                    Retrofit retrofit = new Retrofit.Builder()
+                                            .baseUrl("http://172.16.40.20/PHP/Retrofit/")
+                                            .addConverterFactory(GsonConverterFactory.create(gson))
+                                            .build();
 
-                                Retrofit retrofit = new Retrofit.Builder()
-                                        .baseUrl("http://172.16.40.20/PHP/Retrofit/")
-                                        .addConverterFactory(GsonConverterFactory.create(gson))
-                                        .build();
+                                    DataClient apiService = retrofit.create(DataClient.class);
 
-                                DataClient  apiService = retrofit.create(DataClient.class);
-
-                                String imageName = null;
-                                for (File file : files) {
-                                    String kiemtratenanh = file.getName().toString().trim().substring(0, 2);
-                                    if (kiemtratenanh.equals("KT")) {
-                                        String File_path = file.getAbsolutePath();
-                                        String[] mangtenfile = File_path.split("/");
-                                        //File_path = mangtenfile[0] + System.currentTimeMillis() + "." + mangtenfile[1];
-                                        File_path = mangtenfile[8];
-                                        RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/from-data"), file);
-                                        MultipartBody.Part body = MultipartBody.Part.createFormData("uploaded_file", File_path, requestBody);
-                                        DataClient dataClient = APIYtils.getData();
-                                        //Call<String> callback = dataClient.UploadPhot(body);
-                                        Call<ResponseBody> callback = apiService.uploadImage(body);
-                                        callback.enqueue(new Callback<ResponseBody>() {
-                                            @Override
-                                            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                                                if (response != null) {
-                                                    String message = String.valueOf(response.body());
-                                                    Log.d("BBB", message);
-                                                    // Xóa tấm ảnh sau khi upload thành công
+                                    String imageName = null;
+                                    for (File file : files) {
+                                        String kiemtratenanh = file.getName().toString().trim().substring(0, 2);
+                                        if (kiemtratenanh.equals("KT")) {
+                                            String File_path = file.getAbsolutePath();
+                                            String[] mangtenfile = File_path.split("/");
+                                            //File_path = mangtenfile[0] + System.currentTimeMillis() + "." + mangtenfile[1];
+                                            File_path = mangtenfile[8];
+                                            RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/from-data"), file);
+                                            MultipartBody.Part body = MultipartBody.Part.createFormData("uploaded_file", File_path, requestBody);
+                                            DataClient dataClient = APIYtils.getData();
+                                            //Call<String> callback = dataClient.UploadPhot(body);
+                                            Call<ResponseBody> callback = apiService.uploadImage(body);
+                                            callback.enqueue(new Callback<ResponseBody>() {
+                                                @Override
+                                                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                                    if (response != null) {
+                                                        String message = String.valueOf(response.body());
+                                                        Log.d("BBB", message);
+                                                        // Xóa tấm ảnh sau khi upload thành công
                                                     /*boolean deleted = file.delete();
                                                     if (deleted) {
                                                         Log.d("BBB", "Deleted file: " + file.getAbsolutePath());
@@ -352,26 +368,28 @@ public class kt01_loggin_search extends AppCompatActivity {
                                                         Log.d("BBB", "Failed to delete file: " + file.getAbsolutePath());
                                                     }*/
 
+                                                    }
                                                 }
-                                            }
 
-                                            @Override
-                                            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                                                Log.d("BBB", t.getMessage());
-                                                // Xóa tấm ảnh sau khi upload thành công
+                                                @Override
+                                                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                                                    Log.d("BBB", t.getMessage());
+                                                    // Xóa tấm ảnh sau khi upload thành công
                                                 /*boolean deleted = file.delete();
                                                 if (deleted) {
                                                     Log.d("BBB", "Deleted file: " + file.getAbsolutePath());
                                                 } else {
                                                     Log.d("BBB", "Failed to delete file: " + file.getAbsolutePath());
                                                 }*/
-                                            }
-                                        });
+                                                }
+                                            });
+
+                                        }
+                                        ;
 
                                     }
-                                    ;
-
                                 }
+
 
 
                                 /*String bien = "A";
@@ -403,33 +421,33 @@ public class kt01_loggin_search extends AppCompatActivity {
                                     e.printStackTrace();
                                 }
 
-                                    String res = upload_all("http://172.16.40.20/" + g_server + "/TechAPP/uploadtc_fae.php");
+                                String res = upload_all("http://172.16.40.20/" + g_server + "/TechAPP/uploadtc_fae.php");
 
-                                    runOnUiThread(new Runnable() { //Vì Toast không thể chạy đc nếu không phải UI Thread nên sử dụng runOnUIThread.
-                                        @Override
-                                        public void run() {
+                                runOnUiThread(new Runnable() { //Vì Toast không thể chạy đc nếu không phải UI Thread nên sử dụng runOnUIThread.
+                                    @Override
+                                    public void run() {
                                             /*if (res.contains("false")) {
                                                 //Toast.makeText(getApplicationContext(), getString(R.string.M09), Toast.LENGTH_SHORT).show();
                                                 Toast.makeText(getApplicationContext(), "Kết chuyễn dữ liệu thất bại: ", Toast.LENGTH_SHORT).show();
                                             }*/
-                                            if (res.contains("TRUE")) {
-                                                //Toast.makeText(getApplicationContext(), getString(R.string.M08), Toast.LENGTH_SHORT).show();
-                                                //Toast.makeText(getApplicationContext(), "Kết chuyễn dữ liệu thành công: ", Toast.LENGTH_SHORT).show();
-                                                Toast.makeText(v.getContext(), R.string.ERRORtvStatus_errorins, Toast.LENGTH_SHORT).show();
-                                                db.delete_tenhinh();
-                                                db.delete_table_faa_kt("KT01");
-                                                load();
-                                            }else {
-                                                Toast.makeText(v.getContext(), res.toString(), Toast.LENGTH_SHORT).show();
-                                                //Toast.makeText(v.getContext(), R.string.ERRORtvStatus_false, Toast.LENGTH_SHORT).show();
-                                            }
+                                        if (res.contains("TRUE")) {
+                                            //Toast.makeText(getApplicationContext(), getString(R.string.M08), Toast.LENGTH_SHORT).show();
+                                            //Toast.makeText(getApplicationContext(), "Kết chuyễn dữ liệu thành công: ", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(v.getContext(), R.string.ERRORtvStatus_errorins, Toast.LENGTH_SHORT).show();
+                                            db.delete_tenhinh();
+                                            db.delete_table_faa_kt("KT01");
+                                            load();
+                                        } else {
+                                            Toast.makeText(v.getContext(), res.toString(), Toast.LENGTH_SHORT).show();
+                                            //Toast.makeText(v.getContext(), R.string.ERRORtvStatus_false, Toast.LENGTH_SHORT).show();
+                                        }
                                             /*if (res.contains("ERROINS")) {
                                                 //tvStatus.setText("đã được insert");
                                                 Toast.makeText(v.getContext(), R.string.ERRORtvStatus_errorins, Toast.LENGTH_SHORT).show();
                                                 //kt02Db.delete_table();
                                             }*/
-                                        }
-                                    });
+                                    }
+                                });
 
                                 /*} else {
                                     String res = "false";
@@ -581,7 +599,7 @@ public class kt01_loggin_search extends AppCompatActivity {
         SimpleCursorAdapter simpleCursorAdapter = new SimpleCursorAdapter(context,
                 R.layout.kt01_login_dialog_lvrow, cursor,
                 new String[]{"_id", "tc_faa002", "tc_faa003", "tc_fba009"},
-                new int[]{R.id.tv_stt, R.id.tv_ngay, R.id.tv_BP,R.id.tv_tenBP},
+                new int[]{R.id.tv_stt, R.id.tv_ngay, R.id.tv_BP, R.id.tv_tenBP},
                 SimpleCursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
         simpleCursorAdapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
             @Override

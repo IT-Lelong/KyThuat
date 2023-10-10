@@ -3,6 +3,8 @@ package com.lelong.kythuat;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.camera.core.Camera;
+import androidx.camera.core.CameraInfo;
 import androidx.camera.core.CameraSelector;
 import androidx.camera.core.ImageCapture;
 import androidx.camera.core.ImageCaptureException;
@@ -44,11 +46,12 @@ public class KT02_OpenCamera extends AppCompatActivity {
     private Preview preview;
     private PreviewView viewFind;
     int STT, demso;
-    private KT02_DB db=null;
+    private KT02_DB db = null;
 
     private boolean canCapture = true;
     private Handler captureHandler = new Handler();
     private static final long CAPTURE_DELAY = 5000; // Độ trễ giữa các lần chụp (5 giây)
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,17 +87,16 @@ public class KT02_OpenCamera extends AppCompatActivity {
         db = new KT02_DB(this);
         db.open();
 
-        Cursor cursor = db.demsttanh(selectedDetail, selectedDepartment, selectedDate,selectedSomay);
+        Cursor cursor = db.demsttanh(selectedDetail, selectedDepartment, selectedDate, selectedSomay);
         cursor.moveToFirst();
         int num = cursor.getInt(cursor.getColumnIndexOrThrow("soluong"));
         STT = num + 1;
-        String fileName = selectedDetail + "_" + selectedDate + "_" + selectedDepartment +  "_" + selectedSomay + "_" + STT + ".png";
+        String fileName = selectedDetail + "_" + selectedDate + "_" + selectedDepartment + "_" + selectedSomay + "_" + STT + ".png";
         //String fileName_005 = selectedDetail + "_" + selectedDate + "_" + selectedDepartment + "_" + selectedSomay + ".png";
         String fileName_005 = selectedDetail + "_" + selectedDate + "_" + selectedDepartment + "_" + selectedSomay;
 
         File newDirectory = new File(getExternalMediaDirs()[0], selectedDate.replace("-", ""));
         ///storage/emulated/0/Android/media/com.lelong.kythuat/20230916
-
 
 
         if (!newDirectory.exists()) {
@@ -148,6 +150,7 @@ public class KT02_OpenCamera extends AppCompatActivity {
         }, CAPTURE_DELAY);
 
     }
+
     private Bitmap resizeImage(String imagePath, int maxWidth, int maxHeight) {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
@@ -180,9 +183,9 @@ public class KT02_OpenCamera extends AppCompatActivity {
     }
 
     private void luudulieuanh(String g_fileName, String g_fileName_005) {
-        db=new KT02_DB(this);
+        db = new KT02_DB(this);
         db.open();
-        db.appendUPDAEhinhanh(selectedDetail, selectedDate,selectedDepartment,selectedSomay,"tenhinh","soluong", g_fileName_005,STT);
+        db.appendUPDAEhinhanh(selectedDetail, selectedDate, selectedDepartment, selectedSomay, "tenhinh", "soluong", g_fileName_005, STT);
     }
 
     private void startCamera() {
@@ -198,7 +201,7 @@ public class KT02_OpenCamera extends AppCompatActivity {
     }
 
     private void bindCameraUseCases(@NonNull ProcessCameraProvider cameraProvider) {
-        preview = new Preview.Builder().build();
+        /*preview = new Preview.Builder().build();
         imageCapture = new ImageCapture.Builder().build();
 
         cameraProvider.unbindAll();
@@ -209,6 +212,31 @@ public class KT02_OpenCamera extends AppCompatActivity {
         cameraProvider.bindToLifecycle((LifecycleOwner) this, cameraSelector, preview, imageCapture);
 
         // Liên kết Preview với viewFinder
+        preview.setSurfaceProvider(viewFind.getSurfaceProvider());*/
+
+        preview = new Preview.Builder().build();
+        imageCapture = new ImageCapture.Builder().build();
+
+        cameraProvider.unbindAll();
+        CameraSelector cameraSelector = new CameraSelector.Builder()
+                .requireLensFacing(CameraSelector.LENS_FACING_BACK)
+                .build();
+
+        // Bind các use case vào lifecycle của ứng dụng
+        Camera camera = cameraProvider.bindToLifecycle((LifecycleOwner) this, cameraSelector, preview, imageCapture);
+
+        // Kiểm tra xem thiết bị có hỗ trợ flash hay không
+        CameraInfo cameraInfo = camera.getCameraInfo();
+        if (cameraInfo.hasFlashUnit()) {
+            // Bật đèn LED
+            camera.getCameraControl().enableTorch(true);
+
+            // Sau khi bạn đã hoàn thành việc sử dụng đèn LED, bạn có thể tắt nó bằng cách sử dụng:
+            // camera.getCameraControl().enableTorch(false);
+        }
+
+        // Liên kết Preview với viewFinder
         preview.setSurfaceProvider(viewFind.getSurfaceProvider());
+
     }
 }

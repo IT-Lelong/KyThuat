@@ -354,7 +354,7 @@ class KT01_DB {
     Cursor getstt(String KEY,String bp,String ngay) {
         try {
 
-            return db.rawQuery("SELECT  max(stt) AS stt FROM " + TABLE_NAME_Ten_anh+ " ", null);
+            return db.rawQuery("SELECT  max(stt+0) AS stt FROM " + TABLE_NAME_Ten_anh+ " ", null);
         } catch (Exception e) {
             return null;
         }
