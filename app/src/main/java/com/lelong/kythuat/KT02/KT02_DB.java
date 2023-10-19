@@ -447,7 +447,7 @@ public class KT02_DB {
         try {
 
             //SQLiteDatabase db = this.getWritableDatabase();
-            String selectQuery = "SELECT somay_sig,mabp_sig,tebp_sig,ngay_sig,ghichu_sig,'Đã chuyển' AS trangthai_sig,manv_sig,sogio_sig,tenhinh_sig FROM fia_up_sig_file,fia_file " +
+            String selectQuery = "SELECT DISTINCT somay_sig,mabp_sig,tebp_sig,ngay_sig,ghichu_sig,'Đã chuyển' AS trangthai_sig,manv_sig,sogio_sig,tenhinh_sig FROM fia_up_sig_file,fia_file " +
                     " WHERE somay_sig=fiaud03 AND mabp_sig=fia15 AND (trangthai_sig is null OR trangthai_sig='Chưa chuyển') AND ta_fia02_1='" + tenxe + "' " +
                     " order by somay_sig,mabp_sig,ngay_sig ";
             return db.rawQuery(selectQuery, null);
