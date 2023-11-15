@@ -303,12 +303,24 @@ class KT01_DB {
     public void delete_table() {
         db.delete(TABLE_NAME_TC_FAA, null  , null);
     }
-    public void delete_tenhinh() {
-        db.delete(TABLE_NAME_Ten_anh, null  , null);
+    public void delete_tenhinh(String qry_ngay, String qry_bp) {
+        String whereClause_hm0102 = "ngay=? AND bophan=?";
+        String[] strings = new String[]{qry_ngay, qry_bp};
+        db.delete(TABLE_NAME_Ten_anh, whereClause_hm0102, strings);
+
     }
 
-    public void delete_tenhinhCT() {
-        db.delete(TABLE_NAME_Ten_anhCT, null  , null);
+
+
+    public void delete_tenhinhCT(String qry_ngay, String qry_bp) {
+        String whereClause_hm0102 = "ngayCT=? AND bophanCT=?";
+        String[] strings = new String[]{qry_ngay, qry_bp};
+        db.delete(TABLE_NAME_Ten_anhCT, whereClause_hm0102, strings);
+    }
+
+    public void delete_tenhinh_all() {
+        db.delete(TABLE_NAME_Ten_anh, null, null);
+
     }
 
     public void delete_table_faa_kt(String l_tc_faa001) {

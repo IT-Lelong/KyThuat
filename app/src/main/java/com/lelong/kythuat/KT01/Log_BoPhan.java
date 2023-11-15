@@ -154,7 +154,7 @@ public class Log_BoPhan extends AppCompatActivity {
 // Define a custom button style
                 int buttonStyle = android.R.style.Widget_Button;
 
-// Create a new button with the custom style
+// Create a new button with the custom style++
                 Button okButton = new Button(v.getContext(), null, buttonStyle);
                 okButton.setTextColor(Color.WHITE);
                 okButton.setText("Xác Nhận kết chuyễn?");
@@ -215,7 +215,7 @@ public class Log_BoPhan extends AppCompatActivity {
                                           }
                                       });
 
-                                    };
+                                  };
 
                                 }
 
@@ -250,7 +250,7 @@ public class Log_BoPhan extends AppCompatActivity {
                                             } else {
                                                 //Toast.makeText(getApplicationContext(), getString(R.string.M08), Toast.LENGTH_SHORT).show();
                                                 Toast.makeText(getApplicationContext(), "Kết chuyễn dữ liệu thành công: ", Toast.LENGTH_SHORT).show();
-                                                db.delete_tenhinh();
+                                                db.delete_tenhinh_all();
                                                 load();
                                             }
                                         }
@@ -515,7 +515,7 @@ public class Log_BoPhan extends AppCompatActivity {
                             }
 
                         }
-                        db.delete_tenhinh();
+                        db.delete_tenhinh_all();
                         //  dialog.dismiss();
                         load();
                         return true;

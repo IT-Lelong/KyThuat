@@ -183,6 +183,12 @@ public class kt01_loggin_search extends AppCompatActivity {
             g_xuong="Tổ D";
 
         }
+
+        if (Constant_Class.UserID.equals("H29738")) {
+            g_xuong="Tổ D";
+
+        }
+
         //String[] list_to = {"Tổ A"};
         String[] list_to = {g_xuong};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this.activity, android.R.layout.simple_spinner_item, list_to);
@@ -280,8 +286,8 @@ public class kt01_loggin_search extends AppCompatActivity {
 
 
                         db.delete_table1(qry_ngay.getText().toString(), qry_BP.getText().toString());
-                        db.delete_tenhinh();
-                        db.delete_tenhinhCT();
+                        db.delete_tenhinh(qry_ngay.getText().toString(), qry_BP.getText().toString());
+                        db.delete_tenhinhCT(qry_ngay.getText().toString(), qry_BP.getText().toString());
                         //  dialog.dismiss();
                         load();
                         return true;
@@ -434,7 +440,7 @@ public class kt01_loggin_search extends AppCompatActivity {
                                             //Toast.makeText(getApplicationContext(), getString(R.string.M08), Toast.LENGTH_SHORT).show();
                                             //Toast.makeText(getApplicationContext(), "Kết chuyễn dữ liệu thành công: ", Toast.LENGTH_SHORT).show();
                                             Toast.makeText(v.getContext(), R.string.ERRORtvStatus_errorins, Toast.LENGTH_SHORT).show();
-                                            db.delete_tenhinh();
+                                            db.delete_tenhinh_all();
                                             db.delete_table_faa_kt("KT01");
                                             load();
                                         } else {
