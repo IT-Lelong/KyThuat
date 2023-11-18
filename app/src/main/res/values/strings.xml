@@ -50,6 +50,7 @@
     <string name="btn_KT04">廢水水質自動,連續監測站操作日記</string>
     <string name="btn_KT05">拖板車檢查稽查表</string>
     <string name="btn_KT06">電動堆高機檢查稽查表</string>
+    <string name="btn_KT07">廢水水質自動,連續監測站操作日記</string>
     <string name="Change_Data">更新報表項目</string>
 
     /* activity_main */
@@ -156,5 +157,15 @@
     <string name="lk01">考核項目</string>
     <string name="lk02">部分</string>
     <string name="lk03">零件名称</string>
+    <string name="navigation_drawer_open" />
+    <string name="navigation_drawer_close" />
 
+    /*Fragment_KT07*/
+    <string name="tc_cea03">項次</string>
+    <string name="tc_cea04">檢查內容</string>
+    <string name="tc_cea05">考核評分</string>
+    <string name="tc_cea06">特優</string>
+    <string name="tc_cea07">優</string>
+    <string name="tc_ceb04">可</string>
+    <string name="tc_ceb05">差</string>
 </resources>

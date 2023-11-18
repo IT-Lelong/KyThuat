@@ -193,23 +193,23 @@ class KT01_DB {
             return "FALSE";
         }
     }
-    public String appendUPDAE(String key,String l_check,String date,String bp,String tencot){
-        try{
-            ContentValues args=new ContentValues();
-         //   args.put(no1,xno1);
-          //  args.put(ip,xip);
-          //  Cursor mCursor=db.query(TABLE_NAME,new String[]{no1},no1+"=?",new String[]{xno1},null,null,null,null);
-          //  if(mCursor.getCount()>0){
-                db.execSQL("UPDATE " + TABLE_NAME_TC_FAA + " SET "+tencot+"='"+l_check+"' WHERE tc_faa001='"+key+"'  AND tc_faa003='"+bp+"'");
-                return "TRUE";
-          //  }else{
-            //    db.insert(TABLE_NAME,null,args);
-           //     return "TRUE";
-           // }
-        }catch (Exception e){
-            return "FALSE";
+        public String appendUPDAE(String key,String l_check,String date,String bp,String tencot){
+            try{
+                ContentValues args=new ContentValues();
+             //   args.put(no1,xno1);
+              //  args.put(ip,xip);
+              //  Cursor mCursor=db.query(TABLE_NAME,new String[]{no1},no1+"=?",new String[]{xno1},null,null,null,null);
+              //  if(mCursor.getCount()>0){
+                    db.execSQL("UPDATE " + TABLE_NAME_TC_FAA + " SET "+tencot+"='"+l_check+"' WHERE tc_faa001='"+key+"'  AND tc_faa003='"+bp+"'");
+                    return "TRUE";
+              //  }else{
+                //    db.insert(TABLE_NAME,null,args);
+               //     return "TRUE";
+               // }
+            }catch (Exception e){
+                return "FALSE";
+            }
         }
-    }
 
     //public Cursor getAll_tc_faa(String app) {
         public Cursor getAll_tc_faa() {

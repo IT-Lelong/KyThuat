@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -19,6 +20,9 @@ import com.lelong.kythuat.KT01.kt01_loggin_search;
 import com.lelong.kythuat.KT02.login_kt02;
 import com.lelong.kythuat.KT03.KT03_login;
 import com.lelong.kythuat.KT04.KT04_login;
+import com.lelong.kythuat.KT07.KT07_Fragment;
+import com.lelong.kythuat.KT07.KT07_Main;
+import com.lelong.kythuat.KT07.Login_KT07;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,10 +41,11 @@ public class Menu extends AppCompatActivity {
     private KT03_login loginKt03 = null;
     private login_kt02 loginkt02 = null;
     private KT04_login loginKt04 = null;
+    private KT07_Main kt07main = null;
     private kt01_loggin_search kt01_loggin_search = null;
     String g_server = "";
 
-    Button btn_KT01, btn_KT02, btn_KT03, btn_KT04,btn_KT05,btn_KT06;
+    Button btn_KT01, btn_KT02, btn_KT03, btn_KT04, btn_KT05, btn_KT06, btn_KT07;
     TextView menuID;
     String ID;
     Locale locale;
@@ -57,7 +62,7 @@ public class Menu extends AppCompatActivity {
         //actionBar.hide();
 
         ID = getbundle.getString("ID");
-        g_server= getString(R.string.server);
+        g_server = getString(R.string.server);
         menuID = (TextView) findViewById(R.id.menuID);
         //new IDname().execute("http://172.16.40.20/" + g_server + "/getid.php?ID=" + ID);
         getIDname("http://172.16.40.20/" + Constant_Class.server + "/getidJson.php?ID=" + ID);
@@ -70,7 +75,8 @@ public class Menu extends AppCompatActivity {
         loginkt02 = new login_kt02();
         loginKt03 = new KT03_login();
         loginKt04 = new KT04_login();
-        kt01_loggin_search =new kt01_loggin_search();
+        kt01_loggin_search = new kt01_loggin_search();
+        kt07main = new KT07_Main();
 
         btn_KT01 = findViewById(R.id.btn_KT01);
         btn_KT02 = findViewById(R.id.btn_KT02);
@@ -78,6 +84,7 @@ public class Menu extends AppCompatActivity {
         btn_KT04 = findViewById(R.id.btn_KT04);
         btn_KT05 = findViewById(R.id.btn_KT05);
         btn_KT06 = findViewById(R.id.btn_KT06);
+        btn_KT07 = findViewById(R.id.btn_KT07);
 
         btn_KT01.setOnClickListener(btnlistener);
         btn_KT02.setOnClickListener(btnlistener);
@@ -85,6 +92,8 @@ public class Menu extends AppCompatActivity {
         btn_KT04.setOnClickListener(btnlistener);
         btn_KT05.setOnClickListener(btnlistener);
         btn_KT06.setOnClickListener(btnlistener);
+        btn_KT07.setOnClickListener(btnlistener);
+
 
     }
 
@@ -115,18 +124,23 @@ public class Menu extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            if(!jsonstring.equals("FALSE")){
-                                try{
+                            if (!jsonstring.equals("FALSE")) {
+                                try {
                                     JSONArray jsonarray = new JSONArray(jsonstring);
                                     for (int i = 0; i < jsonarray.length(); i++) {
                                         JSONObject jsonObject = jsonarray.getJSONObject(i);
-                                        menuID.setText(ID + " " + jsonObject.getString("TA_CPF001") + "\n" + jsonObject.getString("GEM02") );
+                                        menuID.setText(ID + " " + jsonObject.getString("TA_CPF001") + "\n" + jsonObject.getString("GEM02"));
                                         Constant_Class.UserID = ID;
-                                        Constant_Class.UserName_zh = jsonObject.getString("CPF02");;
-                                        Constant_Class.UserName_vn = jsonObject.getString("TA_CPF001");;
-                                        Constant_Class.UserDepID = jsonObject.getString("CPF29");;
-                                        Constant_Class.UserDepName = jsonObject.getString("GEM02");;
-                                        Constant_Class.UserFactory = jsonObject.getString("CPF281");;
+                                        Constant_Class.UserName_zh = jsonObject.getString("CPF02");
+                                        ;
+                                        Constant_Class.UserName_vn = jsonObject.getString("TA_CPF001");
+                                        ;
+                                        Constant_Class.UserDepID = jsonObject.getString("CPF29");
+                                        ;
+                                        Constant_Class.UserDepName = jsonObject.getString("GEM02");
+                                        ;
+                                        Constant_Class.UserFactory = jsonObject.getString("CPF281");
+                                        ;
                                     }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -164,7 +178,7 @@ public class Menu extends AppCompatActivity {
                     startActivity(KT01);*/
                     Activity activity = Menu.this;
                     kt01_loggin_search.login_dialogkt01(v.getContext(),
-                            menuID.getText().toString(),activity);
+                            menuID.getText().toString(), activity);
                     /*Activity activity = Menu.this;
                     loginkt02.login_dialogkt02(v.getContext(),
                             menuID.getText().toString(),activity,"KT01");*/
@@ -174,21 +188,21 @@ public class Menu extends AppCompatActivity {
                 case R.id.btn_KT02: {
                     Activity activity = Menu.this;
                     loginkt02.login_dialogkt02(v.getContext(),
-                            menuID.getText().toString(),activity,"KT02");
+                            menuID.getText().toString(), activity, "KT02");
                     break;
                 }
 
                 case R.id.btn_KT05: {
                     Activity activity = Menu.this;
                     loginkt02.login_dialogkt02(v.getContext(),
-                            menuID.getText().toString(),activity,"KT05");
+                            menuID.getText().toString(), activity, "KT05");
                     break;
                 }
 
                 case R.id.btn_KT06: {
                     Activity activity = Menu.this;
                     loginkt02.login_dialogkt02(v.getContext(),
-                            menuID.getText().toString(),activity,"KT06");
+                            menuID.getText().toString(), activity, "KT06");
                     break;
                 }
 
@@ -203,6 +217,21 @@ public class Menu extends AppCompatActivity {
                     loginKt04.KT04_login_dialog(v.getContext(),
                             menuID.getText().toString(),
                             ID);
+                    break;
+                }
+
+                case R.id.btn_KT07: {
+                    /*kt07main.login_dialog_KT07(v.getContext(),
+                            menuID.getText().toString(),
+                            ID);
+                    break;*/
+                    Intent QR010 = new Intent();
+                    QR010.setClass(Menu.this, KT07_Fragment.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("ID", ID);
+                    bundle.putString("SERVER", g_server);
+                    QR010.putExtras(bundle);
+                    startActivity(QR010);
                     break;
                 }
                /* case R.id.btn_KT04: {
@@ -309,7 +338,7 @@ public class Menu extends AppCompatActivity {
                                     String g_fiaud03 = jsonObject.getString("FIAUD03"); //Số máy
                                     String g_fia15 = jsonObject.getString("FIA15"); //Vị trí
                                     String g_fka02 = jsonObject.getString("FKA02"); //Tên bộ phận
-                                    Cre_db.append(g_fia01,g_ta_fia02_1,g_fiaud03,g_fia15,g_fka02 );
+                                    Cre_db.append(g_fia01, g_ta_fia02_1, g_fiaud03, g_fia15, g_fka02);
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -324,7 +353,28 @@ public class Menu extends AppCompatActivity {
                                     JSONObject jsonObject = jsonarray.getJSONObject(i);
                                     String g_tc_fba007 = jsonObject.getString("TC_FBA007"); //Mã bộ phận
                                     String g_tc_fba009 = jsonObject.getString("TC_FBA009"); //Tên bộ phận
-                                    Cre_db.append1(g_tc_fba007,g_tc_fba009);
+                                    Cre_db.append1(g_tc_fba007, g_tc_fba009);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        String res_tc_cea = get_DataTable("http://172.16.40.20/" + g_server + "/TechAPP/getDataTable.php?item=tc_cea");
+                        if (!res_tc_cea.equals("FALSE")) {
+                            try {
+                                JSONArray jsonarray = new JSONArray(res_tc_cea);
+                                for (int i = 0; i < jsonarray.length(); i++) {
+                                    JSONObject jsonObject = jsonarray.getJSONObject(i);
+                                    String g_tc_cea01 = jsonObject.getString("TC_CEA01"); //Loai
+                                    String g_tc_cea02 = jsonObject.getString("TC_CEA02"); //Tên Loai
+                                    String g_tc_cea03 = jsonObject.getString("TC_CEA03"); //STT
+                                    String g_tc_cea04 = jsonObject.getString("TC_CEA04"); //Nhà máy
+                                    String g_tc_cea05 = jsonObject.getString("TC_CEA05"); //Mã số
+                                    String g_tc_cea06 = jsonObject.getString("TC_CEA06"); //Chỉ tiêu ngày
+                                    String g_tc_cea07 = jsonObject.getString("TC_CEA07"); //Ghi chú
+
+                                    Cre_db.append2(g_tc_cea01, g_tc_cea02, g_tc_cea03, g_tc_cea04, g_tc_cea05, g_tc_cea06, g_tc_cea07);
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();

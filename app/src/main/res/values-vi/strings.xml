@@ -51,6 +51,7 @@
     <string name="btn_KT04">NHẬT KÝ VẬN HÀNH TRẠM QUAN TRẮC NƯỚC THẢI </string>
     <string name="btn_KT05">BIỂU GHI CHÉP KIỂM TRA XE NÂNG TAY ĐIỆN </string>
     <string name="btn_KT06">BIỂU GHI CHÉP KIỂM TRA XE NÂNG ĐIỆN </string>
+    <string name="btn_KT07">BIỂU GHI CHÉP LƯỢNG ĐIỆN, NƯỚC, GAS</string>
     <string name="Change_Data">Cập nhật dữ liệu hạng mục</string>
 
     /* activity_main */
@@ -153,4 +154,15 @@
     <string name="lk01">Tra cứu</string>
     <string name="lk02">Bộ phận</string>
     <string name="lk03">Tên bộ phận</string>
+    <string name="navigation_drawer_open" />
+    <string name="navigation_drawer_close" />
+
+    *Fragment_KT07*/
+    <string name="tc_cea03">Loại STT</string>
+    <string name="tc_cea04">Nhà máy</string>
+    <string name="tc_cea05">Mã số</string>
+    <string name="tc_cea06">Chỉ tiêu ngày</string>
+    <string name="tc_cea07">Ghi chú</string>
+    <string name="tc_ceb04">Bảng số đo</string>
+    <string name="tc_ceb05">Lưu lượng sử dụng</string>
 </resources>

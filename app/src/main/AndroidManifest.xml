@@ -27,6 +27,14 @@
         android:theme="@style/AppTheme"
         tools:targetApi="31">
         <activity
+            android:name=".KT07.KT07_Fragment"
+            android:exported="false"
+            android:screenOrientation="landscape"/>
+        <activity
+            android:name=".KT07.KT07_MyFragment"
+            android:exported="false"
+            android:screenOrientation="landscape"/>
+        <activity
             android:name=".KT02_OpenCamera"
             android:exported="false" />
         <activity

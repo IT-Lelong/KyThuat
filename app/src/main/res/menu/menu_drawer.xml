@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <group android:checkableBehavior="none">
+
+        <item
+            android:id="@+id/nav_nuoc"
+            android:icon="@drawable/nuoc"
+            android:title="Nước" />
+        <item
+            android:id="@+id/nav_gas"
+            android:icon="@drawable/gas"
+            android:title="Gas"/>
+        <item
+            android:id="@+id/nav_dien"
+            android:icon="@drawable/dien"
+            android:title="Điện" />
+        <!-- Thêm các mục khác nếu cần -->
+    </group>
+</menu>

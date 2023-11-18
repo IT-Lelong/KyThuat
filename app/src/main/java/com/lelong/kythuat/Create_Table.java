@@ -16,6 +16,7 @@ public class Create_Table {
     public SQLiteDatabase db = null;
     private final static String TABLE_NAME_TC_FAC_KT02 = "tc_fac_table_kt02";
     private final static String TABLE_NAME_TC_FAA = "tc_faa_file";
+    private final static String TABLE_NAME_TC_CEA_IN = "tc_cea_file_in";
     //private final static String TABLE_NAME_TC_FBA = "tc_fba_file";
 
     String TABLE_NAME_TC_FAB = "tc_fab_file";
@@ -55,6 +56,18 @@ public class Create_Table {
     String CREATE_TABLE_NAME_TC_FBA = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_TC_FBA + " ("
             + tc_fba007 + " TEXT," + tc_fba009 + " TEXT )";
     //KT01(E)
+
+    //KT07(S)
+    String TABLE_NAME_TC_CEA = "tc_cea_file";
+    String tc_cea01 = "tc_cea01"; ////Loai
+    String tc_cea02 = "tc_cea02"; ////Tên Loai
+    String tc_cea03 = "tc_cea03"; ////STT
+    String tc_cea04 = "tc_cea04"; ////Nhà máy
+    String tc_cea05 = "tc_cea05"; ////Mã số
+    String tc_cea06 = "tc_cea06"; ////Chỉ tiêu ngày
+    String tc_cea07 = "tc_cea07"; ////Ghi chú
+    //KT07(E)
+
     String CREATE_TABLE_FAB = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_TC_FAB + " ("
             + tc_fab001 + " TEXT," + tc_fab002 + " TEXT,"
             + tc_fab003 + " TEXT," + tc_fab004 + " TEXT)";
@@ -72,6 +85,14 @@ public class Create_Table {
             + fia01 + " TEXT," + ta_fia02_1 + " TEXT," + fiaud03 + " TEXT,"
             + fia15 + " TEXT," + fka02 + " TEXT )";
     //KT02(E)
+
+    //KT07(S)
+    String CREATE_TABLE_NAME_TC_CEA = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_TC_CEA + " ("
+            + tc_cea01 + " TEXT," + tc_cea02 + " TEXT,"
+            + tc_cea03 + " TEXT ," + tc_cea04 + " TEXT," + tc_cea05 + " TEXT," + tc_cea06 + " TEXT,"
+            + tc_cea07 + " TEXT )";
+    //KT07(S)
+
     public Create_Table(Context ctx) {
         this.mCtx = ctx;
     }
@@ -94,6 +115,7 @@ public class Create_Table {
             db.execSQL(CREATE_TABLE_GEM);
             db.execSQL(CREATE_TABLE_FIA);
             db.execSQL(CREATE_TABLE_NAME_TC_FBA);
+            db.execSQL(CREATE_TABLE_NAME_TC_CEA);
         } catch (Exception e) {
 
         }
@@ -103,14 +125,16 @@ public class Create_Table {
         try {
             String DROP_TABLE_TC_FAB = "DROP TABLE IF EXISTS " + TABLE_NAME_TC_FAB;
             String DROP_TABLE_TC_FAC = "DROP TABLE IF EXISTS " + TABLE_NAME_TC_FAC;
-            String DROP_TABLE_GEM= "DROP TABLE IF EXISTS " + TABLE_NAME_GEM;
+            String DROP_TABLE_GEM = "DROP TABLE IF EXISTS " + TABLE_NAME_GEM;
             String DROP_TABLE_TC_FIA = "DROP TABLE IF EXISTS " + TABLE_NAME_FIA;
             String DROP_TABLE_NAME_TC_FBA = "DROP TABLE IF EXISTS " + TABLE_NAME_TC_FBA;
+            String DROP_TABLE_NAME_TC_CEA = "DROP TABLE IF EXISTS " + TABLE_NAME_TC_CEA;
             db.execSQL(DROP_TABLE_TC_FAB);
             db.execSQL(DROP_TABLE_TC_FAC);
             db.execSQL(DROP_TABLE_GEM);
             db.execSQL(DROP_TABLE_TC_FIA);
             db.execSQL(DROP_TABLE_NAME_TC_FBA);
+            db.execSQL(DROP_TABLE_NAME_TC_CEA);
             db.close();
         } catch (Exception e) {
 
@@ -132,8 +156,8 @@ public class Create_Table {
     }
 
     public String append(String g_tc_fac001, String g_tc_fac002, String g_tc_fac003,
-                       String g_tc_fac004, String g_tc_fac005, String g_tc_fac006,
-                       String g_tc_fac007, String g_tc_fac008, String g_tc_fac011) {
+                         String g_tc_fac004, String g_tc_fac005, String g_tc_fac006,
+                         String g_tc_fac007, String g_tc_fac008, String g_tc_fac011) {
         try {
             ContentValues args = new ContentValues();
             args.put(tc_fac001, g_tc_fac001);
@@ -165,6 +189,7 @@ public class Create_Table {
         }
 
     }
+
     public String append1(String g_tc_fba007, String g_tcfba009) {
         try {
             ContentValues args = new ContentValues();
@@ -177,8 +202,9 @@ public class Create_Table {
         }
 
     }
+
     /*KT02(S)*/
-    public String append(String g_fia01,String g_ta_fia02_1,String g_fiaud03,String g_fia15,String g_fka02) {
+    public String append(String g_fia01, String g_ta_fia02_1, String g_fiaud03, String g_fia15, String g_fka02) {
         try {
             ContentValues args = new ContentValues();
             args.put(fia01, g_fia01);
@@ -195,10 +221,31 @@ public class Create_Table {
     }
     /*KT02(E)*/
 
+    /*KT07*/
+    public String append2(String g_tc_cea01, String g_tc_cea02, String g_tc_cea03, String g_tc_cea04, String g_tc_cea05, String g_tc_cea06, String g_tc_cea07) {
+        try {
+            ContentValues args = new ContentValues();
+            args.put(tc_cea01, g_tc_cea01);
+            args.put(tc_cea02, g_tc_cea02);
+            args.put(tc_cea03, g_tc_cea03);
+            args.put(tc_cea04, g_tc_cea04);
+            args.put(tc_cea05, g_tc_cea05);
+            args.put(tc_cea06, g_tc_cea06);
+            args.put(tc_cea07, g_tc_cea07);
+
+            db.insert(TABLE_NAME_TC_CEA, null, args);
+            return "TRUE";
+        } catch (Exception e) {
+            return "FALSE";
+        }
+
+    }
+
+    /*KT07*/
     public void delete_table() {
-        db.delete(TABLE_NAME_TC_FAB, null  , null);
-        db.delete(TABLE_NAME_TC_FAC, null  , null);
-        db.delete(TABLE_NAME_GEM, null  , null);
+        db.delete(TABLE_NAME_TC_FAB, null, null);
+        db.delete(TABLE_NAME_TC_FAC, null, null);
+        db.delete(TABLE_NAME_GEM, null, null);
         db.delete(TABLE_NAME_FIA, null, null);
     }
 
@@ -215,34 +262,34 @@ public class Create_Table {
     public Cursor getAll_tc_fac(String g_kind, String g_kind1) {
         try {
             //SQLiteDatabase db = this.getWritableDatabase();
-            String selectQuery = "SELECT * FROM " + TABLE_NAME_TC_FAC + " WHERE tc_fac002='" + g_kind + "' AND tc_fac001='" + g_kind1+"'";
+            String selectQuery = "SELECT * FROM " + TABLE_NAME_TC_FAC + " WHERE tc_fac002='" + g_kind + "' AND tc_fac001='" + g_kind1 + "'";
             return db.rawQuery(selectQuery, null);
         } catch (Exception e) {
             return null;
         }
     }
 
-    public Cursor getAll_tc_fac_01(String g_kind, String g_kind1, String bophan,String ngay ) {
+    public Cursor getAll_tc_fac_01(String g_kind, String g_kind1, String bophan, String ngay) {
         Cursor a;
         try {
             int count = 0;
             ContentValues argsA = new ContentValues();
-            Cursor mCount = db.rawQuery("SELECT count(*) FROM " + TABLE_NAME_TC_FAC + ","+TABLE_NAME_TC_FAA+" " +
+            Cursor mCount = db.rawQuery("SELECT count(*) FROM " + TABLE_NAME_TC_FAC + "," + TABLE_NAME_TC_FAA + " " +
                     " WHERE tc_faa001=tc_fac004 and  tc_fac002='" + g_kind + "' " +
-                    "AND tc_fac001='" + g_kind1+"' AND tc_faa003='" + bophan+"' AND tc_faa002='" + ngay+"'", null);
+                    "AND tc_fac001='" + g_kind1 + "' AND tc_faa003='" + bophan + "' AND tc_faa002='" + ngay + "'", null);
             mCount.moveToFirst();
             count = mCount.getInt(0);
             if (count > 0) {
                 String selectQuery = "SELECT tc_fac001,tc_fac003,tc_fac004,tc_fac005,tc_fac006,tc_faa006,tc_faa004 as checkbox,tc_faa012 as checkbox1" +
                         ",tc_faa013 as checkbox2,tc_faa014 as checkbox3,tc_faa015 as checkbox4,tc_faa016 as checkbox5" +
-                        " FROM " + TABLE_NAME_TC_FAC + ","+TABLE_NAME_TC_FAA+" " +
+                        " FROM " + TABLE_NAME_TC_FAC + "," + TABLE_NAME_TC_FAA + " " +
                         " WHERE tc_faa001=tc_fac004 and  tc_fac002='" + g_kind + "' " +
-                        " AND tc_fac001='" + g_kind1+"' AND tc_faa003='" + bophan+"' " +
-                        " AND tc_faa002='" + ngay+"'";
+                        " AND tc_fac001='" + g_kind1 + "' AND tc_faa003='" + bophan + "' " +
+                        " AND tc_faa002='" + ngay + "'";
                 return db.rawQuery(selectQuery, null);
-            }else {
+            } else {
                 String selectQuery1 = "SELECT tc_fac001,tc_fac003,tc_fac004,tc_fac005,tc_fac006,'false' as checkbox,'false' as checkbox1,'true' as checkbox2,'false' as checkbox3,'false' as checkbox4,'false' as checkbox5,'' as tc_faa006  FROM " + TABLE_NAME_TC_FAC + " " +
-                        " WHERE tc_fac002='" + g_kind + "' AND tc_fac001='" + g_kind1+"'";
+                        " WHERE tc_fac002='" + g_kind + "' AND tc_fac001='" + g_kind1 + "'";
                 return db.rawQuery(selectQuery1, null);
             }
             //SQLiteDatabase db = this.getWritableDatabase();
@@ -254,15 +301,13 @@ public class Create_Table {
     }
 
 
-
-
     public boolean getAll_gem(String g_gem01) {
         try {
             //SQLiteDatabase db = this.getWritableDatabase();
-            Cursor mCursor=db.query(TABLE_NAME_GEM,new String[]{gem01},gem01+"=?",new String[]{g_gem01},null,null,null,null);
-            if(mCursor.getCount()>0){
+            Cursor mCursor = db.query(TABLE_NAME_GEM, new String[]{gem01}, gem01 + "=?", new String[]{g_gem01}, null, null, null, null);
+            if (mCursor.getCount() > 0) {
                 return true;
-            }else{
+            } else {
                 return false;
             }
 
@@ -277,27 +322,27 @@ public class Create_Table {
 
     /*KT02_chitiet*/
 
-    public Cursor getAll_tc_fac_02(String g_kind, String g_kind1, String bophan,String somay,String ngay ) {
+    public Cursor getAll_tc_fac_02(String g_kind, String g_kind1, String bophan, String somay, String ngay) {
         Cursor a;
         try {
             int count = 0;
             ContentValues argsA = new ContentValues();
-            Cursor mCount = db.rawQuery("SELECT count(*) FROM " + TABLE_NAME_TC_FAC + ","+TABLE_NAME_TC_FAC_KT02+" " +
+            Cursor mCount = db.rawQuery("SELECT count(*) FROM " + TABLE_NAME_TC_FAC + "," + TABLE_NAME_TC_FAC_KT02 + " " +
                     " WHERE tc_fac_table_kt02.tc_fac004=tc_fac_file.tc_fac004 and  tc_fac002='" + g_kind + "' " +
-                    "AND tc_fac001='" + g_kind1+"' AND user='" + bophan+"' AND somay='" + somay+"' AND ngay='" + ngay+"'", null);
+                    "AND tc_fac001='" + g_kind1 + "' AND user='" + bophan + "' AND somay='" + somay + "' AND ngay='" + ngay + "'", null);
             mCount.moveToFirst();
             count = mCount.getInt(0);
             if (count > 0) {
                 String selectQuery = "SELECT  tc_fac_file.tc_fac003 as tc_fac003,tc_fac_file.tc_fac004 as tc_fac004,tc_fac_file.tc_fac006 as tc_fac006 ,tc_fac_table_kt02.checkbox1 as checkbox1,tc_fac_table_kt02.checkbox2 as checkbox2," +
                         "tc_fac_table_kt02.checkbox3 as checkbox3,tc_fac_table_kt02.checkbox4 as checkbox4,tc_fac_table_kt02.checkbox5 as checkbox5,tc_fac_table_kt02.checkbox6 as checkbox6," +
                         "tc_fac_table_kt02.tc_fac009 as tc_fac009 ,tc_fac_table_kt02.tc_fac005 as tc_fac005,tc_fac_table_kt02.tenhinh as tenhinh " +
-                        " FROM " + TABLE_NAME_TC_FAC + ","+TABLE_NAME_TC_FAC_KT02+" " +
+                        " FROM " + TABLE_NAME_TC_FAC + "," + TABLE_NAME_TC_FAC_KT02 + " " +
                         " WHERE tc_fac_table_kt02.tc_fac004=tc_fac_file.tc_fac004 and  tc_fac002='" + g_kind + "' " +
-                        " AND tc_fac001='" + g_kind1+"' AND user='" + bophan+"' AND somay='" + somay+"' " +
-                        " AND ngay='" + ngay+"'";
+                        " AND tc_fac001='" + g_kind1 + "' AND user='" + bophan + "' AND somay='" + somay + "' " +
+                        " AND ngay='" + ngay + "'";
                 return db.rawQuery(selectQuery, null);
-            }else {
-                String selectQuery1 = "SELECT tc_fac003,tc_fac006,tc_fac004,'false' as checkbox1,'false' as checkbox2,'true' as checkbox3,'false' as checkbox4,'false' as checkbox5,'false' as checkbox6,'' as tc_fac009 ,tc_fac005,tenhinh FROM " + TABLE_NAME_TC_FAC + " WHERE tc_fac002='" + g_kind + "' AND tc_fac001='" + g_kind1+"'";
+            } else {
+                String selectQuery1 = "SELECT tc_fac003,tc_fac006,tc_fac004,'false' as checkbox1,'false' as checkbox2,'true' as checkbox3,'false' as checkbox4,'false' as checkbox5,'false' as checkbox6,'' as tc_fac009 ,tc_fac005,tenhinh FROM " + TABLE_NAME_TC_FAC + " WHERE tc_fac002='" + g_kind + "' AND tc_fac001='" + g_kind1 + "'";
                 return db.rawQuery(selectQuery1, null);
             }
             //SQLiteDatabase db = this.getWritableDatabase();
@@ -316,10 +361,10 @@ public class Create_Table {
 
             //SQLiteDatabase db = this.getWritableDatabase();
             String selectQuery = "SELECT distinct fiaud03 FROM fia_file WHERE ta_fia02_1='" + tenxe + "' ";
-            if (!(bophan == null)){
-                selectQuery=selectQuery + " AND Substr(fia15,1,1) = '" + bophan + "' ";
+            if (!(bophan == null)) {
+                selectQuery = selectQuery + " AND Substr(fia15,1,1) = '" + bophan + "' ";
             }
-            selectQuery=selectQuery + " ORDER BY fiaud03 ";
+            selectQuery = selectQuery + " ORDER BY fiaud03 ";
             //String selectQuery = "SELECT distinct fiaud03 FROM fia_file WHERE ta_fia02_1='" + tenxe + "' ORDER BY fiaud03";
             return db.rawQuery(selectQuery, null);
 
@@ -332,23 +377,24 @@ public class Create_Table {
 
     /*KT02_loggin_bophan*/
 
-    public Cursor getAll_fia_02_bp(String g_fiaud03,String tenxe,String bophan) {
+    public Cursor getAll_fia_02_bp(String g_fiaud03, String tenxe, String bophan) {
         Cursor a;
         try {
 
             //SQLiteDatabase db = this.getWritableDatabase();
-            String selectQuery = "SELECT distinct fia15,fka02 FROM fia_file WHERE fiaud03='" + g_fiaud03+"' AND ta_fia02_1='" + tenxe + "' ";
+            String selectQuery = "SELECT distinct fia15,fka02 FROM fia_file WHERE fiaud03='" + g_fiaud03 + "' AND ta_fia02_1='" + tenxe + "' ";
             //String selectQuery = "SELECT distinct fia15,fka02 FROM fia_file WHERE fiaud03='" + g_fiaud03+"' AND ta_fia02_1='" + tenxe + "' ORDER BY fia15";
-            if (!(bophan == null)){
-                selectQuery=selectQuery + " AND Substr(fia15,1,1) = '" + bophan + "' ";
+            if (!(bophan == null)) {
+                selectQuery = selectQuery + " AND Substr(fia15,1,1) = '" + bophan + "' ";
             }
-            selectQuery=selectQuery + " ORDER BY fia15 ";
+            selectQuery = selectQuery + " ORDER BY fia15 ";
             return db.rawQuery(selectQuery, null);
 
         } catch (Exception e) {
             return null;
         }
     }
+
     /*Lấy dl bảng ảo đổ lên table tc_fad_file*/
     /*public Cursor getAll_instc_fad(String g_user, String g_somay,String g_ngay) {
         try {
@@ -363,7 +409,7 @@ public class Create_Table {
             return null;
         }
     }*/
-    public Cursor getAll_instc_fad(String tenxe,String somay) {
+    public Cursor getAll_instc_fad(String tenxe, String somay) {
         try {
             /*String selectQuery = "SELECT  tc_fac_file.tc_fac001 as tc_fac001,tc_fac_file.tc_fac002 as tc_fac002,tc_fac_file.tc_fac003 as tc_fac003,tc_fac_file.tc_fac004 as tc_fac004,tc_fac_table_kt02.tc_fac005 as tc_fac005 ,tc_fac_file.tc_fac006 as tc_fac006 ,tc_fac_table_kt02.checkbox1 as checkbox1,tc_fac_table_kt02.checkbox2 as checkbox2," +
                     "tc_fac_table_kt02.checkbox3 as checkbox3,tc_fac_table_kt02.checkbox4 as checkbox4,tc_fac_table_kt02.checkbox5 as checkbox5,tc_fac_table_kt02.checkbox6 as checkbox6,tc_fac_table_kt02.tc_fac009 as tc_fac009," +
@@ -373,7 +419,7 @@ public class Create_Table {
             String selectQuery = "SELECT  tc_fac_file.tc_fac001 as tc_fac001,tc_fac_file.tc_fac002 as tc_fac002,tc_fac_file.tc_fac003 as tc_fac003,tc_fac_file.tc_fac004 as tc_fac004,tc_fac_table_kt02.tc_fac005 as tc_fac005 ,tc_fac_file.tc_fac006 as tc_fac006 ,tc_fac_table_kt02.checkbox1 as checkbox1,tc_fac_table_kt02.checkbox2 as checkbox2," +
                     "tc_fac_table_kt02.checkbox3 as checkbox3,tc_fac_table_kt02.checkbox4 as checkbox4,tc_fac_table_kt02.checkbox5 as checkbox5,tc_fac_table_kt02.checkbox6 as checkbox6,tc_fac_table_kt02.tc_fac009 as tc_fac009," +
                     "tc_fac_table_kt02.user as user,tc_fac_table_kt02.ngay as ngay,tc_fac_table_kt02.somay as somay " +
-                    " FROM " + TABLE_NAME_TC_FAC + ","+TABLE_NAME_TC_FAC_KT02+",fia_file " +
+                    " FROM " + TABLE_NAME_TC_FAC + "," + TABLE_NAME_TC_FAC_KT02 + ",fia_file " +
                     " WHERE tc_fac_table_kt02.tc_fac004=tc_fac_file.tc_fac004 and somay=fiaud03 and fia15=user and ta_fia02_1='" + tenxe + "' AND somay='" + somay + "'";
             return db.rawQuery(selectQuery, null);
         } catch (Exception e) {
@@ -382,23 +428,23 @@ public class Create_Table {
     }
 
     //insert
-    public boolean ins_fac_02(String g_kind,String xuser,String xngay,String xsomay){
+    public boolean ins_fac_02(String g_kind, String xuser, String xngay, String xsomay) {
         //db=mCtx.openOrCreateDatabase(DATABASE_NAME,0,null);
         //將上傳資料彙整至json_table
         int count = 0;
         //ContentValues argsA = new ContentValues();
-        Cursor mCount = db.rawQuery("SELECT count(*) FROM "+TABLE_NAME_TC_FAC_KT02+" " +
-                " WHERE user='" + xuser +"' AND somay='" + xsomay +"' AND ngay='" + xngay +"' ", null);
+        Cursor mCount = db.rawQuery("SELECT count(*) FROM " + TABLE_NAME_TC_FAC_KT02 + " " +
+                " WHERE user='" + xuser + "' AND somay='" + xsomay + "' AND ngay='" + xngay + "' ", null);
         mCount.moveToFirst();
         count = mCount.getInt(0);
         if (count == 0) {
             ContentValues argsC = new ContentValues();
-            Cursor c=db.rawQuery("SELECT tc_fac004,'' as tc_fac009 ,'false' as checkbox1,'false' as checkbox2,'true' as checkbox3," +
+            Cursor c = db.rawQuery("SELECT tc_fac004,'' as tc_fac009 ,'false' as checkbox1,'false' as checkbox2,'true' as checkbox3," +
                     " 'false' as checkbox4,'false' as checkbox5,'false' as checkbox6,tc_fac003,tc_fac005,tc_fac006 FROM " + TABLE_NAME_TC_FAC +
-                    " WHERE tc_fac002='" + g_kind + "'",null);
-            if(c.getCount()>0){
+                    " WHERE tc_fac002='" + g_kind + "'", null);
+            if (c.getCount() > 0) {
                 c.moveToFirst();
-                do{
+                do {
                     argsC.put("tc_fac004", c.getString(0));
                     argsC.put("tc_fac009", c.getString(1));
                     argsC.put("checkbox1", c.getString(2));
@@ -414,17 +460,17 @@ public class Create_Table {
                     argsC.put("tc_fac005", c.getString(9));
                     argsC.put("tc_fac006", c.getString(10));
                     db.insert(TABLE_NAME_TC_FAC_KT02, null, argsC);
-                }while (c.moveToNext());
-            }else {
+                } while (c.moveToNext());
+            } else {
                 return false;
             }
             return true;
-        }else {
+        } else {
             return false;
         }
     }
 
-    public Cursor getAll_fiaud03(String tenxe,String bophan) {
+    public Cursor getAll_fiaud03(String tenxe, String bophan) {
         try {
            /* String selectQuery = "select count(*) AS _id,fiaud03,fia15,fka02 from fia_file " +
                     " where fiaud03 not in (select distinct somay from tc_fac_table_kt02) AND ta_fia02_1='" + tenxe + "' AND fia15 NOT LIKE 'B%' " +
@@ -432,10 +478,10 @@ public class Create_Table {
 
             String selectQuery = " select count(*) AS _id,fiaud03,fia15,fka02 from fia_file " +
                     " where fiaud03 not in (select distinct somay from tc_fac_table_kt02) AND ta_fia02_1='" + tenxe + "' ";
-            if (!(bophan == null)){
-                selectQuery=selectQuery + " AND Substr(fia15,1,1) = '" + bophan + "' ";
+            if (!(bophan == null)) {
+                selectQuery = selectQuery + " AND Substr(fia15,1,1) = '" + bophan + "' ";
             }
-            selectQuery=selectQuery + " group by fia15,fiaud03,fka02 order by fia15,fiaud03 ";
+            selectQuery = selectQuery + " group by fia15,fiaud03,fka02 order by fia15,fiaud03 ";
 
             return db.rawQuery(selectQuery, null);
 
@@ -443,28 +489,29 @@ public class Create_Table {
             return null;
         }
     }
-   //KT02(E)
-   public Cursor getAll_fiaud03_sig(String tenxe,String bophan, String ngay) {
-       try {
+
+    //KT02(E)
+    public Cursor getAll_fiaud03_sig(String tenxe, String bophan, String ngay) {
+        try {
            /* String selectQuery = "select count(*) AS _id,fiaud03,fia15,fka02 from fia_file " +
                     " where fiaud03 not in (select distinct somay from tc_fac_table_kt02) AND ta_fia02_1='" + tenxe + "' AND fia15 NOT LIKE 'B%' " +
                     " group by fia15,fiaud03,fka02 order by fia15,fiaud03";*/
 
-           String selectQuery = " select count(*) AS _id,fiaud03,fia15,fka02,'"+ ngay +"' AS ngaysig from fia_file " +
-                   " where ta_fia02_1='" + tenxe + "' ";
-           if (!(bophan == null)){
-               selectQuery=selectQuery + " AND Substr(fia15,1,1) = '" + bophan + "' ";
-           }
-           selectQuery=selectQuery + " group by fia15,fiaud03,fka02 order by fiaud03,fia15 ";
+            String selectQuery = " select count(*) AS _id,fiaud03,fia15,fka02,'" + ngay + "' AS ngaysig from fia_file " +
+                    " where ta_fia02_1='" + tenxe + "' ";
+            if (!(bophan == null)) {
+                selectQuery = selectQuery + " AND Substr(fia15,1,1) = '" + bophan + "' ";
+            }
+            selectQuery = selectQuery + " group by fia15,fiaud03,fka02 order by fiaud03,fia15 ";
 
-           return db.rawQuery(selectQuery, null);
+            return db.rawQuery(selectQuery, null);
 
-       } catch (Exception e) {
-           return null;
-       }
-   }
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
-    public Cursor getAll_fiaud_sig_search(String tenxe,String bophan, String ngay) {
+    public Cursor getAll_fiaud_sig_search(String tenxe, String bophan, String ngay) {
         try {
            /* String selectQuery = "select count(*) AS _id,fiaud03,fia15,fka02 from fia_file " +
                     " where fiaud03 not in (select distinct somay from tc_fac_table_kt02) AND ta_fia02_1='" + tenxe + "' AND fia15 NOT LIKE 'B%' " +
@@ -472,10 +519,10 @@ public class Create_Table {
 
             String selectQuery = " select count(*) AS _id,somay_sig,mabp_sig,tebp_sig,ngay_sig,manv_sig from fia_up_sig_file " +
                     " where tenhinh_sig LIKE '%" + tenxe + "%' ";
-            if (!(bophan == null)){
-                selectQuery=selectQuery + " AND mabp_sig LIKE '" + bophan + "%' ";
+            if (!(bophan == null)) {
+                selectQuery = selectQuery + " AND mabp_sig LIKE '" + bophan + "%' ";
             }
-            selectQuery=selectQuery + " group by mabp_sig,somay_sig,tebp_sig,tenhinh_sig order by somay_sig,mabp_sig ";
+            selectQuery = selectQuery + " group by mabp_sig,somay_sig,tebp_sig,tenhinh_sig order by somay_sig,mabp_sig ";
 
             return db.rawQuery(selectQuery, null);
 
@@ -484,13 +531,13 @@ public class Create_Table {
         }
     }
 
-    public Cursor getAll_bp(String tenxe,String bophan, String ngay) {
+    public Cursor getAll_bp(String tenxe, String bophan, String ngay) {
         try {
            /* String selectQuery = "select count(*) AS _id,fiaud03,fia15,fka02 from fia_file " +
                     " where fiaud03 not in (select distinct somay from tc_fac_table_kt02) AND ta_fia02_1='" + tenxe + "' AND fia15 NOT LIKE 'B%' " +
                     " group by fia15,fiaud03,fka02 order by fia15,fiaud03";*/
 
-            String selectQuery = " select count(*) AS _id,tc_fba007,tc_fba009,'"+ ngay +"' AS ngaysig from tc_fba_file WHERE substr(tc_fba007,1,2) not in ('04','05') group by tc_fba007 order by tc_fba007" ;
+            String selectQuery = " select count(*) AS _id,tc_fba007,tc_fba009,'" + ngay + "' AS ngaysig from tc_fba_file WHERE substr(tc_fba007,1,2) not in ('04','05') group by tc_fba007 order by tc_fba007";
 
             return db.rawQuery(selectQuery, null);
 
@@ -498,13 +545,14 @@ public class Create_Table {
             return null;
         }
     }
-    public Cursor getAll_bp_search(String tenxe,String bophan, String ngay) {
+
+    public Cursor getAll_bp_search(String tenxe, String bophan, String ngay) {
         try {
            /* String selectQuery = "select count(*) AS _id,fiaud03,fia15,fka02 from fia_file " +
                     " where fiaud03 not in (select distinct somay from tc_fac_table_kt02) AND ta_fia02_1='" + tenxe + "' AND fia15 NOT LIKE 'B%' " +
                     " group by fia15,fiaud03,fka02 order by fia15,fiaud03";*/
 
-            String selectQuery = " select count(*) AS _id,mabp_sig,tebp_sig,ngay_sig,manv_sig from fia_up_sigkt01_file WHERE substr(mabp_sig,1,2) not in ('04','05') group by mabp_sig,manv_sig order by mabp_sig" ;
+            String selectQuery = " select count(*) AS _id,mabp_sig,tebp_sig,ngay_sig,manv_sig from fia_up_sigkt01_file WHERE substr(mabp_sig,1,2) not in ('04','05') group by mabp_sig,manv_sig order by mabp_sig";
 
             return db.rawQuery(selectQuery, null);
 
@@ -513,13 +561,13 @@ public class Create_Table {
         }
     }
 
-    public Cursor getAll_bp_BL(String tenxe,String bophan, String ngay) {
+    public Cursor getAll_bp_BL(String tenxe, String bophan, String ngay) {
         try {
            /* String selectQuery = "select count(*) AS _id,fiaud03,fia15,fka02 from fia_file " +
                     " where fiaud03 not in (select distinct somay from tc_fac_table_kt02) AND ta_fia02_1='" + tenxe + "' AND fia15 NOT LIKE 'B%' " +
                     " group by fia15,fiaud03,fka02 order by fia15,fiaud03";*/
 
-            String selectQuery = " select count(*) AS _id,tc_fba007,tc_fba009,'"+ ngay +"' AS ngaysig from tc_fba_file WHERE substr(tc_fba007,1,2) in ('04','05') group by tc_fba007 order by tc_fba007" ;
+            String selectQuery = " select count(*) AS _id,tc_fba007,tc_fba009,'" + ngay + "' AS ngaysig from tc_fba_file WHERE substr(tc_fba007,1,2) in ('04','05') group by tc_fba007 order by tc_fba007";
 
             return db.rawQuery(selectQuery, null);
 
@@ -527,13 +575,14 @@ public class Create_Table {
             return null;
         }
     }
-    public Cursor getAll_bp_BL_search(String tenxe,String bophan, String ngay) {
+
+    public Cursor getAll_bp_BL_search(String tenxe, String bophan, String ngay) {
         try {
            /* String selectQuery = "select count(*) AS _id,fiaud03,fia15,fka02 from fia_file " +
                     " where fiaud03 not in (select distinct somay from tc_fac_table_kt02) AND ta_fia02_1='" + tenxe + "' AND fia15 NOT LIKE 'B%' " +
                     " group by fia15,fiaud03,fka02 order by fia15,fiaud03";*/
 
-            String selectQuery = " select count(*) AS _id,mabp_sig,tebp_sig,ngay_sig,manv_sig from fia_up_sigkt01_file WHERE substr(mabp_sig,1,2) in ('04','05') group by mabp_sig,manv_sig order by mabp_sig" ;
+            String selectQuery = " select count(*) AS _id,mabp_sig,tebp_sig,ngay_sig,manv_sig from fia_up_sigkt01_file WHERE substr(mabp_sig,1,2) in ('04','05') group by mabp_sig,manv_sig order by mabp_sig";
 
             return db.rawQuery(selectQuery, null);
 
@@ -541,23 +590,24 @@ public class Create_Table {
             return null;
         }
     }
-    public boolean ins_fac_01(String g_kind,String xuser,String xngay,String xto){
+
+    public boolean ins_fac_01(String g_kind, String xuser, String xngay, String xto) {
         //db=mCtx.openOrCreateDatabase(DATABASE_NAME,0,null);
         //將上傳資料彙整至json_table
         int count = 0;
         //ContentValues argsA = new ContentValues();
-        Cursor mCount = db.rawQuery("SELECT count(*) FROM "+TABLE_NAME_TC_FAA+" " +
-                " WHERE tc_faa003='" + xuser +"' AND tc_faa002='" + xngay +"' ", null);
+        Cursor mCount = db.rawQuery("SELECT count(*) FROM " + TABLE_NAME_TC_FAA + " " +
+                " WHERE tc_faa003='" + xuser + "' AND tc_faa002='" + xngay + "' ", null);
         mCount.moveToFirst();
         count = mCount.getInt(0);
         if (count == 0) {
             ContentValues argsC = new ContentValues();
-            Cursor c=db.rawQuery("SELECT tc_fac004,'false' as tc_faa004 ,'' as tc_faa005,'' as tc_faa006,tc_fac007," +
+            Cursor c = db.rawQuery("SELECT tc_fac004,'false' as tc_faa004 ,'' as tc_faa005,'' as tc_faa006,tc_fac007," +
                     " tc_fac006,tc_fac003,tc_fac001,0 as tc_faa011,'false' as tc_faa0012,'true' as tc_faa0013,'false' as tc_faa0014,'false' as tc_faa0015,'false' as tc_faa0016  FROM " + TABLE_NAME_TC_FAC +
-                    " WHERE tc_fac002='" + g_kind + "'",null);
-            if(c.getCount()>0){
+                    " WHERE tc_fac002='" + g_kind + "'", null);
+            if (c.getCount() > 0) {
                 c.moveToFirst();
-                do{
+                do {
                     argsC.put("tc_faa001", c.getString(0));
                     argsC.put("tc_faa002", xngay);
                     argsC.put("tc_faa003", xuser);
@@ -576,12 +626,12 @@ public class Create_Table {
                     argsC.put("tc_faa016", c.getString(13));
                     argsC.put("tc_faa019", xto);
                     db.insert(TABLE_NAME_TC_FAA, null, argsC);
-                }while (c.moveToNext());
-            }else {
+                } while (c.moveToNext());
+            } else {
                 return false;
             }
             return true;
-        }else {
+        } else {
             return false;
         }
     }
@@ -602,6 +652,73 @@ public class Create_Table {
             //Cập nhật table chứ dữ liệu đã kiểm tra
             //call_update_tc_fce(selectedDetail, selectedDate, selectedDepartment, g_user);
         } catch (Exception e) {
+        }
+    }
+
+    /*kt07*/
+
+    public boolean ins_tc_cea(String g_tc_cea01,String g_tc_ceb03,String g_tc_ceb06,String g_tc_cebdate,String g_tc_cebuser) {
+        //db=mCtx.openOrCreateDatabase(DATABASE_NAME,0,null);
+        //將上傳資料彙整至json_table
+        int count = 0;
+        //ContentValues argsA = new ContentValues();
+        Cursor mCount = db.rawQuery("SELECT count(*) FROM " + TABLE_NAME_TC_CEA_IN + " " +
+                " WHERE tc_cea01_in='" + g_tc_cea01 + "' ", null);
+        mCount.moveToFirst();
+        count = mCount.getInt(0);
+        if (count == 0) {
+            ContentValues argsC = new ContentValues();
+            Cursor c = db.rawQuery("SELECT tc_cea03,tc_cea05,tc_cea06,tc_cea07  FROM " + TABLE_NAME_TC_CEA +
+                    " WHERE tc_cea01='" + g_tc_cea01 + "' ", null);
+            if (c.getCount() > 0) {
+                c.moveToFirst();
+                do {
+                    argsC.put("tc_cea01_in", g_tc_cea01);
+                    argsC.put("tc_cea03_in", c.getString(0));
+                    argsC.put("tc_cea05_in", c.getString(1));
+                    argsC.put("tc_cea06_in", c.getString(2));
+                    argsC.put("tc_cea07_in", c.getString(3));
+                    argsC.put("tc_ceb03_in", g_tc_ceb03);
+                    argsC.put("tc_ceb06_in", g_tc_ceb06);
+                    //argsC.put("tc_ceb04_in", c.getString(5));
+                    //argsC.put("tc_ceb05_in", c.getString(6));
+                    argsC.put("tc_cebdate_in", g_tc_cebdate);
+                    argsC.put("tc_cebuser_in", g_tc_cebuser);
+                    db.insert(TABLE_NAME_TC_CEA_IN, null, argsC);
+                } while (c.moveToNext());
+            } else {
+                return false;
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public Cursor getAll_tc_cea_kt07(String g_tc_cea01) {
+        Cursor a;
+        try {
+            int count = 0;
+            ContentValues argsA = new ContentValues();
+            Cursor mCount = db.rawQuery("SELECT count(*) FROM " + TABLE_NAME_TC_CEA_IN + " " +
+                    " WHERE tc_cea01_in='" + g_tc_cea01 + "'", null);
+            mCount.moveToFirst();
+            count = mCount.getInt(0);
+            if (count > 0) {
+                String selectQuery = "SELECT tc_cea03_in,tc_cea04,tc_cea05_in,tc_cea06_in,tc_cea07_in,tc_ceb04_in,tc_ceb05_in " +
+                        " FROM " + TABLE_NAME_TC_CEA_IN + "," + TABLE_NAME_TC_CEA + " " +
+                        " WHERE tc_cea01_in='" + g_tc_cea01 + "' AND tc_cea03_in=tc_cea03 AND tc_cea01_in=tc_cea01";
+                return db.rawQuery(selectQuery, null);
+            } else {
+                String selectQuery1 = "SELECT tc_cea03 AS tc_cea03_in,tc_cea04,tc_cea05 AS tc_cea05_in,tc_cea06 AS tc_cea06_in,tc_cea07 AS tc_cea07_in,0 AS tc_ceb04_in,0 AS tc_ceb05_in  FROM " + TABLE_NAME_TC_CEA + " " +
+                        " WHERE tc_cea01='" + g_tc_cea01 + "' ";
+                return db.rawQuery(selectQuery1, null);
+            }
+            //SQLiteDatabase db = this.getWritableDatabase();
+            //String selectQuery = "SELECT tc_fac003,tc_fac006,tc_fac004 FROM " + TABLE_NAME_TC_FAC + " WHERE tc_fac002='" + g_kind + "' AND tc_fac001='" + g_kind1+"'";
+
+        } catch (Exception e) {
+            return null;
         }
     }
 }
