@@ -92,8 +92,8 @@ public class KT07_DB {
 
             //SQLiteDatabase db = this.getWritableDatabase();
             String selectQuery = "SELECT tc_cea01_in,tc_cea03_in,tc_ceb03_in,COALESCE(tc_ceb04_in,0) AS tc_ceb04_in,COALESCE(tc_ceb05_in,0) AS tc_ceb05_in,tc_cebdate_in,tc_cebuser_in,tc_ceb06_in " +
-                    //" FROM tc_cea_file_in WHERE tc_cea01_in='DHS' AND tc_cea03_in='001' AND  (tc_cebstatus_in='Chưa chuyển' OR tc_cebstatus_in IS NULL) " +
-                    " FROM tc_cea_file_in WHERE (tc_cebstatus_in='Chưa chuyển' OR tc_cebstatus_in IS NULL) " +
+                    " FROM tc_cea_file_in WHERE tc_cea01_in='DHS' AND tc_cea03_in='001' AND  (tc_cebstatus_in='Chưa chuyển' OR tc_cebstatus_in IS NULL) " +
+                    //" FROM tc_cea_file_in WHERE (tc_cebstatus_in='Chưa chuyển' OR tc_cebstatus_in IS NULL) " +
                     " order by tc_cea01_in,tc_cea03_in ";
             return db.rawQuery(selectQuery, null);
 
