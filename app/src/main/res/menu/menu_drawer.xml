@@ -15,6 +15,16 @@
             android:id="@+id/nav_dien"
             android:icon="@drawable/dien"
             android:title="Điện" />
+
+        <item
+            android:id="@+id/btndown"
+            android:icon="@drawable/loaddata"
+            android:title="Tải dữ liệu" />
+
+        <item
+            android:id="@+id/btndelete"
+            android:icon="@drawable/dt"
+            android:title="Xóa dữ liệu đã tải" />
         <!-- Thêm các mục khác nếu cần -->
     </group>
 </menu>

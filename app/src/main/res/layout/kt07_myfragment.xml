@@ -55,13 +55,7 @@
             android:layout_weight="1"
             android:text="@string/tc_ceb04"
             android:textSize="20sp" />
-        <TextView
-            style="@style/title"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="@string/tc_ceb05"
-            android:textSize="20sp" />
+
     </LinearLayout>
     <!--RecyclerView-->
     <androidx.recyclerview.widget.RecyclerView

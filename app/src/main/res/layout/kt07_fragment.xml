@@ -8,6 +8,7 @@
     android:id="@+id/drawer_layout">
 
     <!-- Main content -->
+
     <LinearLayout
         android:id="@+id/main_content"
         android:layout_width="match_parent"
@@ -15,7 +16,6 @@
         android:orientation="vertical"
         >
         <!-- Your main content goes here -->
-
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayout"

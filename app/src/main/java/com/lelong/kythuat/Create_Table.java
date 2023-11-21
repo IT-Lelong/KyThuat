@@ -247,6 +247,7 @@ public class Create_Table {
         db.delete(TABLE_NAME_TC_FAC, null, null);
         db.delete(TABLE_NAME_GEM, null, null);
         db.delete(TABLE_NAME_FIA, null, null);
+        db.delete(TABLE_NAME_TC_CEA, null, null);
     }
 
     public Cursor getAll_tc_fab(String qry_cond) {
@@ -663,7 +664,7 @@ public class Create_Table {
         int count = 0;
         //ContentValues argsA = new ContentValues();
         Cursor mCount = db.rawQuery("SELECT count(*) FROM " + TABLE_NAME_TC_CEA_IN + " " +
-                " WHERE tc_cea01_in='" + g_tc_cea01 + "' ", null);
+                " WHERE tc_cea01_in='" + g_tc_cea01 + "' AND tc_ceb06_in='" + g_tc_ceb06 + "' AND tc_ceb03_in='" + g_tc_ceb03 + "' AND tc_cebdate_in='" + g_tc_cebdate + "' ", null);
         mCount.moveToFirst();
         count = mCount.getInt(0);
         if (count == 0) {
@@ -695,13 +696,15 @@ public class Create_Table {
         }
     }
 
-    public Cursor getAll_tc_cea_kt07(String g_tc_cea01) {
+    public Cursor getAll_tc_cea_kt07(String g_tc_cea01,String g_tc_ceb03,String g_tc_ceb06,String g_tc_cebdate,String g_tc_cebuser) {
         Cursor a;
         try {
             int count = 0;
             ContentValues argsA = new ContentValues();
+            /*Cursor mCount = db.rawQuery("SELECT count(*) FROM " + TABLE_NAME_TC_CEA_IN + " " +
+                    " WHERE tc_cea01_in='" + g_tc_cea01 + "'", null);*/
             Cursor mCount = db.rawQuery("SELECT count(*) FROM " + TABLE_NAME_TC_CEA_IN + " " +
-                    " WHERE tc_cea01_in='" + g_tc_cea01 + "'", null);
+                    " WHERE tc_cea01_in='" + g_tc_cea01 + "' AND tc_ceb06_in='" + g_tc_ceb06 + "' AND tc_ceb03_in='" + g_tc_ceb03 + "' AND tc_cebdate_in='" + g_tc_cebdate + "' ", null);
             mCount.moveToFirst();
             count = mCount.getInt(0);
             if (count > 0) {

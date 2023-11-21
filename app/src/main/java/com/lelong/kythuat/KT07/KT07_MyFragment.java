@@ -106,7 +106,7 @@ public class KT07_MyFragment extends Fragment {
         }
 
         createTable_kt07.ins_tc_cea(l_tc_cea01,previousDateString,amPm,currentDateString,id);
-        cursor_1 = createTable_kt07.getAll_tc_cea_kt07(l_tc_cea01);
+        cursor_1 = createTable_kt07.getAll_tc_cea_kt07(l_tc_cea01,previousDateString,amPm,currentDateString,id);
         cursor_1.moveToFirst();
         int num = cursor_1.getCount();
         for (int i = 0; i < num; i++) {
@@ -131,7 +131,7 @@ public class KT07_MyFragment extends Fragment {
 
         KT07_ListDataAdapter kt07_listDataAdapter = new KT07_ListDataAdapter(getContext(),
                 R.layout.kt07_listdata_item,
-                mangLV);
+                mangLV,l_tc_cea01,previousDateString,currentDateString,amPm);
 
         // Setting Adapter to RecyclerView
         recyclerView.setAdapter(kt07_listDataAdapter);
