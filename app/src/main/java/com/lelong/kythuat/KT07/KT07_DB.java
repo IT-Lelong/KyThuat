@@ -113,8 +113,11 @@ public class KT07_DB {
     }
 
     public void delete_table_kt07(String tc_cebstatus_in) {
-        String where_loggin = "tc_cebstatus_in=?";
-        String[] strings = new String[]{tc_cebstatus_in};
-        db.delete(TABLE_NAME_TC_CEA_IN, where_loggin, strings);
+        if (db != null) {
+            String where_loggin = "tc_cebstatus_in=?";
+            String[] strings = new String[]{tc_cebstatus_in};
+            db.delete(TABLE_NAME_TC_CEA_IN, where_loggin, strings);
+        }
+
     }
 }

@@ -710,7 +710,7 @@ public class Create_Table {
             if (count > 0) {
                 String selectQuery = "SELECT tc_cea03_in,tc_cea04,tc_cea05_in,tc_cea06_in,tc_cea07_in,tc_ceb04_in,tc_ceb05_in " +
                         " FROM " + TABLE_NAME_TC_CEA_IN + "," + TABLE_NAME_TC_CEA + " " +
-                        " WHERE tc_cea01_in='" + g_tc_cea01 + "' AND tc_cea03_in=tc_cea03 AND tc_cea01_in=tc_cea01";
+                        " WHERE tc_cea01_in='" + g_tc_cea01 + "' AND tc_cea03_in=tc_cea03 AND tc_cea01_in=tc_cea01 AND tc_ceb06_in='" + g_tc_ceb06 + "' AND tc_ceb03_in='" + g_tc_ceb03 + "' AND tc_cebdate_in='" + g_tc_cebdate + "'";
                 return db.rawQuery(selectQuery, null);
             } else {
                 String selectQuery1 = "SELECT tc_cea03 AS tc_cea03_in,tc_cea04,tc_cea05 AS tc_cea05_in,tc_cea06 AS tc_cea06_in,tc_cea07 AS tc_cea07_in,0 AS tc_ceb04_in,0 AS tc_ceb05_in  FROM " + TABLE_NAME_TC_CEA + " " +

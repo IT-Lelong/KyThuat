@@ -9,12 +9,14 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import android.app.DatePickerDialog;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Looper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
@@ -83,6 +85,9 @@ public class KT07_Fragment extends AppCompatActivity implements NavigationView.O
         tc_cebuser.setText(ID);
         dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 
+        tv_tc_ceb03.setText(dateFormat.format(new Date()).toString());
+        tv_tc_cebdate.setText(dateFormat.format(new Date()).toString());
+
         kt07Db = new KT07_DB(this);
 
         Date currentDate = new Date();
@@ -102,6 +107,29 @@ public class KT07_Fragment extends AppCompatActivity implements NavigationView.O
 
         String amPm = (hour < 12) ? "AM" : "PM";
         tc_ceb06.setText(amPm);
+
+        addEvents();
+    }
+
+    private void addEvents() {
+        tv_tc_ceb03.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDatePickerTransferDialog(tv_tc_ceb03);
+            }
+        });
+    }
+
+    private void showDatePickerTransferDialog(TextView tv_var) {
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this);
+        datePickerDialog.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                String selectedDate = String.format("%04d/%02d/%02d", year, month + 1, dayOfMonth);
+                tv_tc_ceb03.setText(selectedDate);
+            }
+        });
+        datePickerDialog.show();
     }
 
     @Override
