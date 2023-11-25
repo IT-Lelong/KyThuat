@@ -2,70 +2,39 @@ package com.lelong.kythuat.KT01;
 
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.lelong.kythuat.KT01.Retrofit2.APIYtils;
-import com.lelong.kythuat.KT01.Retrofit2.DataClient;
-import com.lelong.kythuat.KT02.KT02_DB;
-import com.lelong.kythuat.KT02.ListDataAdapter_KT02;
-import com.lelong.kythuat.Menu;
 import com.lelong.kythuat.R;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-public class ListDataAdapter extends RecyclerView.Adapter<ListDataAdapter.ViewHolder> {
+public class KT01_Fragment_Adapter extends RecyclerView.Adapter<KT01_Fragment_Adapter.ViewHolder> {
     //List<TabLayout> mangLV;
     //ArrayList tc_fab003, tc_fab006,tc_fab007;
     private Context applicationContext;
@@ -86,7 +55,7 @@ public class ListDataAdapter extends RecyclerView.Adapter<ListDataAdapter.ViewHo
     String g_date;
     String g_bp,g_to;
     private int resource;
-    private ArrayList<TabLayout> mangLV;
+    private ArrayList<KT01_Fragment_Model> mangLV;
     private Object buttonView;
     String g_checkbox1, g_ghichu, g_checkbox, g_checkbox2, g_checkbox3, g_checkbox4, g_checkbox5;
     Dialog dialog;
@@ -97,7 +66,7 @@ public class ListDataAdapter extends RecyclerView.Adapter<ListDataAdapter.ViewHo
         notifyDataSetChanged();
     }
 
-    public ListDataAdapter(Context applicationContext, int resource, ArrayList<TabLayout> mangLV, String g_date, String g_bp, KT01_Interface kt01Interface) {
+    public KT01_Fragment_Adapter(Context applicationContext, int resource, ArrayList<KT01_Fragment_Model> mangLV, String g_date, String g_bp, KT01_Interface kt01Interface) {
         this.applicationContext = applicationContext;
         this.resource = resource;
         this.mangLV = mangLV;
@@ -112,21 +81,10 @@ public class ListDataAdapter extends RecyclerView.Adapter<ListDataAdapter.ViewHo
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
-        // Inflating the Layout(Instantiates listdata_item.xml
-        // layout file into View object)
-        //View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.listdata_item, parent, false);
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.listdata_item01, parent, false);
-        // Passing view to ViewHolder
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.kt01_tablayout_fragment_item, parent, false);
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
-
-
     }
-
-    private void startActivity(Intent intent) {
-    }
-
 
     @SuppressLint("RecyclerView")
     @Override
@@ -148,16 +106,6 @@ public class ListDataAdapter extends RecyclerView.Adapter<ListDataAdapter.ViewHo
         ngay = mangLV.get(position).getNgay();
         bophan = mangLV.get(position).getBophan();
         mahangmuc=mangLV.get(holder.getPosition()).getTc_fac004();
-        /*if (mangLV.get(position).getTc_dkcamera() == "TRUE") {
-            Drawable[] layers = new Drawable[2];
-            layers[0] = applicationContext.getDrawable(R.drawable.camera1); // replace R.drawable.button_image with your button image
-            GradientDrawable gradientDrawable = new GradientDrawable();
-            gradientDrawable.setStroke(4, Color.RED); // set border color and width
-            gradientDrawable.setCornerRadius(20); // set border corner radius
-            layers[1] = gradientDrawable;
-            LayerDrawable layerDrawable = new LayerDrawable(layers);
-            holder.btn1.setBackground(layerDrawable);
-        }*/
 
         Boolean chk_qrb = db.KT_ndhinh(mahangmuc,bophan,"",ngay);
         if (chk_qrb == true) {
@@ -179,16 +127,7 @@ public class ListDataAdapter extends RecyclerView.Adapter<ListDataAdapter.ViewHo
             LayerDrawable layerDrawable = new LayerDrawable(layers);
             holder.btn1.setBackground(layerDrawable);
         }
-        /*if (mangLV.get(holder.getPosition()).getTenhinh() == "TRUE"){
-            Drawable[] layers = new Drawable[2];
-            layers[0] = applicationContext.getDrawable(R.drawable.camera1); // replace R.drawable.button_image with your button image
-            GradientDrawable gradientDrawable = new GradientDrawable();
-            gradientDrawable.setStroke(4, Color.RED); // set border color and width
-            gradientDrawable.setCornerRadius(20); // set border corner radius
-            layers[1] = gradientDrawable;
-            LayerDrawable layerDrawable = new LayerDrawable(layers);
-            holder.btn1.setBackground(layerDrawable);
-        }*/
+
         try {
             InputStream is = applicationContext.getApplicationContext().openFileInput("mydata.txt");
             InputStreamReader isr = new InputStreamReader(is);
@@ -208,40 +147,11 @@ public class ListDataAdapter extends RecyclerView.Adapter<ListDataAdapter.ViewHo
         holder.btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Xóa giá trị của EditText
-                //  holder.ghichu1.setText("");
-                /*DULIEU = mangLV.get(position).getTc_fac004();
-                Intent intent = new Intent(applicationContext, kt01_camera.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("ID", DULIEU);
-                bundle.putString("l_ngay", ngay);
-                bundle.putString("l_bp", bophan);
-                intent.putExtras(bundle);
-
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // add this line
-                applicationContext.startActivity(intent);*/
                 DULIEU = mangLV.get(position).getTc_fac004();
                 g_to= mangLV.get(position).getTobp();
                 openDialog(DULIEU,g_to);
             }
         });
-
-        /*holder.checkBox1.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    // Nếu checkbox được check, gán giá trị "Y" cho nó
-                    value = "Y";
-                    DULIEUnew = mangLV.get(position).getTc_fac004();
-                    db.appendUPDAE(DULIEUnew, value, bienngay, ID2, "tc_faa004");
-                } else {
-                    // Nếu checkbox không được check, đặt lại giá trị của nó
-                    value = "N";
-                    DULIEUnew = mangLV.get(position).getTc_fac004();
-                    db.appendUPDAE(DULIEUnew, value, bienngay, ID2, "tc_faa004");
-                }
-            }
-        });*/
 
         holder.checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -250,10 +160,8 @@ public class ListDataAdapter extends RecyclerView.Adapter<ListDataAdapter.ViewHo
                 if (holder.checkBox.isChecked()) {
                     g_checkbox = String.valueOf(holder.checkBox.isChecked());
                     update_checkbox(holder.getPosition(), 1, holder);
-                    //db.appendUPDAE(mahangmuc, "Y", ngay, bophan, "tc_faa004");
                 } else {
                     g_checkbox = String.valueOf(holder.checkBox.isChecked());
-                    //db.appendUPDAE(mahangmuc, "N", ngay, bophan, "tc_faa004");
                 }
             }
         });
@@ -265,10 +173,8 @@ public class ListDataAdapter extends RecyclerView.Adapter<ListDataAdapter.ViewHo
                 if (holder.checkBox1.isChecked()) {
                     g_checkbox1 = String.valueOf(holder.checkBox1.isChecked());
                     update_checkbox(holder.getPosition(), 2, holder);
-                    //db.appendUPDAE(mahangmuc, "Y", ngay, bophan, "tc_faa004");
                 } else {
                     g_checkbox1 = String.valueOf(holder.checkBox1.isChecked());
-                    //db.appendUPDAE(mahangmuc, "N", ngay, bophan, "tc_faa004");
                 }
             }
         });
@@ -279,10 +185,8 @@ public class ListDataAdapter extends RecyclerView.Adapter<ListDataAdapter.ViewHo
                 if (holder.checkBox2.isChecked()) {
                     g_checkbox2 = String.valueOf(holder.checkBox2.isChecked());
                     update_checkbox(holder.getPosition(), 3, holder);
-                    //db.appendUPDAE(mahangmuc, "Y", ngay, bophan, "tc_faa004");
                 } else {
                     g_checkbox2 = String.valueOf(holder.checkBox2.isChecked());
-                    //db.appendUPDAE(mahangmuc, "N", ngay, bophan, "tc_faa004");
                 }
             }
         });
@@ -293,10 +197,8 @@ public class ListDataAdapter extends RecyclerView.Adapter<ListDataAdapter.ViewHo
                 if (holder.checkBox3.isChecked()) {
                     g_checkbox3 = String.valueOf(holder.checkBox3.isChecked());
                     update_checkbox(holder.getPosition(), 4, holder);
-                    //db.appendUPDAE(mahangmuc, "Y", ngay, bophan, "tc_faa004");
                 } else {
                     g_checkbox3 = String.valueOf(holder.checkBox3.isChecked());
-                    //db.appendUPDAE(mahangmuc, "N", ngay, bophan, "tc_faa004");
                 }
             }
         });
@@ -307,10 +209,8 @@ public class ListDataAdapter extends RecyclerView.Adapter<ListDataAdapter.ViewHo
                 if (holder.checkBox4.isChecked()) {
                     g_checkbox4 = String.valueOf(holder.checkBox4.isChecked());
                     update_checkbox(holder.getPosition(), 5, holder);
-                    //db.appendUPDAE(mahangmuc, "Y", ngay, bophan, "tc_faa004");
                 } else {
                     g_checkbox4 = String.valueOf(holder.checkBox4.isChecked());
-                    //db.appendUPDAE(mahangmuc, "N", ngay, bophan, "tc_faa004");
                 }
             }
         });
@@ -321,10 +221,8 @@ public class ListDataAdapter extends RecyclerView.Adapter<ListDataAdapter.ViewHo
                 if (holder.checkBox5.isChecked()) {
                     g_checkbox5 = String.valueOf(holder.checkBox5.isChecked());
                     update_checkbox(holder.getPosition(), 6, holder);
-                    //db.appendUPDAE(mahangmuc, "Y", ngay, bophan, "tc_faa004");
                 } else {
                     g_checkbox5 = String.valueOf(holder.checkBox5.isChecked());
-                    //db.appendUPDAE(mahangmuc, "N", ngay, bophan, "tc_faa004");
                 }
             }
         });
@@ -356,10 +254,8 @@ public class ListDataAdapter extends RecyclerView.Adapter<ListDataAdapter.ViewHo
                     String mahangmuc = mangLV.get(position).getTc_fac004();
                     g_ghichu = null;
                     g_ghichu = holder.ghichu1.getText().toString();
-                    //KT02_DB.updatekt_col("tc_fac009",g_ghichu,mahangmuc,user,somay,ngay);
                     db.appendUPDAE(mahangmuc, g_ghichu, ngay, bophan, "tc_faa006");
                     mangLV.get(position).setGhichu(g_ghichu);
-                    //holder.ghichu1.setText("");
                 } catch (Exception e) {
                     String err = e.toString();
                 }
@@ -377,8 +273,7 @@ public class ListDataAdapter extends RecyclerView.Adapter<ListDataAdapter.ViewHo
         btn_cameranew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //DULIEU = mangLV.get(position).getTc_fac004();
-                Intent intent = new Intent(applicationContext, kt01_camera.class);
+                Intent intent = new Intent(applicationContext, KT01_Camera.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("ID", DULIEU);
                 bundle.putString("l_ngay", ngay);
@@ -396,7 +291,7 @@ public class ListDataAdapter extends RecyclerView.Adapter<ListDataAdapter.ViewHo
             @Override
             public void onClick(View v) {
                 //DULIEU = mangLV.get(position).getTc_fac004();
-                Intent intent = new Intent(applicationContext, kt01_cameramodify.class);
+                Intent intent = new Intent(applicationContext, KT01_Cameramodify.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("ID", DULIEU);
                 bundle.putString("l_ngay", ngay);
@@ -414,7 +309,7 @@ public class ListDataAdapter extends RecyclerView.Adapter<ListDataAdapter.ViewHo
 
     }
 
-    private void update_checkbox(int position, int i, ListDataAdapter.ViewHolder holder) {
+    private void update_checkbox(int position, int i, KT01_Fragment_Adapter.ViewHolder holder) {
 
         boolean bol_1 = false, bol_2 = false, bol_3 = false, bol_4 = false, bol_5 = false, bol_6 = false;
 

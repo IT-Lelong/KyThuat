@@ -13,7 +13,7 @@ public class Retrofit2Clear {
     private static Retrofit retrofit = null;
     public static Retrofit getRetrofit(String baseurl){
         OkHttpClient builder = new OkHttpClient.Builder()
-                .readTimeout(5000, TimeUnit.MICROSECONDS)
+                .readTimeout(5000, TimeUnit.MILLISECONDS)
                 .writeTimeout(5000,TimeUnit.MICROSECONDS)
                 .connectTimeout(10000,TimeUnit.MILLISECONDS)
                 .retryOnConnectionFailure(true)

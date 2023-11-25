@@ -119,8 +119,8 @@
     <string name="loai3">Được</string>
     <string name="loai4">Kém</string>
     <string name="loai5">Rất kém</string>
-    <string name="loai6">Đặc biệt kém</string>
-    <string name="ghichu1">Thuyết minh bổ sung vấn đề</string>
+    <string name="loai6">ĐB kém</string>
+    <string name="ghichu1">Thuyết minh</string>
     <string name="trangthai">Trạng thái</string>
     /*loginKT02*/
     <string name="soxe">Số máy</string>
@@ -141,7 +141,7 @@
     <string name="ls04">Tổng Điểm</string>
     <string name="ls05">Nội dung</string>
     <string name="ls06">Tên bộ phận</string>
-    <string name="ls07">Tổ chấm</string>
+    <string name="ls07">Tổ kiểm tra :</string>
 
     /*kt01fragment*/
     <string name="hang1">Hạng mục</string>
@@ -158,11 +158,13 @@
     <string name="navigation_drawer_close" />
 
     *Fragment_KT07*/
-    <string name="tc_cea03">Loại STT</string>
+    <string name="tc_cea03">Loại</string>
     <string name="tc_cea04">Nhà máy</string>
     <string name="tc_cea05">Mã số</string>
     <string name="tc_cea06">Chỉ tiêu ngày</string>
     <string name="tc_cea07">Ghi chú</string>
+    <string name="tc_cea08">Đơn vị</string>
+    <string name="tc_cea09">Xưởng</string>
     <string name="tc_ceb04">Bảng số đo</string>
     <string name="tc_ceb05">Lưu lượng sử dụng</string>
 </resources>

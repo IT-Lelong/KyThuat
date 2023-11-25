@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".KT01.Fragmen_KT01">
+    tools:context=".KT01.KT01_Fragment_Create">
 
 
     <LinearLayout
@@ -17,9 +17,9 @@
             style="@style/title"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.6"
+            android:layout_weight="0.7"
             android:text="@string/maso1"
-            android:textSize="20sp" />
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/chitiet1"
@@ -28,7 +28,7 @@
             android:layout_height="match_parent"
             android:layout_weight="3.4"
             android:text="@string/chitiet1"
-            android:textSize="20sp" />
+            android:textSize="18sp" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -42,7 +42,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/diemdatkh"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -51,57 +51,57 @@
 
                 <TextView
                     android:id="@+id/loai1"
+                    style="@style/title"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:text="@string/loai1"
-                    android:textSize="20sp"
-                    style="@style/title"/>
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/loai2"
+                    style="@style/title"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    style="@style/title"
                     android:text="@string/loai2"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/loai3"
+                    style="@style/title"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    style="@style/title"
                     android:text="@string/loai3"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/loai4"
+                    style="@style/title"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    style="@style/title"
                     android:text="@string/loai4"
                     android:textSize="20sp" />
 
                 <TextView
                     android:id="@+id/loai5"
+                    style="@style/title"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    style="@style/title"
                     android:text="@string/loai5"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/loai6"
+                    style="@style/title"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:text="@string/loai6"
-                    style="@style/title"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
 
             </LinearLayout>
 
@@ -115,7 +115,8 @@
             android:layout_height="match_parent"
             android:layout_weight="2"
             android:text="@string/ghichu1"
-            android:textSize="20sp" />
+            android:textSize="18sp" />
+
         <TextView
             android:id="@+id/login_button"
             style="@style/title"
@@ -123,7 +124,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="@string/hang6"
-            android:textSize="20sp" />
+            android:textSize="18sp" />
     </LinearLayout>
     <!--RecyclerView-->
     <androidx.recyclerview.widget.RecyclerView

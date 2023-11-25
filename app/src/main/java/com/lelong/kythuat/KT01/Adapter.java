@@ -1,7 +1,6 @@
 package com.lelong.kythuat.KT01;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,12 +19,12 @@ import java.util.ArrayList;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
-    ArrayList maso, noidung,diemso;
+    ArrayList maso, noidung, diemso;
     Context context;
     Button btn1;
 
     // Constructor for initialization
-    public Adapter(Context context, ArrayList maso, ArrayList noidung,ArrayList diemso,Button btn1) {
+    public Adapter(Context context, ArrayList maso, ArrayList noidung, ArrayList diemso, Button btn1) {
 
         this.maso = maso;
         this.noidung = noidung;
@@ -38,7 +37,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         // Inflating the Layout(Instantiates list_item.xml
         // layout file into View object)
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.listdata_item01, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.kt01_tablayout_fragment_item, parent, false);
 
         // Passing view to ViewHolder
         ViewHolder viewHolder = new ViewHolder(view);
@@ -50,8 +49,6 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         // TypeCast Object to int type
 
-
-
         holder.tx_maso.setText((String) maso.get(position));
         holder.tx_noidung.setText((String) noidung.get(position));
         holder.tx_diemso.setText((String) diemso.get(position));
@@ -61,9 +58,9 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         holder.mCheckedTextView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
+                if (isChecked) {
                     buttonView.setSelected(true);
-                }else {
+                } else {
                     buttonView.setSelected(false);
                 }
             }
@@ -72,10 +69,6 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         holder.mCheckedTextView.setChecked(holder.mCheckedTextView.isSelected());
     }
 
-    private
-    void startActivity(Intent intent) {
-
-    }
 
     @Override
     public int getItemCount() {
@@ -90,11 +83,11 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         return 0;
     }*/
     // Initializing the Views
-    public static class ViewHolder extends RecyclerView.ViewHolder  {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
         CheckBox mCheckedTextView;
         ImageView images;
-        TextView tx_maso,tx_noidung,tx_diemso;
+        TextView tx_maso, tx_noidung, tx_diemso;
         Button tx_btn1;
 
         public ViewHolder(View view) {
@@ -108,8 +101,6 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
             //view.setOnClickListener(this);
         }
-
-
 
 
     }

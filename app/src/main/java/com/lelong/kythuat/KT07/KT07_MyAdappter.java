@@ -11,13 +11,12 @@ public class KT07_MyAdappter extends FragmentPagerAdapter {
     Context context;
     int totalTabs,itemId;
     private String data,id;
-    public KT07_MyAdappter(Context c, FragmentManager fm, int totalTabs, int itemId,String id) {
+    public KT07_MyAdappter(KT07_Main c, FragmentManager fm, int totalTabs, int itemId, String id) {
         super(fm);
         context = c;
         this.totalTabs = totalTabs;
         this.itemId=itemId;
         this.id=id;
-        getItem(totalTabs);
     }
 
     @NonNull

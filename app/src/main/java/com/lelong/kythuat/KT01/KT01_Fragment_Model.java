@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.Serializable;
 
-public class TabLayout extends RecyclerView.ViewHolder implements Serializable {
+public class KT01_Fragment_Model extends RecyclerView.ViewHolder implements Serializable {
 
     private boolean checkBox;
     private boolean checkBox1;
@@ -113,7 +113,7 @@ public class TabLayout extends RecyclerView.ViewHolder implements Serializable {
         this.tobp = tobp;
     }
 
-    public TabLayout(@NonNull View itemView, String ngay, String bophan, String tc_fac003, String tc_fac004, String tc_fac006, String ghichu, boolean checkBox, boolean checkBox1, boolean checkBox2, boolean checkBox3, boolean checkBox4, boolean checkBox5, String dkcamera, String tobp) {
+    public KT01_Fragment_Model(@NonNull View itemView, String ngay, String bophan, String tc_fac003, String tc_fac004, String tc_fac006, String ghichu, boolean checkBox, boolean checkBox1, boolean checkBox2, boolean checkBox3, boolean checkBox4, boolean checkBox5, String dkcamera, String tobp) {
         super(itemView);
         this.ngay = ngay;
         this.bophan = bophan;

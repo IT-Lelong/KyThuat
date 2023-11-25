@@ -18,42 +18,32 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
-public class login_kt01 extends AppCompatActivity {
+public class KT01_Main_CreateTabLayout extends AppCompatActivity {
     TabLayout tabLayout;
     ViewPager viewPager;
-    String lbophan1;
-    String ID,g_date, g_BP ,g_tobp;
-
-    String g_lang;
-
-    Cursor cursor_1, cursor_2;
+    String ID, g_date, g_BP, g_tobp, g_lang, g_layout;
+    Cursor cursor_1;
     SimpleDateFormat dateFormatKT01 = new SimpleDateFormat("yyyy-MM-dd");
-    String g_ngay, g_soxe, g_user, g_layout,ngay,g_tc_faa001 ;
     private Create_Table createTable = null;
     private KT01_DB createTable1 = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.kt01_activity_login);
+        setContentView(R.layout.kt01_tablayout);
         tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager);
         Bundle getbundle = getIntent().getExtras();
         g_layout = getbundle.getString("LAYOUT");
-        if (g_layout.length() <6) {
+        if (g_layout.length() < 6) {
             g_date = getbundle.getString("DATE");
             g_BP = getbundle.getString("BP");
-            g_tobp=getbundle.getString("TO");
-        }else {
+            g_tobp = getbundle.getString("TO");
+        } else {
             g_date = dateFormatKT01.format(new Date()).toString();
             g_BP = getbundle.getString("BOPHAN");
-            g_tobp=getbundle.getString("TO");
+            g_tobp = getbundle.getString("TO");
         }
-
-        //g_date = getbundle.getString("DATE");
-        //ngay = dateFormatKT01.format(new Date()).toString();
-        //g_BP = getbundle.getString("BOPHAN");
         ID = getbundle.getString("ID");
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
@@ -69,25 +59,20 @@ public class login_kt01 extends AppCompatActivity {
         createTable.open();
 
         createTable1 = new KT01_DB(this);
-        cursor_1=createTable.getAll_tc_fab("KT01");
+        cursor_1 = createTable.getAll_tc_fab("KT01");
         cursor_1.moveToFirst();
         int num = cursor_1.getCount();
-        for (int i = 0; i < num; i++)
-        {
+        for (int i = 0; i < num; i++) {
             try {
-                @SuppressLint("Range") String tab_name =cursor_1.getString(cursor_1.getColumnIndex(g_lang));
+                @SuppressLint("Range") String tab_name = cursor_1.getString(cursor_1.getColumnIndex(g_lang));
                 tabLayout.addTab(tabLayout.newTab().setText(tab_name));
             } catch (Exception e) {
                 String err = e.toString();
             }
             cursor_1.moveToNext();
         }
-        //tabLayout.addTab(tabLayout.newTab().setText("Football"));
-        //tabLayout.addTab(tabLayout.newTab().setText("Cricket"));
-        //tabLayout.addTab(tabLayout.newTab().setText("NBA"));
-
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        final MyAdapter adapter = new MyAdapter(this,getSupportFragmentManager(), tabLayout.getTabCount(),g_date,g_BP,g_tobp);
+        final KT01_Main_CreateTabLayout_Fragment adapter = new KT01_Main_CreateTabLayout_Fragment(this, getSupportFragmentManager(), tabLayout.getTabCount(), g_date, g_BP, g_tobp);
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -95,9 +80,11 @@ public class login_kt01 extends AppCompatActivity {
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
             }
+
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
             }
+
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
             }

@@ -14,12 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.lelong.kythuat.Constant_Class;
 import com.lelong.kythuat.Create_Table;
-import com.lelong.kythuat.KT01.KT01_DB;
-import com.lelong.kythuat.KT01.KT01_Interface;
-import com.lelong.kythuat.KT01.TabLayout;
-import com.lelong.kythuat.KT02.Fragment_KT02;
 import com.lelong.kythuat.R;
 
 import java.text.DecimalFormat;
@@ -129,12 +124,12 @@ public class KT07_MyFragment extends Fragment {
         }
 
 
-        KT07_ListDataAdapter kt07_listDataAdapter = new KT07_ListDataAdapter(getContext(),
+        /*KT07_ListDataAdapter kt07_listDataAdapter = new KT07_ListDataAdapter(getContext(),
                 R.layout.kt07_listdata_item,
                 mangLV,l_tc_cea01,previousDateString,currentDateString,amPm);
 
         // Setting Adapter to RecyclerView
-        recyclerView.setAdapter(kt07_listDataAdapter);
+        recyclerView.setAdapter(kt07_listDataAdapter);*/
 
         return view;
         //return super.onCreateView(inflater, container, savedInstanceState);
@@ -163,15 +158,4 @@ public class KT07_MyFragment extends Fragment {
     private Context getApplicationContext() {
         return null;
     }
-
-    /*public static KT07_MyFragment newInstance(String param1, String param2) {
-        
-        Bundle args = new Bundle();
-        
-        KT07_MyFragment fragment = new KT07_MyFragment();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }*/
 }

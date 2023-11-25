@@ -15,7 +15,7 @@ public class Retrofit2Clear {
         OkHttpClient builder = new OkHttpClient.Builder()
                 .readTimeout(5000, TimeUnit.MICROSECONDS)
                 .writeTimeout(5000,TimeUnit.MICROSECONDS)
-                .connectTimeout(10000,TimeUnit.MILLISECONDS)
+                .connectTimeout(20000,TimeUnit.MILLISECONDS)
                 .retryOnConnectionFailure(true)
                 .build();
         Gson gson = new GsonBuilder().setLenient().create();

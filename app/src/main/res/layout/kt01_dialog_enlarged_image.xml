@@ -6,39 +6,48 @@
     android:orientation="vertical"
     android:padding="16dp">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="20dp"
+        android:gravity="center">
 
-    <Button
-        android:id="@+id/btn2"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:adjustViewBounds="true"
-        android:background="@drawable/images"
-        android:layout_marginLeft="180dp"
-        />
+        <Button
+            android:id="@+id/btn1"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:adjustViewBounds="true"
+            android:background="@drawable/trash"
+            android:scaleType="center"
+            android:text=""/>
+
+        <Button
+            android:id="@+id/btn2"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="180dp"
+            android:adjustViewBounds="true"
+            android:background="@drawable/xicon"
+            android:text=""/>
+    </LinearLayout>
+
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="400dp"
         android:layout_height="500dp"
         android:adjustViewBounds="true"
-        android:scaleType="fitCenter"/>
+        android:scaleType="fitCenter" />
 
     <TextView
         android:id="@+id/menuID11"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5sp"
+        android:layout_margin="3sp"
         android:gravity="center"
-        android:textStyle="bold"
-        android:textSize="22sp"/>
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
-    <Button
-        android:id="@+id/btn1"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:adjustViewBounds="true"
-        android:background="@drawable/thungrac"
-        android:scaleType="center"
-        />
 
 
 </LinearLayout>

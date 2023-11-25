@@ -1,7 +1,6 @@
 package com.lelong.kythuat.KT01;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -29,13 +28,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 import com.lelong.kythuat.KT01.Retrofit2.APIYtils;
 import com.lelong.kythuat.KT01.Retrofit2.DataClient;
-import com.lelong.kythuat.KT02.Bophan_Adapter;
-import com.lelong.kythuat.KT02.List_Bophan;
-import com.lelong.kythuat.Menu;
 import com.lelong.kythuat.R;
 
 import org.json.JSONArray;
@@ -87,7 +82,7 @@ public class Log_BoPhan extends AppCompatActivity {
     Button btnback;
     List parts;
     String realpath = "";
-    ArrayList<TabLayout> mangLV;
+    ArrayList<KT01_Fragment_Model> mangLV;
     Button btnaddnew;
     Button btnaupdate;
     Locale locale;
@@ -327,7 +322,7 @@ public class Log_BoPhan extends AppCompatActivity {
 
                                              if (result) {
                                                  lbophan1 = editText1.getText().toString();
-                                                 Intent intent = new Intent(Log_BoPhan.this, login_kt01.class);
+                                                 Intent intent = new Intent(Log_BoPhan.this, KT01_Main_CreateTabLayout.class);
                                                  Bundle bundle = new Bundle();
                                                  bundle.putString("ID1", lbophan1);
                                                  intent.putExtras(bundle);
@@ -481,7 +476,7 @@ public class Log_BoPhan extends AppCompatActivity {
 
                         //   String ID12 = "DK1";
                         Intent KT01 = new Intent();
-                        KT01.setClass(this, login_kt01.class);
+                        KT01.setClass(this, KT01_Main_CreateTabLayout.class);
                         Bundle bundle = new Bundle();
                         //bundle.putString("BP", BP);
                         bundle.putString("DATE", qry_ngay.getText().toString());

@@ -24,14 +24,22 @@
         <item name="android:textColor">@color/black</item>
         <item name="android:gravity">center</item>
         <item name="android:screenSize">large</item>
-        <item name="android:textSize">25sp</item>
+        <item name="android:textSize">18sp</item>
     </style>
 
     <style name="title">
         <item name="android:textColor">#FFFFFF</item>
         <item name="android:background">@drawable/boder_title_view</item>
         <item name="android:gravity">center</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:padding">3dp</item>
+    </style>
+
+    <style name="title_02">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:background">@drawable/title_style_midnight_1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">18sp</item>
         <item name="android:padding">3dp</item>
     </style>
 

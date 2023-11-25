@@ -17,6 +17,7 @@ public class Create_Table {
     private final static String TABLE_NAME_TC_FAC_KT02 = "tc_fac_table_kt02";
     private final static String TABLE_NAME_TC_FAA = "tc_faa_file";
     private final static String TABLE_NAME_TC_CEA_IN = "tc_cea_file_in";
+    private final static String TABLE_NAME_CPF_FILE = "cpf_file";
     //private final static String TABLE_NAME_TC_FBA = "tc_fba_file";
 
     String TABLE_NAME_TC_FAB = "tc_fab_file";
@@ -66,7 +67,11 @@ public class Create_Table {
     String tc_cea05 = "tc_cea05"; ////Mã số
     String tc_cea06 = "tc_cea06"; ////Chỉ tiêu ngày
     String tc_cea07 = "tc_cea07"; ////Ghi chú
+    String tc_cea08 = "tc_cea08"; ////Đơn vị (0:khác, 1:SXL, 2:LR, 3:KUNG TAY, 4:Văn Phòng, 5:Bến Lức, 6:SXL6)
+    String tc_cea09 = "tc_cea09"; ////Xưởng (A-K)
     //KT07(E)
+
+    String CREATE_TABLE_CPF = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_CPF_FILE + " (cpf01 TEXT, cpf02 TEXT, ta_cpf001 TEXT, cpf29 TEXT , gem02 TEXT , cpf281 TEXT)";
 
     String CREATE_TABLE_FAB = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_TC_FAB + " ("
             + tc_fab001 + " TEXT," + tc_fab002 + " TEXT,"
@@ -90,7 +95,7 @@ public class Create_Table {
     String CREATE_TABLE_NAME_TC_CEA = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_TC_CEA + " ("
             + tc_cea01 + " TEXT," + tc_cea02 + " TEXT,"
             + tc_cea03 + " TEXT ," + tc_cea04 + " TEXT," + tc_cea05 + " TEXT," + tc_cea06 + " TEXT,"
-            + tc_cea07 + " TEXT )";
+            + tc_cea07 + " TEXT, " + tc_cea08 + " TEXT," + tc_cea09 + " TEXT )";
     //KT07(S)
 
     public Create_Table(Context ctx) {
@@ -99,17 +104,11 @@ public class Create_Table {
 
     public void open() throws SQLException {
         db = mCtx.openOrCreateDatabase(DATABASE_NAME, 0, null);
-        //nối DATABASE(S)
-        /*String dbPath = mCtx.getDatabasePath("KyThuatDB").getPath();
-        // dbPath = /data/user/0/com.lelong.kythuat/databases/KyThuatDB.db
-        String attachQuery = "ATTACH DATABASE '" + dbPath +"' AS KyThuatDB";
-        db.execSQL(attachQuery);*/
-        //nối DATABASE(E)
-
     }
 
     public void openTable() {
         try {
+            db.execSQL(CREATE_TABLE_CPF);
             db.execSQL(CREATE_TABLE_FAB);
             db.execSQL(CREATE_TABLE_FAC);
             db.execSQL(CREATE_TABLE_GEM);
@@ -129,15 +128,35 @@ public class Create_Table {
             String DROP_TABLE_TC_FIA = "DROP TABLE IF EXISTS " + TABLE_NAME_FIA;
             String DROP_TABLE_NAME_TC_FBA = "DROP TABLE IF EXISTS " + TABLE_NAME_TC_FBA;
             String DROP_TABLE_NAME_TC_CEA = "DROP TABLE IF EXISTS " + TABLE_NAME_TC_CEA;
+            String DROP_TABLE_NAME_CPF = "DROP TABLE IF EXISTS " + TABLE_NAME_CPF_FILE;
             db.execSQL(DROP_TABLE_TC_FAB);
             db.execSQL(DROP_TABLE_TC_FAC);
             db.execSQL(DROP_TABLE_GEM);
             db.execSQL(DROP_TABLE_TC_FIA);
             db.execSQL(DROP_TABLE_NAME_TC_FBA);
             db.execSQL(DROP_TABLE_NAME_TC_CEA);
+            db.execSQL(DROP_TABLE_NAME_CPF);
             db.close();
         } catch (Exception e) {
 
+        }
+    }
+
+    public String ins_cpf_file(String g_cpf01, String g_cpf02, String g_ta_cpf001,
+                               String g_cpf29, String g_gem02, String g_cpf281) {
+        try {
+            ContentValues args = new ContentValues();
+            args.put("cpf01", g_cpf01);
+            args.put("cpf02", g_cpf02);
+            args.put("ta_cpf001", g_ta_cpf001);
+            args.put("cpf29", g_cpf29);
+            args.put("gem02", g_gem02);
+            args.put("cpf281", g_cpf281);
+
+            db.insert(TABLE_NAME_CPF_FILE, null, args);
+            return "TRUE";
+        } catch (Exception e) {
+            return "FALSE";
         }
     }
 
@@ -222,7 +241,8 @@ public class Create_Table {
     /*KT02(E)*/
 
     /*KT07*/
-    public String append2(String g_tc_cea01, String g_tc_cea02, String g_tc_cea03, String g_tc_cea04, String g_tc_cea05, String g_tc_cea06, String g_tc_cea07) {
+    public String append2(String g_tc_cea01, String g_tc_cea02, String g_tc_cea03, String g_tc_cea04,
+                          String g_tc_cea05, String g_tc_cea06, String g_tc_cea07, String g_tc_cea08, String g_tc_cea09) {
         try {
             ContentValues args = new ContentValues();
             args.put(tc_cea01, g_tc_cea01);
@@ -232,7 +252,8 @@ public class Create_Table {
             args.put(tc_cea05, g_tc_cea05);
             args.put(tc_cea06, g_tc_cea06);
             args.put(tc_cea07, g_tc_cea07);
-
+            args.put(tc_cea08, g_tc_cea08);
+            args.put(tc_cea09, g_tc_cea09);
             db.insert(TABLE_NAME_TC_CEA, null, args);
             return "TRUE";
         } catch (Exception e) {
@@ -248,6 +269,7 @@ public class Create_Table {
         db.delete(TABLE_NAME_GEM, null, null);
         db.delete(TABLE_NAME_FIA, null, null);
         db.delete(TABLE_NAME_TC_CEA, null, null);
+        db.delete(TABLE_NAME_CPF_FILE, null, null);
     }
 
     public Cursor getAll_tc_fab(String qry_cond) {
@@ -293,9 +315,6 @@ public class Create_Table {
                         " WHERE tc_fac002='" + g_kind + "' AND tc_fac001='" + g_kind1 + "'";
                 return db.rawQuery(selectQuery1, null);
             }
-            //SQLiteDatabase db = this.getWritableDatabase();
-            //String selectQuery = "SELECT tc_fac003,tc_fac006,tc_fac004 FROM " + TABLE_NAME_TC_FAC + " WHERE tc_fac002='" + g_kind + "' AND tc_fac001='" + g_kind1+"'";
-
         } catch (Exception e) {
             return null;
         }
@@ -658,7 +677,7 @@ public class Create_Table {
 
     /*kt07*/
 
-    public boolean ins_tc_cea(String g_tc_cea01,String g_tc_ceb03,String g_tc_ceb06,String g_tc_cebdate,String g_tc_cebuser) {
+    public boolean ins_tc_cea(String g_tc_cea01, String g_tc_ceb03, String g_tc_ceb06, String g_tc_cebdate, String g_tc_cebuser) {
         //db=mCtx.openOrCreateDatabase(DATABASE_NAME,0,null);
         //將上傳資料彙整至json_table
         int count = 0;
@@ -696,7 +715,7 @@ public class Create_Table {
         }
     }
 
-    public Cursor getAll_tc_cea_kt07(String g_tc_cea01,String g_tc_ceb03,String g_tc_ceb06,String g_tc_cebdate,String g_tc_cebuser) {
+    public Cursor getAll_tc_cea_kt07(String g_tc_cea01, String g_tc_ceb03, String g_tc_ceb06, String g_tc_cebdate, String g_tc_cebuser) {
         Cursor a;
         try {
             int count = 0;

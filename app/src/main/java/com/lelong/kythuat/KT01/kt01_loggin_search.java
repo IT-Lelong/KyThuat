@@ -31,7 +31,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.lelong.kythuat.Constant_Class;
-import com.lelong.kythuat.KT01.Retrofit2.APIYtils;
 import com.lelong.kythuat.KT01.Retrofit2.DataClient;
 import com.lelong.kythuat.R;
 
@@ -49,7 +48,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -63,28 +61,22 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class kt01_loggin_search extends AppCompatActivity {
     private Activity activity;
-    ListView lv_query02;
     private Context context;
     Dialog dialog;
     ListView lis1;
     private KT01_DB db = null;
     EditText editText1;
     Button btnlogin1;
-    Button search1;
     Button btnback;
     Button btnaupdate, btnsignature;
-    Locale locale;
-    TextView viewID, textView;
-    String L_BP;
+    TextView viewID;
     JSONArray jsonupload;
     JSONObject ujobject;
     String g_server = "PHP";
     String lbophandelete;
-    String lbophan1, ID, BP;
-    String g_bp;
     private static final int REQUEST_CODE = 1;
     private final String FILENAME = "mydata.txt";
-    Cursor cursor_1, cursor_2;
+    Cursor cursor_2;
     String[] station = new String[0];
     String g_soxe, g_bophan, mabp, tenbp, g_tenxe, g_to, g_xuong;
 
@@ -102,7 +94,6 @@ public class kt01_loggin_search extends AppCompatActivity {
         btnback = dialog.findViewById(R.id.btnback);
         viewID = dialog.findViewById(R.id.viewID);
         TextView textView = dialog.findViewById(R.id.txt_to);
-        //search1 = dialog.findViewById(R.id.search);
 
         db = new KT01_DB(dialog.getContext());
         db.open();
@@ -168,25 +159,27 @@ public class kt01_loggin_search extends AppCompatActivity {
 
         //String[] list_to = {"Tổ A", "Tổ B", "Tổ C", "Tổ D"};
         if (Constant_Class.UserID.equals("H15330")) {
-            g_xuong="Tổ A";
-
+            g_xuong = "Tổ A";
         }
+
         if (Constant_Class.UserID.equals("H14430")) {
-            g_xuong="Tổ B";
-
+            g_xuong = "Tổ B";
         }
+
         if (Constant_Class.UserID.equals("H14398")) {
-            g_xuong="Tổ C";
-
+            g_xuong = "Tổ C";
         }
-        if (Constant_Class.UserID.equals("H19588")) {
-            g_xuong="Tổ D";
 
+        if (Constant_Class.UserID.equals("H19588")) {
+            g_xuong = "Tổ D";
         }
 
         if (Constant_Class.UserID.equals("H29738")) {
-            g_xuong="Tổ D";
+            g_xuong = "Tổ D";
+        }
 
+        if (Constant_Class.UserID.equals("H23275")) {
+            g_xuong = "Tổ D";
         }
 
         //String[] list_to = {"Tổ A"};
@@ -239,7 +232,7 @@ public class kt01_loggin_search extends AppCompatActivity {
                 switch (item.getItemId()) {
                     case R.id.openKT01:
                         Intent KT01 = new Intent();
-                        KT01.setClass(context, login_kt01.class);
+                        KT01.setClass(context, KT01_Main_CreateTabLayout.class);
                         Bundle bundle = new Bundle();
                         //bundle.putString("BP", BP);
                         bundle.putString("DATE", qry_ngay.getText().toString());
@@ -264,7 +257,6 @@ public class kt01_loggin_search extends AppCompatActivity {
                         File[] files = dir.listFiles();
 
                         if (files != null) {
-                            String imageName = null;
                             for (File file : files) {
                                 String kiemtratenanh = file.getName().toString().trim().substring(0, 2);
                                 if (kiemtratenanh.equals("KT")) {
@@ -284,7 +276,6 @@ public class kt01_loggin_search extends AppCompatActivity {
                             }
                         }
 
-
                         db.delete_table1(qry_ngay.getText().toString(), qry_BP.getText().toString());
                         db.delete_tenhinh(qry_ngay.getText().toString(), qry_BP.getText().toString());
                         db.delete_tenhinhCT(qry_ngay.getText().toString(), qry_BP.getText().toString());
@@ -303,8 +294,6 @@ public class kt01_loggin_search extends AppCompatActivity {
                 builder.setTitle("Warning");
                 SpannableStringBuilder message = new SpannableStringBuilder();
                 //message.append("Xác Nhận kết chuyễn?");
-
-
                 //AlertDialog dialog = builder.create();
                 // dialog.show();
 
@@ -314,7 +303,7 @@ public class kt01_loggin_search extends AppCompatActivity {
 // Create a new button with the custom style
                 Button okButton = new Button(v.getContext(), null, buttonStyle);
                 okButton.setTextColor(Color.WHITE);
-                okButton.setText("Xác Nhận kết chuyễn?");
+                okButton.setText("Xác nhận kết chuyển?");
 
 // Set the button as the positive button of the dialog
                 builder.setPositiveButton(null, null);
@@ -331,7 +320,7 @@ public class kt01_loggin_search extends AppCompatActivity {
                                 //File dir = new File("/storage/emulated/0/Pictures/"); // thay đổi đường dẫn tới thư mục chứa hình ảnh tương ứng
                                 Cursor cursor = db.getngay();
                                 cursor.moveToFirst();
-                                @SuppressLint("Range") String ngay = cursor.getString(cursor.getColumnIndex("tc_faa002"));
+                                String ngay = cursor.getString(cursor.getColumnIndexOrThrow("tc_faa002"));
 
                                 File newDirectory = new File(context.getExternalMediaDirs()[0], ngay.replace("-", ""));
 
@@ -347,81 +336,36 @@ public class kt01_loggin_search extends AppCompatActivity {
 
                                     DataClient apiService = retrofit.create(DataClient.class);
 
-                                    String imageName = null;
                                     for (File file : files) {
                                         String kiemtratenanh = file.getName().toString().trim().substring(0, 2);
                                         if (kiemtratenanh.equals("KT")) {
-                                            String File_path = file.getAbsolutePath();
-                                            String[] mangtenfile = File_path.split("/");
-                                            //File_path = mangtenfile[0] + System.currentTimeMillis() + "." + mangtenfile[1];
-                                            File_path = mangtenfile[8];
+                                            String Image_Name = file.getAbsolutePath();
+                                            String[] mangtenfile = Image_Name.split("/");
+                                            Image_Name = mangtenfile[8];
+
                                             RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/from-data"), file);
-                                            MultipartBody.Part body = MultipartBody.Part.createFormData("uploaded_file", File_path, requestBody);
-                                            DataClient dataClient = APIYtils.getData();
-                                            //Call<String> callback = dataClient.UploadPhot(body);
+                                            MultipartBody.Part body = MultipartBody.Part.createFormData("uploaded_file", Image_Name, requestBody);
+
                                             Call<ResponseBody> callback = apiService.uploadImage(body);
                                             callback.enqueue(new Callback<ResponseBody>() {
                                                 @Override
                                                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                                                     if (response != null) {
                                                         String message = String.valueOf(response.body());
-                                                        Log.d("BBB", message);
-                                                        // Xóa tấm ảnh sau khi upload thành công
-                                                    /*boolean deleted = file.delete();
-                                                    if (deleted) {
-                                                        Log.d("BBB", "Deleted file: " + file.getAbsolutePath());
-                                                    } else {
-                                                        Log.d("BBB", "Failed to delete file: " + file.getAbsolutePath());
-                                                    }*/
-
                                                     }
                                                 }
-
                                                 @Override
                                                 public void onFailure(Call<ResponseBody> call, Throwable t) {
-                                                    Log.d("BBB", t.getMessage());
-                                                    // Xóa tấm ảnh sau khi upload thành công
-                                                /*boolean deleted = file.delete();
-                                                if (deleted) {
-                                                    Log.d("BBB", "Deleted file: " + file.getAbsolutePath());
-                                                } else {
-                                                    Log.d("BBB", "Failed to delete file: " + file.getAbsolutePath());
-                                                }*/
                                                 }
                                             });
-
                                         }
-                                        ;
-
                                     }
                                 }
-
-
-
-                                /*String bien = "A";
-                                DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-                                Date date = new Date();
-                                db.getAll_tc_faa(bien);
-                                //tham số Y , biểu thị cập nhật dữ liệu tới chương trình gốc, và save đến qrf_file
-                                Cursor upl = db.getAll_tc_faa(bien);
-                                if (upl.getCount() > 0) {
-
-                                    jsonupload = cur2Json(upl);
-
-                                    try {
-                                        ujobject = new JSONObject();
-                                        ujobject.put("ujson", jsonupload);
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }*/
-
-
-                                Cursor upl = db.getAll_tc_faa();
-                                jsonupload = cur2Json(upl);
+                                Cursor cur_upl = db.getAll_tc_faa();
+                                jsonupload = cur2Json(cur_upl);
 
                                 try {
                                     ujobject = new JSONObject();
-                                    //ujobject.put("docNum", edt_maCT.getText().toString());
                                     ujobject.put("ujson1", jsonupload);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -432,47 +376,16 @@ public class kt01_loggin_search extends AppCompatActivity {
                                 runOnUiThread(new Runnable() { //Vì Toast không thể chạy đc nếu không phải UI Thread nên sử dụng runOnUIThread.
                                     @Override
                                     public void run() {
-                                            /*if (res.contains("false")) {
-                                                //Toast.makeText(getApplicationContext(), getString(R.string.M09), Toast.LENGTH_SHORT).show();
-                                                Toast.makeText(getApplicationContext(), "Kết chuyễn dữ liệu thất bại: ", Toast.LENGTH_SHORT).show();
-                                            }*/
                                         if (res.contains("TRUE")) {
-                                            //Toast.makeText(getApplicationContext(), getString(R.string.M08), Toast.LENGTH_SHORT).show();
-                                            //Toast.makeText(getApplicationContext(), "Kết chuyễn dữ liệu thành công: ", Toast.LENGTH_SHORT).show();
                                             Toast.makeText(v.getContext(), R.string.ERRORtvStatus_errorins, Toast.LENGTH_SHORT).show();
                                             db.delete_tenhinh_all();
                                             db.delete_table_faa_kt("KT01");
                                             load();
                                         } else {
                                             Toast.makeText(v.getContext(), res.toString(), Toast.LENGTH_SHORT).show();
-                                            //Toast.makeText(v.getContext(), R.string.ERRORtvStatus_false, Toast.LENGTH_SHORT).show();
                                         }
-                                            /*if (res.contains("ERROINS")) {
-                                                //tvStatus.setText("đã được insert");
-                                                Toast.makeText(v.getContext(), R.string.ERRORtvStatus_errorins, Toast.LENGTH_SHORT).show();
-                                                //kt02Db.delete_table();
-                                            }*/
                                     }
                                 });
-
-                                /*} else {
-                                    String res = "false";
-                                    runOnUiThread(new Runnable() { //Vì Toast không thể chạy đc nếu không phải UI Thread nên sử dụng runOnUIThread.
-                                        @Override
-                                        public void run() {
-                                            if (res.contains("false")) {
-                                                //Toast.makeText(getApplicationContext(), getString(R.string.M09), Toast.LENGTH_SHORT).show();
-                                                Toast.makeText(v.getContext(), "Kết chuyễn dữ liệu thất bại: ", Toast.LENGTH_SHORT).show();
-                                            } else {
-                                                //Toast.makeText(getApplicationContext(), getString(R.string.M08), Toast.LENGTH_SHORT).show();
-
-                                            }
-                                        }
-                                    });
-                                }*/
-                                ;
-
-
                             }
                         }).start();
 
@@ -488,25 +401,14 @@ public class kt01_loggin_search extends AppCompatActivity {
 
                 AlertDialog dialog = builder.create();
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#669999")));
-
-// Hiển thị hộp thoại
                 dialog.show();
-
-                // Intent intent = new Intent(Log_BoPhan.this, kt01_update.class);
-                // startActivity(intent);
-
-
-                // Intent intent = new Intent(Log_BoPhan.this, kt01_update.class);
-                // startActivity(intent);
-
-
             }
         });
 
         btnlogin1.setOnClickListener(new View.OnClickListener() {
                                          @Override
                                          public void onClick(View view) {
-                                             Intent intent = new Intent(view.getContext(), login_kt01.class);
+                                             Intent intent = new Intent(view.getContext(), KT01_Main_CreateTabLayout.class);
                                              Bundle bundle = new Bundle();
                                              bundle.putString("BOPHAN", g_bophan);
                                              bundle.putString("LAYOUT", "notlogin");
@@ -563,6 +465,7 @@ public class kt01_loggin_search extends AppCompatActivity {
 
     public String upload_all(String apiUrl) {
         HttpURLConnection conn = null;
+        String res = null;
         try {
             URL url = new URL(apiUrl);
             conn = (HttpURLConnection) url.openConnection();
@@ -584,18 +487,18 @@ public class kt01_loggin_search extends AppCompatActivity {
             BufferedReader reader = new BufferedReader(new InputStreamReader(is));
             String result = reader.readLine();
             reader.close();
-            return result;
+            res = result;
         } catch (Exception ex) {
-            return "false";
+            res = "false";
         } finally {
             if (conn != null) {
-
                 //db.delete_table();
-
                 conn.disconnect();
 
             }
         }
+
+        return res;
     }
 
     private void load() {
@@ -621,17 +524,5 @@ public class kt01_loggin_search extends AppCompatActivity {
         lis1.setAdapter(simpleCursorAdapter);
 
     }
-    /*public void startSecondActivity() {
-        Intent intent = new Intent(this, kt01_listbophan.class);
-        startActivityForResult(intent, REQUEST_CODE);
-    }*/
-    /*protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
-            String selectedData = data.getStringExtra("selectedData");
-            editText1.setText(selectedData);
-        }
-    }*/
 
 }

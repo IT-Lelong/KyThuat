@@ -20,9 +20,7 @@ import com.lelong.kythuat.KT01.kt01_loggin_search;
 import com.lelong.kythuat.KT02.login_kt02;
 import com.lelong.kythuat.KT03.KT03_login;
 import com.lelong.kythuat.KT04.KT04_login;
-import com.lelong.kythuat.KT07.KT07_Fragment;
 import com.lelong.kythuat.KT07.KT07_Main;
-import com.lelong.kythuat.KT07.Login_KT07;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,7 +39,6 @@ public class Menu extends AppCompatActivity {
     private KT03_login loginKt03 = null;
     private login_kt02 loginkt02 = null;
     private KT04_login loginKt04 = null;
-    private KT07_Main kt07main = null;
     private kt01_loggin_search kt01_loggin_search = null;
     String g_server = "";
 
@@ -58,25 +55,22 @@ public class Menu extends AppCompatActivity {
         setContentView(R.layout.activity_menu);
 
         Bundle getbundle = getIntent().getExtras();
-        //actionBar = getSupportActionBar();
-        //actionBar.hide();
 
         ID = getbundle.getString("ID");
         g_server = getString(R.string.server);
         menuID = (TextView) findViewById(R.id.menuID);
-        //new IDname().execute("http://172.16.40.20/" + g_server + "/getid.php?ID=" + ID);
         getIDname("http://172.16.40.20/" + Constant_Class.server + "/getidJson.php?ID=" + ID);
         dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 
         Cre_db = new Create_Table(this);
         Cre_db.open();
+        //Cre_db.close();
         Cre_db.openTable();
 
         loginkt02 = new login_kt02();
         loginKt03 = new KT03_login();
         loginKt04 = new KT04_login();
         kt01_loggin_search = new kt01_loggin_search();
-        kt07main = new KT07_Main();
 
         btn_KT01 = findViewById(R.id.btn_KT01);
         btn_KT02 = findViewById(R.id.btn_KT02);
@@ -132,15 +126,10 @@ public class Menu extends AppCompatActivity {
                                         menuID.setText(ID + " " + jsonObject.getString("TA_CPF001") + "\n" + jsonObject.getString("GEM02"));
                                         Constant_Class.UserID = ID;
                                         Constant_Class.UserName_zh = jsonObject.getString("CPF02");
-                                        ;
                                         Constant_Class.UserName_vn = jsonObject.getString("TA_CPF001");
-                                        ;
                                         Constant_Class.UserDepID = jsonObject.getString("CPF29");
-                                        ;
                                         Constant_Class.UserDepName = jsonObject.getString("GEM02");
-                                        ;
                                         Constant_Class.UserFactory = jsonObject.getString("CPF281");
-                                        ;
                                     }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -169,19 +158,9 @@ public class Menu extends AppCompatActivity {
             switch (v.getId()) {
 
                 case R.id.btn_KT01: {
-                    /*Intent KT01 = new Intent();
-                    KT01.setClass(Menu.this, Log_BoPhan.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putString("ID", ID);
-                    bundle.putString("SERVER", g_server);
-                    KT01.putExtras(bundle);
-                    startActivity(KT01);*/
                     Activity activity = Menu.this;
                     kt01_loggin_search.login_dialogkt01(v.getContext(),
                             menuID.getText().toString(), activity);
-                    /*Activity activity = Menu.this;
-                    loginkt02.login_dialogkt02(v.getContext(),
-                            menuID.getText().toString(),activity,"KT01");*/
                     break;
                 }
 
@@ -221,12 +200,8 @@ public class Menu extends AppCompatActivity {
                 }
 
                 case R.id.btn_KT07: {
-                    /*kt07main.login_dialog_KT07(v.getContext(),
-                            menuID.getText().toString(),
-                            ID);
-                    break;*/
                     Intent QR010 = new Intent();
-                    QR010.setClass(Menu.this, KT07_Fragment.class);
+                    QR010.setClass(Menu.this, KT07_Main.class);
                     Bundle bundle = new Bundle();
                     bundle.putString("ID", ID);
                     bundle.putString("SERVER", g_server);
@@ -234,16 +209,6 @@ public class Menu extends AppCompatActivity {
                     startActivity(QR010);
                     break;
                 }
-               /* case R.id.btn_KT04: {
-                    Intent QR010 = new Intent();
-                    QR010.setClass(Menu.this, KT_1.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putString("ID", ID);
-                    bundle.putString("SERVER", g_server);
-                    QR010.putExtras(bundle);
-                    startActivity(QR010);
-                    break;
-                }*/
             }
         }
     };
@@ -287,102 +252,124 @@ public class Menu extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                }
 
-                    String res_fac = get_DataTable("http://172.16.40.20/" + g_server + "/TechAPP/getDataTable.php?item=fac");
-                    if (!res_fac.equals("FALSE")) {
-                        try {
-                            JSONArray jsonarray = new JSONArray(res_fac);
-                            for (int i = 0; i < jsonarray.length(); i++) {
-                                JSONObject jsonObject = jsonarray.getJSONObject(i);
-                                String g_tc_fac001 = jsonObject.getString("TC_FAC001"); //Mã hạng mục
-                                String g_tc_fac002 = jsonObject.getString("TC_FAC002"); //Mã báo biểu
-                                String g_tc_fac003 = jsonObject.getString("TC_FAC003"); //Mã hạng mục chi tiết
-                                String g_tc_fac004 = jsonObject.getString("TC_FAC004"); //Mã tổng
-                                String g_tc_fac005 = jsonObject.getString("TC_FAC005"); //Tên hạng mục chi tiết( tiếng hoa)
-                                String g_tc_fac006 = jsonObject.getString("TC_FAC006"); //Tên hạng mục chi tiết( tiếng việt)
-                                String g_tc_fac007 = jsonObject.getString("TC_FAC007"); //Điểm số
-                                String g_tc_fac008 = jsonObject.getString("TC_FAC008"); //Hãng sản xuất
-                                String g_tc_fac011 = jsonObject.getString("TC_FAC011"); //Dãy đo thiết bị
+                String res_fac = get_DataTable("http://172.16.40.20/" + g_server + "/TechAPP/getDataTable.php?item=fac");
+                if (!res_fac.equals("FALSE")) {
+                    try {
+                        JSONArray jsonarray = new JSONArray(res_fac);
+                        for (int i = 0; i < jsonarray.length(); i++) {
+                            JSONObject jsonObject = jsonarray.getJSONObject(i);
+                            String g_tc_fac001 = jsonObject.getString("TC_FAC001"); //Mã hạng mục
+                            String g_tc_fac002 = jsonObject.getString("TC_FAC002"); //Mã báo biểu
+                            String g_tc_fac003 = jsonObject.getString("TC_FAC003"); //Mã hạng mục chi tiết
+                            String g_tc_fac004 = jsonObject.getString("TC_FAC004"); //Mã tổng
+                            String g_tc_fac005 = jsonObject.getString("TC_FAC005"); //Tên hạng mục chi tiết( tiếng hoa)
+                            String g_tc_fac006 = jsonObject.getString("TC_FAC006"); //Tên hạng mục chi tiết( tiếng việt)
+                            String g_tc_fac007 = jsonObject.getString("TC_FAC007"); //Điểm số
+                            String g_tc_fac008 = jsonObject.getString("TC_FAC008"); //Hãng sản xuất
+                            String g_tc_fac011 = jsonObject.getString("TC_FAC011"); //Dãy đo thiết bị
 
-                                Cre_db.append(g_tc_fac001, g_tc_fac002, g_tc_fac003,
-                                        g_tc_fac004, g_tc_fac005, g_tc_fac006,
-                                        g_tc_fac007, g_tc_fac008, g_tc_fac011);
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                            Cre_db.append(g_tc_fac001, g_tc_fac002, g_tc_fac003,
+                                    g_tc_fac004, g_tc_fac005, g_tc_fac006,
+                                    g_tc_fac007, g_tc_fac008, g_tc_fac011);
                         }
-
-                        String res_gem = get_DataTable("http://172.16.40.20/" + g_server + "/TechAPP/getDataTable.php?item=gem");
-                        if (!res_gem.equals("FALSE")) {
-                            try {
-                                JSONArray jsonarray = new JSONArray(res_gem);
-                                for (int i = 0; i < jsonarray.length(); i++) {
-                                    JSONObject jsonObject = jsonarray.getJSONObject(i);
-                                    String g_gem01 = jsonObject.getString("GEM01"); //Mã bộ phận
-                                    String g_gem02 = jsonObject.getString("GEM02"); //Tên bộ phận
-                                    Cre_db.append(g_gem01, g_gem02);
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-
-                        String res_fia = get_DataTable("http://172.16.40.20/" + g_server + "/TechAPP/getDataTable.php?item=fia");
-                        if (!res_fia.equals("FALSE")) {
-                            try {
-                                JSONArray jsonarray = new JSONArray(res_fia);
-                                for (int i = 0; i < jsonarray.length(); i++) {
-                                    JSONObject jsonObject = jsonarray.getJSONObject(i);
-                                    String g_fia01 = jsonObject.getString("FIA01"); //Mã số thiết bị
-                                    String g_ta_fia02_1 = jsonObject.getString("TA_FIA02_1"); //Mã số thiết bị
-                                    String g_fiaud03 = jsonObject.getString("FIAUD03"); //Số máy
-                                    String g_fia15 = jsonObject.getString("FIA15"); //Vị trí
-                                    String g_fka02 = jsonObject.getString("FKA02"); //Tên bộ phận
-                                    Cre_db.append(g_fia01, g_ta_fia02_1, g_fiaud03, g_fia15, g_fka02);
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-
-                        String res_tc_fba = get_DataTable("http://172.16.40.20/" + g_server + "/TechAPP/getDataTable.php?item=tc_fba");
-                        if (!res_gem.equals("FALSE")) {
-                            try {
-                                JSONArray jsonarray = new JSONArray(res_tc_fba);
-                                for (int i = 0; i < jsonarray.length(); i++) {
-                                    JSONObject jsonObject = jsonarray.getJSONObject(i);
-                                    String g_tc_fba007 = jsonObject.getString("TC_FBA007"); //Mã bộ phận
-                                    String g_tc_fba009 = jsonObject.getString("TC_FBA009"); //Tên bộ phận
-                                    Cre_db.append1(g_tc_fba007, g_tc_fba009);
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-
-                        String res_tc_cea = get_DataTable("http://172.16.40.20/" + g_server + "/TechAPP/getDataTable.php?item=tc_cea");
-                        if (!res_tc_cea.equals("FALSE")) {
-                            try {
-                                JSONArray jsonarray = new JSONArray(res_tc_cea);
-                                for (int i = 0; i < jsonarray.length(); i++) {
-                                    JSONObject jsonObject = jsonarray.getJSONObject(i);
-                                    String g_tc_cea01 = jsonObject.getString("TC_CEA01"); //Loai
-                                    String g_tc_cea02 = jsonObject.getString("TC_CEA02"); //Tên Loai
-                                    String g_tc_cea03 = jsonObject.getString("TC_CEA03"); //STT
-                                    String g_tc_cea04 = jsonObject.getString("TC_CEA04"); //Nhà máy
-                                    String g_tc_cea05 = jsonObject.getString("TC_CEA05"); //Mã số
-                                    String g_tc_cea06 = jsonObject.getString("TC_CEA06"); //Chỉ tiêu ngày
-                                    String g_tc_cea07 = jsonObject.getString("TC_CEA07"); //Ghi chú
-
-                                    Cre_db.append2(g_tc_cea01, g_tc_cea02, g_tc_cea03, g_tc_cea04, g_tc_cea05, g_tc_cea06, g_tc_cea07);
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
                 }
+
+                String res_gem = get_DataTable("http://172.16.40.20/" + g_server + "/TechAPP/getDataTable.php?item=gem");
+                if (!res_gem.equals("FALSE")) {
+                    try {
+                        JSONArray jsonarray = new JSONArray(res_gem);
+                        for (int i = 0; i < jsonarray.length(); i++) {
+                            JSONObject jsonObject = jsonarray.getJSONObject(i);
+                            String g_gem01 = jsonObject.getString("GEM01"); //Mã bộ phận
+                            String g_gem02 = jsonObject.getString("GEM02"); //Tên bộ phận
+                            Cre_db.append(g_gem01, g_gem02);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                String res_fia = get_DataTable("http://172.16.40.20/" + g_server + "/TechAPP/getDataTable.php?item=fia");
+                if (!res_fia.equals("FALSE")) {
+                    try {
+                        JSONArray jsonarray = new JSONArray(res_fia);
+                        for (int i = 0; i < jsonarray.length(); i++) {
+                            JSONObject jsonObject = jsonarray.getJSONObject(i);
+                            String g_fia01 = jsonObject.getString("FIA01"); //Mã số thiết bị
+                            String g_ta_fia02_1 = jsonObject.getString("TA_FIA02_1"); //Mã số thiết bị
+                            String g_fiaud03 = jsonObject.getString("FIAUD03"); //Số máy
+                            String g_fia15 = jsonObject.getString("FIA15"); //Vị trí
+                            String g_fka02 = jsonObject.getString("FKA02"); //Tên bộ phận
+                            Cre_db.append(g_fia01, g_ta_fia02_1, g_fiaud03, g_fia15, g_fka02);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                String res_tc_fba = get_DataTable("http://172.16.40.20/" + g_server + "/TechAPP/getDataTable.php?item=tc_fba");
+                if (!res_tc_fba.equals("FALSE")) {
+                    try {
+                        JSONArray jsonarray = new JSONArray(res_tc_fba);
+                        for (int i = 0; i < jsonarray.length(); i++) {
+                            JSONObject jsonObject = jsonarray.getJSONObject(i);
+                            String g_tc_fba007 = jsonObject.getString("TC_FBA007"); //Mã bộ phận
+                            String g_tc_fba009 = jsonObject.getString("TC_FBA009"); //Tên bộ phận
+                            Cre_db.append1(g_tc_fba007, g_tc_fba009);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                String res_tc_cea = get_DataTable("http://172.16.40.20/" + g_server + "/TechAPP/getDataTable.php?item=tc_cea");
+                if (!res_tc_cea.equals("FALSE")) {
+                    try {
+                        JSONArray jsonarray = new JSONArray(res_tc_cea);
+                        for (int i = 0; i < jsonarray.length(); i++) {
+                            JSONObject jsonObject = jsonarray.getJSONObject(i);
+                            String g_tc_cea01 = jsonObject.getString("TC_CEA01"); //Loai
+                            String g_tc_cea02 = jsonObject.getString("TC_CEA02"); //Tên Loai
+                            String g_tc_cea03 = jsonObject.getString("TC_CEA03"); //STT
+                            String g_tc_cea04 = jsonObject.getString("TC_CEA04"); //Nhà máy
+                            String g_tc_cea05 = jsonObject.getString("TC_CEA05"); //Mã số
+                            String g_tc_cea06 = jsonObject.getString("TC_CEA06"); //Chỉ tiêu ngày
+                            String g_tc_cea07 = jsonObject.getString("TC_CEA07"); //Ghi chú
+                            String g_tc_cea08 = jsonObject.getString("TC_CEA08"); //Đơn vị
+                            String g_tc_cea09 = jsonObject.getString("TC_CEA09"); //Xưởng
+
+                            Cre_db.append2(g_tc_cea01, g_tc_cea02, g_tc_cea03, g_tc_cea04,
+                                    g_tc_cea05, g_tc_cea06, g_tc_cea07,g_tc_cea08,g_tc_cea09);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                String res_cpf = get_DataTable("http://172.16.40.20/" + g_server + "/TechAPP/getDataTable.php?item=cpf");
+                if (!res_cpf.equals("FALSE")) {
+                    try {
+                        JSONArray jsonarray = new JSONArray(res_cpf);
+                        for (int i = 0; i < jsonarray.length(); i++) {
+                            JSONObject jsonObject = jsonarray.getJSONObject(i);
+                            String g_cpf01 = jsonObject.getString("CPF01"); //Mã bộ phận
+                            String g_cpf02 = jsonObject.getString("CPF02"); //Tên bộ phận
+                            String g_ta_cpf001 = jsonObject.getString("TA_CPF001"); //Mã bộ phận
+                            String g_cpf29 = jsonObject.getString("CPF29"); //Tên bộ phận
+                            String g_gem02 = jsonObject.getString("GEM02"); //Mã bộ phận
+                            String g_cpf281 = jsonObject.getString("CPF281"); //Tên bộ phận
+                            Cre_db.ins_cpf_file(g_cpf01, g_cpf02, g_ta_cpf001, g_cpf29, g_gem02, g_cpf281);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
             }
         });
         api.start();
