@@ -21,10 +21,13 @@ import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.ExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
@@ -46,9 +49,17 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class KT07_Main extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    List<String> groupList;
+    List<String> childList;
+    Map<String, List<String>> contentCollection;
+    ExpandableListView expandableListView;
+    KT07_GroupAdapter KT07_GroupAdapter;
+
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     TextView tc_cebuser, tc_ceb06, tv_tc_ceb03, tv_tc_cebdate;
@@ -69,6 +80,7 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.kt07_fragment);
+
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
 
@@ -79,7 +91,7 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
         kt07Db.open();
         kt07Db.create_table();
 
-        addControls();
+
 
         drawerLayout = findViewById(R.id.drawer_layout);
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -89,7 +101,10 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         navigationView = findViewById(R.id.navigation_view);
+        createGroupList();
         Call_navigationView_menu();
+        addControls();
+        //Call_navigationView_menu();
         navigationView.setNavigationItemSelectedListener(this);
 
         View headerView = navigationView.getHeaderView(0); // Lấy reference đến header của NavigationView
@@ -131,6 +146,11 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
         kt07MainRowItems_list = new ArrayList<KT07_Main_RowItem>();
         kt07MainAdapter = new KT07_Main_Adapter(getApplicationContext(), R.layout.kt07_listdata_item, kt07MainRowItems_list);
         rcv_hangmuc.setAdapter(kt07MainAdapter);
+
+
+        expandableListView = findViewById(R.id.navMenu);
+        KT07_GroupAdapter = new KT07_GroupAdapter(this,groupList,contentCollection);
+        expandableListView.setAdapter(KT07_GroupAdapter);
     }
 
     private void Call_navigationView_menu() {
@@ -138,18 +158,27 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
         String g_check = null;
         Menu menu = navigationView.getMenu();
 
+
+        contentCollection = new HashMap<String, List<String>>();
+        childList = new ArrayList<>();
         Cursor cursorXuong = kt07Db.get_menu_factory(ID);
         // Tạo hạng mục "Xưởng" từ Cursor
-        SubMenu xuongSubMenu = menu.addSubMenu("Xưởng");
-        if (cursorXuong != null && cursorXuong.moveToFirst()) {
-            do {
-                String tenXuong = cursorXuong.getString(cursorXuong.getColumnIndexOrThrow("tc_cea09"));
-                xuongSubMenu.add(tenXuong);
-            } while (cursorXuong.moveToNext());
-            cursorXuong.close();
-            xuongSubMenu.setGroupDividerEnabled(true);
-        }
+//        SubMenu xuongSubMenu = menu.addSubMenu("Xưởng");
+        for(String group : groupList) {
+            if (group.equals("Xưởng")) {
+                if (cursorXuong != null && cursorXuong.moveToFirst()) {
+                    do {
+                        String tenXuong = cursorXuong.getString(cursorXuong.getColumnIndexOrThrow("tc_cea09"));
 
+                        childList.add(tenXuong);
+                        //xuongSubMenu.add(tenXuong);
+                    } while (cursorXuong.moveToNext());
+                    cursorXuong.close();
+                    //xuongSubMenu.setGroupDividerEnabled(true);
+                    contentCollection.put(group, childList);
+                }
+            }
+        }
         // Tạo hạng mục "Loại tiêu thụ" với các submenu "Điện", "Nước", "Gas" từ Cursor
         SubMenu loaiTieuThuSubMenu = menu.addSubMenu("Loại tiêu thụ");
         SubMenu dienSubMenu = loaiTieuThuSubMenu.addSubMenu("Điện");
@@ -472,4 +501,11 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
     }
 
     //Khởi tạo menu trên thanh tiêu đề (E)
+
+    private void createGroupList() {
+        groupList = new ArrayList<>();
+        groupList.add("Xưởng");
+        groupList.add("Loại tiêu Thụ");
+
+    }
 }

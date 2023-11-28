@@ -76,7 +76,15 @@
         android:layout_height="match_parent"
         android:background="#756363"
         android:layout_gravity="start"
-        app:headerLayout="@layout/kt07_nav_header"/>
+        app:headerLayout="@layout/kt07_nav_header">
+
+        <ExpandableListView
+
+            android:id="@+id/navMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </ExpandableListView>
+   </com.google.android.material.navigation.NavigationView>
         <!--app:menu="@menu/menu_drawer" -->
 
 </androidx.drawerlayout.widget.DrawerLayout>
