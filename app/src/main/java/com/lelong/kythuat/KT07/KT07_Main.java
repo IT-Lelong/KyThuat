@@ -147,6 +147,7 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
                 xuongSubMenu.add(tenXuong);
             } while (cursorXuong.moveToNext());
             cursorXuong.close();
+            xuongSubMenu.setGroupDividerEnabled(true);
         }
 
         // Tạo hạng mục "Loại tiêu thụ" với các submenu "Điện", "Nước", "Gas" từ Cursor
