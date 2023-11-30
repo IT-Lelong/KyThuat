@@ -1,5 +1,6 @@
 package com.lelong.kythuat.KT07;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
@@ -81,8 +82,18 @@ public class KT07_GroupAdapter extends BaseExpandableListAdapter {
             view = inflater.inflate(R.layout.kt07_listitem, null);
         }
         TextView item = view.findViewById(R.id.tv_content);
-//        ImageView delete = view.findViewById(R.id.delete);
         item.setText(model);
+
+        item.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+               builder.setMessage("You choose "+model+"");
+                AlertDialog alertDialog = builder.create();
+             alertDialog.show();
+            }
+        });
 //        delete.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {

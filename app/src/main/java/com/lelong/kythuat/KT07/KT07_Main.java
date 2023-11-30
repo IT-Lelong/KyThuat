@@ -14,12 +14,15 @@ import android.app.DatePickerDialog;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Looper;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.ImageSpan;
 import android.text.style.StyleSpan;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -28,6 +31,7 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
@@ -106,14 +110,21 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
         addControls();
         //Call_navigationView_menu();
         navigationView.setNavigationItemSelectedListener(this);
+        RelativeLayout relativeLayout = findViewById(R.id.kt07_relative);
+        View headerView = relativeLayout.findViewById(R.id.nav_header);
+        //View headerView = navigationView.getHeaderView(0); // Lấy reference đến header của NavigationView
 
-        View headerView = navigationView.getHeaderView(0); // Lấy reference đến header của NavigationView
-
+        if (headerView != null) {
+            // Lấy các thành phần trong headerView ở đây
+        } else {
+            Log.e("TAG", "headerView is null");
+        }
         tc_cebuser = headerView.findViewById(R.id.tv_tc_cebuser);
         tc_ceb06 = headerView.findViewById(R.id.tv_tc_ceb06);
         tv_tc_ceb03 = headerView.findViewById(R.id.tv_tc_ceb03);
         tv_tc_cebdate = headerView.findViewById(R.id.tv_tc_cebdate);
         tc_cebuser.setText(ID);
+        Log.d("TAG", "Value of tc_cebuser: " + tc_cebuser.getText().toString());
         dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 
         tv_tc_ceb03.setText(dateFormat.format(new Date()).toString());
@@ -156,17 +167,21 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
     private void Call_navigationView_menu() {
         String g_title = null;
         String g_check = null;
+
+
         Menu menu = navigationView.getMenu();
 
 
         contentCollection = new HashMap<String, List<String>>();
-        childList = new ArrayList<>();
+
         Cursor cursorXuong = kt07Db.get_menu_factory(ID);
+        Cursor cursorLoaiTieuThu = kt07Db.get_menu_data(ID);
         // Tạo hạng mục "Xưởng" từ Cursor
 //        SubMenu xuongSubMenu = menu.addSubMenu("Xưởng");
         for(String group : groupList) {
             if (group.equals("Xưởng")) {
                 if (cursorXuong != null && cursorXuong.moveToFirst()) {
+                    childList = new ArrayList<>();
                     do {
                         String tenXuong = cursorXuong.getString(cursorXuong.getColumnIndexOrThrow("tc_cea09"));
 
@@ -175,32 +190,84 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
                     } while (cursorXuong.moveToNext());
                     cursorXuong.close();
                     //xuongSubMenu.setGroupDividerEnabled(true);
-                    contentCollection.put(group, childList);
+
+                }
+            } else if (group.equals("Điện") ) {
+                if (cursorLoaiTieuThu != null && cursorLoaiTieuThu.moveToFirst()) {
+                    childList = new ArrayList<>();
+                    do {
+                        String g_tc_cea01 = cursorLoaiTieuThu.getString(cursorLoaiTieuThu.getColumnIndexOrThrow("tc_cea01"));
+                        String loai = cursorLoaiTieuThu.getString(cursorLoaiTieuThu.getColumnIndexOrThrow("loai"));
+
+                        if (loai.equals("dien")) {
+
+                            childList.add(g_tc_cea01);
+                        }
+
+                    } while (cursorLoaiTieuThu.moveToNext());
+
+                }
+            }else  if (group.equals("Nước") ) {
+                if (cursorLoaiTieuThu != null && cursorLoaiTieuThu.moveToFirst()) {
+                    childList = new ArrayList<>();
+                    do {
+                        String g_tc_cea01 = cursorLoaiTieuThu.getString(cursorLoaiTieuThu.getColumnIndexOrThrow("tc_cea01"));
+                        String loai = cursorLoaiTieuThu.getString(cursorLoaiTieuThu.getColumnIndexOrThrow("loai"));
+
+                        if (loai.equals("nuoc")) {
+                            childList.add(g_tc_cea01);
+                        }
+                    } while (cursorLoaiTieuThu.moveToNext());
+              
+
                 }
             }
-        }
-        // Tạo hạng mục "Loại tiêu thụ" với các submenu "Điện", "Nước", "Gas" từ Cursor
-        SubMenu loaiTieuThuSubMenu = menu.addSubMenu("Loại tiêu thụ");
-        SubMenu dienSubMenu = loaiTieuThuSubMenu.addSubMenu("Điện");
-        SubMenu nuocSubMenu = loaiTieuThuSubMenu.addSubMenu("Nước");
-        SubMenu gasSubMenu = loaiTieuThuSubMenu.addSubMenu("Gas");
-        Cursor cursorLoaiTieuThu = kt07Db.get_menu_data(ID);
-        if (cursorLoaiTieuThu != null && cursorLoaiTieuThu.moveToFirst()) {
-            do {
-                String loai = cursorLoaiTieuThu.getString(cursorLoaiTieuThu.getColumnIndexOrThrow("loai"));
-                String g_tc_cea01 = cursorLoaiTieuThu.getString(cursorLoaiTieuThu.getColumnIndexOrThrow("tc_cea01"));
+            else  if (group.equals("Gas") ) {
+                if (cursorLoaiTieuThu != null && cursorLoaiTieuThu.moveToFirst()) {
+                    childList = new ArrayList<>();
+                    do {
+                        String g_tc_cea01 = cursorLoaiTieuThu.getString(cursorLoaiTieuThu.getColumnIndexOrThrow("tc_cea01"));
+                        String loai = cursorLoaiTieuThu.getString(cursorLoaiTieuThu.getColumnIndexOrThrow("loai"));
 
-                // Thêm các hạng mục vào submenu tương ứng
-                if (loai.equals("dien")) {
-                    dienSubMenu.add(g_tc_cea01);
-                } else if (loai.equals("nuoc")) {
-                    nuocSubMenu.add(g_tc_cea01);
-                } else if (loai.equals("gas")) {
-                    gasSubMenu.add(g_tc_cea01);
+                        if (loai.equals("gas")) {
+                            childList.add(g_tc_cea01);
+                        }
+                    } while (cursorLoaiTieuThu.moveToNext());
+                    cursorLoaiTieuThu.close();
+
                 }
-            } while (cursorLoaiTieuThu.moveToNext());
-            cursorLoaiTieuThu.close();
+            }
+            contentCollection.put(group, childList);
         }
+
+        // Tạo hạng mục "Loại tiêu thụ" với các submenu "Điện", "Nước", "Gas" từ Cursor
+
+
+
+//       SubMenu loaiTieuThuSubMenu = menu.addSubMenu("Loại tiêu thụ");
+//        SubMenu dienSubMenu = loaiTieuThuSubMenu.addSubMenu("Điện");
+//        SubMenu nuocSubMenu = loaiTieuThuSubMenu.addSubMenu("Nước");
+//        SubMenu gasSubMenu = loaiTieuThuSubMenu.addSubMenu("Gas");
+//        Cursor cursorLoaiTieuThu = kt07Db.get_menu_data(ID);
+//        if (cursorLoaiTieuThu != null && cursorLoaiTieuThu.moveToFirst()) {
+//            do {
+//                String loai = cursorLoaiTieuThu.getString(cursorLoaiTieuThu.getColumnIndexOrThrow("loai"));
+//                String g_tc_cea01 = cursorLoaiTieuThu.getString(cursorLoaiTieuThu.getColumnIndexOrThrow("tc_cea01"));
+//
+//                // Thêm các hạng mục vào submenu tương ứng
+//                if (loai.equals("dien")) {
+//                    dienSubMenu.add(g_tc_cea01);
+//                } else if (loai.equals("nuoc")) {
+//                    nuocSubMenu.add(g_tc_cea01);
+//                } else if (loai.equals("gas")) {
+//                    gasSubMenu.add(g_tc_cea01);
+//                }
+//            } while (cursorLoaiTieuThu.moveToNext());
+//            cursorLoaiTieuThu.close();
+//        }
+
+
+
 
 //        Cursor menu_curs = kt07Db.get_menu_data(ID);
 //        if (menu_curs != null && menu_curs.moveToFirst()) {
@@ -250,13 +317,24 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
 
         menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "").setEnabled(false);
         //menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "").setEnabled(false);
-        SpannableString spannable_up = new SpannableString("拋轉資料 Đăng tải dữ liệu");
-        spannable_up.setSpan(new ForegroundColorSpan(Color.WHITE), 0, spannable_up.length(), 0);
-        menu.add(Menu.NONE, Menu.NONE, Menu.NONE, spannable_up).setIcon(R.drawable.loaddata);
+        SpannableString spannable = new SpannableString("拋轉資料 Đăng tải dữ liệu   ");
+        Drawable uploadIcon = getResources().getDrawable(R.drawable.loaddata);
+        ImageSpan imageSpan = new ImageSpan(uploadIcon, ImageSpan.ALIGN_BASELINE);
+        spannable.setSpan(imageSpan, spannable.length() - 1, spannable.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+        uploadIcon.setBounds(0, 0, 40, 40); // Điều chỉnh kích thước theo ý muốn
+        TextView textupload = findViewById(R.id.kt07_textUpload);
+        textupload.setText(spannable);
 
-        SpannableString spannable_del = new SpannableString("刪除資料 Xóa dữ liệu");
-        spannable_del.setSpan(new ForegroundColorSpan(Color.WHITE), 0, spannable_del.length(), 0);
-        menu.add(Menu.NONE, Menu.NONE, Menu.NONE, spannable_del).setIcon(R.drawable.dt);
+        SpannableString deleteSpannable = new SpannableString("刪除資料 Xóa dữ liệu   ");
+        Drawable deleteIcon = getResources().getDrawable(R.drawable.trash);
+        ImageSpan imagedelete = new ImageSpan(deleteIcon , ImageSpan.ALIGN_BASELINE);
+        deleteSpannable.setSpan(imagedelete, deleteSpannable.length() - 1, deleteSpannable.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+        deleteIcon.setBounds(0, 0, 40, 40); // Điều chỉnh kích thước theo ý muốn
+        TextView textdelete = findViewById(R.id.kt07_textDelete);
+        textdelete .setText(deleteSpannable );
+//        SpannableString spannable_del = new SpannableString("刪除資料 Xóa dữ liệu");
+//        spannable_del.setSpan(new ForegroundColorSpan(Color.WHITE), 0, spannable_del.length(), 0);
+//        menu.add(Menu.NONE, Menu.NONE, Menu.NONE, spannable_del).setIcon(R.drawable.dt);
     }
 
     private void addEvents() {
@@ -505,7 +583,11 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
     private void createGroupList() {
         groupList = new ArrayList<>();
         groupList.add("Xưởng");
-        groupList.add("Loại tiêu Thụ");
+        groupList.add("Điện");
+        groupList.add("Nước");;
+        groupList.add("Gas");
+
 
     }
+
 }

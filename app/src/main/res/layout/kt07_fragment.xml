@@ -2,11 +2,11 @@
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".KT07.KT07_Main"
     android:background="#756363"
-    android:id="@+id/drawer_layout">
+    tools:context=".KT07.KT07_Main">
 
     <!-- Main content -->
 
@@ -36,6 +36,7 @@
                 android:layout_weight="3"
                 android:text="@string/tc_cea04"
                 android:textSize="20sp" />
+
             <TextView
                 style="@style/title_02"
                 android:layout_width="0dp"
@@ -43,6 +44,7 @@
                 android:layout_weight="1"
                 android:text="@string/tc_cea05"
                 android:textSize="20sp" />
+
             <TextView
                 style="@style/title_02"
                 android:layout_width="0dp"
@@ -74,17 +76,112 @@
         android:id="@+id/navigation_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:background="#756363"
         android:layout_gravity="start"
-        app:headerLayout="@layout/kt07_nav_header">
+        android:background="#756363"
+        >
 
-        <ExpandableListView
+<!--        <ScrollView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content">-->
 
-            android:id="@+id/navMenu"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        </ExpandableListView>
-   </com.google.android.material.navigation.NavigationView>
-        <!--app:menu="@menu/menu_drawer" -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:orientation="vertical">
 
+                <RelativeLayout
+                    android:id="@+id/kt07_relative"
+                    android:layout_width="wrap_content"
+                    android:layout_height="420dp"
+                    android:background="@color/white">
+<!--                    android:layout_weight="8">-->
+
+                    <!-- Header -->
+                    <include
+                        layout="@layout/kt07_nav_header"
+                        />
+
+                    <!-- ExpandableListView -->
+                    <ExpandableListView
+                        android:id="@+id/navMenu"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/nav_header"
+                        android:background="@color/white"></ExpandableListView>
+                </RelativeLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:orientation="vertical"
+                    android:background="@color/white"
+                    >
+
+                    <TextView
+                        android:id="@+id/kt07_textUpload"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="拋轉資料 Đăng tải dữ liệu"
+                        android:textColor="@color/black"
+                        android:textSize="19dp"
+
+                        />
+                    <TextView
+                        android:id="@+id/kt07_textDelete"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="刪除資料 Xóa dữ liệu"
+                        android:textColor="@color/black"
+                        android:textSize="19dp"
+
+                        />
+
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+<!--        </ScrollView>-->
+
+
+        <!--            <LinearLayout-->
+        <!--                android:id="@+id/update_delete"-->
+        <!--                android:layout_width="match_parent"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_below="@+id/navMenu"-->
+        <!--                android:orientation="vertical">-->
+
+        <!--            </LinearLayout>-->
+
+
+        <!--        <ExpandableListView-->
+
+        <!--            android:id="@+id/navMenu"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content">-->
+        <!--        </ExpandableListView>-->
+        <!--    <RelativeLayout-->
+        <!--        android:layout_width="match_parent"-->
+        <!--        android:layout_height="match_parent">-->
+
+        <!--        &lt;!&ndash; Header Layout &ndash;&gt;-->
+        <!--&lt;!&ndash;        <include layout="@layout/kt07_nav_header" />&ndash;&gt;-->
+
+        <!--        &lt;!&ndash; ExpandableListView &ndash;&gt;-->
+        <!--        <ExpandableListView-->
+        <!--            android:id="@+id/navMenu"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_below="@layout/kt07_nav_header" />-->
+        <!--    </RelativeLayout>-->
+    </com.google.android.material.navigation.NavigationView>
+
+    <!--        app:menu="@menu/kt07_menu" >-->
 </androidx.drawerlayout.widget.DrawerLayout>
