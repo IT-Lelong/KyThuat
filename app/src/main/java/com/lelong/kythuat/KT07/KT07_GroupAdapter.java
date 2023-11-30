@@ -18,11 +18,14 @@ public class KT07_GroupAdapter extends BaseExpandableListAdapter {
     private Context context;
     private Map<String, List<String>> contentCollection;
     private List<String> groupList;
+    KT07_Main_FillData kt07MainFillData ;
     public KT07_GroupAdapter(Context context, List<String> groupList,
-                             Map<String, List<String>> contentCollection){
+                             Map<String, List<String>> contentCollection,
+                             KT07_Main_FillData data_interface){
         this.context = context;
         this.contentCollection = contentCollection;
         this.groupList = groupList;
+        this.kt07MainFillData = (KT07_Main_FillData)  data_interface;
     }
 
     @Override
@@ -88,36 +91,10 @@ public class KT07_GroupAdapter extends BaseExpandableListAdapter {
 
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-               builder.setMessage("You choose "+model+"");
-                AlertDialog alertDialog = builder.create();
-             alertDialog.show();
+                kt07MainFillData.fill_data(model);
             }
         });
-//        delete.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-//                builder.setMessage("Do you want to remove?");
-//                builder.setCancelable(true);
-//                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialogInterface, int id) {
-//                        List<String> child = mobileCollection.get(groupList.get(i));
-//                        child.remove(i1);
-//                        notifyDataSetChanged();
-//                    }
-//                });
-//                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialogInterface, int i) {
-//                        dialogInterface.cancel();
-//                    }
-//                });
-//                AlertDialog alertDialog = builder.create();
-//                alertDialog.show();
-//            }
-//        });
+
         return view;
     }
 

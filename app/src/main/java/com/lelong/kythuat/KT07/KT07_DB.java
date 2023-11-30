@@ -97,10 +97,23 @@ public class KT07_DB {
 
 
     public Cursor getAll_tc_cea_data(String g_title, String g_tc_cebdate) {
-        String selectQuery = " SELECT tc_cea03,tc_cea04,tc_cea05,tc_cea06,tc_cea08, CASE WHEN tc_cea09 = 'null' THEN '' ELSE tc_cea09 END AS tc_cea09, " +
-                " COALESCE((SELECT tc_ceb04 FROM tc_ceb_file WHERE tc_ceb01 = '" + g_title + "' AND tc_ceb02 = TC_CEA04 AND tc_cebdate = '" + g_tc_cebdate + "' ),0) AS  tc_ceb04 " +
-                " FROM tc_cea_file WHERE tc_cea01 = '" + g_title + "' " +
-                " ORDER BY TC_CEA03 ";
+        String selectQuery = null;
+        if (g_title.startsWith("DH") || g_title.startsWith("BL")) {
+            //Fill Data của loại tiêu thụ
+            selectQuery = " SELECT tc_cea03,tc_cea04,tc_cea05,tc_cea06,tc_cea08, CASE WHEN tc_cea09 = 'null' THEN '' ELSE tc_cea09 END AS tc_cea09, " +
+                    " COALESCE((SELECT tc_ceb04 FROM tc_ceb_file WHERE tc_ceb01 = tc_cea01 AND tc_ceb02 = TC_CEA04 AND tc_cebdate = '" + g_tc_cebdate + "' ),0) AS  tc_ceb04 " +
+                    " FROM tc_cea_file WHERE tc_cea01 = '" + g_title + "' " +
+                    " ORDER BY TC_CEA03 ";
+        }
+
+        if(g_title.length() == 1 ){
+            //Fill Data của Xưởng
+            selectQuery = " SELECT tc_cea03,tc_cea04,tc_cea05,tc_cea06,tc_cea08, CASE WHEN tc_cea09 = 'null' THEN '' ELSE tc_cea09 END AS tc_cea09, " +
+                    " COALESCE((SELECT tc_ceb04 FROM tc_ceb_file WHERE tc_ceb01 = tc_cea01 AND tc_ceb02 = TC_CEA04 AND tc_cebdate = '" + g_tc_cebdate + "' ),0) AS  tc_ceb04 " +
+                    " FROM tc_cea_file WHERE substr(tc_cea01,1,2) IN ('DH','BL')  AND tc_cea09 = '" + g_title + "' " +
+                    " ORDER BY tc_cea01,tc_cea05,tc_cea03 ";
+        }
+
         return db.rawQuery(selectQuery, null);
     }
 

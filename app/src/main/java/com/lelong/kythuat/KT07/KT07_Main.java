@@ -9,27 +9,18 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.database.Cursor;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Looper;
 import android.text.Spannable;
 import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
 import android.text.style.ImageSpan;
-import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.SubMenu;
 import android.view.View;
 import android.widget.DatePicker;
-import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -38,7 +29,6 @@ import com.google.android.material.navigation.NavigationView;
 import com.lelong.kythuat.R;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -57,7 +47,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class KT07_Main extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class KT07_Main extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener , KT07_Main_FillData{
     List<String> groupList;
     List<String> childList;
     Map<String, List<String>> contentCollection;
@@ -158,9 +148,8 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
         kt07MainAdapter = new KT07_Main_Adapter(getApplicationContext(), R.layout.kt07_listdata_item, kt07MainRowItems_list);
         rcv_hangmuc.setAdapter(kt07MainAdapter);
 
-
         expandableListView = findViewById(R.id.navMenu);
-        KT07_GroupAdapter = new KT07_GroupAdapter(this,groupList,contentCollection);
+        KT07_GroupAdapter = new KT07_GroupAdapter(this,groupList,contentCollection,this);
         expandableListView.setAdapter(KT07_GroupAdapter);
     }
 
@@ -590,4 +579,42 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
 
     }
 
+    @Override
+    public void fill_data(String model) {
+        Cursor cursor = null;
+
+        if (model.startsWith("DH") || model.startsWith("BL")) {
+            //Fill Data của loại tiêu thụ (S)
+            cursor  = kt07Db.getAll_tc_cea_data(model,tv_tc_cebdate.getText().toString());
+            //Fill Data của loại tiêu thụ (E)
+        }
+
+        if(model.length() == 1 ){
+            //Fill Data của Xưởng (S)
+            cursor  = kt07Db.getAll_tc_cea_data(model,tv_tc_cebdate.getText().toString());
+            //Fill Data của Xưởng (E)
+        }
+
+        cursor.moveToFirst();
+        int num = cursor.getCount();
+        kt07MainRowItems_list.clear();
+        for (int i = 0; i < num; i++) {
+            try {
+                String G_TC_CEA03 = cursor.getString(cursor.getColumnIndexOrThrow("tc_cea03"));
+                String G_TC_CEA04 = cursor.getString(cursor.getColumnIndexOrThrow("tc_cea04"));
+                String G_TC_CEA05 = cursor.getString(cursor.getColumnIndexOrThrow("tc_cea05"));
+                String G_TC_CEA06 = cursor.getString(cursor.getColumnIndexOrThrow("tc_cea06"));
+                String G_TC_CEA08 = cursor.getString(cursor.getColumnIndexOrThrow("tc_cea08"));
+                String G_TC_CEA09 = cursor.getString(cursor.getColumnIndexOrThrow("tc_cea09"));
+                String G_TC_CEB04 = cursor.getString(cursor.getColumnIndexOrThrow("tc_ceb04"));
+
+                kt07MainRowItems_list.add(new KT07_Main_RowItem(G_TC_CEA03,G_TC_CEA04, G_TC_CEA05, G_TC_CEA06,G_TC_CEA08,G_TC_CEA09, G_TC_CEB04));
+            } catch (Exception e) {
+                String err = e.toString();
+            }
+
+            cursor.moveToNext();
+        }
+        kt07MainAdapter.notifyDataSetChanged();
+    }
 }
