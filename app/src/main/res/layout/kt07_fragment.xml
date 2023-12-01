@@ -93,7 +93,8 @@
                 <RelativeLayout
                     android:id="@+id/kt07_relative"
                     android:layout_width="wrap_content"
-                    android:layout_height="420dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="6"
                     android:background="@color/white">
 <!--                    android:layout_weight="8">-->
 

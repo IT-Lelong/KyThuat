@@ -85,6 +85,7 @@ public class KT07_GroupAdapter extends BaseExpandableListAdapter {
             view = inflater.inflate(R.layout.kt07_listitem, null);
         }
         TextView item = view.findViewById(R.id.tv_content);
+
         item.setText(model);
 
         item.setOnClickListener(new View.OnClickListener(){

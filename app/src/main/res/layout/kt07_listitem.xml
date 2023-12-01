@@ -6,10 +6,13 @@
 
     <TextView
         android:id="@+id/tv_content"
-        android:layout_width="269dp"
-        android:layout_height="22dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:gravity="center"
         android:onClick="onClick"
-        android:text="Hello" />
+        android:text="item"
+        android:clickable="true"/>
+
 
 </LinearLayout>

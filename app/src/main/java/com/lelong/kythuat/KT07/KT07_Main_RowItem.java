@@ -1,6 +1,7 @@
 package com.lelong.kythuat.KT07;
 
 public class KT07_Main_RowItem {
+    private final String g_TC_CEA01;
     private final String g_tc_cea03;
     private final String g_tc_cea04;
     private final String g_tc_cea05;
@@ -25,6 +26,10 @@ public class KT07_Main_RowItem {
         return g_tc_cea06;
     }
 
+    public String getG_TC_CEA01() {
+        return g_TC_CEA01;
+    }
+
     public String getG_tc_ceb04() {
         return g_tc_ceb04;
     }
@@ -41,7 +46,8 @@ public class KT07_Main_RowItem {
         return g_tc_cea09;
     }
 
-    public KT07_Main_RowItem(String g_tc_cea03, String g_tc_cea04, String g_tc_cea05, String g_tc_cea06, String g_tc_cea08, String g_tc_cea09, String g_tc_ceb04) {
+    public KT07_Main_RowItem(String g_TC_CEA01, String g_tc_cea03, String g_tc_cea04, String g_tc_cea05, String g_tc_cea06, String g_tc_cea08, String g_tc_cea09, String g_tc_ceb04) {
+        this.g_TC_CEA01 = g_TC_CEA01;
         this.g_tc_cea03 = g_tc_cea03;
         this.g_tc_cea04 = g_tc_cea04;
         this.g_tc_cea05 = g_tc_cea05;

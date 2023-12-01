@@ -1,5 +1,6 @@
 package com.lelong.kythuat.KT07;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -100,7 +101,7 @@ public class KT07_DB {
         String selectQuery = null;
         if (g_title.startsWith("DH") || g_title.startsWith("BL")) {
             //Fill Data của loại tiêu thụ
-            selectQuery = " SELECT tc_cea03,tc_cea04,tc_cea05,tc_cea06,tc_cea08, CASE WHEN tc_cea09 = 'null' THEN '' ELSE tc_cea09 END AS tc_cea09, " +
+            selectQuery = " SELECT tc_cea01,tc_cea03,tc_cea04,tc_cea05,tc_cea06,tc_cea08, CASE WHEN tc_cea09 = 'null' THEN '' ELSE tc_cea09 END AS tc_cea09, " +
                     " COALESCE((SELECT tc_ceb04 FROM tc_ceb_file WHERE tc_ceb01 = tc_cea01 AND tc_ceb02 = TC_CEA04 AND tc_cebdate = '" + g_tc_cebdate + "' ),0) AS  tc_ceb04 " +
                     " FROM tc_cea_file WHERE tc_cea01 = '" + g_title + "' " +
                     " ORDER BY TC_CEA03 ";
@@ -108,7 +109,7 @@ public class KT07_DB {
 
         if(g_title.length() == 1 ){
             //Fill Data của Xưởng
-            selectQuery = " SELECT tc_cea03,tc_cea04,tc_cea05,tc_cea06,tc_cea08, CASE WHEN tc_cea09 = 'null' THEN '' ELSE tc_cea09 END AS tc_cea09, " +
+            selectQuery = " SELECT tc_cea01,tc_cea03,tc_cea04,tc_cea05,tc_cea06,tc_cea08, CASE WHEN tc_cea09 = 'null' THEN '' ELSE tc_cea09 END AS tc_cea09, " +
                     " COALESCE((SELECT tc_ceb04 FROM tc_ceb_file WHERE tc_ceb01 = tc_cea01 AND tc_ceb02 = TC_CEA04 AND tc_cebdate = '" + g_tc_cebdate + "' ),0) AS  tc_ceb04 " +
                     " FROM tc_cea_file WHERE substr(tc_cea01,1,2) IN ('DH','BL')  AND tc_cea09 = '" + g_title + "' " +
                     " ORDER BY tc_cea01,tc_cea05,tc_cea03 ";
@@ -117,5 +118,40 @@ public class KT07_DB {
         return db.rawQuery(selectQuery, null);
     }
 
+    public String ins_tc_ceb_file(String g_tc_ceb01, String g_tc_ceb02, String g_tc_ceb03,
+                               String g_tc_ceb04, String g_tc_ceb05, String g_tc_ceb06, String g_tc_cebdate, String g_tc_cebuser) {
+        try {
 
+            String selectQ = null;
+            selectQ = "SELECT count(*) FROM tc_ceb_file WHERE tc_ceb01 = '"+g_tc_ceb01+"' AND tc_ceb02 = '"+g_tc_ceb02+"' AND tc_ceb03 = '"+g_tc_ceb03+"' AND tc_ceb05 = '"+g_tc_ceb05+"' AND tc_ceb06 = '"+g_tc_ceb06+"' AND tc_cebdate = '"+g_tc_cebdate+"' AND tc_cebuser = '"+g_tc_cebuser+"' ";
+            Cursor a = db.rawQuery(selectQ, null);
+            a.moveToFirst();
+            Integer count = a.getInt(0);
+
+            if ( count == 0) {
+                ContentValues args = new ContentValues();
+                args.put("tc_ceb01", g_tc_ceb01);
+                args.put("tc_ceb02", g_tc_ceb02);
+                args.put("tc_ceb03", g_tc_ceb03);
+                args.put("tc_ceb04", g_tc_ceb04);
+                args.put("tc_ceb05", g_tc_ceb05);
+                args.put("tc_ceb06", g_tc_ceb06);
+                args.put("tc_cebdate", g_tc_cebdate);
+                args.put("tc_cebuser", g_tc_cebuser);
+
+                db.insert(TABLE_NAME_TC_CEB, null, args);
+            }else if(count>=1){
+                db.execSQL("UPDATE " +TABLE_NAME_TC_CEB+ " SET tc_ceb04 = '"+g_tc_ceb04+"' " +
+                        "WHERE tc_ceb01 = '"+g_tc_ceb01+"' AND tc_ceb02 = '"+g_tc_ceb02+"' " +
+                        "AND tc_ceb03 = '"+g_tc_ceb03+"' AND tc_ceb05 = '"+g_tc_ceb05+"' " +
+                        "AND tc_ceb06 = '"+g_tc_ceb06+"' AND tc_cebdate = '"+g_tc_cebdate+"' " +
+                        "AND tc_cebuser = '"+g_tc_cebuser+"' "  );
+
+            }
+                return "TRUE";
+
+        } catch (Exception e) {
+            return "FALSE";
+        }
+    }
 }

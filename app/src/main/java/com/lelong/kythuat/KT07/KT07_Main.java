@@ -104,11 +104,6 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
         View headerView = relativeLayout.findViewById(R.id.nav_header);
         //View headerView = navigationView.getHeaderView(0); // Lấy reference đến header của NavigationView
 
-        if (headerView != null) {
-            // Lấy các thành phần trong headerView ở đây
-        } else {
-            Log.e("TAG", "headerView is null");
-        }
         tc_cebuser = headerView.findViewById(R.id.tv_tc_cebuser);
         tc_ceb06 = headerView.findViewById(R.id.tv_tc_ceb06);
         tv_tc_ceb03 = headerView.findViewById(R.id.tv_tc_ceb03);
@@ -135,7 +130,11 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
         int hour = currentTime.getHour();
 
         String amPm = (hour < 12) ? "AM" : "PM";
+
         tc_ceb06.setText(amPm);
+        kt07MainRowItems_list = new ArrayList<KT07_Main_RowItem>();
+        kt07MainAdapter = new KT07_Main_Adapter(getApplicationContext(), R.layout.kt07_listdata_item, kt07MainRowItems_list, tv_tc_ceb03,tc_ceb06,tv_tc_cebdate,tc_cebuser);
+        rcv_hangmuc.setAdapter(kt07MainAdapter);
 
         addEvents();
     }
@@ -144,10 +143,6 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
         rcv_hangmuc = findViewById(R.id.rcv_hangmuc);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(KT07_Main.this);
         rcv_hangmuc.setLayoutManager(linearLayoutManager);
-        kt07MainRowItems_list = new ArrayList<KT07_Main_RowItem>();
-        kt07MainAdapter = new KT07_Main_Adapter(getApplicationContext(), R.layout.kt07_listdata_item, kt07MainRowItems_list);
-        rcv_hangmuc.setAdapter(kt07MainAdapter);
-
         expandableListView = findViewById(R.id.navMenu);
         KT07_GroupAdapter = new KT07_GroupAdapter(this,groupList,contentCollection,this);
         expandableListView.setAdapter(KT07_GroupAdapter);
@@ -355,6 +350,7 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
             kt07MainRowItems_list.clear();
             for (int i = 0; i < num; i++) {
                 try {
+                    String G_TC_CEA01 = cursor.getString(cursor.getColumnIndexOrThrow("tc_cea01"));
                     String G_TC_CEA03 = cursor.getString(cursor.getColumnIndexOrThrow("tc_cea03"));
                     String G_TC_CEA04 = cursor.getString(cursor.getColumnIndexOrThrow("tc_cea04"));
                     String G_TC_CEA05 = cursor.getString(cursor.getColumnIndexOrThrow("tc_cea05"));
@@ -363,7 +359,7 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
                     String G_TC_CEA09 = cursor.getString(cursor.getColumnIndexOrThrow("tc_cea09"));
                     String G_TC_CEB04 = cursor.getString(cursor.getColumnIndexOrThrow("tc_ceb04"));
 
-                    kt07MainRowItems_list.add(new KT07_Main_RowItem(G_TC_CEA03,G_TC_CEA04, G_TC_CEA05, G_TC_CEA06,G_TC_CEA08,G_TC_CEA09, G_TC_CEB04));
+                    kt07MainRowItems_list.add(new KT07_Main_RowItem(G_TC_CEA01,G_TC_CEA03,G_TC_CEA04, G_TC_CEA05, G_TC_CEA06,G_TC_CEA08,G_TC_CEA09, G_TC_CEB04));
                 } catch (Exception e) {
                     String err = e.toString();
                 }
@@ -600,6 +596,7 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
         kt07MainRowItems_list.clear();
         for (int i = 0; i < num; i++) {
             try {
+                String G_TC_CEA01 = cursor.getString(cursor.getColumnIndexOrThrow("tc_cea01"));
                 String G_TC_CEA03 = cursor.getString(cursor.getColumnIndexOrThrow("tc_cea03"));
                 String G_TC_CEA04 = cursor.getString(cursor.getColumnIndexOrThrow("tc_cea04"));
                 String G_TC_CEA05 = cursor.getString(cursor.getColumnIndexOrThrow("tc_cea05"));
@@ -608,7 +605,7 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
                 String G_TC_CEA09 = cursor.getString(cursor.getColumnIndexOrThrow("tc_cea09"));
                 String G_TC_CEB04 = cursor.getString(cursor.getColumnIndexOrThrow("tc_ceb04"));
 
-                kt07MainRowItems_list.add(new KT07_Main_RowItem(G_TC_CEA03,G_TC_CEA04, G_TC_CEA05, G_TC_CEA06,G_TC_CEA08,G_TC_CEA09, G_TC_CEB04));
+                kt07MainRowItems_list.add(new KT07_Main_RowItem(G_TC_CEA01, G_TC_CEA03,G_TC_CEA04, G_TC_CEA05, G_TC_CEA06,G_TC_CEA08,G_TC_CEA09, G_TC_CEB04));
             } catch (Exception e) {
                 String err = e.toString();
             }
