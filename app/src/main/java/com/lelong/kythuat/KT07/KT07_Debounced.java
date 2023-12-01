@@ -9,7 +9,7 @@ import android.text.TextWatcher;
 
 public class KT07_Debounced implements TextWatcher {
 
-    private static final long DEBOUNCE_DELAY = 6000;
+    private static final long DEBOUNCE_DELAY = 1500;
 
     private final Handler handler = new Handler(Looper.getMainLooper());
     private final Runnable runnable;

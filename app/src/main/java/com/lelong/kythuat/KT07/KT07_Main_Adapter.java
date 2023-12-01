@@ -63,11 +63,17 @@ public class KT07_Main_Adapter extends RecyclerView.Adapter<KT07_Main_Adapter.Da
             @Override
             public void onTextChanged(String text) {
                 int sodo = Integer.parseInt(text);
+
                 if(sodo>0) {
+
+                    text = String.valueOf(sodo);
                     int adapterPosition_tmp = holder.getAdapterPosition();
                     editingPosition = adapterPosition_tmp;
                     // Gọi phương thức để xử lý sự kiện trực tiếp từ Adapter
-                    handleTextChanged(editingPosition, text);
+                    if(editingPosition >= 0 ) {
+                        handleTextChanged(editingPosition, text);
+                        kt07MainRowItems_list.get(editingPosition).setG_tc_ceb04(text);
+                    }
 
                 }
 
