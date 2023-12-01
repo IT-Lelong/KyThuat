@@ -62,8 +62,8 @@ public class KT07_Main_Adapter extends RecyclerView.Adapter<KT07_Main_Adapter.Da
         KT07_Debounced debouncedTextWatcher = new KT07_Debounced(new KT07_Debounced.TextWatcherListener() {
             @Override
             public void onTextChanged(String text) {
-
-                if(!Objects.equals(text, "0")) {
+                int sodo = Integer.parseInt(text);
+                if(sodo>0) {
                     int adapterPosition_tmp = holder.getAdapterPosition();
                     editingPosition = adapterPosition_tmp;
                     // Gọi phương thức để xử lý sự kiện trực tiếp từ Adapter
