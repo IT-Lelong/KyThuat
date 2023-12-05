@@ -59,6 +59,7 @@ public class KT07_Main_Adapter extends RecyclerView.Adapter<KT07_Main_Adapter.Da
         holder.tv_tc_cea09.setText(kt07MainRowItems_list.get(adapterPosition).getG_tc_cea09());
         holder.edt_tc_ceb04.setText(kt07MainRowItems_list.get(adapterPosition).getG_tc_ceb04());
 
+        //Insert dữ liệu vào bảng ảo tc_ceb (S)
         KT07_Debounced debouncedTextWatcher = new KT07_Debounced(new KT07_Debounced.TextWatcherListener() {
             @Override
             public void onTextChanged(String text) {
@@ -69,7 +70,6 @@ public class KT07_Main_Adapter extends RecyclerView.Adapter<KT07_Main_Adapter.Da
                     text = String.valueOf(sodo);
                     int adapterPosition_tmp = holder.getAdapterPosition();
                     editingPosition = adapterPosition_tmp;
-                    // Gọi phương thức để xử lý sự kiện trực tiếp từ Adapter
                     if(editingPosition >= 0 ) {
                         handleTextChanged(editingPosition, text);
                         kt07MainRowItems_list.get(editingPosition).setG_tc_ceb04(text);
@@ -81,7 +81,7 @@ public class KT07_Main_Adapter extends RecyclerView.Adapter<KT07_Main_Adapter.Da
         });
 
         holder.edt_tc_ceb04.addTextChangedListener(debouncedTextWatcher);
-
+        //Insert dữ liệu vào bảng ảo tc_ceb (E)
 
     }
 
@@ -103,6 +103,7 @@ public class KT07_Main_Adapter extends RecyclerView.Adapter<KT07_Main_Adapter.Da
             edt_tc_ceb04 = itemView.findViewById(R.id.edt_tc_ceb04);
         }
     }
+    //Insert dữ liệu vào bảng ảo tc_ceb (S)
     private void handleTextChanged(int adapterPosition, String text) {
         kt07Db.ins_tc_ceb_file(kt07MainRowItems_list.get(adapterPosition).getG_TC_CEA01(),
                 kt07MainRowItems_list.get(adapterPosition).getG_tc_cea03(),
@@ -113,5 +114,6 @@ public class KT07_Main_Adapter extends RecyclerView.Adapter<KT07_Main_Adapter.Da
                 tv_tc_cebdate.getText().toString(),
                 tv_tc_cebuser.getText().toString());
     }
+    //Insert dữ liệu vào bảng ảo tc_ceb (E)
 }
 

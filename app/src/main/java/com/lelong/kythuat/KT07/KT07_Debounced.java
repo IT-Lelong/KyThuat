@@ -23,12 +23,12 @@ public class KT07_Debounced implements TextWatcher {
 
     @Override
     public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        // Không cần thực hiện gì ở đây
+
     }
 
     @Override
     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        // Không cần thực hiện gì ở đây
+
     }
 
 

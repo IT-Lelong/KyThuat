@@ -3,6 +3,7 @@ package com.lelong.kythuat.KT07;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,8 @@ public class KT07_GroupAdapter extends BaseExpandableListAdapter {
     private Map<String, List<String>> contentCollection;
     private List<String> groupList;
     KT07_Main_FillData kt07MainFillData ;
+    private int selectedGroup = -1;
+    private int selectedChild = -1;
     public KT07_GroupAdapter(Context context, List<String> groupList,
                              Map<String, List<String>> contentCollection,
                              KT07_Main_FillData data_interface){
@@ -28,6 +31,11 @@ public class KT07_GroupAdapter extends BaseExpandableListAdapter {
         this.kt07MainFillData = (KT07_Main_FillData)  data_interface;
     }
 
+    public void setSelectedItem(int groupPosition, int childPosition) {
+        selectedGroup = groupPosition;
+        selectedChild = childPosition;
+        notifyDataSetChanged();
+    }
     @Override
     public int getGroupCount() {
         return contentCollection.size();
@@ -87,12 +95,18 @@ public class KT07_GroupAdapter extends BaseExpandableListAdapter {
         TextView item = view.findViewById(R.id.tv_content);
 
         item.setText(model);
-
+        if (i == selectedGroup && i1 == selectedChild) {
+            view.setBackgroundResource(R.drawable.selected_background); // Thay đổi thành drawable bạn muốn
+        } else {
+            view.setBackgroundResource(android.R.color.transparent);
+        }
         item.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View v) {
+
                 kt07MainFillData.fill_data(model);
+                setSelectedItem(i, i1);
             }
         });
 

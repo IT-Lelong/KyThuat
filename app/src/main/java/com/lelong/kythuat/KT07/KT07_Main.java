@@ -9,7 +9,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -17,13 +19,13 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ImageSpan;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.ExpandableListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 import com.lelong.kythuat.R;
@@ -53,7 +55,7 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
     Map<String, List<String>> contentCollection;
     ExpandableListView expandableListView;
     KT07_GroupAdapter KT07_GroupAdapter;
-
+    private String model_delete;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     TextView tc_cebuser, tc_ceb06, tv_tc_ceb03, tv_tc_cebdate;
@@ -84,7 +86,7 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
         kt07Db = new KT07_DB(this);
         kt07Db.open();
         kt07Db.create_table();
-
+        kt07Db.delete_table();
 
 
         drawerLayout = findViewById(R.id.drawer_layout);
@@ -153,7 +155,7 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
         String g_check = null;
 
 
-        Menu menu = navigationView.getMenu();
+//        Menu menu = navigationView.getMenu();
 
 
         contentCollection = new HashMap<String, List<String>>();
@@ -299,7 +301,7 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
 //            menu_curs.close();
 //        }
 
-        menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "").setEnabled(false);
+//        menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "").setEnabled(false);
         //menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "").setEnabled(false);
         SpannableString spannable = new SpannableString("拋轉資料 Đăng tải dữ liệu   ");
         Drawable uploadIcon = getResources().getDrawable(R.drawable.loaddata);
@@ -309,13 +311,13 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
         TextView textupload = findViewById(R.id.kt07_textUpload);
         textupload.setText(spannable);
 
-        SpannableString deleteSpannable = new SpannableString("刪除資料 Xóa dữ liệu   ");
-        Drawable deleteIcon = getResources().getDrawable(R.drawable.trash);
-        ImageSpan imagedelete = new ImageSpan(deleteIcon , ImageSpan.ALIGN_BASELINE);
-        deleteSpannable.setSpan(imagedelete, deleteSpannable.length() - 1, deleteSpannable.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-        deleteIcon.setBounds(0, 0, 40, 40); // Điều chỉnh kích thước theo ý muốn
-        TextView textdelete = findViewById(R.id.kt07_textDelete);
-        textdelete .setText(deleteSpannable );
+//        SpannableString deleteSpannable = new SpannableString("刪除資料 Xóa dữ liệu   ");
+//        Drawable deleteIcon = getResources().getDrawable(R.drawable.trash);
+//        ImageSpan imagedelete = new ImageSpan(deleteIcon , ImageSpan.ALIGN_BASELINE);
+//        deleteSpannable.setSpan(imagedelete, deleteSpannable.length() - 1, deleteSpannable.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+//        deleteIcon.setBounds(0, 0, 40, 40); // Điều chỉnh kích thước theo ý muốn
+//        TextView textdelete = findViewById(R.id.kt07_textDelete);
+//        textdelete .setText(deleteSpannable );
 //        SpannableString spannable_del = new SpannableString("刪除資料 Xóa dữ liệu");
 //        spannable_del.setSpan(new ForegroundColorSpan(Color.WHITE), 0, spannable_del.length(), 0);
 //        menu.add(Menu.NONE, Menu.NONE, Menu.NONE, spannable_del).setIcon(R.drawable.dt);
@@ -387,7 +389,7 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
                 // Xử lý khi chọn Home
                 id_menu = 2;
                 TabLayout.Tab firstTab1 = tabLayout.newTab(); // Create a new Tab names
-                firstTab1.setText("DHG\n各廠用瓦斯、氧氣度數   Bảng Thống Kê Gas - Oxy Của Toàn Xưởng"); // set the Text for the first Tab
+                firstTab1.setText("DHG\n各廠用瓦斯、氧氣度數   Bảng Thống Kê Gas - Oxy Của Toàn  Xưởng"); // set the Text for the first Tab
                 tabLayout.addTab(firstTab1);
                 break;
             case R.id.nav_dien:
@@ -426,6 +428,149 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
         }
         return super.onOptionsItemSelected(item);
     }
+
+//    public void onTextDeteleClicked(View view){
+//        showConfirmationDialog(model_delete);
+//
+//
+//    }
+//    private void showConfirmationDialog(String model) {
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        builder.setTitle("Xác nhận");
+//        builder.setMessage("Bạn có chắc muốn xóa dữ liệu không?");
+//
+//        builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                if (model==null ){
+//                    Toast.makeText(KT07_Main.this, "Hãy lựa chọn dữ liệu bạn muốn xử lý", Toast.LENGTH_SHORT).show();}
+//                else {
+//                    showDatePicker(model);
+//                }
+//            }
+//        });
+//
+//        builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                // Hủy bỏ hành động xóa dữ liệu
+//                // Nếu bạn muốn thực hiện một hành động nào đó khi người dùng chọn "Không"
+//            }
+//        });
+//
+//        AlertDialog dialog = builder.create();
+//        dialog.show();
+//    }
+//
+//    private void showDatePicker(String model) {
+//        Calendar calendar = Calendar.getInstance();
+//        int year = calendar.get(Calendar.YEAR);
+//        int month = calendar.get(Calendar.MONTH);
+//        int day = calendar.get(Calendar.DAY_OF_MONTH);
+//
+//        DatePickerDialog datePickerDialog = new DatePickerDialog(
+//                this,
+//                new DatePickerDialog.OnDateSetListener() {
+//                    @Override
+//                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+//                        // Thực hiện hành động với ngày tháng đã chọn ở đây
+//                        String selectedDate = dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
+//
+//                        kt07Db.delete_table(selectedDate,model);
+//                    }
+//                },
+//                year,
+//                month,
+//                day
+//        );
+//
+//        datePickerDialog.show();
+//    }
+
+
+    public void onTextUploadClicked(View view) {
+//        Thread UpLoad_fia = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//
+//                Cursor upl = kt07Db.getAll_tc_cea_data();
+//                jsonupload = cur2Json(upl);
+//
+//                try {
+//                    ujobject = new JSONObject();
+//                    //ujobject.put("docNum", edt_maCT.getText().toString());
+//                    ujobject.put("ujson", jsonupload);
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//
+//                final String res = upload_all("http://172.16.40.20/" + g_server + "/TechAPP/upload_tc_ceb.php");
+//                if (!res.equals("False")) {
+//                    if (res.length() > 6) {
+//                        try {
+//                            JSONArray jsonarray = new JSONArray(res);
+//                            for (int i = 0; i < jsonarray.length(); i++) {
+//                                JSONObject jsonObject = jsonarray.getJSONObject(i);
+//                                String g_tc_cea01 = jsonObject.getString("TC_CEB01"); //Loai
+//                                String g_tc_cea03 = jsonObject.getString("TC_CEB02"); //STT
+//                                String g_tc_ceb03 = jsonObject.getString("TC_CEB03"); //Ngày tiêu hao
+//                                String g_tc_cebdate = jsonObject.getString("TC_CEBDATE"); //Ngày nhập
+//                                String g_tc_ceb06 = jsonObject.getString("TC_CEB06"); //Bảng số đo
+//
+//                                if (g_tc_ceb06.equals("0")) {
+//                                    g_tc_ceb06 = "AM";
+//                                } else {
+//                                    g_tc_ceb06 = "PM";
+//                                }
+//                                kt07Db.appendUPDAE(g_tc_cea01, g_tc_cea03, "Đã chuyển", g_tc_ceb03, g_tc_cebdate, "tc_cebstatus_in", g_tc_ceb06);
+//                                //trangthai.setText("Chưa chuyển");
+//                            }
+//                            kt07Db.updateALL_tc_cea_in();
+//                            a = "ok";
+//                        } catch (JSONException e) {
+//                            String abc = e.toString();
+//                            e.printStackTrace();
+//                        }
+//                    } else {
+//                        kt07Db.updateALL_tc_cea_in();
+//                        a = "ok";
+//                    }
+//                }
+//            }
+//        });
+//
+//        Thread Load_fia = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                Looper.prepare(); // Chuẩn bị luồng để chạy vòng lặp sự kiện
+//                //getLVData();
+//                Looper.loop(); // Bắt đầu vòng lặp sự kiện
+//            }
+//        });
+//        //dialog.dismiss();
+//
+//        new Thread() {
+//            @Override
+//            public void run() {
+//                UpLoad_fia.start();
+//                try {
+//                    UpLoad_fia.join();
+//                } catch (InterruptedException e) {
+//                }
+//                if (a == "ok") {
+//                    Load_fia.start();
+//                    try {
+//                        Load_fia.join();
+//                    } catch (InterruptedException e) {
+//                    }
+//                }
+//
+//            }
+//        }.start();
+    }
+
+
+
 
    /* private void Down_Datatable() {
         Thread UpLoad_fia = new Thread(new Runnable() {

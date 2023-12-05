@@ -6,12 +6,16 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 public class KT07_DB {
     private Context mCtx = null;
     //String DATABASE_NAME = "KyThuatDB02.db";
     String DATABASE_NAME = "KyThuatDB.db";
     public static SQLiteDatabase db = null;
-
+    SimpleDateFormat dateFormat;
     private final static String TABLE_NAME_TC_CEB = "tc_ceb_file";
     private final static String tc_ceb01 = "tc_ceb01"; ////Loai
     private final static String tc_ceb02 = "tc_ceb02"; ////STT
@@ -55,7 +59,22 @@ public class KT07_DB {
     }
 
     public void delete_table() {
-        db.delete(TABLE_NAME_TC_CEB, null, null);
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MONTH, -3);
+        Date threeMonthsAgo = calendar.getTime();
+        dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        String threeMonthsAgoString = dateFormat.format(threeMonthsAgo);
+
+        // Xây dựng điều kiện WHERE
+        String whereClause = "strftime('%Y/%m/%d', tc_cebdate) <= '" + threeMonthsAgoString + "'";
+
+        // Thực hiện xóa dữ liệu
+
+            db.delete(TABLE_NAME_TC_CEB, whereClause, null);
+
+
+
+
     }
 
     public Cursor get_menu_data(String ID) {

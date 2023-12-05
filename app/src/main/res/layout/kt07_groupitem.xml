@@ -6,8 +6,11 @@
 
     <TextView
         android:id="@+id/group_kt07"
-        android:layout_width="108dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="50dp"
+        android:gravity="center"
         android:text="" />
+
+
+<!--    android:paddingRight="50dp"-->
 </LinearLayout>
