@@ -15,6 +15,7 @@ import android.content.DialogInterface;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Looper;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ImageSpan;
@@ -31,6 +32,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.lelong.kythuat.R;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -49,7 +51,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class KT07_Main extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener , KT07_Main_FillData{
+public class KT07_Main extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener , KT07_Main_FillData {
     List<String> groupList;
     List<String> childList;
     Map<String, List<String>> contentCollection;
@@ -71,6 +73,7 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
     RecyclerView rcv_hangmuc;
     KT07_Main_Adapter kt07MainAdapter;
     List<KT07_Main_RowItem> kt07MainRowItems_list;
+    String model_udate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,7 +138,7 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
 
         tc_ceb06.setText(amPm);
         kt07MainRowItems_list = new ArrayList<KT07_Main_RowItem>();
-        kt07MainAdapter = new KT07_Main_Adapter(getApplicationContext(), R.layout.kt07_listdata_item, kt07MainRowItems_list, tv_tc_ceb03,tc_ceb06,tv_tc_cebdate,tc_cebuser);
+        kt07MainAdapter = new KT07_Main_Adapter(getApplicationContext(), R.layout.kt07_listdata_item, kt07MainRowItems_list, tv_tc_ceb03, tc_ceb06, tv_tc_cebdate, tc_cebuser);
         rcv_hangmuc.setAdapter(kt07MainAdapter);
 
         addEvents();
@@ -146,7 +149,7 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(KT07_Main.this);
         rcv_hangmuc.setLayoutManager(linearLayoutManager);
         expandableListView = findViewById(R.id.navMenu);
-        KT07_GroupAdapter = new KT07_GroupAdapter(this,groupList,contentCollection,this);
+        KT07_GroupAdapter = new KT07_GroupAdapter(this, groupList, contentCollection, this);
         expandableListView.setAdapter(KT07_GroupAdapter);
     }
 
@@ -164,7 +167,7 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
         Cursor cursorLoaiTieuThu = kt07Db.get_menu_data(ID);
         // Tạo hạng mục "Xưởng" từ Cursor
 //        SubMenu xuongSubMenu = menu.addSubMenu("Xưởng");
-        for(String group : groupList) {
+        for (String group : groupList) {
             if (group.equals("Xưởng")) {
                 if (cursorXuong != null && cursorXuong.moveToFirst()) {
                     childList = new ArrayList<>();
@@ -178,7 +181,7 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
                     //xuongSubMenu.setGroupDividerEnabled(true);
 
                 }
-            } else if (group.equals("Điện") ) {
+            } else if (group.equals("Điện")) {
                 if (cursorLoaiTieuThu != null && cursorLoaiTieuThu.moveToFirst()) {
                     childList = new ArrayList<>();
                     do {
@@ -193,7 +196,7 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
                     } while (cursorLoaiTieuThu.moveToNext());
 
                 }
-            }else  if (group.equals("Nước") ) {
+            } else if (group.equals("Nước")) {
                 if (cursorLoaiTieuThu != null && cursorLoaiTieuThu.moveToFirst()) {
                     childList = new ArrayList<>();
                     do {
@@ -204,11 +207,10 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
                             childList.add(g_tc_cea01);
                         }
                     } while (cursorLoaiTieuThu.moveToNext());
-              
+
 
                 }
-            }
-            else  if (group.equals("Gas") ) {
+            } else if (group.equals("Gas")) {
                 if (cursorLoaiTieuThu != null && cursorLoaiTieuThu.moveToFirst()) {
                     childList = new ArrayList<>();
                     do {
@@ -227,7 +229,6 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
         }
 
         // Tạo hạng mục "Loại tiêu thụ" với các submenu "Điện", "Nước", "Gas" từ Cursor
-
 
 
 //       SubMenu loaiTieuThuSubMenu = menu.addSubMenu("Loại tiêu thụ");
@@ -251,8 +252,6 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
 //            } while (cursorLoaiTieuThu.moveToNext());
 //            cursorLoaiTieuThu.close();
 //        }
-
-
 
 
 //        Cursor menu_curs = kt07Db.get_menu_data(ID);
@@ -346,7 +345,7 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
         String g_title = item.getTitle().toString();
 
         if (g_title.startsWith("DH") || g_title.startsWith("BL")) {
-            Cursor cursor = kt07Db.getAll_tc_cea_data(g_title,tv_tc_cebdate.getText().toString());
+            Cursor cursor = kt07Db.getAll_tc_cea_data(g_title, tv_tc_cebdate.getText().toString());
             cursor.moveToFirst();
             int num = cursor.getCount();
             kt07MainRowItems_list.clear();
@@ -361,7 +360,7 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
                     String G_TC_CEA09 = cursor.getString(cursor.getColumnIndexOrThrow("tc_cea09"));
                     String G_TC_CEB04 = cursor.getString(cursor.getColumnIndexOrThrow("tc_ceb04"));
 
-                    kt07MainRowItems_list.add(new KT07_Main_RowItem(G_TC_CEA01,G_TC_CEA03,G_TC_CEA04, G_TC_CEA05, G_TC_CEA06,G_TC_CEA08,G_TC_CEA09, G_TC_CEB04));
+                    kt07MainRowItems_list.add(new KT07_Main_RowItem(G_TC_CEA01, G_TC_CEA03, G_TC_CEA04, G_TC_CEA05, G_TC_CEA06, G_TC_CEA08, G_TC_CEA09, G_TC_CEB04));
                 } catch (Exception e) {
                     String err = e.toString();
                 }
@@ -489,85 +488,125 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
 
 
     public void onTextUploadClicked(View view) {
-//        Thread UpLoad_fia = new Thread(new Runnable() {
-//            @Override
-//            public void run() {
+
+        showConfirmationDialog(model_udate);
+    }
+
+    private void showConfirmationDialog(String model) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Xác nhận");
+        builder.setMessage("Bạn có chắc muốn xóa dữ liệu không?");
+
+        builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (model == null) {
+                    Toast.makeText(KT07_Main.this, "Hãy lựa chọn dữ liệu bạn muốn xử lý", Toast.LENGTH_SHORT).show();
+                } else {
+                    Down_Datatable(model);
+                }
+            }
+        });
+
+        builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Hủy bỏ hành động xóa dữ liệu
+                // Nếu bạn muốn thực hiện một hành động nào đó khi người dùng chọn "Không"
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void Down_Datatable(String model) {
+
+
+//    Thread UpLoad_fia = new Thread(new Runnable(model)) {
+//        @Override
+//        public void run() {
 //
-//                Cursor upl = kt07Db.getAll_tc_cea_data();
-//                jsonupload = cur2Json(upl);
+//            Cursor upl = kt07Db.getAll_tc_cea_data(model,);
+//            jsonupload = cur2Json(upl);
 //
-//                try {
-//                    ujobject = new JSONObject();
-//                    //ujobject.put("docNum", edt_maCT.getText().toString());
-//                    ujobject.put("ujson", jsonupload);
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
+//            try {
+//                ujobject = new JSONObject();
+//                //ujobject.put("docNum", edt_maCT.getText().toString());
+//                ujobject.put("ujson", jsonupload);
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
 //
-//                final String res = upload_all("http://172.16.40.20/" + g_server + "/TechAPP/upload_tc_ceb.php");
-//                if (!res.equals("False")) {
-//                    if (res.length() > 6) {
-//                        try {
-//                            JSONArray jsonarray = new JSONArray(res);
-//                            for (int i = 0; i < jsonarray.length(); i++) {
-//                                JSONObject jsonObject = jsonarray.getJSONObject(i);
-//                                String g_tc_cea01 = jsonObject.getString("TC_CEB01"); //Loai
-//                                String g_tc_cea03 = jsonObject.getString("TC_CEB02"); //STT
-//                                String g_tc_ceb03 = jsonObject.getString("TC_CEB03"); //Ngày tiêu hao
-//                                String g_tc_cebdate = jsonObject.getString("TC_CEBDATE"); //Ngày nhập
-//                                String g_tc_ceb06 = jsonObject.getString("TC_CEB06"); //Bảng số đo
+//            final String res = upload_all("http://172.16.40.20/" + g_server + "/TechAPP/upload_tc_ceb.php");
+//            if (!res.equals("False")) {
+//                if (res.length() > 6) {
+//                    try {
+//                        JSONArray jsonarray = new JSONArray(res);
+//                        for (int i = 0; i < jsonarray.length(); i++) {
+//                            JSONObject jsonObject = jsonarray.getJSONObject(i);
+//                            String g_tc_cea01 = jsonObject.getString("TC_CEB01"); //Loai
+//                            String g_tc_cea03 = jsonObject.getString("TC_CEB02"); //STT
+//                            String g_tc_ceb03 = jsonObject.getString("TC_CEB03"); //Ngày tiêu hao
+//                            String g_tc_cebdate = jsonObject.getString("TC_CEBDATE"); //Ngày nhập
+//                            String g_tc_ceb06 = jsonObject.getString("TC_CEB06"); //Bảng số đo
 //
-//                                if (g_tc_ceb06.equals("0")) {
-//                                    g_tc_ceb06 = "AM";
-//                                } else {
-//                                    g_tc_ceb06 = "PM";
-//                                }
-//                                kt07Db.appendUPDAE(g_tc_cea01, g_tc_cea03, "Đã chuyển", g_tc_ceb03, g_tc_cebdate, "tc_cebstatus_in", g_tc_ceb06);
-//                                //trangthai.setText("Chưa chuyển");
+//                            if (g_tc_ceb06.equals("0")) {
+//                                g_tc_ceb06 = "AM";
+//                            } else {
+//                                g_tc_ceb06 = "PM";
 //                            }
-//                            kt07Db.updateALL_tc_cea_in();
-//                            a = "ok";
-//                        } catch (JSONException e) {
-//                            String abc = e.toString();
-//                            e.printStackTrace();
+//                            kt07Db.appendUPDAE(g_tc_cea01, g_tc_cea03, "Đã chuyển", g_tc_ceb03, g_tc_cebdate, "tc_cebstatus_in", g_tc_ceb06);
+//                            //trangthai.setText("Chưa chuyển");
 //                        }
-//                    } else {
 //                        kt07Db.updateALL_tc_cea_in();
 //                        a = "ok";
+//                    } catch (JSONException e) {
+//                        String abc = e.toString();
+//                        e.printStackTrace();
 //                    }
+//                } else {
+//                    kt07Db.updateALL_tc_cea_in();
+//                    a = "ok";
 //                }
 //            }
-//        });
+//        }
+//    });
 //
-//        Thread Load_fia = new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                Looper.prepare(); // Chuẩn bị luồng để chạy vòng lặp sự kiện
-//                //getLVData();
-//                Looper.loop(); // Bắt đầu vòng lặp sự kiện
+//    Thread Load_fia = new Thread(new Runnable() {
+//        @Override
+//        public void run() {
+//            Looper.prepare(); // Chuẩn bị luồng để chạy vòng lặp sự kiện
+//            //getLVData();
+//            Looper.loop(); // Bắt đầu vòng lặp sự kiện
+//        }
+//    });
+//    //dialog.dismiss();
+//
+//        new
+//
+//    Thread() {
+//        @Override
+//        public void run () {
+//            UpLoad_fia.start();
+//            try {
+//                UpLoad_fia.join();
+//            } catch (InterruptedException e) {
 //            }
-//        });
-//        //dialog.dismiss();
-//
-//        new Thread() {
-//            @Override
-//            public void run() {
-//                UpLoad_fia.start();
+//            if (a == "ok") {
+//                Load_fia.start();
 //                try {
-//                    UpLoad_fia.join();
+//                    Load_fia.join();
 //                } catch (InterruptedException e) {
 //                }
-//                if (a == "ok") {
-//                    Load_fia.start();
-//                    try {
-//                        Load_fia.join();
-//                    } catch (InterruptedException e) {
-//                    }
-//                }
-//
 //            }
-//        }.start();
-    }
+//
+//        }
+//    }.
+//
+//    start();
+
+}
 
 
 
@@ -723,7 +762,7 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
     @Override
     public void fill_data(String model) {
         Cursor cursor = null;
-
+        model_udate = model;
         if (model.startsWith("DH") || model.startsWith("BL")) {
             //Fill Data của loại tiêu thụ (S)
             cursor  = kt07Db.getAll_tc_cea_data(model,tv_tc_cebdate.getText().toString());
