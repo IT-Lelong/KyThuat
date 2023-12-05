@@ -66,7 +66,7 @@ public class KT07_DB {
         String threeMonthsAgoString = dateFormat.format(threeMonthsAgo);
 
         // Xây dựng điều kiện WHERE
-        String whereClause = "strftime('%Y/%m/%d', tc_cebdate) <= '" + threeMonthsAgoString + "'";
+        String whereClause = "substr(tc_cebdate, 1, 10) <= '" + threeMonthsAgoString + "'";
 
         // Thực hiện xóa dữ liệu
 
