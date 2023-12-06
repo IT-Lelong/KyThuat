@@ -136,6 +136,13 @@ public class KT07_DB {
 
         return db.rawQuery(selectQuery, null);
     }
+    public Cursor getAll_tc_ceb_data(String g_title,String g_tc_cebdate ) {
+        String selectQuery = null;
+            //Fill Data của loại tiêu thụ
+            selectQuery = " SELECT tc_ceb01,tc_ceb02,tc_ceb03,tc_ceb04,tc_ceb05,tc_cebdate,tc_cebuser,tc_ceb06 FROM tc_ceb_file " +
+                    "  WHERE tc_ceb01 IN ('" + g_title + "') AND tc_cebdate = '"+g_tc_cebdate+"' " ;
+        return db.rawQuery(selectQuery, null);
+    }
 
     public String ins_tc_ceb_file(String g_tc_ceb01, String g_tc_ceb02, String g_tc_ceb03,
                                String g_tc_ceb04, String g_tc_ceb05, String g_tc_ceb06, String g_tc_cebdate, String g_tc_cebuser) {
