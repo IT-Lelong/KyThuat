@@ -674,7 +674,7 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
 
                 // Đặt kích thước chữ cho các mục trong danh sách thả xuống
                 textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20); // Điều chỉnh kích thước chữ theo mong muốn
-                textView.setPadding(paddingInPixels, paddingInPixels, paddingInPixels, paddingInPixels);
+//                textView.setPadding(paddingInPixels, paddingInPixels, paddingInPixels, paddingInPixels);
                 return textView;
             }
         };
