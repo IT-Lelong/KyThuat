@@ -352,6 +352,32 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
                 datePickerDialog.show();
             }
         });
+        tc_ceb06.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final CharSequence[] items = {"AM", "PM"};
+
+                // Tạo AlertDialog
+                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                builder.setTitle("Chọn giờ");
+
+                // Thiết lập danh sách lựa chọn và xử lý sự kiện khi một phần tử được chọn
+                builder.setItems(items, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Lấy giá trị được chọn từ danh sách
+                        String selectedValue = items[which].toString();
+
+                        // Cập nhật giá trị của TextView
+                        tc_ceb06.setText(selectedValue);
+                    }
+                });
+
+                // Hiển thị AlertDialog
+                builder.show();
+            }
+
+        });
     }
 
     @Override
