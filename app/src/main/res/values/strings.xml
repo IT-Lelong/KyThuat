@@ -163,6 +163,8 @@
     /*Fragment_KT07*/
     <string name="tc_cea03">序號</string>
     <string name="tc_cea04">廠別</string>
+    <string name="tc_cea05_tc_cea09">編號/棟別</string>
+    <string name="tc_ceb04_old">上次時鐘數據</string>
     <string name="tc_cea05">編號</string>
     <string name="tc_cea06">目標值</string>
     <string name="tc_cea07">備住</string>

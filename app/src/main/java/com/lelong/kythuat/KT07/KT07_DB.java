@@ -115,21 +115,36 @@ public class KT07_DB {
         return db.rawQuery(selectQuery, null);
     }
 
-
-    public Cursor getAll_tc_cea_data(String g_title, String g_tc_cebdate) {
+    public Integer getCheck(String g_tc_cebdate, String g_tc_ceb06){
+        String selectQuery = null;
+        selectQuery = " SELECT count(*) FROM tc_ceb_file WHERE tc_cebdate = '" + g_tc_cebdate + "' AND tc_ceb06 = '"+g_tc_ceb06+"' ";
+        Cursor a = db.rawQuery(selectQuery, null);
+        a.moveToFirst();
+        Integer count = a.getInt(0);
+        return count;
+    }
+    public Cursor getAll_tc_cea_data(String g_title, String g_tc_cebdate, String g_tc_ceb06) {
         String selectQuery = null;
         if (g_title.startsWith("DH") || g_title.startsWith("BL")) {
             //Fill Data của loại tiêu thụ
-            selectQuery = " SELECT tc_cea01,tc_cea03,tc_cea04,tc_cea05,tc_cea06,tc_cea08, CASE WHEN tc_cea09 = 'null' THEN '' ELSE tc_cea09 END AS tc_cea09, " +
-                    " COALESCE((SELECT tc_ceb04 FROM tc_ceb_file WHERE tc_ceb01 = tc_cea01 AND tc_ceb02 = TC_CEA03 AND tc_cebdate = '" + g_tc_cebdate + "' ),0) AS  tc_ceb04 " +
+            selectQuery = " SELECT tc_cea01,tc_cea03,tc_cea04,(tc_cea05||'/'||CASE WHEN tc_cea09 = 'null' THEN '' ELSE tc_cea09 END) AS tc_cea05 ,tc_cea06,tc_cea08,  " +
+                    " COALESCE((select tc_ceb04 from  (SELECT * FROM tc_ceb_file   WHERE  tc_ceb02 =TC_CEA03 AND tc_ceb01 = tc_cea01 and  tc_cebdate||tc_ceb06 <> '"+g_tc_cebdate+""+g_tc_ceb06+"' " +
+                    " order by tc_cebdate desc ,tc_ceb06 desc)  LIMIT 1 ),0) AS tc_ceb04_old, " +
+                    " COALESCE((select tc_cebdate||'-'||tc_ceb06  from  (SELECT * FROM tc_ceb_file   WHERE  tc_ceb02 =TC_CEA03 AND tc_ceb01 = tc_cea01 and  tc_cebdate||tc_ceb06 <> '"+g_tc_cebdate+""+g_tc_ceb06+"' "+
+                    " order by tc_cebdate desc ,tc_ceb06 desc)  LIMIT 1 ),' ') AS tc_cebdate_ceb06, "+
+                    " COALESCE((SELECT tc_ceb04 FROM tc_ceb_file WHERE tc_ceb01 = tc_cea01 AND tc_ceb02 = TC_CEA03 AND tc_cebdate = '" + g_tc_cebdate + "' AND tc_ceb06 = '"+g_tc_ceb06+"' ),0) AS  tc_ceb04 " +
                     " FROM tc_cea_file WHERE tc_cea01 = '" + g_title + "' " +
                     " ORDER BY TC_CEA03 ";
         }
 
         if(g_title.length() == 1 ){
             //Fill Data của Xưởng
-            selectQuery = " SELECT tc_cea01,tc_cea03,tc_cea04,tc_cea05,tc_cea06,tc_cea08, CASE WHEN tc_cea09 = 'null' THEN '' ELSE tc_cea09 END AS tc_cea09, " +
-                    " COALESCE((SELECT tc_ceb04 FROM tc_ceb_file WHERE tc_ceb01 = tc_cea01 AND tc_ceb02 = TC_CEA03 AND tc_cebdate = '" + g_tc_cebdate + "' ),0) AS  tc_ceb04 " +
+            selectQuery = " SELECT tc_cea01,tc_cea03,tc_cea04,(tc_cea05||'/'||CASE WHEN tc_cea09 = 'null' THEN '' ELSE tc_cea09 END ) AS tc_cea05,tc_cea06,tc_cea08, " +
+                    " COALESCE((select tc_ceb04  from  (SELECT * FROM tc_ceb_file   WHERE  tc_ceb02 =TC_CEA03 AND tc_ceb01 = tc_cea01 and  tc_cebdate||tc_ceb06 <> '"+g_tc_cebdate+""+g_tc_ceb06+"' " +
+                    " order by tc_cebdate desc ,tc_ceb06 desc)  LIMIT 1 ),0) AS tc_ceb04_old, " +
+                    " COALESCE((select tc_cebdate||'-'||tc_ceb06  from  (SELECT * FROM tc_ceb_file   WHERE  tc_ceb02 =TC_CEA03 AND tc_ceb01 = tc_cea01 and  tc_cebdate||tc_ceb06 <> '"+g_tc_cebdate+""+g_tc_ceb06+"' "+
+                    " order by tc_cebdate desc ,tc_ceb06 desc)  LIMIT 1 ),' ') AS tc_cebdate_ceb06, "+
+                    " COALESCE((SELECT tc_ceb04 FROM tc_ceb_file WHERE tc_ceb01 = tc_cea01 AND tc_ceb02 = TC_CEA03 AND tc_cebdate = '" + g_tc_cebdate + "' AND tc_ceb06 = '"+g_tc_ceb06+"' ),0) AS  tc_ceb04 " +
                     " FROM tc_cea_file WHERE substr(tc_cea01,1,2) IN ('DH','BL')  AND tc_cea09 = '" + g_title + "' " +
                     " ORDER BY tc_cea01,tc_cea05,tc_cea03 ";
         }
@@ -138,9 +153,14 @@ public class KT07_DB {
     }
     public Cursor getAll_tc_ceb_data(String g_title,String g_tc_cebdate ) {
         String selectQuery = null;
+        if(g_title =="1=1"){
+            selectQuery = " SELECT tc_ceb01,tc_ceb02,tc_ceb03,tc_ceb04,tc_ceb05,tc_cebdate,tc_cebuser,tc_ceb06 FROM tc_ceb_file " +
+                    "  WHERE  " + g_title + " AND tc_cebdate = '"+g_tc_cebdate+"' " ;
+        }else {
             //Fill Data của loại tiêu thụ
             selectQuery = " SELECT tc_ceb01,tc_ceb02,tc_ceb03,tc_ceb04,tc_ceb05,tc_cebdate,tc_cebuser,tc_ceb06 FROM tc_ceb_file " +
-                    "  WHERE tc_ceb01 IN ('" + g_title + "') AND tc_cebdate = '"+g_tc_cebdate+"' " ;
+                    "  WHERE tc_ceb01 IN ('" + g_title + "') AND tc_cebdate = '" + g_tc_cebdate + "' ";
+        }
         return db.rawQuery(selectQuery, null);
     }
 

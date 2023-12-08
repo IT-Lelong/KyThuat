@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
@@ -29,7 +28,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -89,7 +87,8 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
     private Spinner gasSpinner;
     private Spinner electricitySpinner;
     private String selectedDate ;
-    private ProgressBar progressBar;
+    private String tc_ceb06_old;
+    private String modeltmp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -153,7 +152,14 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
 
         tc_ceb06.setText(amPm);
         kt07MainRowItems_list = new ArrayList<KT07_Main_RowItem>();
-        kt07MainAdapter = new KT07_Main_Adapter(getApplicationContext(), R.layout.kt07_listdata_item, kt07MainRowItems_list, tv_tc_ceb03, tc_ceb06, tv_tc_cebdate, tc_cebuser);
+        kt07MainAdapter = new KT07_Main_Adapter(getApplicationContext(),
+                R.layout.kt07_listdata_item,
+                kt07MainRowItems_list,
+                tv_tc_ceb03,
+                tc_ceb06,
+                tv_tc_cebdate,
+                tc_cebuser,
+                (KT07_Main_FillData) this);
         rcv_hangmuc.setAdapter(kt07MainAdapter);
 
         addEvents();
@@ -355,6 +361,7 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
         tc_ceb06.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                tc_ceb06_old =tc_ceb06.getText().toString();
                 final CharSequence[] items = {"AM", "PM"};
 
                 // Tạo AlertDialog
@@ -368,8 +375,18 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
                         // Lấy giá trị được chọn từ danh sách
                         String selectedValue = items[which].toString();
 
+                        if (tc_ceb06_old != selectedValue){
+                            int count = kt07Db.getCheck(tv_tc_cebdate.getText().toString(),tc_ceb06_old );
+                            if(count >0 ) {
+                                Toast.makeText(KT07_Main.this, "Có dữ liệu bị thay đổi", Toast.LENGTH_SHORT).show();
+                            }
+                        }
                         // Cập nhật giá trị của TextView
                         tc_ceb06.setText(selectedValue);
+                        if (modeltmp == null){
+                            modeltmp =" ";
+                        }
+                        fill_data(modeltmp);
                     }
                 });
 
@@ -386,7 +403,7 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
         String g_title = item.getTitle().toString();
 
         if (g_title.startsWith("DH") || g_title.startsWith("BL")) {
-            Cursor cursor = kt07Db.getAll_tc_cea_data(g_title, tv_tc_cebdate.getText().toString());
+            Cursor cursor = kt07Db.getAll_tc_cea_data(g_title, tv_tc_cebdate.getText().toString(),tc_ceb06.getText().toString());
             cursor.moveToFirst();
             int num = cursor.getCount();
             kt07MainRowItems_list.clear();
@@ -398,10 +415,12 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
                     String G_TC_CEA05 = cursor.getString(cursor.getColumnIndexOrThrow("tc_cea05"));
                     String G_TC_CEA06 = cursor.getString(cursor.getColumnIndexOrThrow("tc_cea06"));
                     String G_TC_CEA08 = cursor.getString(cursor.getColumnIndexOrThrow("tc_cea08"));
-                    String G_TC_CEA09 = cursor.getString(cursor.getColumnIndexOrThrow("tc_cea09"));
+
+                    String G_TC_CEB04_OLD = cursor.getString(cursor.getColumnIndexOrThrow("tc_ceb04_old"));
+                    String G_TC_CEBDATE_CEB06 = cursor.getString(cursor.getColumnIndexOrThrow("tc_cebdate_ceb06"));
                     String G_TC_CEB04 = cursor.getString(cursor.getColumnIndexOrThrow("tc_ceb04"));
 
-                    kt07MainRowItems_list.add(new KT07_Main_RowItem(G_TC_CEA01, G_TC_CEA03, G_TC_CEA04, G_TC_CEA05, G_TC_CEA06, G_TC_CEA08, G_TC_CEA09, G_TC_CEB04));
+                    kt07MainRowItems_list.add(new KT07_Main_RowItem(G_TC_CEA01, G_TC_CEA03, G_TC_CEA04, G_TC_CEA05, G_TC_CEA06, G_TC_CEA08, G_TC_CEB04_OLD, G_TC_CEB04, G_TC_CEBDATE_CEB06));
                 } catch (Exception e) {
                     String err = e.toString();
                 }
@@ -1112,15 +1131,16 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
     @Override
     public void fill_data(String model) {
         Cursor cursor = null;
+        modeltmp = model;
         if (model.startsWith("DH") || model.startsWith("BL")) {
             //Fill Data của loại tiêu thụ (S)
-            cursor  = kt07Db.getAll_tc_cea_data(model,tv_tc_cebdate.getText().toString());
+            cursor  = kt07Db.getAll_tc_cea_data(model,tv_tc_cebdate.getText().toString(),tc_ceb06.getText().toString());
             //Fill Data của loại tiêu thụ (E)
         }
 
         if(model.length() == 1 ){
             //Fill Data của Xưởng (S)
-            cursor  = kt07Db.getAll_tc_cea_data(model,tv_tc_cebdate.getText().toString());
+            cursor  = kt07Db.getAll_tc_cea_data(model,tv_tc_cebdate.getText().toString(),tc_ceb06.getText().toString());
             //Fill Data của Xưởng (E)
         }
 
@@ -1135,16 +1155,22 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
                 String G_TC_CEA05 = cursor.getString(cursor.getColumnIndexOrThrow("tc_cea05"));
                 String G_TC_CEA06 = cursor.getString(cursor.getColumnIndexOrThrow("tc_cea06"));
                 String G_TC_CEA08 = cursor.getString(cursor.getColumnIndexOrThrow("tc_cea08"));
-                String G_TC_CEA09 = cursor.getString(cursor.getColumnIndexOrThrow("tc_cea09"));
+                String G_TC_CEB04_OLD = cursor.getString(cursor.getColumnIndexOrThrow("tc_ceb04_old"));
+                String G_TC_CEBDATE_CEB06 = cursor.getString(cursor.getColumnIndexOrThrow("tc_cebdate_ceb06"));
                 String G_TC_CEB04 = cursor.getString(cursor.getColumnIndexOrThrow("tc_ceb04"));
 
-                kt07MainRowItems_list.add(new KT07_Main_RowItem(G_TC_CEA01, G_TC_CEA03,G_TC_CEA04, G_TC_CEA05, G_TC_CEA06,G_TC_CEA08,G_TC_CEA09, G_TC_CEB04));
+                kt07MainRowItems_list.add(new KT07_Main_RowItem(G_TC_CEA01, G_TC_CEA03,G_TC_CEA04, G_TC_CEA05, G_TC_CEA06,G_TC_CEA08,G_TC_CEB04_OLD, G_TC_CEB04,G_TC_CEBDATE_CEB06));
             } catch (Exception e) {
                 String err = e.toString();
             }
 
             cursor.moveToNext();
         }
+        kt07MainAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void notifydata() {
         kt07MainAdapter.notifyDataSetChanged();
     }
 }

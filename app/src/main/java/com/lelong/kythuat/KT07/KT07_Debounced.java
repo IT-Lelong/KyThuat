@@ -14,6 +14,7 @@ public class KT07_Debounced implements TextWatcher {
     private final Handler handler = new Handler(Looper.getMainLooper());
     private final Runnable runnable;
     private final TextWatcherListener listener;
+    private int editable_string;
     private String editable_tmp;
 
     public KT07_Debounced(TextWatcherListener listener) {
@@ -37,7 +38,9 @@ public class KT07_Debounced implements TextWatcher {
         if (editable != null) {
             handler.removeCallbacks(runnable);
             handler.postDelayed(runnable, DEBOUNCE_DELAY);
+
             editable_tmp = editable.toString();
+            editable_tmp =  editable_tmp.replace(".","");
         }
     }
 

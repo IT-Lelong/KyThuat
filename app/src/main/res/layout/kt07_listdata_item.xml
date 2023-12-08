@@ -32,6 +32,7 @@
             android:background="@drawable/border_listview"
             android:gravity="left|center_vertical"
             android:text="Nhà máy"
+            android:onClick="OnClick"
             android:paddingLeft="3dp"
             android:paddingRight="3dp"
             android:textSize="16sp" />
@@ -48,7 +49,7 @@
             android:textSize="18sp" />
 
         <TextView
-            android:id="@+id/tv_tc_cea09"
+            android:id="@+id/tv_tc_ceb04_old"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:textColor="@color/white"

@@ -42,7 +42,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="@string/tc_cea05"
+                android:text="@string/tc_cea05_tc_cea09"
                 android:textSize="20sp" />
 
             <TextView
@@ -50,7 +50,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="@string/tc_cea09"
+                android:text="@string/tc_ceb04_old"
                 android:textSize="20sp" />
 
             <TextView

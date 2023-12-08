@@ -160,6 +160,8 @@
     *Fragment_KT07*/
     <string name="tc_cea03">Loại</string>
     <string name="tc_cea04">Nhà máy</string>
+    <string name="tc_cea05_tc_cea09">Mã số/Xưởng</string>
+    <string name="tc_ceb04_old">Số đo lần trước</string>
     <string name="tc_cea05">Mã số</string>
     <string name="tc_cea06">Chỉ tiêu ngày</string>
     <string name="tc_cea07">Ghi chú</string>
