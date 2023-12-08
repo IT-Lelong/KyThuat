@@ -888,7 +888,7 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
                 ((AlertDialog) dialog).getButton(DialogInterface.BUTTON_NEGATIVE).setEnabled(true); // Bật lại nút "Không"
             }
 
-            Toast.makeText(KT07_Main.this, "Đã upload xong", Toast.LENGTH_SHORT).show();
+
         }
     }
     private void upLoad_Datatable(String model, String date_upload) {
@@ -898,16 +898,34 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
 
             Cursor upl = kt07Db.getAll_tc_ceb_data(model,date_upload);
             jsonupload = cur2Json(upl);
+            if (jsonupload.length() == 0){
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(KT07_Main.this, "Không có dữ liệu để upload", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }else{
 
-            try {
-                ujobject = new JSONObject();
-                //ujobject.put("docNum", edt_maCT.getText().toString());
-                ujobject.put("ujson", jsonupload);
-            } catch (JSONException e) {
-                e.printStackTrace();
+                try {
+                    ujobject = new JSONObject();
+                    //ujobject.put("docNum", edt_maCT.getText().toString());
+                    ujobject.put("ujson", jsonupload);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                final String res = upload_all("http://172.16.40.20/" + g_server + "/TechAPP/upload_tc_ceb.php");
+                if (!res.equals("False")) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(KT07_Main.this, "Đã upload xong", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                }
             }
-
-           final String res = upload_all("http://172.16.40.20/" + g_server + "/TechAPP/upload_tc_ceb.php");
 //            if (!res.equals("False")) {
 //                if (res.length() > 6) {
 //                    try {
