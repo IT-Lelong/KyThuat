@@ -46,7 +46,7 @@ public class KT07_Debounced implements TextWatcher {
     }
 
     private String getCurrentText() {
-        if  (!Objects.equals(editable_tmp, null)){
+        if  (!Objects.equals(editable_tmp, "")){
             return editable_tmp .toString();
         }else
             return  "0";
