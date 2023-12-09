@@ -5,6 +5,7 @@ import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 
+import java.util.Objects;
 
 
 public class KT07_Debounced implements TextWatcher {
@@ -15,7 +16,7 @@ public class KT07_Debounced implements TextWatcher {
     private final Runnable runnable;
     private final TextWatcherListener listener;
     private int editable_string;
-    private String editable_tmp;
+    private String editable_tmp=null;
 
     public KT07_Debounced(TextWatcherListener listener) {
         this.listener = listener;
@@ -45,7 +46,10 @@ public class KT07_Debounced implements TextWatcher {
     }
 
     private String getCurrentText() {
-        return editable_tmp  != null ? editable_tmp .toString() : "";
+        if  (!Objects.equals(editable_tmp, null)){
+            return editable_tmp .toString();
+        }else
+            return  "0";
     }
 
     public interface TextWatcherListener {

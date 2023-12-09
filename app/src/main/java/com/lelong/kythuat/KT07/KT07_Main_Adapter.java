@@ -109,7 +109,7 @@ public class KT07_Main_Adapter extends RecyclerView.Adapter<KT07_Main_Adapter.Da
                         }else{
                             handleTextChanged(editingPosition, text);
                             kt07MainRowItems_list.get(editingPosition).setG_tc_ceb04(text);
-                            kt07MainFillData.notifydata();
+
                         }
                     }
 
