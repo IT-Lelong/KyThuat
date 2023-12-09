@@ -128,9 +128,9 @@ public class KT07_DB {
         if (g_title.startsWith("DH") || g_title.startsWith("BL")) {
             //Fill Data của loại tiêu thụ
             selectQuery = " SELECT tc_cea01,tc_cea03,tc_cea04,(tc_cea05||'/'||CASE WHEN tc_cea09 = 'null' THEN '' ELSE tc_cea09 END) AS tc_cea05 ,tc_cea06,tc_cea08,  " +
-                    " COALESCE((select tc_ceb04 from  (SELECT * FROM tc_ceb_file   WHERE  tc_ceb02 =TC_CEA03 AND tc_ceb01 = tc_cea01 and  tc_cebdate||tc_ceb06 <> '"+g_tc_cebdate+""+g_tc_ceb06+"' " +
+                    " COALESCE((select tc_ceb04 from  (SELECT * FROM tc_ceb_file   WHERE  tc_ceb02 =TC_CEA03 AND tc_ceb01 = tc_cea01 and  tc_cebdate||tc_ceb06 < '"+g_tc_cebdate+""+g_tc_ceb06+"' " +
                     " order by tc_cebdate desc ,tc_ceb06 desc)  LIMIT 1 ),0) AS tc_ceb04_old, " +
-                    " COALESCE((select tc_cebdate||'-'||tc_ceb06  from  (SELECT * FROM tc_ceb_file   WHERE  tc_ceb02 =TC_CEA03 AND tc_ceb01 = tc_cea01 and  tc_cebdate||tc_ceb06 <> '"+g_tc_cebdate+""+g_tc_ceb06+"' "+
+                    " COALESCE((select tc_cebdate||'-'||tc_ceb06  from  (SELECT * FROM tc_ceb_file   WHERE  tc_ceb02 =TC_CEA03 AND tc_ceb01 = tc_cea01 AND tc_cebdate||tc_ceb06 < '"+g_tc_cebdate+""+g_tc_ceb06+"' "+
                     " order by tc_cebdate desc ,tc_ceb06 desc)  LIMIT 1 ),' ') AS tc_cebdate_ceb06, "+
                     " COALESCE((SELECT tc_ceb04 FROM tc_ceb_file WHERE tc_ceb01 = tc_cea01 AND tc_ceb02 = TC_CEA03 AND tc_cebdate = '" + g_tc_cebdate + "' AND tc_ceb06 = '"+g_tc_ceb06+"' ),0) AS  tc_ceb04 " +
                     " FROM tc_cea_file WHERE tc_cea01 = '" + g_title + "' " +
@@ -140,9 +140,9 @@ public class KT07_DB {
         if(g_title.length() == 1 ){
             //Fill Data của Xưởng
             selectQuery = " SELECT tc_cea01,tc_cea03,tc_cea04,(tc_cea05||'/'||CASE WHEN tc_cea09 = 'null' THEN '' ELSE tc_cea09 END ) AS tc_cea05,tc_cea06,tc_cea08, " +
-                    " COALESCE((select tc_ceb04  from  (SELECT * FROM tc_ceb_file   WHERE  tc_ceb02 =TC_CEA03 AND tc_ceb01 = tc_cea01 and  tc_cebdate||tc_ceb06 <> '"+g_tc_cebdate+""+g_tc_ceb06+"' " +
+                    " COALESCE((select tc_ceb04  from  (SELECT * FROM tc_ceb_file   WHERE  tc_ceb02 =TC_CEA03 AND tc_ceb01 = tc_cea01 and  tc_cebdate||tc_ceb06 < '"+g_tc_cebdate+""+g_tc_ceb06+"' " +
                     " order by tc_cebdate desc ,tc_ceb06 desc)  LIMIT 1 ),0) AS tc_ceb04_old, " +
-                    " COALESCE((select tc_cebdate||'-'||tc_ceb06  from  (SELECT * FROM tc_ceb_file   WHERE  tc_ceb02 =TC_CEA03 AND tc_ceb01 = tc_cea01 and  tc_cebdate||tc_ceb06 <> '"+g_tc_cebdate+""+g_tc_ceb06+"' "+
+                    " COALESCE((select tc_cebdate||'-'||tc_ceb06  from  (SELECT * FROM tc_ceb_file   WHERE  tc_ceb02 =TC_CEA03 AND tc_ceb01 = tc_cea01 AND  tc_cebdate||tc_ceb06 < '"+g_tc_cebdate+""+g_tc_ceb06+"' "+
                     " order by tc_cebdate desc ,tc_ceb06 desc)  LIMIT 1 ),' ') AS tc_cebdate_ceb06, "+
                     " COALESCE((SELECT tc_ceb04 FROM tc_ceb_file WHERE tc_ceb01 = tc_cea01 AND tc_ceb02 = TC_CEA03 AND tc_cebdate = '" + g_tc_cebdate + "' AND tc_ceb06 = '"+g_tc_ceb06+"' ),0) AS  tc_ceb04 " +
                     " FROM tc_cea_file WHERE substr(tc_cea01,1,2) IN ('DH','BL')  AND tc_cea09 = '" + g_title + "' " +
