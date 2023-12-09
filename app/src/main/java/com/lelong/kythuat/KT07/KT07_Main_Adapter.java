@@ -179,10 +179,8 @@ public class KT07_Main_Adapter extends RecyclerView.Adapter<KT07_Main_Adapter.Da
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                if(adapterPosition>0){
-                    kt07MainRowItems_list.get(adapterPosition).setG_tc_ceb04_old("0");
-                    kt07MainFillData.notifydata();
-                }
+                kt07MainRowItems_list.get(adapterPosition).setG_tc_ceb04_old("0");
+                kt07MainFillData.notifydata();
 
                 return true;
             }
