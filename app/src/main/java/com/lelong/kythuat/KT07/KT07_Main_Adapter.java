@@ -109,7 +109,6 @@ public class KT07_Main_Adapter extends RecyclerView.Adapter<KT07_Main_Adapter.Da
                         }else{
                             handleTextChanged(editingPosition, text);
                             kt07MainRowItems_list.get(editingPosition).setG_tc_ceb04(text);
-
                         }
                     }
 
@@ -179,8 +178,10 @@ public class KT07_Main_Adapter extends RecyclerView.Adapter<KT07_Main_Adapter.Da
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                kt07MainRowItems_list.get(adapterPosition).setG_tc_ceb04_old("0");
-                kt07MainFillData.notifydata();
+                if(adapterPosition>0){
+                    kt07MainRowItems_list.get(adapterPosition).setG_tc_ceb04_old("0");
+                    kt07MainFillData.notifydata();
+                }
 
                 return true;
             }
