@@ -842,23 +842,43 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
         datePickerDialog.show();
     }
 
-    private void showProgressBarOnDialog(DialogInterface dialog) {
-        // Tạo ProgressBar và thêm vào Dialog
-        ProgressBar progressBar = new ProgressBar(this, null, android.R.attr.progressBarStyleLarge);
-        progressBar.setIndeterminate(true);
+    private void showProgressBarOnDialog(final DialogInterface dialog) {
+        // Tạo LinearLayout để chứa ProgressBar và TextView tiến trình
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.setGravity(Gravity.CENTER);
 
-        // Tạo LayoutParams để đặt kích thước và vị trí cho ProgressBar
+        // Tạo ProgressBar và thêm vào LinearLayout
+        final ProgressBar progressBar = new ProgressBar(this, null, android.R.attr.progressBarStyleLarge);
+        progressBar.setIndeterminate(true);
+        layout.addView(progressBar);
+
+        // Tạo TextView để hiển thị thông điệp
+        final TextView messageTextView = new TextView(this);
+        messageTextView.setText("Đang xử lý...");
+        messageTextView.setGravity(Gravity.CENTER);
+        layout.addView(messageTextView);
+
+        // Tạo LayoutParams để đặt kích thước và vị trí cho LinearLayout chứa ProgressBar và TextView
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
         );
         layoutParams.gravity = Gravity.CENTER;
 
-        // Thêm ProgressBar vào Dialog
+        // Thêm LinearLayout vào Dialog
         if (dialog instanceof AlertDialog) {
             ((AlertDialog) dialog).getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(false); // Vô hiệu hóa nút "Có" khi hiển thị ProgressBar
             ((AlertDialog) dialog).getButton(DialogInterface.BUTTON_NEGATIVE).setEnabled(false); // Vô hiệu hóa nút "Không" khi hiển thị ProgressBar
-            ((AlertDialog) dialog).setView(progressBar, 0, 0, 0, 0);
+            ((AlertDialog) dialog).setView(layout, 0, 0, 0, 0);
+
+            // Chặn việc đóng Dialog khi nhấn nút "OK"
+            ((AlertDialog) dialog).getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Do nothing
+                }
+            });
         }
     }
 
@@ -871,25 +891,25 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
 
         @Override
         protected Void doInBackground(Void... params) {
-
-            upLoad_Datatable(modelUdate,timeUpdate);
-
+            for (int i =0;i<=100;i++){
+                Log.d("DataProcessingTask", "onPostExecute called");
+            }
+            upLoad_Datatable(modelUdate, timeUpdate);
             return null;
         }
 
         @Override
         protected void onPostExecute(Void result) {
             // Ẩn hoặc xử lý ProgressBar khi hoàn thành xử lý
-            if (dialog != null) {
+            if (dialog != null && dialog instanceof AlertDialog) {
                 ProgressBar progressBar = ((AlertDialog) dialog).findViewById(android.R.id.progress);
                 if (progressBar != null) {
                     progressBar.setVisibility(View.GONE);
                 }
                 ((AlertDialog) dialog).getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(true); // Bật lại nút "Có"
                 ((AlertDialog) dialog).getButton(DialogInterface.BUTTON_NEGATIVE).setEnabled(true); // Bật lại nút "Không"
+                dialog.dismiss(); // Tắt Dialog sau khi hoàn thành xử lý
             }
-
-
         }
     }
     private void upLoad_Datatable(String model, String date_upload) {
