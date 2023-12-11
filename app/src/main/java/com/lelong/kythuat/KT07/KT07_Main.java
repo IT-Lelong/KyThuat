@@ -86,6 +86,7 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
     private Spinner waterSpinner;
     private Spinner gasSpinner;
     private Spinner electricitySpinner;
+    private ProgressBar progressBar;
     private String selectedDate ;
     private String tc_ceb06_old;
     private String modeltmp;
@@ -415,12 +416,12 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
                     String G_TC_CEA05 = cursor.getString(cursor.getColumnIndexOrThrow("tc_cea05"));
                     String G_TC_CEA06 = cursor.getString(cursor.getColumnIndexOrThrow("tc_cea06"));
                     String G_TC_CEA08 = cursor.getString(cursor.getColumnIndexOrThrow("tc_cea08"));
-
+                    String G_TC_CEB04_DIFF = cursor.getString(cursor.getColumnIndexOrThrow("tc_ceb04_diff"));
                     String G_TC_CEB04_OLD = cursor.getString(cursor.getColumnIndexOrThrow("tc_ceb04_old"));
                     String G_TC_CEBDATE_CEB06 = cursor.getString(cursor.getColumnIndexOrThrow("tc_cebdate_ceb06"));
                     String G_TC_CEB04 = cursor.getString(cursor.getColumnIndexOrThrow("tc_ceb04"));
 
-                    kt07MainRowItems_list.add(new KT07_Main_RowItem(G_TC_CEA01, G_TC_CEA03, G_TC_CEA04, G_TC_CEA05, G_TC_CEA06, G_TC_CEA08, G_TC_CEB04_OLD, G_TC_CEB04, G_TC_CEBDATE_CEB06));
+                    kt07MainRowItems_list.add(new KT07_Main_RowItem(G_TC_CEA01, G_TC_CEA03, G_TC_CEA04, G_TC_CEA05, G_TC_CEA06, G_TC_CEA08, G_TC_CEB04_OLD, G_TC_CEB04, G_TC_CEBDATE_CEB06, G_TC_CEB04_DIFF));
                 } catch (Exception e) {
                     String err = e.toString();
                 }
@@ -1176,8 +1177,9 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
                 String G_TC_CEB04_OLD = cursor.getString(cursor.getColumnIndexOrThrow("tc_ceb04_old"));
                 String G_TC_CEBDATE_CEB06 = cursor.getString(cursor.getColumnIndexOrThrow("tc_cebdate_ceb06"));
                 String G_TC_CEB04 = cursor.getString(cursor.getColumnIndexOrThrow("tc_ceb04"));
+                String G_TC_CEB04_DIFF = cursor.getString(cursor.getColumnIndexOrThrow("tc_ceb04_diff"));
 
-                kt07MainRowItems_list.add(new KT07_Main_RowItem(G_TC_CEA01, G_TC_CEA03,G_TC_CEA04, G_TC_CEA05, G_TC_CEA06,G_TC_CEA08,G_TC_CEB04_OLD, G_TC_CEB04,G_TC_CEBDATE_CEB06));
+                kt07MainRowItems_list.add(new KT07_Main_RowItem(G_TC_CEA01, G_TC_CEA03,G_TC_CEA04, G_TC_CEA05, G_TC_CEA06,G_TC_CEA08,G_TC_CEB04_OLD, G_TC_CEB04,G_TC_CEBDATE_CEB06,G_TC_CEB04_DIFF));
             } catch (Exception e) {
                 String err = e.toString();
             }

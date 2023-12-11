@@ -59,17 +59,28 @@
             android:text="Xưởng"
             android:textSize="18sp" />
 
-        <EditText
-            android:id="@+id/edt_tc_ceb04"
+        <TextView
+            android:id="@+id/tv_tc_ceb04"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:textColor="@color/white"
             android:layout_weight="1"
             android:background="@drawable/border_listview"
-            android:ems="10"
             android:gravity="center"
             android:text="Số đo"
-            android:inputType="number" />
+            android:inputType="number"
+            android:onClick="OnClick"
+            android:textSize="18sp" />
+        <TextView
+            android:id="@+id/tv_tc_ceb04_diff"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:textColor="@color/white"
+            android:layout_weight="1"
+            android:background="@drawable/border_listview"
+            android:gravity="center"
+            android:text="Lượng tiêu thụ"
+            android:textSize="18sp" />
 
     </LinearLayout>
 </LinearLayout>

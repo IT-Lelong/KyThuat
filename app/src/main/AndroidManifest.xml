@@ -30,6 +30,7 @@
         <activity
             android:name=".KT07.KT07_Main"
             android:exported="false"
+            android:windowSoftInputMode="adjustPan"
             android:screenOrientation="landscape"/>
         <activity
             android:name=".KT07.KT07_MyFragment"
