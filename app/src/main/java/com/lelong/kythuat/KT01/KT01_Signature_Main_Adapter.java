@@ -13,6 +13,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
@@ -69,7 +70,6 @@ public class KT01_Signature_Main_Adapter extends SimpleCursorAdapter {
         s_tenbp = mCursor.getString(mCursor.getColumnIndexOrThrow("tc_fba009"));
         s_ngay = mCursor.getString(mCursor.getColumnIndexOrThrow("ngaysig"));
 
-        //Boolean chk_qrb = kt02Db.KT_fia_up_sig(s_somay, s_bophan,s_ngay);
         Boolean chk_qrb = kt01Db.KT_fia_up_sig01(s_somay, s_bophan, s_ngay);
         if (chk_qrb == true) {
             btnkt.setBackground(drawable_green);
@@ -104,8 +104,14 @@ public class KT01_Signature_Main_Adapter extends SimpleCursorAdapter {
         dialog.setContentView(R.layout.kt01_signature_main_camera);
         firstDetected = true;
 
+        TextView tv_qrcode = dialog.findViewById(R.id.tv_qrcode);
         SurfaceView suv_qr = (SurfaceView) dialog.findViewById(R.id.suv_qr);
         TextView tv_bpname = dialog.findViewById(R.id.tv_bpname);
+        TextView tv_manvsig = dialog.findViewById(R.id.tv_manvsig);
+        EditText edt_sogio =  dialog.findViewById(R.id.edt_sogio);
+        EditText edt_ghichu =  dialog.findViewById(R.id.edt_ghichu);
+        Button btninsert = dialog.findViewById(R.id.btninsert);
+
         tv_bpname.setText(s_tenbp);
 
         barcodeDetector = new BarcodeDetector.Builder(dialog.getContext()).setBarcodeFormats(Barcode.ALL_FORMATS).build();
@@ -149,10 +155,23 @@ public class KT01_Signature_Main_Adapter extends SimpleCursorAdapter {
                 SparseArray<Barcode> qrCodes = detections.getDetectedItems();
                 if (qrCodes.size() != 0 && firstDetected) {
                     firstDetected = false;
-                    final String qr210_code = qrCodes.valueAt(0).displayValue;
-                    kt01Db.ins_sig(g_ngay, g_somay, g_bophan, g_tenbp, g_ghichu,g_manv,g_sogio,g_tenhinh);
+                    final String qrcode = qrCodes.valueAt(0).displayValue;
 
                 }
+            }
+        });
+
+        btninsert.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //kt01Db.ins_sig(g_ngay, g_somay, g_bophan, g_tenbp, g_ghichu,g_manv,g_sogio,g_tenhinh);
+            }
+        });
+
+        tv_qrcode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tv_manvsig.setText("H23275");
             }
         });
 
