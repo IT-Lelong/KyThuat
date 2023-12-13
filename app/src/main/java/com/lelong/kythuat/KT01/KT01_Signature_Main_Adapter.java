@@ -164,7 +164,14 @@ public class KT01_Signature_Main_Adapter extends SimpleCursorAdapter {
         btninsert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //kt01Db.ins_sig(g_ngay, g_somay, g_bophan, g_tenbp, g_ghichu,g_manv,g_sogio,g_tenhinh);
+                kt01Db.ins_sig(s_ngay,
+                        null,
+                        s_bophan,
+                        s_tenbp,
+                        edt_ghichu.getText().toString().trim(),
+                        tv_manvsig.getText().toString().trim(),
+                        edt_sogio.getText().toString().trim(),
+                        null);
             }
         });
 
