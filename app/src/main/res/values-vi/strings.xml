@@ -37,6 +37,7 @@
     <string name="tt_ca">Ca</string>
     <string name="tt_tenNV">Tên</string>
     <string name="tt_manv">Mã NV</string>
+    <string name="tt_bophan">Bộ phận</string>
 
     <string name="M01">Tải dữ liệu</string>
     <string name="M02">Xác nhận tải dữ liệu lên hệ thống?</string>
@@ -135,13 +136,15 @@
     /*kt01bophan*/
     <string name="btn_addnew">Thêm mới</string>
     <string name="btn_updatesever">Kết chuyển</string>
+    <string name="tt_xacthuc">Checkin</string>
     <string name="ls01">Số hạng mục</string>
     <string name="ls02">Ngày</string>
     <string name="ls03">Bộ phận</string>
     <string name="ls04">Tổng Điểm</string>
     <string name="ls05">Nội dung</string>
     <string name="ls06">Tên bộ phận</string>
-    <string name="ls07">Tổ kiểm tra :</string>
+    <string name="ls07">Tổ kiểm tra</string>
+
 
     /*kt01fragment*/
     <string name="hang1">Hạng mục</string>

@@ -54,10 +54,11 @@ public class KT01_List_Signature extends SimpleCursorAdapter {
         this.kt01_interface = kt01Interface;
 
         kt01Db = new KT01_DB(context);
+        kt01Db.open();
         this.drawable_blue = drawable_blue;
         this.drawable_green = drawable_green;
         this.l_tenxe = l_tenxe;
-        kt01Db.open();
+
     }
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {

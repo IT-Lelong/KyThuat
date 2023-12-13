@@ -242,8 +242,7 @@ public class KT01_Fragment_Adapter extends RecyclerView.Adapter<KT01_Fragment_Ad
             @Override
             public void afterTextChanged(Editable s) {
                 if (holder.ghichu1.getText().toString().trim().length() > 0) {
-                    getUserCode(holder.ghichu1.getText().toString().trim(),
-                            holder.getPosition());
+                    getUserCode(holder.ghichu1.getText().toString().trim(), holder.getPosition());
                 }
                 //holder.tc_fac009.getText().toString();
             }

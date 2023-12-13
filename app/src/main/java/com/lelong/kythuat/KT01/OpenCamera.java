@@ -16,6 +16,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -110,7 +111,14 @@ public class OpenCamera extends AppCompatActivity {
 
         String fileName = selectedDetail + "_" + selectedTo + "_" + selectedDate + "_" + selectedDepartment + "_" + STT + ".png";
         String fileName_005 = selectedDetail + "_" + selectedTo + "_" + selectedDate + "_" + selectedDepartment + ".png";
-        File newDirectory = new File(getExternalMediaDirs()[0], selectedDate.replace("-", ""));
+        //File newDirectory = new File(getExternalMediaDirs()[0], selectedDate.replace("-", ""));
+        File mediaDir = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "KyThuatFolder");
+        if (!mediaDir.exists()) {
+            mediaDir.mkdirs(); // Tạo thư mục nếu chưa tồn tại
+        }
+
+        File newDirectory = new File(mediaDir, selectedDate.replace("-", ""));
+
         ///storage/emulated/0/Android/media/com.lelong.kythuat/20230916
         if (!newDirectory.exists()) {
             newDirectory.mkdirs(); //Tạo thư mục
