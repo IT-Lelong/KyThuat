@@ -12,7 +12,9 @@
         android:gravity="center"
         android:onClick="onClick"
         android:text="item"
-        android:clickable="true"/>
+        android:clickable="true"
+        android:textSize="20sp"/>
+
 
 
 </LinearLayout>

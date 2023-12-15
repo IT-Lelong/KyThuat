@@ -21,7 +21,7 @@
             android:background="@drawable/border_listview"
             android:gravity="center"
             android:text="Loại"
-            android:textSize="18sp" />
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/tv_tc_cea04"
@@ -35,7 +35,7 @@
             android:onClick="OnClick"
             android:paddingLeft="3dp"
             android:paddingRight="3dp"
-            android:textSize="16sp" />
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/tv_tc_cea05"
@@ -46,7 +46,7 @@
             android:background="@drawable/border_listview"
             android:gravity="center"
             android:text="Mã số"
-            android:textSize="18sp" />
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/tv_tc_ceb04_old"
@@ -57,7 +57,7 @@
             android:background="@drawable/border_listview"
             android:gravity="center"
             android:text="Xưởng"
-            android:textSize="18sp" />
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/tv_tc_ceb04"
@@ -70,7 +70,7 @@
             android:text="Số đo"
             android:inputType="number"
             android:onClick="OnClick"
-            android:textSize="18sp" />
+            android:textSize="20sp" />
         <TextView
             android:id="@+id/tv_tc_ceb04_diff"
             android:layout_width="0dp"
@@ -80,7 +80,7 @@
             android:background="@drawable/border_listview"
             android:gravity="center"
             android:text="Lượng tiêu thụ"
-            android:textSize="18sp" />
+            android:textSize="20sp" />
 
     </LinearLayout>
 </LinearLayout>

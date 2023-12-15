@@ -92,7 +92,8 @@ public class KT07_Main_Adapter extends RecyclerView.Adapter<KT07_Main_Adapter.Da
         String formattedTcCeb04 = decimalFormat.format(Double.parseDouble(kt07MainRowItems_list.get(adapterPosition).getG_tc_ceb04()));
         holder.tv_tc_ceb04.setText(formattedTcCeb04);
         //holder.tv_tc_ceb04_diff.setText(kt07MainRowItems_list.get(adapterPosition).getG_tc_ceb04_diff());
-        holder.tv_tc_ceb04_diff.setText(String.valueOf((Integer.parseInt(kt07MainRowItems_list.get(adapterPosition).getG_tc_ceb04())-Integer.parseInt(kt07MainRowItems_list.get(adapterPosition).getG_tc_ceb04_old()))));
+        String formattedtv_tc_ceb04_diff = decimalFormat.format(Double.parseDouble(String.valueOf(Integer.parseInt(kt07MainRowItems_list.get(adapterPosition).getG_tc_ceb04())-Integer.parseInt(kt07MainRowItems_list.get(adapterPosition).getG_tc_ceb04_old()))));
+        holder.tv_tc_ceb04_diff.setText(formattedtv_tc_ceb04_diff);
         //Insert dữ liệu vào bảng ảo tc_ceb (S)
         holder.tv_tc_ceb04.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -240,7 +241,8 @@ public class KT07_Main_Adapter extends RecyclerView.Adapter<KT07_Main_Adapter.Da
                 }else {
                     report.setText("");
                 }
-                if (userInput.equals("")){}
+                if (userInput.equals("")){
+                }
                 else {
                     if (alertDialog != null && alertDialog.getButton(DialogInterface.BUTTON_POSITIVE) != null) {
                         alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(Integer.parseInt(userInput) >= Integer.parseInt(tvTcCeb04OldValue.replace(".", "")));
@@ -255,13 +257,17 @@ public class KT07_Main_Adapter extends RecyclerView.Adapter<KT07_Main_Adapter.Da
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String userInput = edtInput.getText().toString();
-                int sodo = Integer.parseInt(userInput);
-                if (sodo > 0) {
-                    userInput = String.valueOf(sodo);
-                    handleUserInput(adapterPosition, userInput);
-                    kt07MainRowItems_list.get(adapterPosition).setG_tc_ceb04(userInput);
-                    kt07MainFillData.notifydata();
+                if (userInput.equals("")){
 
+                }else {
+                    int sodo = Integer.parseInt(userInput);
+                    if (sodo > 0) {
+                        userInput = String.valueOf(sodo);
+                        handleUserInput(adapterPosition, userInput);
+                        kt07MainRowItems_list.get(adapterPosition).setG_tc_ceb04(userInput);
+                        kt07MainFillData.notifydata();
+
+                    }
                 }
             }
         });
@@ -300,14 +306,18 @@ public class KT07_Main_Adapter extends RecyclerView.Adapter<KT07_Main_Adapter.Da
 
     //Insert dữ liệu vào bảng ảo tc_ceb (S)
     private void  handleUserInput(int adapterPosition, String text) {
-        kt07Db.ins_tc_ceb_file(kt07MainRowItems_list.get(adapterPosition).getG_TC_CEA01(),
-                kt07MainRowItems_list.get(adapterPosition).getG_tc_cea03(),
-                tv_tc_ceb03.getText().toString(),
-                text,
-                "0",
-                tv_tc_ceb06.getText().toString(),
-                tv_tc_cebdate.getText().toString(),
-                tv_tc_cebuser.getText().toString());
+        if (text.equals(null)){
+            return;
+        }else {
+            kt07Db.ins_tc_ceb_file(kt07MainRowItems_list.get(adapterPosition).getG_TC_CEA01(),
+                    kt07MainRowItems_list.get(adapterPosition).getG_tc_cea03(),
+                    tv_tc_ceb03.getText().toString(),
+                    text,
+                    "0",
+                    tv_tc_ceb06.getText().toString(),
+                    tv_tc_cebdate.getText().toString(),
+                    tv_tc_cebuser.getText().toString());
+        }
     }
     //Insert dữ liệu vào bảng ảo tc_ceb (E)
     private void showAlertDialog(View view,String title, String message) {

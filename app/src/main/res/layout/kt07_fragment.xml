@@ -136,7 +136,7 @@
                         android:padding="5dp"
                         android:text="拋轉資料 Đăng tải dữ liệu"
                         android:textColor="@color/black"
-                        android:textSize="19dp"
+                        android:textSize="20dp"
                         android:onClick="onTextUploadClicked"
                         />
 <!--                    <TextView-->

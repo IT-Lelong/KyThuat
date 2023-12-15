@@ -23,7 +23,7 @@
                 android:layout_height="match_parent"
                 android:text="Nhân viên"
                 android:textColor="@color/white"
-                android:textSize="15sp"/>
+                android:textSize="20sp"/>
 
             <TextView
                 android:id="@+id/tv_tc_cebuser"
@@ -32,7 +32,7 @@
                 android:gravity="center"
                 android:hint="Mã nhân viên nhập"
                 android:textColor="@color/white"
-                android:textSize="15sp" />
+                android:textSize="20sp" />
         </TableRow>
 
         <TableRow
@@ -44,7 +44,7 @@
                 android:layout_height="match_parent"
                 android:text="Khoảng thời gian"
                 android:textColor="@color/white"
-                android:textSize="15sp" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/tv_tc_ceb06"
@@ -53,7 +53,7 @@
                 android:gravity="center"
                 android:hint="AM/PM"
                 android:textColor="@color/white"
-                android:textSize="15sp" />
+                android:textSize="20sp" />
         </TableRow>
 
         <TableRow
@@ -65,7 +65,7 @@
                 android:layout_height="match_parent"
                 android:text="Ngày tiêu hao"
                 android:textColor="@color/white"
-                android:textSize="15sp"/>
+                android:textSize="20sp"/>
 
             <TextView
                 android:id="@+id/tv_tc_ceb03"
@@ -74,7 +74,7 @@
                 android:gravity="center"
                 android:hint="2023/11/16"
                 android:textColor="@color/white"
-                android:textSize="15sp" />
+                android:textSize="20sp" />
         </TableRow>
 
         <TableRow
@@ -86,7 +86,7 @@
                 android:layout_height="match_parent"
                 android:text="Ngày nhập"
                 android:textColor="@color/white"
-                android:textSize="15sp"/>
+                android:textSize="20sp"/>
 
             <TextView
                 android:id="@+id/tv_tc_cebdate"
@@ -95,7 +95,7 @@
                 android:gravity="center"
                 android:hint="2023/11/16"
                 android:textColor="@color/white"
-                android:textSize="15sp" />
+                android:textSize="20sp" />
         </TableRow>
 
     </TableLayout>
