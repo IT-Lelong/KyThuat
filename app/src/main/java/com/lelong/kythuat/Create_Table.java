@@ -6,9 +6,6 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-
 public class Create_Table {
 
     private Context mCtx = null;
@@ -71,7 +68,7 @@ public class Create_Table {
     String tc_cea09 = "tc_cea09"; ////Xưởng (A-K)
     //KT07(E)
 
-    String CREATE_TABLE_CPF = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_CPF_FILE + " (cpf01 TEXT, cpf02 TEXT, ta_cpf001 TEXT, cpf29 TEXT , gem02 TEXT , cpf281 TEXT)";
+    String CREATE_TABLE_CPF = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_CPF_FILE + " (cpf01 TEXT, cpf02 TEXT, ta_cpf001 TEXT, cpf29 TEXT , gem02 TEXT , cpf281 TEXT , user_control TEXT , user_group TEXT)";
 
     String CREATE_TABLE_FAB = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_TC_FAB + " ("
             + tc_fab001 + " TEXT," + tc_fab002 + " TEXT,"
@@ -143,7 +140,8 @@ public class Create_Table {
     }
 
     public String ins_cpf_file(String g_cpf01, String g_cpf02, String g_ta_cpf001,
-                               String g_cpf29, String g_gem02, String g_cpf281) {
+                               String g_cpf29, String g_gem02, String g_cpf281,
+                               String g_control, String g_group) {
         try {
             ContentValues args = new ContentValues();
             args.put("cpf01", g_cpf01);
@@ -152,7 +150,8 @@ public class Create_Table {
             args.put("cpf29", g_cpf29);
             args.put("gem02", g_gem02);
             args.put("cpf281", g_cpf281);
-
+            args.put("user_control", g_control);
+            args.put("user_group", g_group);
             db.insert(TABLE_NAME_CPF_FILE, null, args);
             return "TRUE";
         } catch (Exception e) {
@@ -551,20 +550,7 @@ public class Create_Table {
         }
     }
 
-    public Cursor getAll_bp(String tenxe, String bophan, String ngay) {
-        try {
-           /* String selectQuery = "select count(*) AS _id,fiaud03,fia15,fka02 from fia_file " +
-                    " where fiaud03 not in (select distinct somay from tc_fac_table_kt02) AND ta_fia02_1='" + tenxe + "' AND fia15 NOT LIKE 'B%' " +
-                    " group by fia15,fiaud03,fka02 order by fia15,fiaud03";*/
 
-            String selectQuery = " select count(*) AS _id,tc_fba007,tc_fba009,'" + ngay + "' AS ngaysig from tc_fba_file WHERE substr(tc_fba007,1,2) not in ('04','05') group by tc_fba007 order by tc_fba007";
-
-            return db.rawQuery(selectQuery, null);
-
-        } catch (Exception e) {
-            return null;
-        }
-    }
 
     public Cursor getAll_bp_search(String tenxe, String bophan, String ngay) {
         try {
@@ -581,13 +567,21 @@ public class Create_Table {
         }
     }
 
+    public Cursor getAll_bp(String tenxe, String bophan, String ngay) {
+        try {
+            String selectQuery = " select count(*) AS _id,tc_fba007,tc_fba009,'" + ngay + "' AS ngaysig from tc_fba_file " +
+                    " WHERE substr(tc_fba007,1,2) not in ('04','05') group by tc_fba007 order by tc_fba007";
+            return db.rawQuery(selectQuery, null);
+
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     public Cursor getAll_bp_BL(String tenxe, String bophan, String ngay) {
         try {
-           /* String selectQuery = "select count(*) AS _id,fiaud03,fia15,fka02 from fia_file " +
-                    " where fiaud03 not in (select distinct somay from tc_fac_table_kt02) AND ta_fia02_1='" + tenxe + "' AND fia15 NOT LIKE 'B%' " +
-                    " group by fia15,fiaud03,fka02 order by fia15,fiaud03";*/
-
-            String selectQuery = " select count(*) AS _id,tc_fba007,tc_fba009,'" + ngay + "' AS ngaysig from tc_fba_file WHERE substr(tc_fba007,1,2) in ('04','05') group by tc_fba007 order by tc_fba007";
+            String selectQuery = " select count(*) AS _id,tc_fba007,tc_fba009,'" + ngay + "' AS ngaysig from tc_fba_file " +
+                    "WHERE substr(tc_fba007,1,2) in ('04','05') group by tc_fba007 order by tc_fba007 ";
 
             return db.rawQuery(selectQuery, null);
 
@@ -713,6 +707,11 @@ public class Create_Table {
         } else {
             return false;
         }
+    }
+
+    public Cursor getUserData(String g_UserID) {
+        String selectQuery = "SELECT * FROM cpf_file WHERE cpf01 = '" + g_UserID + "' ";
+        return db.rawQuery(selectQuery, null);
     }
 
     public Cursor getAll_tc_cea_kt07(String g_tc_cea01, String g_tc_ceb03, String g_tc_ceb06, String g_tc_cebdate, String g_tc_cebuser) {

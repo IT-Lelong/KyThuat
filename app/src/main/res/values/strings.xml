@@ -35,7 +35,8 @@
     <string name="tt_gio">時間</string>
     <string name="tt_ca">班別</string>
     <string name="tt_tenNV">人員名稱</string>
-    <string name="tt_manv">Mã NV</string>
+    <string name="tt_manv">人員代號</string>
+    <string name="tt_bophan">部門名稱</string>
 
     <string name="M01">資料上傳</string>
     <string name="M02">確定上傳資料?</string>
@@ -138,13 +139,14 @@
     /*kt01bophan*/
     <string name="btn_addnew">新增</string>
     <string name="btn_updatesever">結轉</string>
+    <string name="tt_xacthuc">報到</string>
     <string name="ls01">项目编号</string>
     <string name="ls02">日期</string>
     <string name="ls03">部分</string>
     <string name="ls04">观点</string>
     <string name="ls05">考核内容</string>
     <string name="ls06">部門名稱</string>
-    <string name="ls07">Tổ chấm</string>
+    <string name="ls07">小組</string>
 
     /*kt01fragment*/
     <string name="hang1">考核項目</string>

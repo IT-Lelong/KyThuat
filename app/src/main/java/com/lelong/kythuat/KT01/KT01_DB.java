@@ -202,16 +202,8 @@ class KT01_DB {
     public String appendUPDAE(String key, String l_check, String date, String bp, String tencot) {
         try {
             ContentValues args = new ContentValues();
-            //   args.put(no1,xno1);
-            //  args.put(ip,xip);
-            //  Cursor mCursor=db.query(TABLE_NAME,new String[]{no1},no1+"=?",new String[]{xno1},null,null,null,null);
-            //  if(mCursor.getCount()>0){
             db.execSQL("UPDATE " + TABLE_NAME_TC_FAA + " SET " + tencot + "='" + l_check + "' WHERE tc_faa001='" + key + "'  AND tc_faa003='" + bp + "'");
             return "TRUE";
-            //  }else{
-            //    db.insert(TABLE_NAME,null,args);
-            //     return "TRUE";
-            // }
         } catch (Exception e) {
             return "FALSE";
         }
@@ -613,5 +605,16 @@ class KT01_DB {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    public Cursor getDepartmetData(String userFactory) {
+        String selectQuery = " SELECT COUNT(*) AS _id,tc_fba007,tc_fba009,date('now') AS ngaysig,(select manv_sig from fia_up_sigkt01_file where mabp_sig = tc_fba007 and ngay_sig = date('now')) as manv_sig FROM tc_fba_file  ";
+        if(userFactory.equals("DH")){
+            selectQuery += " WHERE SUBSTR(tc_fba007,1,2) NOT IN ('04','05') GROUP BY tc_fba007,tc_fba009 ORDER BY tc_fba007 ";
+        }else {
+            selectQuery += " WHERE SUBSTR(tc_fba007,1,2) IN ('04','05') GROUP BY tc_fba007,tc_fba009 ORDER BY tc_fba007 ";
+        }
+
+        return db.rawQuery(selectQuery, null);
     }
 }

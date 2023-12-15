@@ -68,7 +68,7 @@ public class kt01_loggin_search extends AppCompatActivity {
     EditText editText1;
     Button btnlogin1;
     Button btnback;
-    Button btnaupdate, btnsignature;
+    Button btnaupdate, btnsignature, btn_kyTenBaoDuong;
     TextView viewID;
     JSONArray jsonupload;
     JSONObject ujobject;
@@ -80,24 +80,23 @@ public class kt01_loggin_search extends AppCompatActivity {
     String[] station = new String[0];
     String g_soxe, g_bophan, mabp, tenbp, g_tenxe, g_to, g_xuong;
 
-    public void login_dialogkt01(Context context, String menuID, Activity activity) {
+    public void login_dialogkt01(Context context, Activity activity) {
         this.activity = activity;
         this.context = context;
         dialog = new Dialog(context);
         dialog.setContentView(R.layout.kt01_bophan);
+        db = new KT01_DB(dialog.getContext());
+        db.open();
 
         editText1 = dialog.findViewById(R.id.editID);
         btnlogin1 = dialog.findViewById(R.id.btnlogin);
         btnaupdate = dialog.findViewById(R.id.btn_updatesever);
         btnsignature = dialog.findViewById(R.id.btn_signature);
+        btn_kyTenBaoDuong = dialog.findViewById(R.id.btn_kyTenBaoDuong);
         lis1 = dialog.findViewById(R.id.lv_query);
         btnback = dialog.findViewById(R.id.btnback);
         viewID = dialog.findViewById(R.id.viewID);
         TextView textView = dialog.findViewById(R.id.txt_to);
-
-        db = new KT01_DB(dialog.getContext());
-        db.open();
-
         Spinner cbxbophan = dialog.findViewById(R.id.cbxbophan);
         Spinner cbxto = dialog.findViewById(R.id.cbxto);
 
@@ -158,7 +157,7 @@ public class kt01_loggin_search extends AppCompatActivity {
         //Spinner cbxto = dialog.findViewById(R.id.cbxto);
 
         //String[] list_to = {"Tổ A", "Tổ B", "Tổ C", "Tổ D"};
-        if (Constant_Class.UserID.equals("H15330")) {
+        /*if (Constant_Class.UserID.equals("H15330")) {
             g_xuong = "Tổ A";
         }
 
@@ -180,10 +179,9 @@ public class kt01_loggin_search extends AppCompatActivity {
 
         if (Constant_Class.UserID.equals("H23275")) {
             g_xuong = "Tổ D";
-        }
+        }*/
 
-        //String[] list_to = {"Tổ A"};
-        String[] list_to = {g_xuong};
+        String[] list_to = {Constant_Class.UserKhau};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this.activity, android.R.layout.simple_spinner_item, list_to);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         cbxto.setAdapter(adapter);
@@ -207,7 +205,6 @@ public class kt01_loggin_search extends AppCompatActivity {
 
             }
         });
-
 
         load();
 
@@ -234,7 +231,6 @@ public class kt01_loggin_search extends AppCompatActivity {
                         Intent KT01 = new Intent();
                         KT01.setClass(context, KT01_Main_CreateTabLayout.class);
                         Bundle bundle = new Bundle();
-                        //bundle.putString("BP", BP);
                         bundle.putString("DATE", qry_ngay.getText().toString());
                         bundle.putString("BP", qry_BP.getText().toString());
                         bundle.putString("LAYOUT", "login");
@@ -242,8 +238,8 @@ public class kt01_loggin_search extends AppCompatActivity {
                         KT01.putExtras(bundle);
                         context.startActivity(KT01);
                         dialog.dismiss();
-                        //load();
                         return true;
+
                     case R.id.clearKT01:
                         //db.delete_table1(qry_ngay.getText().toString(), qry_BP.getText().toString());
                         lbophandelete = qry_BP.getText().toString();
@@ -354,6 +350,7 @@ public class kt01_loggin_search extends AppCompatActivity {
                                                         String message = String.valueOf(response.body());
                                                     }
                                                 }
+
                                                 @Override
                                                 public void onFailure(Call<ResponseBody> call, Throwable t) {
                                                 }
@@ -406,19 +403,18 @@ public class kt01_loggin_search extends AppCompatActivity {
         });
 
         btnlogin1.setOnClickListener(new View.OnClickListener() {
-                                         @Override
-                                         public void onClick(View view) {
-                                             Intent intent = new Intent(view.getContext(), KT01_Main_CreateTabLayout.class);
-                                             Bundle bundle = new Bundle();
-                                             bundle.putString("BOPHAN", g_bophan);
-                                             bundle.putString("LAYOUT", "notlogin");
-                                             bundle.putString("TO", g_to);
-                                             intent.putExtras(bundle);
-                                             view.getContext().startActivity(intent);
-                                             dialog.dismiss();
-                                         }
-                                     }
-        );
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), KT01_Main_CreateTabLayout.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("BOPHAN", g_bophan);
+                bundle.putString("LAYOUT", "notlogin");
+                bundle.putString("TO", g_to);
+                intent.putExtras(bundle);
+                view.getContext().startActivity(intent);
+                dialog.dismiss();
+            }
+        });
 
         btnsignature.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -434,6 +430,16 @@ public class kt01_loggin_search extends AppCompatActivity {
                 //bundle.putString("SERVER", g_server);
                 QR020.putExtras(bundle);
                 v.getContext().startActivity(QR020);
+                dialog.dismiss();
+            }
+        });
+
+        btn_kyTenBaoDuong.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent SigMain = new Intent();
+                SigMain.setClass(v.getContext(), KT01_Signature_Main.class);
+                v.getContext().startActivity(SigMain);
                 dialog.dismiss();
             }
         });
@@ -510,16 +516,13 @@ public class kt01_loggin_search extends AppCompatActivity {
                 new String[]{"_id", "tc_faa002", "tc_faa003", "tc_fba009"},
                 new int[]{R.id.tv_stt, R.id.tv_ngay, R.id.tv_BP, R.id.tv_tenBP},
                 SimpleCursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
-        simpleCursorAdapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
-            @Override
-            public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
-                if (view.getId() == R.id.tv_stt) {
-                    int rowNumber = cursor.getPosition() + 1;
-                    ((TextView) view).setText(String.valueOf(rowNumber));
-                    return true;
-                }
-                return false;
+        simpleCursorAdapter.setViewBinder((view, cursor1, columnIndex) -> {
+            if (view.getId() == R.id.tv_stt) {
+                int rowNumber = cursor1.getPosition() + 1;
+                ((TextView) view).setText(String.valueOf(rowNumber));
+                return true;
             }
+            return false;
         });
         lis1.setAdapter(simpleCursorAdapter);
 

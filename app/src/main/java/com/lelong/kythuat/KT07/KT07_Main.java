@@ -37,6 +37,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
+import com.lelong.kythuat.Constant_Class;
 import com.lelong.kythuat.R;
 
 import org.json.JSONArray;
@@ -70,12 +71,10 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
     private ActionBarDrawerToggle actionBarDrawerToggle;
     TextView tc_cebuser, tc_ceb06, tv_tc_ceb03, tv_tc_cebdate;
     String ID;
-    int id_menu;
     SimpleDateFormat dateFormat;
     private KT07_DB kt07Db = null;
     JSONObject ujobject;
     JSONArray jsonupload;
-    String g_server = "";
     String a;
     NavigationView navigationView;
     RecyclerView rcv_hangmuc;
@@ -97,10 +96,8 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
+        ID = Constant_Class.UserID;
 
-        Bundle getbundle = getIntent().getExtras();
-        ID = getbundle.getString("ID");
-        g_server = getString(R.string.server);
         kt07Db = new KT07_DB(this);
         kt07Db.open();
         kt07Db.create_table();
@@ -936,7 +933,7 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
                     e.printStackTrace();
                 }
 
-                final String res = upload_all("http://172.16.40.20/" + g_server + "/TechAPP/upload_tc_ceb.php");
+                final String res = upload_all("http://172.16.40.20/" + Constant_Class.server + "/TechAPP/upload_tc_ceb.php");
                 if (!res.equals("False")) {
                     runOnUiThread(new Runnable() {
                         @Override
@@ -1015,9 +1012,6 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
     start();
 
 }
-
-
-
 
    /* private void Down_Datatable() {
         Thread UpLoad_fia = new Thread(new Runnable() {

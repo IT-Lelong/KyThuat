@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
         g_package = this.getPackageName().toString();
 
 
-        g_server= getString(R.string.server);
+        g_server = getString(R.string.server);
         checkAppUpdate = new CheckAppUpdate(this);
         checkAppUpdate.checkVersion();
 
@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             String verCode = String.valueOf(this.getPackageManager().getPackageInfo(g_package, 0).versionCode);
             String verName = this.getPackageManager().getPackageInfo(g_package, 0).versionName;
-            tv_ver.setText("SV: "+ g_server +" VerCode: " + verCode + " VerName: " + verName);
+            tv_ver.setText("SV: " + g_server + " VerCode: " + verCode + " VerName: " + verName);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
@@ -185,7 +185,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode,String[] permissions,int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         if (requestCode == permissionIndex && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -268,12 +268,12 @@ public class MainActivity extends AppCompatActivity {
                             db.execSQL("DELETE FROM " + TABLE_NAME + "");
                         }
 
-                        try{
+                        try {
                             JSONArray jsonarray = new JSONArray(result);
                             for (int i = 0; i < jsonarray.length(); i++) {
                                 JSONObject jsonObject = jsonarray.getJSONObject(i);
                                 Constant_Class.UserXuong = jsonObject.getString("TC_QRH003");
-                                Constant_Class.UserKhau= jsonObject.getString("TC_QRH005");
+                                Constant_Class.UserKhau = jsonObject.getString("TC_QRH005");
                                 Constant_Class.UserTramQR = jsonObject.getString("TC_QRH006");
                             }
                         } catch (JSONException e) {
@@ -291,24 +291,23 @@ public class MainActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Toast alert = Toast.makeText(MainActivity.this, getString(R.string.main_E02), Toast.LENGTH_LONG);
-                                alert.show();
-                                /*Intent login = new Intent();
+                                //Toast alert = Toast.makeText(MainActivity.this, getString(R.string.main_E02), Toast.LENGTH_LONG);
+                                //alert.show();
+                                Intent login = new Intent();
                                 login.setClass(MainActivity.this, Menu.class);
                                 Bundle bundle = new Bundle();
                                 bundle.putString("ID", editID.getText().toString());
                                 bundle.putString("SERVER", g_server);
                                 login.putExtras(bundle);
-                                startActivity(login);*/
+                                startActivity(login);
                             }
                         });
-                    }
-                    else {
+                    } else {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-//                                Toast alert = Toast.makeText(MainActivity.this, getString(R.string.main_E03), Toast.LENGTH_LONG);
-//                                alert.show();
+                                //Toast alert = Toast.makeText(MainActivity.this, getString(R.string.main_E03), Toast.LENGTH_LONG);
+                                //alert.show();
                                 Intent login = new Intent();
                                 login.setClass(MainActivity.this, Menu.class);
                                 Bundle bundle = new Bundle();
@@ -323,8 +322,8 @@ public class MainActivity extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-//                            Toast alert = Toast.makeText(MainActivity.this, e.toString(), Toast.LENGTH_LONG);
-//                            alert.show();
+                            /*Toast alert = Toast.makeText(MainActivity.this, e.toString(), Toast.LENGTH_LONG);
+                            alert.show();*/
                             Intent login = new Intent();
                             login.setClass(MainActivity.this, Menu.class);
                             Bundle bundle = new Bundle();

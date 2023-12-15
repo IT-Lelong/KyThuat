@@ -229,7 +229,7 @@ public class Log_BoPhan extends AppCompatActivity {
 
                                     try {
                                         ujobject = new JSONObject();
-                                        ujobject.put("ujson", jsonupload);
+                                        ujobject.put("ujson1", jsonupload);
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }

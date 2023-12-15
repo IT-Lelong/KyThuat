@@ -146,7 +146,6 @@ public class KT01_Signature_List extends AppCompatActivity implements KT01_Inter
                 Intent intent = new Intent(this, Search_Signature_KT01.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("G_TENXE", g_tenxe);
-                //bundle.putString("SERVER", g_server);
                 intent.putExtras(bundle);
                 startActivity(intent);
                 break;
@@ -183,71 +182,11 @@ public class KT01_Signature_List extends AppCompatActivity implements KT01_Inter
                             public void onResponse(Call<String> call, Response<String> response) {
                                 if (response != null) {
                                     String message = response.body();
-                                    Log.d("BBB", message);
-                                    // Xóa tấm ảnh sau khi upload thành công
-                                    /*boolean deleted = file.delete();
-                                    if (deleted) {
-                                        Log.d("BBB", "Deleted file: " + file.getAbsolutePath());
-                                    } else {
-                                        Log.d("BBB", "Failed to delete file: " + file.getAbsolutePath());
-                                    }*/
-                                    //File file = new File(filePath); // thay đổi đường dẫn tới file hình cần xóa
-                                    //if (file.exists()) {
-
-                                    //}
-
                                 }
                             }
 
                             @Override
                             public void onFailure(Call<String> call, Throwable t) {
-                                //Log.d("onFailurePIC", t.getMessage());
-                                Log.d("onFailurePIC", "Timeout error: " + t.getMessage());
-                                //String a =t.getMessage().toString();
-                                // Xóa tấm ảnh sau khi upload thành công
-                                /*boolean deleted = file.delete();
-                                if (deleted) {
-                                    Log.d("BBB", "Deleted file: " + file.getAbsolutePath());
-                                } else {
-                                    Log.d("BBB", "Failed to delete file: " + file.getAbsolutePath());
-                                }*/
-                                //file.delete(); // xóa file
-                                //Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file));
-                                //sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file))); // thông báo đến hệ thống để quét lại thư viện media
-                                   /* Context context1 = dialog.getContext();
-                                    if (context1 != null) {
-                                        context1.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)));
-                                    }
-                                    file.delete(); // xóa file*/
-
-                                //File fileToDelete = new File(filePath);
-                                    /*Context context1 = dialog.getContext();
-                                    boolean deleted = file.delete();
-                                    if (deleted) {
-                                        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-                                        Uri contentUri = Uri.fromFile(file);
-                                        mediaScanIntent.setData(contentUri);
-                                        mediaScanIntent.putExtra(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, true);
-                                        context1.sendBroadcast(mediaScanIntent);
-                                    }*/
-
-
-                                //File file = new File("Đường_dẫn_đến_file_hình_ảnh");
-                                    /*File trashDir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/.Trash");
-// Sử dụng FileUtils.moveToDirectory() để di chuyển file đến thùng rác lưu tạm
-                                    boolean isFileMoved = false;
-                                    try {
-                                        FileUtils.moveToDirectory(file, trashDir, true);
-                                    } catch (IOException e) {
-                                        throw new RuntimeException(e);
-                                    }
-
-                                    if (isFileMoved) {
-                                        // File đã được di chuyển vào thùng rác lưu tạm thành công
-                                    } else {
-                                        // File chưa được di chuyển vào thùng rác lưu tạm
-                                    }*/
-
                             }
                         });
 
