@@ -172,6 +172,7 @@ public class KT01_Signature_Main_Adapter extends SimpleCursorAdapter {
                         tv_manvsig.getText().toString().trim(),
                         edt_sogio.getText().toString().trim(),
                         null);
+                dialog.dismiss();
             }
         });
 
