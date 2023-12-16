@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/Red_Clay"
-    android:padding="16dp"
+    android:padding="14dp"
     android:theme="@style/ThemeOverlay.AppCompat.Dark"
     android:orientation="vertical"
     android:gravity="top">
@@ -12,90 +12,67 @@
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:stretchColumns="1">
+        android:stretchColumns="1"
+        android:shrinkColumns="1">
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        <TableRow>
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
                 android:text="Nhân viên"
                 android:textColor="@color/white"
-                android:textSize="20sp"/>
+                android:textSize="18sp"/>
 
             <TextView
                 android:id="@+id/tv_tc_cebuser"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
                 android:gravity="center"
                 android:hint="Mã nhân viên nhập"
                 android:textColor="@color/white"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
         </TableRow>
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        <TableRow>
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="Khoảng thời gian"
+                android:text="Thời gian"
                 android:textColor="@color/white"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/tv_tc_ceb06"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
                 android:gravity="center"
                 android:hint="AM/PM"
                 android:textColor="@color/white"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
         </TableRow>
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        <TableRow>
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
                 android:text="Ngày tiêu hao"
                 android:textColor="@color/white"
-                android:textSize="20sp"/>
+                android:textSize="18sp"/>
 
             <TextView
                 android:id="@+id/tv_tc_ceb03"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
                 android:gravity="center"
                 android:hint="2023/11/16"
                 android:textColor="@color/white"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
         </TableRow>
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        <TableRow>
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
                 android:text="Ngày nhập"
                 android:textColor="@color/white"
-                android:textSize="20sp"/>
+                android:textSize="18sp"/>
 
             <TextView
                 android:id="@+id/tv_tc_cebdate"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
                 android:gravity="center"
                 android:hint="2023/11/16"
                 android:textColor="@color/white"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
         </TableRow>
 
     </TableLayout>

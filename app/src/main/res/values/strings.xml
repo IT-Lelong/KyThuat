@@ -45,13 +45,13 @@
     <string name="M05">確定刪除資料?</string>
 
     /*Menu Button*/
-    <string name="btn_KT01">設備管理稽核評分表 </string>
+    <string name="btn_KT01">設備管理稽核評分表</string>
     <string name="btn_KT02">柴油堆高機檢查稽查表</string>
     <string name="btn_KT03">廢水站操作日誌</string>
     <string name="btn_KT04">廢水水質自動,連續監測站操作日記</string>
     <string name="btn_KT05">拖板車檢查稽查表</string>
     <string name="btn_KT06">電動堆高機檢查稽查表</string>
-    <string name="btn_KT07">廢水水質自動,連續監測站操作日記</string>
+    <string name="btn_KT07">能源耗用記錄</string>
     <string name="Change_Data">更新報表項目</string>
 
     /* activity_main */
