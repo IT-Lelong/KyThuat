@@ -154,33 +154,6 @@ public class kt01_loggin_search extends AppCompatActivity {
             }
         });
 
-        //Spinner cbxto = dialog.findViewById(R.id.cbxto);
-
-        //String[] list_to = {"Tổ A", "Tổ B", "Tổ C", "Tổ D"};
-        /*if (Constant_Class.UserID.equals("H15330")) {
-            g_xuong = "Tổ A";
-        }
-
-        if (Constant_Class.UserID.equals("H14430")) {
-            g_xuong = "Tổ B";
-        }
-
-        if (Constant_Class.UserID.equals("H14398")) {
-            g_xuong = "Tổ C";
-        }
-
-        if (Constant_Class.UserID.equals("H19588")) {
-            g_xuong = "Tổ D";
-        }
-
-        if (Constant_Class.UserID.equals("H29738")) {
-            g_xuong = "Tổ D";
-        }
-
-        if (Constant_Class.UserID.equals("H23275")) {
-            g_xuong = "Tổ D";
-        }*/
-
         String[] list_to = {Constant_Class.UserKhau};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this.activity, android.R.layout.simple_spinner_item, list_to);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
@@ -416,7 +389,7 @@ public class kt01_loggin_search extends AppCompatActivity {
             }
         });
 
-        btnsignature.setOnClickListener(new View.OnClickListener() {
+        /*btnsignature.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent QR020 = new Intent();
@@ -432,7 +405,7 @@ public class kt01_loggin_search extends AppCompatActivity {
                 v.getContext().startActivity(QR020);
                 dialog.dismiss();
             }
-        });
+        });*/
 
         btn_kyTenBaoDuong.setOnClickListener(new View.OnClickListener() {
             @Override

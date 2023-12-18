@@ -86,7 +86,7 @@ public class KT01_Signature_Main_Adapter extends SimpleCursorAdapter {
                 s_tenbp = mCursor.getString(mCursor.getColumnIndexOrThrow("tc_fba009"));
                 s_ngay = mCursor.getString(mCursor.getColumnIndexOrThrow("ngaysig"));
 
-                UpdateDialog(s_bophan, s_tenbp, s_ngay);
+                UpdateDialog(s_bophan, s_tenbp, s_ngay,position);
                 dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialog) {
@@ -99,17 +99,18 @@ public class KT01_Signature_Main_Adapter extends SimpleCursorAdapter {
         return view;
     }
 
-    private void UpdateDialog(String s_bophan, String s_tenbp, String s_ngay) {
+    private void UpdateDialog(String s_bophan, String s_tenbp, String s_ngay, int position) {
         dialog = new Dialog(context);
         dialog.setContentView(R.layout.kt01_signature_main_camera);
+        dialog.getWindow().setBackgroundDrawableResource(R.drawable.rounded_shape);
         firstDetected = true;
 
         TextView tv_qrcode = dialog.findViewById(R.id.tv_qrcode);
         SurfaceView suv_qr = (SurfaceView) dialog.findViewById(R.id.suv_qr);
         TextView tv_bpname = dialog.findViewById(R.id.tv_bpname);
         TextView tv_manvsig = dialog.findViewById(R.id.tv_manvsig);
-        EditText edt_sogio =  dialog.findViewById(R.id.edt_sogio);
-        EditText edt_ghichu =  dialog.findViewById(R.id.edt_ghichu);
+        EditText edt_sogio = dialog.findViewById(R.id.edt_sogio);
+        EditText edt_ghichu = dialog.findViewById(R.id.edt_ghichu);
         Button btninsert = dialog.findViewById(R.id.btninsert);
 
         tv_bpname.setText(s_tenbp);
@@ -154,10 +155,15 @@ public class KT01_Signature_Main_Adapter extends SimpleCursorAdapter {
             public void receiveDetections(Detector.Detections<Barcode> detections) {
                 SparseArray<Barcode> qrCodes = detections.getDetectedItems();
                 if (qrCodes.size() != 0 && firstDetected) {
-                    firstDetected = false;
                     final String qrcode = qrCodes.valueAt(0).displayValue;
+                    if (qrcode.trim().startsWith("H") && qrcode.trim().length() == 6) {
+                        tv_manvsig.setText(qrcode.trim());
 
+                        firstDetected = false;
+                    }
                 }
+
+
             }
         });
 
@@ -176,10 +182,10 @@ public class KT01_Signature_Main_Adapter extends SimpleCursorAdapter {
             }
         });
 
-        tv_qrcode.setOnClickListener(new View.OnClickListener() {
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
-            public void onClick(View v) {
-                tv_manvsig.setText("H23275");
+            public void onDismiss(DialogInterface dialog) {
+                kt01Interface.loadData_Search_Sig();
             }
         });
 
