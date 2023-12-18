@@ -99,7 +99,7 @@ public class Log_BoPhan extends AppCompatActivity {
 
         setLanguage();
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.kt01_bophan);
+        setContentView(R.layout.kt01_main_menu_layout);
         db = new KT01_DB(this);
         db.open();
 

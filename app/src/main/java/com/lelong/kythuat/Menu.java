@@ -18,7 +18,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.lelong.kythuat.KT01.kt01_loggin_search;
+import com.lelong.kythuat.KT01.KT01_Main_Menu;
 import com.lelong.kythuat.KT02.login_kt02;
 import com.lelong.kythuat.KT03.KT03_login;
 import com.lelong.kythuat.KT04.KT04_login;
@@ -41,7 +41,7 @@ public class Menu extends AppCompatActivity {
     private KT03_login loginKt03 = null;
     private login_kt02 loginkt02 = null;
     private KT04_login loginKt04 = null;
-    private kt01_loggin_search kt01_loggin_search = null;
+    private KT01_Main_Menu KT01_Main_Menu = null;
     private ProgressDialog progressDialog;
 
     Button btn_KT01, btn_KT02, btn_KT03, btn_KT04, btn_KT05, btn_KT06, btn_KT07;
@@ -90,7 +90,7 @@ public class Menu extends AppCompatActivity {
         loginkt02 = new login_kt02();
         loginKt03 = new KT03_login();
         loginKt04 = new KT04_login();
-        kt01_loggin_search = new kt01_loggin_search();
+        KT01_Main_Menu = new KT01_Main_Menu();
     }
 
     private void call_user_controls(String userControls) {
@@ -157,7 +157,7 @@ public class Menu extends AppCompatActivity {
 
                 case R.id.btn_KT01: {
                     Activity activity = Menu.this;
-                    kt01_loggin_search.login_dialogkt01(v.getContext(), activity);
+                    KT01_Main_Menu.login_dialogkt01(v.getContext(), activity);
                     break;
                 }
 

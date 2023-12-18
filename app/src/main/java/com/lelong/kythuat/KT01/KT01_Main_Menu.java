@@ -17,7 +17,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.SimpleCursorAdapter;
@@ -59,129 +58,36 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class kt01_loggin_search extends AppCompatActivity {
+public class KT01_Main_Menu extends AppCompatActivity {
     private Activity activity;
     private Context context;
-    Dialog dialog;
-    ListView lis1;
-    private KT01_DB db = null;
-    EditText editText1;
-    Button btnlogin1;
-    Button btnback;
-    Button btnaupdate, btnsignature, btn_kyTenBaoDuong;
-    TextView viewID;
-    JSONArray jsonupload;
-    JSONObject ujobject;
-    String g_server = "PHP";
-    String lbophandelete;
     private static final int REQUEST_CODE = 1;
     private final String FILENAME = "mydata.txt";
-    Cursor cursor_2;
+    private KT01_DB db = null;
+    Button btnMain_CreTabLayout, btnMain_PostData, btn_kyTenBaoDuong;
+    Spinner cbxbophan, cbxto;
+    JSONArray jsonupload;
+    JSONObject ujobject;
+    Dialog dialog;
+    Cursor cur;
     String[] station = new String[0];
-    String g_soxe, g_bophan, mabp, tenbp, g_tenxe, g_to, g_xuong;
+    String g_bophan, mabp, tenbp, g_to;
+    List<kt01_Loggin_List> qrReScanIpLists;
+    ListView lv_query;
 
     public void login_dialogkt01(Context context, Activity activity) {
         this.activity = activity;
         this.context = context;
         dialog = new Dialog(context);
-        dialog.setContentView(R.layout.kt01_bophan);
+        dialog.setContentView(R.layout.kt01_main_menu_layout);
         db = new KT01_DB(dialog.getContext());
         db.open();
 
-        editText1 = dialog.findViewById(R.id.editID);
-        btnlogin1 = dialog.findViewById(R.id.btnlogin);
-        btnaupdate = dialog.findViewById(R.id.btn_updatesever);
-        btnsignature = dialog.findViewById(R.id.btn_signature);
-        btn_kyTenBaoDuong = dialog.findViewById(R.id.btn_kyTenBaoDuong);
-        lis1 = dialog.findViewById(R.id.lv_query);
-        btnback = dialog.findViewById(R.id.btnback);
-        viewID = dialog.findViewById(R.id.viewID);
-        TextView textView = dialog.findViewById(R.id.txt_to);
-        Spinner cbxbophan = dialog.findViewById(R.id.cbxbophan);
-        Spinner cbxto = dialog.findViewById(R.id.cbxto);
+        addControls();
+        addEvents();
+        Call_Refresh_Data();
 
-        List<kt01_Loggin_List> qrReScanIpLists = new ArrayList<>();
-
-        if (Constant_Class.UserFactory.equals("DH")) {
-            cursor_2 = db.getAll_tc_fba();
-        } else {
-            cursor_2 = db.getAll_tc_fbaBL();
-        }
-
-        //cursor_2 = db.getAll_tc_fba();
-        cursor_2.moveToFirst();
-        int num1 = cursor_2.getCount();
-        station = new String[num1];
-        for (int i = 0; i < num1; i++) {
-
-            try {
-                @SuppressLint("Range") String mabp = cursor_2.getString(cursor_2.getColumnIndex("tc_fba007"));
-                @SuppressLint("Range") String tenbp = cursor_2.getString(cursor_2.getColumnIndex("tc_fba009"));
-                qrReScanIpLists.add(new kt01_Loggin_List(mabp, tenbp));
-            } catch (Exception e) {
-                String err = e.toString();
-            }
-            cursor_2.moveToNext();
-        }
-
-        kt01_Bophan_Adapter kt01_bophan_adapter = new kt01_Bophan_Adapter(this.activity,
-                R.layout.kt01_dsbophan,
-                R.id.sp_mabp,
-                R.id.sp_tenbp,
-                qrReScanIpLists);
-        cbxbophan.setAdapter(kt01_bophan_adapter);
-
-
-        cbxbophan.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                int dem = kt01_bophan_adapter.getCount();
-                if (position + 1 <= dem) {
-                    if (position >= 0) {
-                        //get IP
-                        kt01_Loggin_List res = kt01_bophan_adapter.getItem(position);
-                        mabp = res.getIDbp().toString().trim();
-                        tenbp = res.getTenbp().toString().trim();
-                        g_bophan = qrReScanIpLists.get(position).getIDbp().trim();
-                    }
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        String[] list_to = {Constant_Class.UserKhau};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this.activity, android.R.layout.simple_spinner_item, list_to);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
-        cbxto.setAdapter(adapter);
-
-        if (Constant_Class.UserFactory.equals("DH")) {
-            cbxto.setVisibility(View.VISIBLE); // Hiện Spinner nếu UserFactory là "DH"
-            textView.setVisibility(View.VISIBLE);
-        } else {
-            cbxto.setVisibility(View.GONE); // Ẩn Spinner nếu UserFactory không phải là "DH"
-            textView.setVisibility(View.GONE);
-        }
-
-        cbxto.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                g_to = adapter.getItem(position);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        load();
-
-        lis1.setOnItemClickListener((parent, view, position, id) -> {
+        lv_query.setOnItemClickListener((parent, view, position, id) -> {
 
             // Tạo đối tượng PopupMenu
             PopupMenu popupMenu = new PopupMenu(context.getApplicationContext(), view, Gravity.END, 0, R.style.MyPopupMenu);
@@ -215,7 +121,7 @@ public class kt01_loggin_search extends AppCompatActivity {
 
                     case R.id.clearKT01:
                         //db.delete_table1(qry_ngay.getText().toString(), qry_BP.getText().toString());
-                        lbophandelete = qry_BP.getText().toString();
+                        String lbophandelete = qry_BP.getText().toString();
                         Cursor cursor = db.getngay();
                         cursor.moveToFirst();
                         @SuppressLint("Range") String ngay = cursor.getString(cursor.getColumnIndex("tc_faa002"));
@@ -249,14 +155,14 @@ public class kt01_loggin_search extends AppCompatActivity {
                         db.delete_tenhinh(qry_ngay.getText().toString(), qry_BP.getText().toString());
                         db.delete_tenhinhCT(qry_ngay.getText().toString(), qry_BP.getText().toString());
                         //  dialog.dismiss();
-                        load();
+                        Call_Refresh_Data();
                         return true;
                 }
                 return true;
             });
         });
 
-        btnaupdate.setOnClickListener(new View.OnClickListener() {
+        btnMain_PostData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
@@ -341,7 +247,7 @@ public class kt01_loggin_search extends AppCompatActivity {
                                     e.printStackTrace();
                                 }
 
-                                String res = upload_all("http://172.16.40.20/" + g_server + "/TechAPP/uploadtc_fae.php");
+                                String res = upload_all("http://172.16.40.20/" + Constant_Class.server + "/TechAPP/uploadtc_fae.php");
 
                                 runOnUiThread(new Runnable() { //Vì Toast không thể chạy đc nếu không phải UI Thread nên sử dụng runOnUIThread.
                                     @Override
@@ -350,7 +256,7 @@ public class kt01_loggin_search extends AppCompatActivity {
                                             Toast.makeText(v.getContext(), R.string.ERRORtvStatus_errorins, Toast.LENGTH_SHORT).show();
                                             db.delete_tenhinh_all();
                                             db.delete_table_faa_kt("KT01");
-                                            load();
+                                            Call_Refresh_Data();
                                         } else {
                                             Toast.makeText(v.getContext(), res.toString(), Toast.LENGTH_SHORT).show();
                                         }
@@ -375,7 +281,7 @@ public class kt01_loggin_search extends AppCompatActivity {
             }
         });
 
-        btnlogin1.setOnClickListener(new View.OnClickListener() {
+        btnMain_CreTabLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), KT01_Main_CreateTabLayout.class);
@@ -418,6 +324,96 @@ public class kt01_loggin_search extends AppCompatActivity {
         });
 
         dialog.show();
+    }
+
+    private void addEvents() {
+        qrReScanIpLists = new ArrayList<>();
+
+        if (Constant_Class.UserFactory.equals("DH")) {
+            cur = db.getAll_tc_fba();
+        } else {
+            cur = db.getAll_tc_fbaBL();
+        }
+
+        cur.moveToFirst();
+        int num1 = cur.getCount();
+        station = new String[num1];
+        for (int i = 0; i < num1; i++) {
+
+            try {
+                String mabp = cur.getString(cur.getColumnIndexOrThrow("tc_fba007"));
+                String tenbp = cur.getString(cur.getColumnIndexOrThrow("tc_fba009"));
+                qrReScanIpLists.add(new kt01_Loggin_List(mabp, tenbp));
+            } catch (Exception e) {
+                String err = e.toString();
+            }
+            cur.moveToNext();
+        }
+
+        kt01_Bophan_Adapter kt01_bophan_adapter = new kt01_Bophan_Adapter(this.activity,
+                R.layout.kt01_dsbophan,
+                R.id.sp_mabp,
+                R.id.sp_tenbp,
+                qrReScanIpLists);
+        cbxbophan.setAdapter(kt01_bophan_adapter);
+
+
+        cbxbophan.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                int dem = kt01_bophan_adapter.getCount();
+                if (position + 1 <= dem) {
+                    if (position >= 0) {
+                        //get IP
+                        kt01_Loggin_List res = kt01_bophan_adapter.getItem(position);
+                        mabp = res.getIDbp().toString().trim();
+                        tenbp = res.getTenbp().toString().trim();
+                        g_bophan = qrReScanIpLists.get(position).getIDbp().trim();
+                    }
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        String[] list_to = {Constant_Class.UserKhau};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this.activity, android.R.layout.simple_spinner_item, list_to);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        cbxto.setAdapter(adapter);
+
+        cbxto.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                g_to = adapter.getItem(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    private void addControls() {
+        btnMain_CreTabLayout = dialog.findViewById(R.id.btnMainCreTablayout);
+        btnMain_PostData = dialog.findViewById(R.id.btnPostData);
+        //btnsignature = dialog.findViewById(R.id.btn_signature);
+        btn_kyTenBaoDuong = dialog.findViewById(R.id.btn_kyTenBaoDuong);
+        lv_query = dialog.findViewById(R.id.lv_query);
+        TextView textView = dialog.findViewById(R.id.txt_to);
+        cbxbophan = dialog.findViewById(R.id.cbxbophan);
+        cbxto = dialog.findViewById(R.id.cbxto);
+
+        if (Constant_Class.UserFactory.equals("DH")) {
+            cbxto.setVisibility(View.VISIBLE); // Hiện Spinner nếu UserFactory là "DH"
+            textView.setVisibility(View.VISIBLE);
+        } else {
+            cbxto.setVisibility(View.GONE); // Ẩn Spinner nếu UserFactory không phải là "DH"
+            textView.setVisibility(View.GONE);
+        }
     }
 
     public JSONArray cur2Json(Cursor cursor) {
@@ -480,7 +476,7 @@ public class kt01_loggin_search extends AppCompatActivity {
         return res;
     }
 
-    private void load() {
+    private void Call_Refresh_Data() {
         db.open();
         Cursor cursor = db.getAll_tc_faa1("KT01");
 
@@ -497,7 +493,7 @@ public class kt01_loggin_search extends AppCompatActivity {
             }
             return false;
         });
-        lis1.setAdapter(simpleCursorAdapter);
+        lv_query.setAdapter(simpleCursorAdapter);
 
     }
 
