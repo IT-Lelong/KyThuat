@@ -628,7 +628,7 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
                 timeUpdate = selectedDate;
 
                 modelUdate = "";
-                if ( selectedWater == " "&& selectedGas ==" " && selectedElectricity == " ") {
+                if ( selectedWater == " " && selectedGas ==" " && selectedElectricity == " ") {
                     modelUdate = "1=1";
                 }else {
                     if (selectedWater != " ") {
@@ -934,7 +934,7 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
                 }
 
                 final String res = upload_all("http://172.16.40.20/" + Constant_Class.server + "/TechAPP/upload_tc_ceb.php");
-                if (!res.equals("False")) {
+                if (!res.equals("FALSE")) {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -942,6 +942,13 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
                         }
                     });
 
+                }else{
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(KT07_Main.this, "Không kết nối với internet", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             }
 //            if (!res.equals("False")) {
@@ -1141,7 +1148,7 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
             reader.close();
             return result;
         } catch (Exception ex) {
-            return "FAlSE";
+            return "FALSE";
         } finally {
             if (conn != null) {
                 conn.disconnect();

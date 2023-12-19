@@ -302,6 +302,7 @@ public class KT07_Main_Adapter extends RecyclerView.Adapter<KT07_Main_Adapter.Da
         });
 
         alertDialog.show();
+        edtInput.requestFocus();
     }
 
     //Insert dữ liệu vào bảng ảo tc_ceb (S)
