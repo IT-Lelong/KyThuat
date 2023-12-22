@@ -107,7 +107,7 @@ public class Log_BoPhan extends AppCompatActivity {
         editText1 = findViewById(R.id.editID);
         btnlogin1 = findViewById(R.id.btnlogin);
         //btnaddnew = findViewById(R.id.btn_addnew);
-        btnaupdate = findViewById(R.id.btn_updatesever);
+        //btnaupdate = findViewById(R.id.btn_updatesever);
         lis1 = findViewById(R.id.lv_query);
         btnback = findViewById(R.id.btnback);
         viewID = findViewById(R.id.viewID);

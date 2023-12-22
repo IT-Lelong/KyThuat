@@ -1141,7 +1141,7 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
             reader.close();
             return result;
         } catch (Exception ex) {
-            return "FAlSE";
+            return "FALSE";
         } finally {
             if (conn != null) {
                 conn.disconnect();

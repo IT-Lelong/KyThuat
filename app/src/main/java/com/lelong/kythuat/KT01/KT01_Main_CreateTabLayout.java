@@ -68,14 +68,14 @@ public class KT01_Main_CreateTabLayout extends AppCompatActivity {
             try {
                 String tab_name = cur.getString(cur.getColumnIndexOrThrow(g_lang));
                 tabLayout.addTab(tabLayout.newTab().setText(tab_name));
-                tabLayout.setTabTextColors(Color.WHITE, Color.WHITE);
             } catch (Exception e) {
                 String err = e.toString();
             }
             cur.moveToNext();
         }
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        tabLayout.setupWithViewPager(viewPager);
+        //tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setTabTextColors(Color.WHITE, Color.WHITE);
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
 
         final KT01_Main_CreateTabLayout_Fragment adapter = new KT01_Main_CreateTabLayout_Fragment(this,

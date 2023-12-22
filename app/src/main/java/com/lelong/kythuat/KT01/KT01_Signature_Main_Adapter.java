@@ -105,7 +105,6 @@ public class KT01_Signature_Main_Adapter extends SimpleCursorAdapter {
         dialog.getWindow().setBackgroundDrawableResource(R.drawable.rounded_shape);
         firstDetected = true;
 
-        TextView tv_qrcode = dialog.findViewById(R.id.tv_qrcode);
         SurfaceView suv_qr = (SurfaceView) dialog.findViewById(R.id.suv_qr);
         TextView tv_bpname = dialog.findViewById(R.id.tv_bpname);
         TextView tv_manvsig = dialog.findViewById(R.id.tv_manvsig);
