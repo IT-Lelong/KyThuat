@@ -50,7 +50,7 @@ public class KetChuyenPhoto {
                 .readTimeout(60, TimeUnit.SECONDS) // Ví dụ: timeout sau 60 giây
                 .build();
 
-        Retrofit retrofit = new Retrofit.Builder()
+                Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://172.16.40.20/PHP/Retrofit/")
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create(gson))
@@ -77,13 +77,13 @@ public class KetChuyenPhoto {
             String image_note = c_getTc_far.getString(c_getTc_far.getColumnIndexOrThrow("tc_far006"));
             File newDirectory = new File(context.getExternalMediaDirs()[0], image_date.replace("-", ""));
 
-            File dir = new File(newDirectory + "/"); // thay đổi đường dẫn tới thư mục chứa hình ảnh tương ứng
-            //String image_path = "/storage/emulated/0/Android/media/com.lelong.moitruong/" + image_date.replace("-", "") + "/" + image_name;
-            //File file = new File(image_path);
+            //File dir = new File(newDirectory + "/"); // thay đổi đường dẫn tới thư mục chứa hình ảnh tương ứng
+            String image_path = "/storage/emulated/0/Android/media/com.lelong.kythuat/" + image_date.replace("-", "") + "/" + image_name;
+            File file = new File(image_path);
             //filesToUpload.add(file);
 
             // Tạo một đối tượng FileInfo từ thông tin tên tệp và ngày
-            FileInfo fileInfo = new FileInfo(image_no,image_date,image_dept,image_to,image_name,image_note,dir);
+            FileInfo fileInfo = new FileInfo(image_no,image_date,image_dept,image_to,image_name,image_note,file);
 
             // Thêm FileInfo vào danh sách
             filesToUpload.add(fileInfo);
@@ -146,6 +146,9 @@ public class KetChuyenPhoto {
     void uploadFileRecursive(final List<FileInfo> files, final int currentIndex) {
         if (currentIndex >= files.size()) {
             ketChuyenDialog.setStatus("2");
+            //db.delete_tenhinh_all();
+            //db.delete_table_faa_kt("KT01");
+            //Call_Refresh_Data();
             ketChuyenDialog.setEnableBtn(false,true);
             // Tất cả tệp tin đã được tải lên
             return;

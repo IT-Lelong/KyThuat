@@ -148,7 +148,7 @@ public class KT01_Camera extends AppCompatActivity {
                                         db.appendUPDAEhinhanh(ID, luutenanh, loadhinh, l_ngay, ID1, "TC_FAA005", "TC_FAA011");
                                         imageView.setImageDrawable(null);
                                         menuID.setText("...");
-                                        edt_ghichu.setText("Nhập Ghi chú");
+                                        edt_ghichu.setText(" ");
                                         Toast.makeText(KT01_Camera.this, "Anh đã được xóa", Toast.LENGTH_SHORT).show();
 
                                     } else {
@@ -198,7 +198,7 @@ public class KT01_Camera extends AppCompatActivity {
                                         db.appendUPDAEhinhanh(ID, luutenanh,loadhinh, l_ngay,ID1,"TC_FAA005","TC_FAA011");
                                         imageView.setImageDrawable(null);
                                         menuID.setText("...");
-                                        edt_ghichu.setText("Nhập Ghi chú");
+                                        edt_ghichu.setText(" ");
                                         Toast.makeText(KT01_Camera.this, "Ảnh đã được xóa", Toast.LENGTH_SHORT).show();
 
                                     } else {

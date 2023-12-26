@@ -160,6 +160,7 @@ class KT01_DB {
             args.put(tc_faa017, g_tc_faa017);
             args.put(tc_faa018, g_tc_faa018);
             args.put(tc_faa019, g_tc_faa019);
+            args.put(tc_faapost, "N");
             db.insert(TABLE_NAME_TC_FAA, null, args);
             return "TRUE";
         } catch (Exception e) {
@@ -312,14 +313,14 @@ class KT01_DB {
             return db.rawQuery("SELECT tc_faa001,tc_faa002,tc_faa003,tc_faa004,tc_faa005,tc_faa006,tc_faa008,IFNULL(tc_faa011,0) tc_faa011,tc_faa012,tc_faa013" +
                     ",tc_faa014,tc_faa015,tc_faa016,IFNULL(tc_faa018,0) tc_faa018,tc_faa019"
 
-                    + " FROM " + TABLE_NAME_TC_FAA + " WHERE tc_faa005 is not null and tc_faa011 > 0", null);
+                    + " FROM " + TABLE_NAME_TC_FAA + " WHERE tc_faa005 is not null and tc_faa011 > 0 and tc_faapost = 'N'", null);
         } catch (Exception e) {
             return null;
         }
     }
     public Cursor getAll_tc_far() {
         try {
-            return db.rawQuery("SELECT tc_far001,tc_far002,tc_far003,tc_far004,tc_far005,tc_far006  FROM " + TB_TC_FAR + "", null);
+            return db.rawQuery("SELECT tc_far001,tc_far002,tc_far003,tc_far004,tc_far005,IFNULL(tc_far006,' ') tc_far006 FROM " + TB_TC_FAR + "", null);
         } catch (Exception e) {
             return null;
         }
