@@ -165,22 +165,37 @@ public class KT01_Main_Menu extends AppCompatActivity {
         btnMain_PostData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                KetChuyen_Dialog ketChuyenDialog = new KetChuyen_Dialog(v.getContext());
+                ketChuyenDialog.setEnableBtn(true,true);
+                ketChuyenDialog.setOkButtonClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        new KT01_Transfer(view.getContext(),ketChuyenDialog);
+                    }
+                });
+                ketChuyenDialog.setCancelButtonClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        ketChuyenDialog.dismiss();
+                    }
+                });
+                ketChuyenDialog.show();
+                //String res = upload_all("http://172.16.40.20/" + Constant_Class.server + "/TechAPP/uploadtc_fae.php");
+                //DataClient apiService = retrofit.create(DataClient.class);
+                //String myVariable = imageFiles.get(position).getName();
+                //KetChuyen_Dialog ketChuyenDialog = new KetChuyen_Dialog();
+                //moveDialog.setMyVariable(myVariable,g_factory);
+                //ketChuyenDialog.callback = this;
+                //ketChuyenDialog.show(getSupportFragmentManager(), "MoveDialog");
+                /*AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
                 builder.setTitle("Warning");
                 SpannableStringBuilder message = new SpannableStringBuilder();
-                //message.append("Xác Nhận kết chuyễn?");
-                //AlertDialog dialog = builder.create();
-                // dialog.show();
 
-// Define a custom button style
                 int buttonStyle = android.R.style.Widget_Button;
 
-// Create a new button with the custom style
                 Button okButton = new Button(v.getContext(), null, buttonStyle);
                 okButton.setTextColor(Color.WHITE);
                 okButton.setText("Xác nhận kết chuyển?");
-
-// Set the button as the positive button of the dialog
                 builder.setPositiveButton(null, null);
                 builder.setNegativeButton(null, null);
                 builder.setView(okButton);
@@ -277,7 +292,7 @@ public class KT01_Main_Menu extends AppCompatActivity {
 
                 AlertDialog dialog = builder.create();
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#669999")));
-                dialog.show();
+                dialog.show();*/
             }
         });
 
@@ -324,6 +339,9 @@ public class KT01_Main_Menu extends AppCompatActivity {
         });
 
         dialog.show();
+    }
+    private void Call_showKetChuyenDialog() {
+
     }
 
     private void addEvents() {

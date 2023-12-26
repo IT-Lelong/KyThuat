@@ -58,7 +58,7 @@ public class KT01_Signature_Main extends AppCompatActivity implements KT01_Inter
                 new int[]{R.id.tv_stt, R.id.tv_mabp,R.id.tv_tenbp,R.id.tv_ngaysig,R.id.tv_manv},
                 drawable_blue,
                 drawable_green,
-                (KT01_Interface) this);
+                (KT01_Interface) this ,Constant_Class.UserXuong);
 
         kt01SignatureMainAdapter.setViewBinder((view, getData_cur, columnIndex) -> {
             if (view.getId() == R.id.tv_stt) {

@@ -23,6 +23,7 @@ import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
+import com.lelong.kythuat.Constant_Class;
 import com.lelong.kythuat.R;
 
 import java.io.IOException;
@@ -39,13 +40,12 @@ public class KT01_Signature_Main_Adapter extends SimpleCursorAdapter {
     private KT01_DB kt01Db = null;
     Button btnkt;
     Dialog dialog;
-    String s_somay, s_bophan, s_tenbp, s_ngay;
+    String s_somay, s_bophan, s_tenbp, s_ngay,g_xuong;
     CameraSource cameraSource;
     BarcodeDetector barcodeDetector;
     boolean firstDetected = true;
 
-
-    public KT01_Signature_Main_Adapter(Context Context, int layout, Cursor cursor, String[] from, int[] to, Drawable drawable_blue, Drawable drawable_green, KT01_Interface kt01Interface) {
+    public KT01_Signature_Main_Adapter(Context Context, int layout, Cursor cursor, String[] from, int[] to, Drawable drawable_blue, Drawable drawable_green, KT01_Interface kt01Interface,String g_xuong) {
         super(Context, layout, cursor, from, to);
         this.context = Context;
         this.layout = layout;
@@ -55,9 +55,13 @@ public class KT01_Signature_Main_Adapter extends SimpleCursorAdapter {
         this.drawable_blue = drawable_blue;
         this.drawable_green = drawable_green;
         this.kt01Interface = kt01Interface;
+        this.g_xuong = g_xuong;
 
         kt01Db = new KT01_DB(context);
         kt01Db.open();
+    }
+    public void updateData(Cursor ncursor) {
+        swapCursor(ncursor);
     }
 
     @Override
@@ -65,7 +69,8 @@ public class KT01_Signature_Main_Adapter extends SimpleCursorAdapter {
         View view = super.getView(position, convertView, parent);
         btnkt = view.findViewById(R.id.btnkt);
         btnkt.setTag(position);
-
+        //btnkt = view.findViewById(R.id.btnkt);
+        mCursor.moveToPosition(position);
         s_bophan = mCursor.getString(mCursor.getColumnIndexOrThrow("tc_fba007"));
         s_tenbp = mCursor.getString(mCursor.getColumnIndexOrThrow("tc_fba009"));
         s_ngay = mCursor.getString(mCursor.getColumnIndexOrThrow("ngaysig"));
@@ -177,6 +182,10 @@ public class KT01_Signature_Main_Adapter extends SimpleCursorAdapter {
                         tv_manvsig.getText().toString().trim(),
                         edt_sogio.getText().toString().trim(),
                         null);
+                Cursor updatedCursor = kt01Db.getDepartmetData(g_xuong);
+                mCursor.moveToPosition(position);
+                updateData(updatedCursor) ;
+                notifyDataSetChanged();
                 dialog.dismiss();
             }
         });

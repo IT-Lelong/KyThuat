@@ -84,6 +84,7 @@ public class KT01_Fragment_Create extends Fragment implements KT01_Interface {
     String ngay, tobp;
     private int s;
     DecimalFormat decimalFormat = new DecimalFormat("00");
+    KT01_Fragment_Adapter adapter;
 
     public KT01_Fragment_Create(int s_position, String ngay, String bophan, String tobp) {
         // Required empty public constructor
@@ -109,6 +110,11 @@ public class KT01_Fragment_Create extends Fragment implements KT01_Interface {
         args.putString(ARG_PARAM3, g_toBP1);
         fragment.setArguments(args);
         return fragment;
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -195,7 +201,7 @@ public class KT01_Fragment_Create extends Fragment implements KT01_Interface {
             cursor_1.moveToNext();
         }
 
-        KT01_Fragment_Adapter adapter = new KT01_Fragment_Adapter(getContext(),
+        adapter = new KT01_Fragment_Adapter(getContext(),
                 R.layout.kt01_tablayout_fragment_item,
                 mangLV,
                 g_date,
@@ -261,6 +267,7 @@ public class KT01_Fragment_Create extends Fragment implements KT01_Interface {
         startActivityForResult(cameraIntent, CAMERA_REQUEST);
 
     }
+
 
     @Override
     public void loadData_Sig() {

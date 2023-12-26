@@ -106,9 +106,21 @@ public class KT01_Fragment_Adapter extends RecyclerView.Adapter<KT01_Fragment_Ad
         ngay = mangLV.get(position).getNgay();
         bophan = mangLV.get(position).getBophan();
         mahangmuc=mangLV.get(holder.getPosition()).getTc_fac004();
-
+        String check = String.valueOf(mangLV.get(position).getCheckBox());
+        String check1 = String.valueOf(mangLV.get(position).getCheckBox1());
+        String check2 = String.valueOf(mangLV.get(position).getCheckBox2());
         Boolean chk_qrb = db.KT_ndhinh(mahangmuc,bophan,"",ngay);
         if (chk_qrb == true) {
+            if (check.equals("true") || check1.equals("true") || check2.equals("true"))
+            {
+                db.updateDiem(mahangmuc,ngay,bophan);
+                holder.checkBox.setChecked(false);
+                holder.checkBox1.setChecked(false);
+                holder.checkBox2.setChecked(false);
+                holder.checkBox3.setChecked(true);
+                holder.checkBox4.setChecked(false);
+                holder.checkBox5.setChecked(false);
+            }
             Drawable[] layers = new Drawable[2];
             layers[0] = applicationContext.getDrawable(R.drawable.camera1); // replace R.drawable.button_image with your button image
             GradientDrawable gradientDrawable = new GradientDrawable();
@@ -149,7 +161,17 @@ public class KT01_Fragment_Adapter extends RecyclerView.Adapter<KT01_Fragment_Ad
             public void onClick(View v) {
                 DULIEU = mangLV.get(position).getTc_fac004();
                 g_to= mangLV.get(position).getTobp();
-                openDialog(DULIEU,g_to);
+                Intent intent = new Intent(applicationContext, KT01_Camera.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("ID", DULIEU);
+                bundle.putString("l_ngay", ngay);
+                bundle.putString("l_bp", bophan);
+                bundle.putString("l_to", g_to);
+                intent.putExtras(bundle);
+
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // add this line
+                applicationContext.startActivity(intent);
+                //openDialog(DULIEU,g_to);
             }
         });
 
@@ -245,6 +267,18 @@ public class KT01_Fragment_Adapter extends RecyclerView.Adapter<KT01_Fragment_Ad
                     getUserCode(holder.ghichu1.getText().toString().trim(), holder.getPosition());
                 }
                 //holder.tc_fac009.getText().toString();
+            }
+            private void getUserCode1(String kt02_tc_fac009, int position) {
+                try {
+                    final String qr_val = kt02_tc_fac009.trim();
+                    String mahangmuc = mangLV.get(position).getTc_fac004();
+                    g_ghichu = null;
+                    g_ghichu = holder.ghichu1.getText().toString();
+                    db.appendUPDAE(mahangmuc, g_ghichu, ngay, bophan, "tc_faa006");
+                    mangLV.get(position).setGhichu(g_ghichu);
+                } catch (Exception e) {
+                    String err = e.toString();
+                }
             }
 
             private void getUserCode(String kt02_tc_fac009, int position) {

@@ -52,6 +52,10 @@ public class OpenCamera extends AppCompatActivity {
     private boolean canCapture = true;
     private Handler captureHandler = new Handler();
     private static final long CAPTURE_DELAY = 5000; // Độ trễ giữa các lần chụp (5 giây)
+    private File lastCapturedPhotoFile;
+    private String fileName, fileName_005;
+    private File photoFile;
+    private String _to;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +81,35 @@ public class OpenCamera extends AppCompatActivity {
         startCamera();
     }
 
+    @Override
+    public void onBackPressed() {
+        if (photoFile != null) {
+            saveImgLast(photoFile, fileName, fileName_005);
+        }
+
+        // Gọi phương thức onBackPressed() của lớp cha để thoát khỏi Activity
+        super.onBackPressed();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        lastCapturedPhotoFile = null;
+    }
+
+    private void saveImgLast(File photofile, String filename, String filename_005) {
+        luudulieuanh(filename, filename_005);
+
+        // Đường dẫn của hình ảnh đã chụp
+        String savedImagePath = photofile.getAbsolutePath();
+
+        // Giới hạn kích thước của hình ảnh sau khi chụp
+        Bitmap resizedBitmap = resizeImage(savedImagePath, 800, 800);
+
+        // Lưu hình ảnh đã giới hạn kích thước
+        saveResizedImage(resizedBitmap, photofile);
+    }
+
     private void takePhoto() {
         if (!canCapture) {
             // Không cho phép chụp ảnh liên tục, thoát ra nếu không được phép
@@ -98,7 +131,8 @@ public class OpenCamera extends AppCompatActivity {
         } else {
             selectedTo = "XBL";
         }
-
+        fileName = "";
+        fileName_005 = "";
         db = new KT01_DB(this);
         db.open();
         String timestamp = new SimpleDateFormat("HHmmss", Locale.getDefault()).format(new Date());
@@ -109,22 +143,22 @@ public class OpenCamera extends AppCompatActivity {
         //int num = cursor.getInt(cursor.getColumnIndexOrThrow("stt"));
         STT = num + 1;
 
-        String fileName = selectedDetail + "_" + selectedTo + "_" + selectedDate + "_" + selectedDepartment + "_" + STT + ".png";
-        String fileName_005 = selectedDetail + "_" + selectedTo + "_" + selectedDate + "_" + selectedDepartment + ".png";
-        //File newDirectory = new File(getExternalMediaDirs()[0], selectedDate.replace("-", ""));
-        File mediaDir = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "KyThuatFolder");
+        fileName = selectedDetail + "_" + selectedTo + "_" + selectedDate + "_" + selectedDepartment + "_" + STT + ".png";
+        fileName_005 = selectedDetail + "_" + selectedTo + "_" + selectedDate + "_" + selectedDepartment + ".png";
+        File newDirectory = new File(getExternalMediaDirs()[0], selectedDate.replace("-", ""));
+        /*File mediaDir = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "KyThuatFolder");
         if (!mediaDir.exists()) {
             mediaDir.mkdirs(); // Tạo thư mục nếu chưa tồn tại
         }
 
-        File newDirectory = new File(mediaDir, selectedDate.replace("-", ""));
+        File newDirectory = new File(mediaDir, selectedDate.replace("-", ""));*/
 
         ///storage/emulated/0/Android/media/com.lelong.kythuat/20230916
         if (!newDirectory.exists()) {
             newDirectory.mkdirs(); //Tạo thư mục
         }
-
-        File photoFile = new File(newDirectory, fileName);
+        photoFile = null;
+        photoFile = new File(newDirectory, fileName);
         ImageCapture.OutputFileOptions outputFileOptions =
                 new ImageCapture.OutputFileOptions.Builder(photoFile).build();
 
@@ -132,17 +166,19 @@ public class OpenCamera extends AppCompatActivity {
                 new ImageCapture.OnImageSavedCallback() {
                     @Override
                     public void onImageSaved(@NonNull ImageCapture.OutputFileResults outputFileResults) {
+                        String savedImagePath = photoFile.getAbsolutePath();
+                        lastCapturedPhotoFile = photoFile;
                         //Cre_db.call_insertPhotoData(selectedDetail, selectedDate, selectedDepartment, g_User, fileName);
-                        luudulieuanh(fileName, fileName_005);
+                        //luudulieuanh(fileName, fileName_005);
 
                         // Đường dẫn của hình ảnh đã chụp
-                        String savedImagePath = photoFile.getAbsolutePath();
+                        //String savedImagePath = photoFile.getAbsolutePath();
 
                         // Giới hạn kích thước của hình ảnh sau khi chụp
-                        Bitmap resizedBitmap = resizeImage(savedImagePath, 800, 800);
+                        //Bitmap resizedBitmap = resizeImage(savedImagePath, 800, 800);
 
                         // Lưu hình ảnh đã giới hạn kích thước
-                        saveResizedImage(resizedBitmap, photoFile);
+                        //saveResizedImage(resizedBitmap, photoFile);
 
                         // Nén ảnh đã chụp
                         //compressImage(photoFile);
@@ -169,7 +205,7 @@ public class OpenCamera extends AppCompatActivity {
                 canCapture = true;
             }
         }, CAPTURE_DELAY);
-
+        lastCapturedPhotoFile = null;
     }
 
     // Nén ảnh đã chụp
@@ -226,6 +262,23 @@ public class OpenCamera extends AppCompatActivity {
         cursor.moveToFirst();
         int num = cursor.getInt(cursor.getColumnIndexOrThrow("stt"));
         demso = num + 1;
+        //insert hình vào tc_far_file
+        if (selectedTo.equals("ToA")) {
+            _to = "Tổ A";
+        }
+        if (selectedTo.equals("ToB")) {
+            _to = "Tổ B";
+        }
+        if (selectedTo.equals("ToC")) {
+            _to = "Tổ C";
+        }
+        if (selectedTo.equals("ToD")) {
+            _to = "Tổ D";
+        }
+        if (selectedTo.equals("XBL")) {
+            _to = "Bến Lức";
+        }
+        db.ins_img_tc_far(selectedDetail, selectedDate, selectedDepartment, _to, g_fileName);
         db.append1(selectedDetail, selectedDate, selectedDepartment, String.valueOf(demso), g_fileName);
         db.appendUPDAEhinhanh(selectedDetail, g_fileName_005, STT, selectedDate, selectedDepartment, "TC_FAA005", "TC_FAA011");
     }
