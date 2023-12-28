@@ -703,7 +703,7 @@ class KT01_DB {
         try {
 
             //SQLiteDatabase db = this.getWritableDatabase();
-            String selectQuery = "SELECT '' AS somay_sig,mabp_sig,tebp_sig,ngay_sig,ghichu_sig,'Đã chuyển' AS trangthai_sig,manv_sig,sogio_sig,tenhinh_sig FROM fia_up_sigkt01_file " +
+            String selectQuery = "SELECT ' ' AS somay_sig,mabp_sig,tebp_sig,ngay_sig,ghichu_sig,'Đã chuyển' AS trangthai_sig,manv_sig,IFNULL(sogio_sig,' ') sogio_sig,IFNULL(tenhinh_sig,' ') tenhinh_sig FROM fia_up_sigkt01_file " +
                     " WHERE trangthai_sig is null OR trangthai_sig='Chưa chuyển' " +
                     " order by mabp_sig,ngay_sig ";
             return db.rawQuery(selectQuery, null);
