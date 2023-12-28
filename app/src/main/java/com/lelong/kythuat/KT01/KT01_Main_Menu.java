@@ -161,7 +161,7 @@ public class KT01_Main_Menu extends AppCompatActivity {
                 return true;
             });
         });
-
+        //String res = upload_all("http://172.16.40.20/" + Constant_Class.server + "/TechAPP/uploadtc_fae.php");
         btnMain_PostData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

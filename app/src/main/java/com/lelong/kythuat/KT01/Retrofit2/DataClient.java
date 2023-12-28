@@ -2,6 +2,8 @@ package com.lelong.kythuat.KT01.Retrofit2;
 
 import com.google.gson.JsonObject;
 
+import org.json.JSONObject;
+
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;

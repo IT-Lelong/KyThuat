@@ -40,12 +40,12 @@ public class KT01_Signature_Main_Adapter extends SimpleCursorAdapter {
     private KT01_DB kt01Db = null;
     Button btnkt;
     Dialog dialog;
-    String s_somay, s_bophan, s_tenbp, s_ngay,g_xuong;
+    String s_somay, s_bophan, s_tenbp, s_ngay;
     CameraSource cameraSource;
     BarcodeDetector barcodeDetector;
     boolean firstDetected = true;
 
-    public KT01_Signature_Main_Adapter(Context Context, int layout, Cursor cursor, String[] from, int[] to, Drawable drawable_blue, Drawable drawable_green, KT01_Interface kt01Interface,String g_xuong) {
+    public KT01_Signature_Main_Adapter(Context Context, int layout, Cursor cursor, String[] from, int[] to, Drawable drawable_blue, Drawable drawable_green, KT01_Interface kt01Interface) {
         super(Context, layout, cursor, from, to);
         this.context = Context;
         this.layout = layout;
@@ -55,7 +55,6 @@ public class KT01_Signature_Main_Adapter extends SimpleCursorAdapter {
         this.drawable_blue = drawable_blue;
         this.drawable_green = drawable_green;
         this.kt01Interface = kt01Interface;
-        this.g_xuong = g_xuong;
 
         kt01Db = new KT01_DB(context);
         kt01Db.open();
@@ -182,7 +181,7 @@ public class KT01_Signature_Main_Adapter extends SimpleCursorAdapter {
                         tv_manvsig.getText().toString().trim(),
                         edt_sogio.getText().toString().trim(),
                         null);
-                Cursor updatedCursor = kt01Db.getDepartmetData(g_xuong);
+                Cursor updatedCursor = kt01Db.getDepartmetData(Constant_Class.UserFactory);
                 mCursor.moveToPosition(position);
                 updateData(updatedCursor) ;
                 notifyDataSetChanged();
