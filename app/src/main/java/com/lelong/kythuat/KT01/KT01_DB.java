@@ -82,7 +82,7 @@ class KT01_DB {
             + tc_faa006 + " TEXT," + tc_faa007 + " TEXT," + tc_faa008 + " TEXT,"
             + tc_faa009 + " TEXT," + tc_faa010 + " TEXT," + tc_faa011 + " TEXT,"
             + tc_faa012 + " TEXT," + tc_faa013 + " TEXT," + tc_faa014 + " TEXT," + tc_faa015 + " TEXT," + tc_faa016 + " TEXT," + tc_faa017 + " TEXT," + tc_faa018 + " TEXT," + tc_faa019 + " TEXT," + tc_faapost + " TEXT,"
-            + "PRIMARY KEY (" + tc_faa001 + ", " + tc_faa003 + "))";
+            + "PRIMARY KEY (" + tc_faa001 + ", " + tc_faa003 + "," + tc_faa002 + "))";
 
     String CREATE_Ten_anh = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_Ten_anh + " ("
             + stt + " TEXT, " + tenanh + " TEXT, " + key1 + " TEXT, " + bophan + " TEXT, " + ngay + " TEXT," + "PRIMARY KEY (" + ngay + ", " + stt + "))";
@@ -255,7 +255,7 @@ class KT01_DB {
     public String appendUPDAE(String key, String l_check, String date, String bp, String tencot) {
         try {
             ContentValues args = new ContentValues();
-            db.execSQL("UPDATE " + TABLE_NAME_TC_FAA + " SET " + tencot + "='" + l_check + "' WHERE tc_faa001='" + key + "'  AND tc_faa003='" + bp + "'");
+            db.execSQL("UPDATE " + TABLE_NAME_TC_FAA + " SET " + tencot + "='" + l_check + "' WHERE tc_faa001='" + key + "'  AND tc_faa003='" + bp + "' AND tc_faa002 = '"+ date +"'");
             return "TRUE";
         } catch (Exception e) {
             return "FALSE";
@@ -320,7 +320,7 @@ class KT01_DB {
     }
     public Cursor getAll_tc_far() {
         try {
-            return db.rawQuery("SELECT tc_far001,tc_far002,tc_far003,tc_far004,tc_far005,IFNULL(tc_far006,' ') tc_far006 FROM " + TB_TC_FAR + "", null);
+            return db.rawQuery("SELECT tc_far001,tc_far002,tc_far003,tc_far004,tc_far005,IFNULL(tc_far006,' ') tc_far006 FROM " + TB_TC_FAR + " WHERE tc_farpost != 'Y'", null);
         } catch (Exception e) {
             return null;
         }
