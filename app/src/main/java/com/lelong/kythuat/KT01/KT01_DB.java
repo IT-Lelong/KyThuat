@@ -449,6 +449,18 @@ class KT01_DB {
         String[] strings = new String[]{tenanh1};
         db.delete(TABLE_NAME_Ten_anh, whereClause_hm0102, strings);
     }
+    public Boolean getcountAnhpost(String tenanh1) {
+        try {
+            Cursor mCursor= db.rawQuery("SELECT  tc_far005 " + " FROM " + TB_TC_FAR + " WHERE tc_far005 = '"+tenanh1+"' AND tc_farpost != 'Y'  ", null);
+            if (mCursor.getCount() > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            return false;
+        }
+    }
     public void delete_tenanh_tc_far(String tenanh1) {
         String whereClause_hm0102 = "tc_far005=? ";
         String[] strings = new String[]{tenanh1};
