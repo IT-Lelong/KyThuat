@@ -67,7 +67,7 @@ public class KT07_Main_RowItem {
         this.g_tc_cea08 = g_tc_cea08;
         this.g_tc_ceb04_old = g_tc_ceb04_old;
         this.g_tc_ceb04 = g_tc_ceb04;
-        this.G_TC_CEBDATE_CEB06 = g_TC_CEBDATE_CEB06  ;
+        this.G_TC_CEBDATE_CEB06 = g_TC_CEBDATE_CEB06;
         this. g_tc_ceb04_diff = g_TC_CEB04_DIFF;
     }
 }

@@ -45,6 +45,7 @@
             android:layout_weight="1"
             android:background="@drawable/border_listview"
             android:gravity="center"
+            android:onClick="OnClick"
             android:text="Mã số"
             android:textSize="20sp" />
 

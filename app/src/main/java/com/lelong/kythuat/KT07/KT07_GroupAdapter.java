@@ -96,7 +96,7 @@ public class KT07_GroupAdapter extends BaseExpandableListAdapter {
 
         item.setText(model);
         if (i == selectedGroup && i1 == selectedChild) {
-            view.setBackgroundResource(R.drawable.selected_background); // Thay đổi thành drawable bạn muốn
+            view.setBackgroundResource(R.drawable.selected_background);
         } else {
             view.setBackgroundResource(android.R.color.transparent);
         }
@@ -105,7 +105,7 @@ public class KT07_GroupAdapter extends BaseExpandableListAdapter {
             @Override
             public void onClick(View v) {
 
-                kt07MainFillData.fill_data(model);
+                kt07MainFillData.fill_data(model,null);
                 setSelectedItem(i, i1);
             }
         });

@@ -3,21 +3,16 @@ package com.lelong.kythuat.KT07;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.database.Cursor;
 import android.graphics.Typeface;
-import android.text.Editable;
 import android.text.InputType;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -27,7 +22,6 @@ import com.lelong.kythuat.R;
 
 import java.text.DecimalFormat;
 import java.util.List;
-import java.util.Objects;
 
 public class KT07_Main_Adapter extends RecyclerView.Adapter<KT07_Main_Adapter.DataViewHolder>{
     private final Context applicationContext;
@@ -39,10 +33,12 @@ public class KT07_Main_Adapter extends RecyclerView.Adapter<KT07_Main_Adapter.Da
     private final TextView tv_tc_ceb06;
     private final TextView tv_tc_cebuser;
     private final TextView tv_tc_cebdate;
+    private final String model;
     private int editingPosition = RecyclerView.NO_POSITION;
     private int lastFocusedPosition = RecyclerView.NO_POSITION;
     private KT07_Main_FillData kt07MainFillData;
     private AlertDialog alertDialog;
+
     public KT07_Main_Adapter(Context applicationContext,
                              int kt07_listdata_item,
                              List<KT07_Main_RowItem> kt07MainRowItems_list,
@@ -50,7 +46,7 @@ public class KT07_Main_Adapter extends RecyclerView.Adapter<KT07_Main_Adapter.Da
                              TextView tv_tc_ceb06,
                              TextView tv_tc_cebdate,
                              TextView tv_tc_cebuser,
-                             KT07_Main_FillData kt07MainFillData) {
+                             KT07_Main_FillData kt07MainFillData, String modeltmp) {
         this.applicationContext = applicationContext;
         this.layout_resource = kt07_listdata_item;
         this.kt07MainRowItems_list = kt07MainRowItems_list;
@@ -60,7 +56,7 @@ public class KT07_Main_Adapter extends RecyclerView.Adapter<KT07_Main_Adapter.Da
         this.tv_tc_ceb06 = tv_tc_ceb06;
         this.tv_tc_cebdate = tv_tc_cebdate;
         this.tv_tc_cebuser = tv_tc_cebuser;
-
+        this.model = modeltmp;
         kt07Db = new KT07_DB(applicationContext);
         kt07Db.open();
     }
@@ -86,6 +82,13 @@ public class KT07_Main_Adapter extends RecyclerView.Adapter<KT07_Main_Adapter.Da
 
 
         holder.tv_tc_cea05.setText(kt07MainRowItems_list.get(adapterPosition).getG_tc_cea05());
+        holder.tv_tc_cea05.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showPopupMenu_v2(holder.tv_tc_cea05, adapterPosition,model);
+            }
+        });
+
         DecimalFormat decimalFormat = new DecimalFormat("#,###");
         String formattedTcCeb04Old = decimalFormat.format(Double.parseDouble(kt07MainRowItems_list.get(adapterPosition).getG_tc_ceb04_old()));
         holder.tv_tc_ceb04_old.setText(formattedTcCeb04Old +"\n"+kt07MainRowItems_list.get(adapterPosition).getG_TC_CEBDATE_CEB06());
@@ -350,6 +353,30 @@ public class KT07_Main_Adapter extends RecyclerView.Adapter<KT07_Main_Adapter.Da
                 if(adapterPosition>=0){
                     kt07MainRowItems_list.get(adapterPosition).setG_tc_ceb04_old("0");
                     kt07MainFillData.notifydata();
+                }
+
+                return true;
+            }
+        });
+
+        // Hiển thị menu popup
+        popupMenu.show();
+    }
+    private void showPopupMenu_v2(View anchorView, final int adapterPosition,String model_tmp) {
+        PopupMenu popupMenu = new PopupMenu(applicationContext, anchorView);
+
+        // Thêm các mục menu vào mã nguồn
+        popupMenu.getMenu().add("Điện");
+        popupMenu.getMenu().add("Nước");
+        popupMenu.getMenu().add("Gas");
+
+        // Đặt lắng nghe cho mỗi mục menu
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if(adapterPosition>=0){
+                    String mainCategory = item.getTitle().toString();
+                    kt07MainFillData.fill_data(null,mainCategory);
                 }
 
                 return true;

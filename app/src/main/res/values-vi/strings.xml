@@ -173,4 +173,5 @@
     <string name="tc_cea09">Xưởng</string>
     <string name="tc_ceb04">Bảng số đo</string>
     <string name="tc_ceb05">Lưu lượng sử dụng</string>
+    <string name= "checkbox"> Kết hợp điều kiên tra cứu</string>
 </resources>
