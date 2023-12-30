@@ -15,6 +15,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -168,6 +170,8 @@ public class OpenCamera extends AppCompatActivity {
                     public void onImageSaved(@NonNull ImageCapture.OutputFileResults outputFileResults) {
                         String savedImagePath = photoFile.getAbsolutePath();
                         lastCapturedPhotoFile = photoFile;
+                        // Nếu bạn muốn cố định hướng ảnh ở đây:
+                        fixImageOrientation(savedImagePath);
                         //Cre_db.call_insertPhotoData(selectedDetail, selectedDate, selectedDepartment, g_User, fileName);
                         //luudulieuanh(fileName, fileName_005);
 
@@ -243,6 +247,54 @@ public class OpenCamera extends AppCompatActivity {
         // Đọc lại hình ảnh và thay đổi kích thước
         return BitmapFactory.decodeFile(imagePath, options);
     }
+    private void fixImageOrientation(String imagePath) {
+        try {
+            // Đọc thông tin Exif của ảnh
+            ExifInterface exifInterface = new ExifInterface(imagePath);
+            int orientation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
+
+            Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
+
+            Matrix matrix = new Matrix();
+            switch (orientation) {
+                case ExifInterface.ORIENTATION_ROTATE_90:
+                    matrix.postRotate(90);
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_180:
+                    matrix.postRotate(180);
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_270:
+                    matrix.postRotate(270);
+                    break;
+                case ExifInterface.ORIENTATION_NORMAL:
+                default:
+                    // Không cần xoay nếu hướng ban đầu đã là đúng
+                    break;
+            }
+
+            // Tạo bitmap mới với hướng đã điều chỉnh (nếu cần)
+            Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+
+            // Ghi đè tệp ảnh gốc với bitmap đã điều chỉnh hướng
+            File imageFile = new File(imagePath);
+            FileOutputStream fos = new FileOutputStream(imageFile);
+            rotatedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            fos.flush();
+            fos.close();
+
+            // Hiển thị thông báo đã lưu ảnh
+            runOnUiThread(() -> {
+                Toast.makeText(OpenCamera.this, "Photo saved: " + fileName, Toast.LENGTH_SHORT).show();
+            });
+
+            // Xoá bitmap khỏi bộ nhớ
+            bitmap.recycle();
+            rotatedBitmap.recycle();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private void saveResizedImage(Bitmap resizedBitmap, File outputFile) {
         try {
