@@ -81,11 +81,11 @@ public class KT07_DB {
     }
 
     public Cursor get_menu_data(String ID) {
-        Cursor c = db.rawQuery("SELECT cpf281 FROM cpf_file WHERE cpf01 = '" + ID + "' ", null);
+        Cursor c = db.rawQuery(" SELECT SUBSTR(cpf281,1,1) FROM cpf_file WHERE cpf01 = '" + ID + "' ", null);
         c.moveToFirst();
         String g_cpf281 = c.getString(0);
         if (g_cpf281 == null) {
-            g_cpf281 = "DH"; // Gán giá trị mặc định nếu chuỗi là null
+            g_cpf281 = "D"; // Gán giá trị mặc định nếu chuỗi là null
         }
         c.close();
 
@@ -128,7 +128,7 @@ public class KT07_DB {
     }
     public Cursor getAll_tc_cea_data(String g_title, String g_tc_cebdate, String g_tc_ceb06,String g_dk) {
         String selectQuery = null;
-        if (g_title.startsWith("DH") || g_title.startsWith("BL")) {
+        if (g_title.startsWith("D") || g_title.startsWith("B") ) {
             //Fill Data của loại tiêu thụ
             selectQuery = " SELECT tc_cea01,tc_cea03,tc_cea04,(tc_cea05||'/'||CASE WHEN tc_cea09 = 'null' THEN '' ELSE tc_cea09 END) AS tc_cea05 ,tc_cea06,tc_cea08,  " +
                     " COALESCE((select tc_ceb04 from  (SELECT * FROM tc_ceb_file   WHERE  tc_ceb02 =TC_CEA03 AND tc_ceb01 = tc_cea01 and  tc_cebdate||tc_ceb06 < '"+g_tc_cebdate+""+g_tc_ceb06+"' " +
