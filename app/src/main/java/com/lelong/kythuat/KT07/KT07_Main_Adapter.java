@@ -20,8 +20,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.lelong.kythuat.R;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.List;
+import java.util.Locale;
 
 public class KT07_Main_Adapter extends RecyclerView.Adapter<KT07_Main_Adapter.DataViewHolder>{
     private final Context applicationContext;
@@ -89,13 +92,13 @@ public class KT07_Main_Adapter extends RecyclerView.Adapter<KT07_Main_Adapter.Da
             }
         });
 
-        DecimalFormat decimalFormat = new DecimalFormat("#,###");
-        String formattedTcCeb04Old = decimalFormat.format(Double.parseDouble(kt07MainRowItems_list.get(adapterPosition).getG_tc_ceb04_old()));
+        DecimalFormat decimalFormat = new DecimalFormat("###,###0.00", DecimalFormatSymbols.getInstance(Locale.US));
+        String formattedTcCeb04Old = decimalFormat.format(BigDecimal.valueOf(Double.parseDouble(kt07MainRowItems_list.get(adapterPosition).getG_tc_ceb04_old())));
         holder.tv_tc_ceb04_old.setText(formattedTcCeb04Old +"\n"+kt07MainRowItems_list.get(adapterPosition).getG_TC_CEBDATE_CEB06());
         String formattedTcCeb04 = decimalFormat.format(Double.parseDouble(kt07MainRowItems_list.get(adapterPosition).getG_tc_ceb04()));
         holder.tv_tc_ceb04.setText(formattedTcCeb04);
         //holder.tv_tc_ceb04_diff.setText(kt07MainRowItems_list.get(adapterPosition).getG_tc_ceb04_diff());
-        String formattedtv_tc_ceb04_diff = decimalFormat.format(Double.parseDouble(String.valueOf(Integer.parseInt(kt07MainRowItems_list.get(adapterPosition).getG_tc_ceb04())-Integer.parseInt(kt07MainRowItems_list.get(adapterPosition).getG_tc_ceb04_old()))));
+        String formattedtv_tc_ceb04_diff = decimalFormat.format(Double.parseDouble(String.valueOf(Double.parseDouble(kt07MainRowItems_list.get(adapterPosition).getG_tc_ceb04())-Double.parseDouble(kt07MainRowItems_list.get(adapterPosition).getG_tc_ceb04_old()))));
         holder.tv_tc_ceb04_diff.setText(formattedtv_tc_ceb04_diff);
         //Insert dữ liệu vào bảng ảo tc_ceb (S)
         holder.tv_tc_ceb04.setOnClickListener(new View.OnClickListener() {
@@ -188,7 +191,7 @@ public class KT07_Main_Adapter extends RecyclerView.Adapter<KT07_Main_Adapter.Da
         title.setTextColor(ContextCompat.getColor(applicationContext, R.color.black));
         builder.setCustomTitle(title);
 
-        DecimalFormat decimalFormat = new DecimalFormat("#,###");
+        DecimalFormat decimalFormat = new DecimalFormat("###,###0.00",DecimalFormatSymbols.getInstance(Locale.US));
 
         LinearLayout layout = new LinearLayout(applicationContext);
         layout.setOrientation(LinearLayout.VERTICAL);
@@ -206,12 +209,20 @@ public class KT07_Main_Adapter extends RecyclerView.Adapter<KT07_Main_Adapter.Da
         EditText edtInput = new EditText(applicationContext);
         edtInput.setText(tc_ceb04now);
         edtInput.setHint("Nhập số do");
-        edtInput.setInputType(InputType.TYPE_CLASS_NUMBER);
+        edtInput.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
         edtInput.setTextSize(20);
         layout.addView(edtInput);
 
         String tvTcCeb04OldValue = decimalFormat.format(Double.parseDouble(kt07MainRowItems_list.get(adapterPosition).getG_tc_ceb04_old()));
-        String tcCeb04DiffValue = decimalFormat.format(Double.parseDouble(String.valueOf((Integer.parseInt(kt07MainRowItems_list.get(adapterPosition).getG_tc_ceb04()) - Integer.parseInt(tvTcCeb04OldValue.replace(".",""))))));
+        String tcCeb04OldValueFormat = tvTcCeb04OldValue.replace(",","");
+        String tvTcCeb04NowValue = decimalFormat.format(Double.parseDouble (kt07MainRowItems_list.get(adapterPosition).getG_tc_ceb04()));
+        String tcCeb04NowalueFormat = tvTcCeb04OldValue.replace(",","");
+        String tcCeb04DiffValue = decimalFormat.format(
+                Double.parseDouble(String.valueOf(
+                        (Double.parseDouble(tcCeb04NowalueFormat) - Double.parseDouble(tcCeb04OldValueFormat))
+                ))
+        );
+
 
         TextView tvOldValue = new TextView(applicationContext);
         tvOldValue.setText("Số đo lần trước là: " + tvTcCeb04OldValue);
@@ -235,10 +246,14 @@ public class KT07_Main_Adapter extends RecyclerView.Adapter<KT07_Main_Adapter.Da
         KT07_Debounced debouncedTextWatcher = new KT07_Debounced(new KT07_Debounced.TextWatcherListener() {
             @Override
             public void onTextChanged(String userInput) {
-                String tcCeb04Diff = decimalFormat.format(Double.parseDouble(String.valueOf(Integer.parseInt(userInput) - Integer.parseInt(tvTcCeb04OldValue.replace(".","")))));
+                BigDecimal InputValue = new BigDecimal(userInput);
+                BigDecimal oldValue = new BigDecimal(tvTcCeb04OldValue.replace(",",""));
+
+
+                String tcCeb04Diff = decimalFormat.format( InputValue.subtract(oldValue));
                 tvDiffValue.setText("Lượng tiêu thụ: " + tcCeb04Diff);
-                int sodo_old = Integer.parseInt(kt07MainRowItems_list.get(editingPosition).getG_tc_ceb04_old());
-                int sodo = Integer.parseInt(userInput);
+                double sodo_old = Double.parseDouble(kt07MainRowItems_list.get(editingPosition).getG_tc_ceb04_old());
+                double sodo = Double.parseDouble(userInput);
                 if (sodo < sodo_old) {
                     report.setText("Số do hiện tại không thể nhỏ hơn số đo cũ !");
                 }else {
@@ -248,7 +263,7 @@ public class KT07_Main_Adapter extends RecyclerView.Adapter<KT07_Main_Adapter.Da
                 }
                 else {
                     if (alertDialog != null && alertDialog.getButton(DialogInterface.BUTTON_POSITIVE) != null) {
-                        alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(Integer.parseInt(userInput) >= Integer.parseInt(tvTcCeb04OldValue.replace(".", "")));
+                        alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(Double.parseDouble(userInput) >= Double.parseDouble(tvTcCeb04OldValue.replace(",", "")));
                     }
                 }
             }
@@ -263,7 +278,7 @@ public class KT07_Main_Adapter extends RecyclerView.Adapter<KT07_Main_Adapter.Da
                 if (userInput.equals("")){
 
                 }else {
-                    int sodo = Integer.parseInt(userInput);
+                    double sodo = Double.parseDouble(userInput);
                     if (sodo > 0) {
                         userInput = String.valueOf(sodo);
                         handleUserInput(adapterPosition, userInput);
@@ -294,10 +309,10 @@ public class KT07_Main_Adapter extends RecyclerView.Adapter<KT07_Main_Adapter.Da
                 if (alertDialog != null && alertDialog.getButton(DialogInterface.BUTTON_POSITIVE) != null) {
                     String edtInput_tmp = edtInput.getText().toString();
                     if(!edtInput_tmp.equals("") ){
-                        alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(Integer.parseInt(edtInput.getText().toString()) >= Integer.parseInt(tvTcCeb04OldValue.replace(".","")));
+                        alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(Double.parseDouble(edtInput.getText().toString()) >= Double.parseDouble(tvTcCeb04OldValue.replace(",","")));
 
                     }else {
-                        alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(0>= Integer.parseInt(tvTcCeb04OldValue.replace(".","")));
+                        alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(0>= Double.parseDouble(tvTcCeb04OldValue.replace(",","")));
                     }
 
                 }

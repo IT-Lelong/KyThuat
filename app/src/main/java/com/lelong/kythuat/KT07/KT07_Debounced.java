@@ -41,7 +41,7 @@ public class KT07_Debounced implements TextWatcher {
             handler.postDelayed(runnable, DEBOUNCE_DELAY);
 
             editable_tmp = editable.toString();
-            editable_tmp =  editable_tmp.replace(".","");
+            editable_tmp =  editable_tmp.replace(",","");
         }
     }
 

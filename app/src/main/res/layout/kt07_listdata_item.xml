@@ -57,7 +57,7 @@
             android:layout_weight="1"
             android:background="@drawable/border_listview"
             android:gravity="center"
-            android:text="Xưởng"
+
             android:textSize="20sp" />
 
         <TextView
