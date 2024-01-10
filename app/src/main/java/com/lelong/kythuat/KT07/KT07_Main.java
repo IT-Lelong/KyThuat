@@ -17,12 +17,14 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Looper;
+import android.os.Parcelable;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ImageSpan;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,6 +53,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -324,6 +327,15 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
 
 //        menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "").setEnabled(false);
         //menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "").setEnabled(false);
+
+        SpannableString checkSpannable = new SpannableString("Kiểm tra dữ liệu   ");
+        Drawable checkIcon = getResources().getDrawable(R.drawable.check);
+        ImageSpan imagedelete = new ImageSpan(checkIcon , ImageSpan.ALIGN_BASELINE);
+        checkSpannable.setSpan(imagedelete, checkSpannable.length() - 1, checkSpannable.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+        checkIcon.setBounds(0, 0, 40, 40);
+        TextView textcheck = findViewById(R.id.kt07_textCheck);
+        textcheck .setText(checkSpannable );
+
         SpannableString spannable = new SpannableString("拋轉資料 Đăng tải dữ liệu   ");
         Drawable uploadIcon = getResources().getDrawable(R.drawable.loaddata);
         ImageSpan imageSpan = new ImageSpan(uploadIcon, ImageSpan.ALIGN_BASELINE);
@@ -549,8 +561,11 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
 //    }
 
 
-    public void onTextUploadClicked(View view) {
+    public void onTextCheckClicked(View view) {
+        upLoad_CheckData("2024/01/06","2024/01/09");
+    }
 
+    public void onTextUploadClicked(View view) {
         showConfirmationDialog();
     }
 
@@ -942,6 +957,21 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                try{
+                                    JSONArray jsonarray = new JSONArray(res);
+                                    for (int i = 0; i < jsonarray.length(); i++) {
+                                        JSONObject jsonObject = jsonarray.getJSONObject(i);
+                                        String g_tc_ceb01 = jsonObject.getString("TC_CEB01");
+                                        String g_tc_ceb02 = jsonObject.getString("TC_CEB02");
+                                        String g_tc_ceb03 = jsonObject.getString("TC_CEB03");
+                                        String g_tc_cebdate = jsonObject.getString("TC_CEBDATE");
+                                        String g_tc_ceb06 = jsonObject.getString("TC_CEB06");
+                                        kt07Db.update_status(g_tc_ceb01,g_tc_ceb02,g_tc_ceb03,g_tc_ceb06,g_tc_cebdate);
+                                    }
+                                }
+                                catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
                                 Toast.makeText(KT07_Main.this, "Đã upload xong", Toast.LENGTH_SHORT).show();
                             }
                         });
@@ -1021,6 +1051,79 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
                 }.
 
                 start();
+
+    }
+
+    private void upLoad_CheckData(String date_start, String date_end) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
+        String currentDate = dateFormat.format(new Date());
+        Thread UpLoad_fia = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                    final String res = get_DataTable("http://172.16.40.20/" + Constant_Class.server + "/TechAPP/check_upload_tc_ceb.php?item="+currentDate+"");
+                    if (!res.equals("FALSE")) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    List<KT07_CheckList_Row> checkList_Rows = new ArrayList<>();
+                                    List<KT07_CheckList_Row> valueList = new ArrayList<>();
+                                    JSONArray jsonarray = new JSONArray(res);
+                                    for (int i = 0; i < jsonarray.length(); i++) {
+                                        JSONObject jsonObject = jsonarray.getJSONObject(i);
+                                        String g_tc_ceb01 = jsonObject.getString("tc_ceb01");
+                                        String g_tc_ceb02 = jsonObject.getString("tc_ceb02");
+                                        String g_tc_ceb03 = jsonObject.getString("tc_ceb03");
+                                        String g_tc_cea04 = jsonObject.getString("tc_cea04");
+                                        String g_tc_cea05 = jsonObject.getString("tc_cea05");
+
+
+                                        KT07_CheckList_Row checkListRow = new KT07_CheckList_Row(g_tc_ceb01, g_tc_ceb02, g_tc_cea04, g_tc_cea05, g_tc_ceb03);
+                                        checkList_Rows.add(checkListRow);
+                                    }
+                                    KT07_ListCheck_Dialog dialog = new KT07_ListCheck_Dialog(getApplicationContext());
+                                    Bundle bundle = new Bundle();
+                                    bundle.putParcelableArrayList("list", (ArrayList<? extends Parcelable>) checkList_Rows);
+                                    dialog.setArguments(bundle);
+                                    dialog.show(getSupportFragmentManager(), "KT07_ListCheck_Dialog");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+
+                    }
+            }
+        });
+
+        Thread Load_fia = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Looper.prepare(); // Chuẩn bị luồng để chạy vòng lặp sự kiện
+                //getLVData();
+                Looper.loop(); // Bắt đầu vòng lặp sự kiện
+            }
+        });
+        //dialog.dismiss();
+
+        new Thread() {
+            @Override
+            public void run() {
+                UpLoad_fia.start();
+                try {
+                    UpLoad_fia.join();
+                } catch (InterruptedException e) {
+                }
+                if (a == "ok") {
+                    Load_fia.start();
+                    try {
+                        Load_fia.join();
+                    } catch (InterruptedException e) {
+                    }
+                }
+
+            }
+        }.start();
 
     }
 
@@ -1114,8 +1217,14 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
             for (int i = 0; i < totalColumn; i++) {
                 if (cursor.getColumnName(i) != null) {
                     try {
-                        rowObject.put(cursor.getColumnName(i),
-                                cursor.getString(i));
+                        if(cursor.getColumnName(i).toString().equals("tc_ceb04") || cursor.getColumnName(i).toString().equals("tc_ceb05") ){
+                            rowObject.put(cursor.getColumnName(i),
+                                    cursor.getDouble(i));
+                        }else {
+                            rowObject.put(cursor.getColumnName(i),
+                                    cursor.getString(i));
+                        }
+
                     } catch (Exception e) {
                     }
                 }
@@ -1146,10 +1255,10 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
             writer.flush();
             writer.close();
             os.close();
-            InputStream is = conn.getInputStream();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-            String result = reader.readLine();
-            reader.close();
+            InputStream is123 = conn.getInputStream();
+            BufferedReader reader123 = new BufferedReader(new InputStreamReader(is123));
+            String result = reader123.readLine();
+            reader123.close();
             return result;
         } catch (Exception ex) {
             return "FALSE";
@@ -1157,6 +1266,29 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
             if (conn != null) {
                 conn.disconnect();
             }
+        }
+    }
+    private String get_DataTable(String s) {
+        try {
+            HttpURLConnection conn = null;
+            URL url = new URL(s);
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setConnectTimeout(999999);
+            conn.setReadTimeout(999999);
+            conn.setDoInput(true); //允許輸入流，即允許下載
+            conn.setDoOutput(true); //允許輸出流，即允許上傳
+            conn.connect();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+            String jsonstring = reader.readLine();
+            reader.close();
+            if (!jsonstring.equals("FALSE")) {
+                return jsonstring;
+            } else {
+                return "FALSE";
+            }
+        } catch (Exception e) {
+            return "FALSE";
         }
     }
 

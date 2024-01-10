@@ -28,11 +28,12 @@ public class KT07_DB {
     private final static String tc_ceb06 = "tc_ceb06"; ////Khoảng thời gian (AM/PM)
     private final static String tc_cebdate = "tc_cebdate"; ////Ngày nhập
     private final static String tc_cebuser = "tc_cebuser"; ////Nhân viên nhập
+    private final static String tc_cebstatus = "tc_cebstatus"; ////Nhân viên nhập
 
     String CREATE_TABLE_NAME_TC_CEB = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_TC_CEB + " ("
             + tc_ceb01 + " TEXT," + tc_ceb02 + " TEXT," + tc_ceb03 + " TEXT ,"
             + tc_ceb04 + " TEXT," + tc_ceb05 + " TEXT," + tc_ceb06 + " TEXT,"
-            + tc_cebdate + " TEXT, " + tc_cebuser + " TEXT  )";
+            + tc_cebdate + " TEXT, " + tc_cebuser + " TEXT," + tc_cebstatus + " TEXT  )";
 
 
     public KT07_DB(Context ctx) {
@@ -184,7 +185,7 @@ public class KT07_DB {
                     "  WHERE  " + g_title + " AND tc_cebdate = '"+g_tc_cebdate+"' " ;
         }else {
             //Fill Data của loại tiêu thụ
-            selectQuery = " SELECT tc_ceb01,tc_ceb02,tc_ceb03,tc_ceb04,tc_ceb05,tc_cebdate,tc_cebuser,tc_ceb06 FROM tc_ceb_file " +
+            selectQuery = " SELECT tc_ceb01,tc_ceb02,tc_ceb03,tc_ceb04,tc_ceb05,tc_cebdate,tc_cebuser, case when tc_ceb06 ='AM' THEN '0' ELSE '1' END tc_ceb06 FROM tc_ceb_file " +
                     "  WHERE tc_ceb01 IN ('" + g_title + "') AND tc_cebdate = '" + g_tc_cebdate + "' ";
         }
         return db.rawQuery(selectQuery, null);
@@ -213,6 +214,7 @@ public class KT07_DB {
                 args.put("tc_ceb06", g_tc_ceb06);
                 args.put("tc_cebdate", g_tc_cebdate);
                 args.put("tc_cebuser", g_tc_cebuser);
+                args.put("tc_cebstatus", "N");
 
                 db.insert(TABLE_NAME_TC_CEB, null, args);
             }else if(count>=1){
@@ -227,6 +229,24 @@ public class KT07_DB {
 
         } catch (Exception e) {
             return "FALSE";
+        }
+    }
+
+    public Cursor getCheck_tc_ceb_data(String date_start ,String date_end ) {
+        String selectQuery = " SELECT tc_ceb01,tc_cea02,tc_ceb02,tc_cea04,tc_cea05,tc_ceb03,tc_ceb06 FROM tc_cea_file,tc_ceb_file " +
+                    "  WHERE  tc_ceb01 = tc_cea01 and  tc_cea03= tc_ceb02  and  tc_ceb03 between '"+date_start+"'  and  '"+date_end+"'  ";
+        return db.rawQuery(selectQuery, null);
+    }
+    public String update_status(String g_tc_ceb01,String g_tc_ceb02,String g_tc_ceb03,String g_tc_ceb06,String g_tc_cebdate){
+        try{
+            db.execSQL("UPDATE " +TABLE_NAME_TC_CEB+ " SET tc_cebstatus = 'Y' " +
+                    "WHERE tc_ceb01 = '"+g_tc_ceb01+"' AND tc_ceb02 = '"+g_tc_ceb02+"' " +
+                    "AND tc_ceb03 = '"+g_tc_ceb03+"'  " +
+                    "AND tc_ceb06 = '"+g_tc_ceb06+"' AND tc_cebdate = '"+g_tc_cebdate+"' "  );
+            return "TRUE";
+
+        }catch (Exception ex){
+            return  "FALSE";
         }
     }
 }

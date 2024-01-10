@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:layout_weight="1"
+        android:background="#0300BCD4"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_tc_ceb01"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:textColor="@color/white"
+            android:layout_weight="0.7"
+            android:background="@drawable/border_listview"
+            android:gravity="center"
+            android:text="Số TT"
+            android:textSize="17sp" />
+        <TextView
+            android:id="@+id/tv_tc_ceb02"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:textColor="@color/white"
+            android:layout_weight="0.7"
+            android:background="@drawable/border_listview"
+            android:gravity="center"
+            android:text="Số TT"
+            android:textSize="17sp" />
+
+        <TextView
+            android:id="@+id/tv_tc_cea04"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:textColor="@color/white"
+            android:layout_weight="3"
+            android:background="@drawable/border_listview"
+            android:gravity="left|center_vertical"
+            android:text="Nhà máy"
+            android:paddingLeft="3dp"
+            android:paddingRight="3dp"
+            android:textSize="17sp" />
+
+        <TextView
+            android:id="@+id/tv_tc_cea05"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:textColor="@color/white"
+            android:layout_weight="1"
+            android:background="@drawable/border_listview"
+            android:gravity="center"
+            android:text="Mã số"
+            android:textSize="17sp" />
+
+        <TextView
+            android:id="@+id/tv_tc_ceb03"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:textColor="@color/white"
+            android:layout_weight="1.7"
+            android:background="@drawable/border_listview"
+            android:gravity="center"
+            android:textSize="17sp" />
+
+
+
+    </LinearLayout>
+</LinearLayout>

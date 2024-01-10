@@ -123,10 +123,19 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
                     android:orientation="vertical"
-                    android:background="@color/white"
-                    >
+                    android:background="@color/white">
+                    <TextView
+                     android:id="@+id/kt07_textCheck"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="Kiểm tra dữ liệu"
+                    android:textColor="@color/black"
+                    android:textSize="19dp"
+                    android:onClick="onTextCheckClicked" />
 
                     <TextView
                         android:id="@+id/kt07_textUpload"
