@@ -185,7 +185,7 @@ public class KT07_DB {
                     "  WHERE  " + g_title + " AND tc_cebdate = '"+g_tc_cebdate+"' " ;
         }else {
             //Fill Data của loại tiêu thụ
-            selectQuery = " SELECT tc_ceb01,tc_ceb02,tc_ceb03,tc_ceb04,tc_ceb05,tc_cebdate,tc_cebuser, case when tc_ceb06 ='AM' THEN '0' ELSE '1' END tc_ceb06 FROM tc_ceb_file " +
+            selectQuery = " SELECT tc_ceb01,tc_ceb02,tc_ceb03,tc_ceb04,tc_ceb05,tc_cebdate,tc_cebuser, /*case when tc_ceb06 ='AM' THEN '0' ELSE '1' END*/ tc_ceb06 FROM tc_ceb_file " +
                     "  WHERE tc_ceb01 IN ('" + g_title + "') AND tc_cebdate = '" + g_tc_cebdate + "' ";
         }
         return db.rawQuery(selectQuery, null);
