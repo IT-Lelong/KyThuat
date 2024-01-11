@@ -55,7 +55,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -846,7 +848,7 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 // Cập nhật biến selectedDate
-                selectedDate = String.format(Locale.getDefault(), "%04d-%02d-%02d", year, month + 1, dayOfMonth);
+                selectedDate = String.format(Locale.getDefault(), "%04d/%02d/%02d", year, month + 1, dayOfMonth);
 
                 // Cập nhật TextView với ngày tháng được chọn
                 dateTextView.setText(selectedDate);
@@ -932,7 +934,6 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
         Thread UpLoad_fia = new Thread(new Runnable() {
             @Override
             public void run() {
-
                 Cursor upl = kt07Db.getAll_tc_ceb_data(model, date_upload);
                 jsonupload = cur2Json(upl);
                 if (jsonupload.length() == 0) {
@@ -952,7 +953,7 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
                         e.printStackTrace();
                     }
 
-                    final String res = upload_all("http://172.16.40.20/" + Constant_Class.server + "/TechAPP/upload_tc_ceb.php");
+                    final String res = upload_all("http://172.16.40.20/" + Constant_Class.server + "/TechAPP/upload_tc_ceb_file.php");
                     if (!res.equals("FALSE")) {
                         runOnUiThread(new Runnable() {
                             @Override
@@ -1217,14 +1218,8 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
             for (int i = 0; i < totalColumn; i++) {
                 if (cursor.getColumnName(i) != null) {
                     try {
-                        if(cursor.getColumnName(i).toString().equals("tc_ceb04") || cursor.getColumnName(i).toString().equals("tc_ceb05") ){
-                            rowObject.put(cursor.getColumnName(i),
-                                    cursor.getDouble(i));
-                        }else {
-                            rowObject.put(cursor.getColumnName(i),
+                        rowObject.put(cursor.getColumnName(i),
                                     cursor.getString(i));
-                        }
-
                     } catch (Exception e) {
                     }
                 }

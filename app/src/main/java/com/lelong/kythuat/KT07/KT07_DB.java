@@ -182,11 +182,11 @@ public class KT07_DB {
         String selectQuery = null;
         if(g_title =="1=1"){
             selectQuery = " SELECT tc_ceb01,tc_ceb02,tc_ceb03,tc_ceb04,tc_ceb05,tc_cebdate,tc_cebuser,tc_ceb06 FROM tc_ceb_file " +
-                    "  WHERE  " + g_title + " AND tc_cebdate = '"+g_tc_cebdate+"' " ;
+                    "  WHERE  " + g_title + " AND tc_cebdate = '"+g_tc_cebdate+"' AND tc_cebstatus = 'N' " ;
         }else {
             //Fill Data của loại tiêu thụ
-            selectQuery = " SELECT tc_ceb01,tc_ceb02,tc_ceb03,tc_ceb04,tc_ceb05,tc_cebdate,tc_cebuser, /*case when tc_ceb06 ='AM' THEN '0' ELSE '1' END*/ tc_ceb06 FROM tc_ceb_file " +
-                    "  WHERE tc_ceb01 IN ('" + g_title + "') AND tc_cebdate = '" + g_tc_cebdate + "' ";
+            selectQuery = " SELECT tc_ceb01,tc_ceb02,tc_ceb03,tc_ceb04,tc_ceb05,tc_cebdate,tc_cebuser, tc_ceb06 FROM tc_ceb_file " +
+                    "  WHERE tc_ceb01 IN ('" + g_title + "') AND tc_cebdate = '" + g_tc_cebdate + "' AND tc_cebstatus = 'N' ";
         }
         return db.rawQuery(selectQuery, null);
     }
@@ -232,17 +232,19 @@ public class KT07_DB {
         }
     }
 
-    public Cursor getCheck_tc_ceb_data(String date_start ,String date_end ) {
-        String selectQuery = " SELECT tc_ceb01,tc_cea02,tc_ceb02,tc_cea04,tc_cea05,tc_ceb03,tc_ceb06 FROM tc_cea_file,tc_ceb_file " +
-                    "  WHERE  tc_ceb01 = tc_cea01 and  tc_cea03= tc_ceb02  and  tc_ceb03 between '"+date_start+"'  and  '"+date_end+"'  ";
-        return db.rawQuery(selectQuery, null);
-    }
     public String update_status(String g_tc_ceb01,String g_tc_ceb02,String g_tc_ceb03,String g_tc_ceb06,String g_tc_cebdate){
         try{
+            String l_tc_ceb06 = "";
+            if(g_tc_ceb06.equals("0")){
+                l_tc_ceb06 = "AM";
+            }
+            else {
+                l_tc_ceb06 = "PM";
+            }
             db.execSQL("UPDATE " +TABLE_NAME_TC_CEB+ " SET tc_cebstatus = 'Y' " +
                     "WHERE tc_ceb01 = '"+g_tc_ceb01+"' AND tc_ceb02 = '"+g_tc_ceb02+"' " +
                     "AND tc_ceb03 = '"+g_tc_ceb03+"'  " +
-                    "AND tc_ceb06 = '"+g_tc_ceb06+"' AND tc_cebdate = '"+g_tc_cebdate+"' "  );
+                    "AND tc_ceb06 = '"+l_tc_ceb06+"' AND tc_cebdate = '"+g_tc_cebdate+"' "  );
             return "TRUE";
 
         }catch (Exception ex){
