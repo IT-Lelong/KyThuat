@@ -40,6 +40,7 @@ import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 import com.lelong.kythuat.Constant_Class;
+import com.lelong.kythuat.KT01.KT01_DB;
 import com.lelong.kythuat.R;
 
 import org.json.JSONArray;
@@ -368,9 +369,14 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         String selectedDate = String.format("%04d/%02d/%02d", year, month + 1, dayOfMonth);
                         tv_tc_ceb03.setText(selectedDate);
+                        if (modeltmp == null) {
+                            modeltmp = " ";
+                        }
+                        fill_data(modeltmp, null);
                     }
                 });
                 datePickerDialog.show();
+
             }
         });
         tc_ceb06.setOnClickListener(new View.OnClickListener() {
@@ -417,9 +423,9 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         String g_title = item.getTitle().toString();
-
+        upload_dataKT(g_title);
         if (g_title.startsWith("DH") || g_title.startsWith("BL")) {
-            Cursor cursor = kt07Db.getAll_tc_cea_data(g_title, tv_tc_cebdate.getText().toString(), tc_ceb06.getText().toString(), "");
+            Cursor cursor = kt07Db.getAll_tc_cea_data(g_title, tv_tc_cebdate.getText().toString(), tc_ceb06.getText().toString(), "",tv_tc_ceb03.getText().toString());
             cursor.moveToFirst();
             int num = cursor.getCount();
             kt07MainRowItems_list.clear();
@@ -1307,8 +1313,8 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
         if (model != null) {
             modeltmp = model;
         }
-
-        cursor = kt07Db.getAll_tc_cea_data(modeltmp, tv_tc_cebdate.getText().toString(), tc_ceb06.getText().toString(), gkind);
+        upload_dataKT(modeltmp);
+        cursor = kt07Db.getAll_tc_cea_data(modeltmp, tv_tc_cebdate.getText().toString(), tc_ceb06.getText().toString(), gkind, tv_tc_ceb03.getText().toString());
         cursor.moveToFirst();
         int num = cursor.getCount();
         kt07MainRowItems_list.clear();
@@ -1333,6 +1339,75 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
             cursor.moveToNext();
         }
         kt07MainAdapter.notifyDataSetChanged();
+    }
+
+    public void upload_dataKT(String g_title){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
+        Calendar calendar = Calendar.getInstance();
+        //Date ngayHienTai = calendar.getTime();
+        calendar.add(Calendar.DAY_OF_YEAR, -1);
+        Date ngayHomQua = calendar.getTime();
+        String currentDate = dateFormat.format(ngayHomQua);
+        Thread UpLoad_fia = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                final String res = get_DataTable("http://172.16.40.20/" + Constant_Class.server + "/TechAPP/get_dataKT.php?item="+currentDate+"&item1="+g_title+"");
+                if (!res.equals("FALSE")) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                JSONArray jsonarray = new JSONArray(res);
+                                for (int i = 0; i < jsonarray.length(); i++) {
+                                    JSONObject jsonObject = jsonarray.getJSONObject(i);
+                                    String g_tc_ceb01 = jsonObject.getString("tc_ceb01");
+                                    String g_tc_ceb02 = jsonObject.getString("tc_ceb02");
+                                    String g_tc_ceb03 = jsonObject.getString("tc_ceb03");
+                                    String g_tc_ceb04 = jsonObject.getString("tc_ceb04");
+                                    String g_tc_ceb05 = jsonObject.getString("tc_ceb05");
+                                    String g_tc_ceb06 = jsonObject.getString("tc_ceb06");
+                                    String g_tc_cebdate = jsonObject.getString("tc_cebdate");
+                                    kt07Db.update_dataKT(g_tc_ceb01,g_tc_ceb02,g_tc_ceb03,g_tc_ceb04,g_tc_ceb05,g_tc_ceb06,g_tc_cebdate);
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+
+                }
+            }
+        });
+
+        Thread Load_fia = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Looper.prepare(); // Chuẩn bị luồng để chạy vòng lặp sự kiện
+                //getLVData();
+                Looper.loop(); // Bắt đầu vòng lặp sự kiện
+            }
+        });
+        //dialog.dismiss();
+
+        new Thread() {
+            @Override
+            public void run() {
+                UpLoad_fia.start();
+                try {
+                    UpLoad_fia.join();
+                } catch (InterruptedException e) {
+                }
+                if (a == "ok") {
+                    Load_fia.start();
+                    try {
+                        Load_fia.join();
+                    } catch (InterruptedException e) {
+                    }
+                }
+
+            }
+        }.start();
     }
 
     @Override

@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -92,7 +93,7 @@ public class KT07_Main_Adapter extends RecyclerView.Adapter<KT07_Main_Adapter.Da
             }
         });
 
-        DecimalFormat decimalFormat = new DecimalFormat("###,###0.00", DecimalFormatSymbols.getInstance(Locale.US));
+        DecimalFormat decimalFormat = new DecimalFormat("###,###.00", DecimalFormatSymbols.getInstance(Locale.US));
         String formattedTcCeb04Old = decimalFormat.format(BigDecimal.valueOf(Double.parseDouble(kt07MainRowItems_list.get(adapterPosition).getG_tc_ceb04_old())));
         holder.tv_tc_ceb04_old.setText(formattedTcCeb04Old +"\n"+kt07MainRowItems_list.get(adapterPosition).getG_TC_CEBDATE_CEB06());
         String formattedTcCeb04 = decimalFormat.format(Double.parseDouble(kt07MainRowItems_list.get(adapterPosition).getG_tc_ceb04()));
@@ -106,7 +107,20 @@ public class KT07_Main_Adapter extends RecyclerView.Adapter<KT07_Main_Adapter.Da
             public void onClick(View view) {
                 int adapterPosition_tmp = holder.getAdapterPosition();
                 editingPosition = adapterPosition_tmp;
-                showInputDialog( holder.tv_tc_ceb04, editingPosition,kt07MainRowItems_list.get(adapterPosition).getG_tc_ceb04());
+                //check kết chuyển
+                String tc_cea01=kt07MainRowItems_list.get(adapterPosition).getG_TC_CEA01();
+                String tc_cea03=kt07MainRowItems_list.get(adapterPosition).getG_tc_cea03();
+                String tc_ceb03 = tv_tc_ceb03.getText().toString();
+                String tc_ceb06 = tv_tc_ceb06.getText().toString();
+                String tc_cebdate = tv_tc_cebdate.getText().toString();
+                String tc_cebuser = tv_tc_cebuser.getText().toString();
+                int count = kt07Db.getCheckKT(tc_cea01,tc_cea03,tc_ceb03,tc_cebdate,tc_cebuser,tc_ceb06);
+                if (count > 0) {
+                    Toast.makeText(view.getContext(), "Dữ liệu đã được kết chuyển, không thể sửa đổi!", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    showInputDialog( holder.tv_tc_ceb04, editingPosition,kt07MainRowItems_list.get(adapterPosition).getG_tc_ceb04());
+                }
             }
         });
 //        holder.edt_tc_ceb04.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -191,7 +205,7 @@ public class KT07_Main_Adapter extends RecyclerView.Adapter<KT07_Main_Adapter.Da
         title.setTextColor(ContextCompat.getColor(applicationContext, R.color.black));
         builder.setCustomTitle(title);
 
-        DecimalFormat decimalFormat = new DecimalFormat("###,###0.00",DecimalFormatSymbols.getInstance(Locale.US));
+        DecimalFormat decimalFormat = new DecimalFormat("###,###.00",DecimalFormatSymbols.getInstance(Locale.US));
 
         LinearLayout layout = new LinearLayout(applicationContext);
         layout.setOrientation(LinearLayout.VERTICAL);
