@@ -3,6 +3,7 @@ package com.lelong.kythuat.KT07;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.database.Cursor;
 import android.graphics.Typeface;
 import android.text.InputType;
 import android.view.LayoutInflater;
@@ -19,6 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.lelong.kythuat.MainActivity;
 import com.lelong.kythuat.R;
 
 import java.math.BigDecimal;
@@ -42,6 +44,7 @@ public class KT07_Main_Adapter extends RecyclerView.Adapter<KT07_Main_Adapter.Da
     private int lastFocusedPosition = RecyclerView.NO_POSITION;
     private KT07_Main_FillData kt07MainFillData;
     private AlertDialog alertDialog;
+    private KT07_Main kt07_Main;
 
     public KT07_Main_Adapter(Context applicationContext,
                              int kt07_listdata_item,
@@ -50,11 +53,12 @@ public class KT07_Main_Adapter extends RecyclerView.Adapter<KT07_Main_Adapter.Da
                              TextView tv_tc_ceb06,
                              TextView tv_tc_cebdate,
                              TextView tv_tc_cebuser,
-                             KT07_Main_FillData kt07MainFillData, String modeltmp) {
+                             KT07_Main_FillData kt07MainFillData, String modeltmp, KT07_Main kt07_Main) {
         this.applicationContext = applicationContext;
         this.layout_resource = kt07_listdata_item;
         this.kt07MainRowItems_list = kt07MainRowItems_list;
         this.kt07MainFillData = kt07MainFillData;
+        this.kt07_Main = kt07_Main;
 
         this.tv_tc_ceb03 = tv_tc_ceb03;
         this.tv_tc_ceb06 = tv_tc_ceb06;
@@ -95,7 +99,7 @@ public class KT07_Main_Adapter extends RecyclerView.Adapter<KT07_Main_Adapter.Da
 
         DecimalFormat decimalFormat = new DecimalFormat("###,###.00", DecimalFormatSymbols.getInstance(Locale.US));
         String formattedTcCeb04Old = decimalFormat.format(BigDecimal.valueOf(Double.parseDouble(kt07MainRowItems_list.get(adapterPosition).getG_tc_ceb04_old())));
-        holder.tv_tc_ceb04_old.setText(formattedTcCeb04Old +"\n"+kt07MainRowItems_list.get(adapterPosition).getG_TC_CEBDATE_CEB06());
+        holder.tv_tc_ceb04_old.setText(formattedTcCeb04Old +"\n"+kt07MainRowItems_list.get(adapterPosition).getG_TC_CEB03_CEB06());
         String formattedTcCeb04 = decimalFormat.format(Double.parseDouble(kt07MainRowItems_list.get(adapterPosition).getG_tc_ceb04()));
         holder.tv_tc_ceb04.setText(formattedTcCeb04);
         //holder.tv_tc_ceb04_diff.setText(kt07MainRowItems_list.get(adapterPosition).getG_tc_ceb04_diff());
@@ -114,9 +118,11 @@ public class KT07_Main_Adapter extends RecyclerView.Adapter<KT07_Main_Adapter.Da
                 String tc_ceb06 = tv_tc_ceb06.getText().toString();
                 String tc_cebdate = tv_tc_cebdate.getText().toString();
                 String tc_cebuser = tv_tc_cebuser.getText().toString();
+                //Cursor db_check = kt07Db.getdata_check(tc_cea01,tc_cea03,tc_ceb03,tc_ceb06);
                 int count = kt07Db.getCheckKT(tc_cea01,tc_cea03,tc_ceb03,tc_cebdate,tc_cebuser,tc_ceb06);
                 if (count > 0) {
-                    Toast.makeText(view.getContext(), "Dữ liệu đã được kết chuyển, không thể sửa đổi!", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(view.getContext(), "Dữ liệu đã được kết chuyển, không thể sửa đổi!", Toast.LENGTH_SHORT).show();
+                    //kt07_Main.check_data(db_check);
                 }
                 else{
                     showInputDialog( holder.tv_tc_ceb04, editingPosition,kt07MainRowItems_list.get(adapterPosition).getG_tc_ceb04());

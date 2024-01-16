@@ -166,7 +166,7 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
                 tv_tc_cebdate,
                 tc_cebuser,
                 (KT07_Main_FillData) this,
-                modeltmp);
+                modeltmp,KT07_Main.this);
         rcv_hangmuc.setAdapter(kt07MainAdapter);
 
         addEvents();
@@ -423,7 +423,7 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         String g_title = item.getTitle().toString();
-        upload_dataKT(g_title);
+        //upload_dataKT(g_title);
         if (g_title.startsWith("DH") || g_title.startsWith("BL")) {
             Cursor cursor = kt07Db.getAll_tc_cea_data(g_title, tv_tc_cebdate.getText().toString(), tc_ceb06.getText().toString(), "",tv_tc_ceb03.getText().toString());
             cursor.moveToFirst();
@@ -439,10 +439,10 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
                     String G_TC_CEA08 = cursor.getString(cursor.getColumnIndexOrThrow("tc_cea08"));
                     String G_TC_CEB04_DIFF = cursor.getString(cursor.getColumnIndexOrThrow("tc_ceb04_diff"));
                     String G_TC_CEB04_OLD = cursor.getString(cursor.getColumnIndexOrThrow("tc_ceb04_old"));
-                    String G_TC_CEBDATE_CEB06 = cursor.getString(cursor.getColumnIndexOrThrow("tc_cebdate_ceb06"));
+                    String G_TC_CEB03_CEB06 = cursor.getString(cursor.getColumnIndexOrThrow("tc_ceb03_ceb06"));
                     String G_TC_CEB04 = cursor.getString(cursor.getColumnIndexOrThrow("tc_ceb04"));
 
-                    kt07MainRowItems_list.add(new KT07_Main_RowItem(G_TC_CEA01, G_TC_CEA03, G_TC_CEA04, G_TC_CEA05, G_TC_CEA06, G_TC_CEA08, G_TC_CEB04_OLD, G_TC_CEB04, G_TC_CEBDATE_CEB06, G_TC_CEB04_DIFF));
+                    kt07MainRowItems_list.add(new KT07_Main_RowItem(G_TC_CEA01, G_TC_CEA03, G_TC_CEA04, G_TC_CEA05, G_TC_CEA06, G_TC_CEA08, G_TC_CEB04_OLD, G_TC_CEB04, G_TC_CEB03_CEB06, G_TC_CEB04_DIFF));
                 } catch (Exception e) {
                     String err = e.toString();
                 }
@@ -980,6 +980,7 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
                                     e.printStackTrace();
                                 }
                                 Toast.makeText(KT07_Main.this, "Đã upload xong", Toast.LENGTH_SHORT).show();
+                                upload_dataKT();
                             }
                         });
 
@@ -1023,6 +1024,101 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
 //                    a = "ok";
 //                }
                 //}
+            }
+        });
+
+        Thread Load_fia = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Looper.prepare(); // Chuẩn bị luồng để chạy vòng lặp sự kiện
+                //getLVData();
+                Looper.loop(); // Bắt đầu vòng lặp sự kiện
+            }
+        });
+        //dialog.dismiss();
+
+        new
+
+                Thread() {
+                    @Override
+                    public void run() {
+                        UpLoad_fia.start();
+                        try {
+                            UpLoad_fia.join();
+                        } catch (InterruptedException e) {
+                        }
+                        if (a == "ok") {
+                            Load_fia.start();
+                            try {
+                                Load_fia.join();
+                            } catch (InterruptedException e) {
+                            }
+                        }
+
+                    }
+                }.
+
+                start();
+
+    }
+    public void check_data(Cursor data_check) {
+        Thread UpLoad_fia = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Cursor upl = data_check;
+                jsonupload = cur2Json(upl);
+                if (jsonupload.length() == 0) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(KT07_Main.this, "Không có dữ liệu để chỉnh sửa", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } else {
+
+                    try {
+                        ujobject = new JSONObject();
+                        //ujobject.put("docNum", edt_maCT.getText().toString());
+                        ujobject.put("ujson", jsonupload);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    final String res = upload_all("http://172.16.40.20/" + Constant_Class.server + "/TechAPP/check_dateKT.php");
+                    if (!res.equals("FALSE")) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try{
+                                    JSONArray jsonarray = new JSONArray(res);
+                                    for (int i = 0; i < jsonarray.length(); i++) {
+                                        JSONObject jsonObject = jsonarray.getJSONObject(i);
+                                        String g_tc_ceb01 = jsonObject.getString("TC_CEB01");
+                                        String g_tc_ceb02 = jsonObject.getString("TC_CEB02");
+                                        String g_tc_ceb03 = jsonObject.getString("TC_CEB03");
+                                        String g_tc_cebdate = jsonObject.getString("TC_CEBDATE");
+                                        String g_tc_ceb06 = jsonObject.getString("TC_CEB06");
+                                        kt07Db.update_status(g_tc_ceb01,g_tc_ceb02,g_tc_ceb03,g_tc_ceb06,g_tc_cebdate);
+                                    }
+                                }
+                                catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                Toast.makeText(KT07_Main.this, "Đã upload xong", Toast.LENGTH_SHORT).show();
+                                upload_dataKT();
+                            }
+                        });
+
+                    } else {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(KT07_Main.this, "Không kết nối với internet", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                }
+
             }
         });
 
@@ -1313,7 +1409,7 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
         if (model != null) {
             modeltmp = model;
         }
-        upload_dataKT(modeltmp);
+        //upload_dataKT(modeltmp);
         cursor = kt07Db.getAll_tc_cea_data(modeltmp, tv_tc_cebdate.getText().toString(), tc_ceb06.getText().toString(), gkind, tv_tc_ceb03.getText().toString());
         cursor.moveToFirst();
         int num = cursor.getCount();
@@ -1327,11 +1423,11 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
                 String G_TC_CEA06 = cursor.getString(cursor.getColumnIndexOrThrow("tc_cea06"));
                 String G_TC_CEA08 = cursor.getString(cursor.getColumnIndexOrThrow("tc_cea08"));
                 String G_TC_CEB04_OLD = cursor.getString(cursor.getColumnIndexOrThrow("tc_ceb04_old"));
-                String G_TC_CEBDATE_CEB06 = cursor.getString(cursor.getColumnIndexOrThrow("tc_cebdate_ceb06"));
+                String G_TC_CEB03_CEB06 = cursor.getString(cursor.getColumnIndexOrThrow("tc_ceb03_ceb06"));
                 String G_TC_CEB04 = cursor.getString(cursor.getColumnIndexOrThrow("tc_ceb04"));
                 String G_TC_CEB04_DIFF = cursor.getString(cursor.getColumnIndexOrThrow("tc_ceb04_diff"));
 
-                kt07MainRowItems_list.add(new KT07_Main_RowItem(G_TC_CEA01, G_TC_CEA03, G_TC_CEA04, G_TC_CEA05, G_TC_CEA06, G_TC_CEA08, G_TC_CEB04_OLD, G_TC_CEB04, G_TC_CEBDATE_CEB06, G_TC_CEB04_DIFF));
+                kt07MainRowItems_list.add(new KT07_Main_RowItem(G_TC_CEA01, G_TC_CEA03, G_TC_CEA04, G_TC_CEA05, G_TC_CEA06, G_TC_CEA08, G_TC_CEB04_OLD, G_TC_CEB04, G_TC_CEB03_CEB06, G_TC_CEB04_DIFF));
             } catch (Exception e) {
                 String err = e.toString();
             }
@@ -1341,7 +1437,7 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
         kt07MainAdapter.notifyDataSetChanged();
     }
 
-    public void upload_dataKT(String g_title){
+    public void upload_dataKT(){
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
         Calendar calendar = Calendar.getInstance();
         //Date ngayHienTai = calendar.getTime();
@@ -1351,7 +1447,7 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
         Thread UpLoad_fia = new Thread(new Runnable() {
             @Override
             public void run() {
-                final String res = get_DataTable("http://172.16.40.20/" + Constant_Class.server + "/TechAPP/get_dataKT.php?item="+currentDate+"&item1="+g_title+"");
+                final String res = get_DataTable("http://172.16.40.20/" + Constant_Class.server + "/TechAPP/get_dataKT.php?item="+currentDate+"");
                 if (!res.equals("FALSE")) {
                     runOnUiThread(new Runnable() {
                         @Override
