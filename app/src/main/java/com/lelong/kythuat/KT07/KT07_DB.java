@@ -276,11 +276,19 @@ public class KT07_DB {
     public Integer getCheckKT(String g_tc_cea01,String g_tc_cea03,String g_tc_ceb03,String g_tc_cebdate,String g_tc_cebuser, String g_tc_ceb06){
         String selectQuery = null;
         selectQuery = " SELECT count(*) FROM tc_ceb_file WHERE tc_ceb01='"+g_tc_cea01+"' AND tc_ceb02 ='"+g_tc_cea03+"' AND tc_ceb03='"+g_tc_ceb03+"' " +
-                " AND tc_cebuser = '"+g_tc_cebuser+"'  AND tc_ceb06 = '"+g_tc_ceb06+"' AND tc_cebstatus = 'Y' ";
+                " AND tc_ceb06 = '"+g_tc_ceb06+"' AND tc_cebstatus = 'Y' ";
+
         Cursor a = db.rawQuery(selectQuery, null);
         a.moveToFirst();
         Integer count = a.getInt(0);
         return count;
+    }
+    public Cursor getdataKT(String g_tc_cea01,String g_tc_cea03){
+        String selectQuery = null;
+        selectQuery = "SELECT tc_ceb03 AS tc_ceb03_old, tc_ceb06 AS tc_ceb06_old  " +
+                "FROM (SELECT tc_ceb03, tc_ceb06, tc_ceb04  FROM tc_ceb_file  " +
+                "WHERE tc_ceb01='"+g_tc_cea01+"' AND tc_ceb02='"+g_tc_cea03+"' AND tc_cebstatus = 'Y' ORDER BY tc_ceb03 DESC, tc_ceb06 DESC)  LIMIT 1";
+        return db.rawQuery(selectQuery, null);
     }
     public String update_dataKT(String g_tc_ceb01,String g_tc_ceb02,String g_tc_ceb03,String g_tc_ceb04,String g_tc_ceb05,String g_tc_ceb06,String g_tc_cebdate){
         try{
@@ -298,6 +306,51 @@ public class KT07_DB {
             return "TRUE";
         }
         catch (Exception ex){
+            return "FALSE";
+        }
+    }
+    public String update_tc_ceb_file(String g_tc_ceb01, String g_tc_ceb02, String g_tc_ceb03,
+                                  String g_tc_ceb04, String g_tc_ceb05, String g_tc_ceb06, String g_tc_cebdate, String g_tc_cebuser) {
+        try {
+            String l_tc_ceb06 = "";
+            if(g_tc_ceb06.equals("0")){
+                l_tc_ceb06 = "AM";
+            }
+            else {
+                l_tc_ceb06 = "PM";
+            }
+
+            String selectQ = null;
+            selectQ = "SELECT count(*) FROM tc_ceb_file WHERE tc_ceb01 = '"+g_tc_ceb01+"' " +
+                    " AND tc_ceb02 = '"+g_tc_ceb02+"' AND tc_ceb03 = '"+g_tc_ceb03+"' " +
+                    " AND tc_ceb06 = '"+l_tc_ceb06+"' ";
+            Cursor a = db.rawQuery(selectQ, null);
+            a.moveToFirst();
+            Integer count = a.getInt(0);
+
+            if ( count == 0) {
+                ContentValues args = new ContentValues();
+                args.put("tc_ceb01", g_tc_ceb01);
+                args.put("tc_ceb02", g_tc_ceb02);
+                args.put("tc_ceb03", g_tc_ceb03);
+                args.put("tc_ceb04", g_tc_ceb04);
+                args.put("tc_ceb05", g_tc_ceb05);
+                args.put("tc_ceb06", l_tc_ceb06);
+                args.put("tc_cebdate", g_tc_cebdate);
+                args.put("tc_cebuser", g_tc_cebuser);
+                args.put("tc_cebstatus", "Y");
+
+                db.insert(TABLE_NAME_TC_CEB, null, args);
+            }else if(count>=1){
+                db.execSQL("UPDATE " +TABLE_NAME_TC_CEB+ " SET tc_ceb04 = '"+g_tc_ceb04+"', tc_ceb05 = '"+g_tc_ceb05+"' " +
+                        "WHERE tc_ceb01 = '"+g_tc_ceb01+"' AND tc_ceb02 = '"+g_tc_ceb02+"' " +
+                        "AND tc_ceb03 = '"+g_tc_ceb03+"'  " +
+                        "AND tc_ceb06 = '"+l_tc_ceb06+"' "  );
+
+            }
+            return "TRUE";
+
+        } catch (Exception e) {
             return "FALSE";
         }
     }

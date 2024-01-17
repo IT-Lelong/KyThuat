@@ -120,13 +120,38 @@ public class KT07_Main_Adapter extends RecyclerView.Adapter<KT07_Main_Adapter.Da
                 String tc_ceb06 = tv_tc_ceb06.getText().toString();
                 String tc_cebdate = tv_tc_cebdate.getText().toString();
                 String tc_cebuser = tv_tc_cebuser.getText().toString();
-                Cursor db_check = kt07Db.getdata_check(tc_cea01,tc_cea03,tc_ceb03,tc_ceb06);
-                int count = kt07Db.getCheckKT(tc_cea01,tc_cea03,tc_ceb03,tc_cebdate,tc_cebuser,tc_ceb06);
-                if (count > 0) {
+                int l_count = kt07Db.getCheckKT(tc_cea01,tc_cea03,tc_ceb03,tc_cebdate,tc_cebuser,tc_ceb06);
+                if(l_count > 0){
+                    Cursor cursor_check = kt07Db.getdataKT(tc_cea01,tc_cea03);
+                    cursor_check.moveToFirst();
+                    int num = cursor_check.getCount();
+                    if (num == 0){
+                        showInputDialog( holder.tv_tc_ceb04, editingPosition,kt07MainRowItems_list.get(adapterPosition).getG_tc_ceb04());
+                    }
+                    else{
+                        String G_TC_CEB03_OLD = "";
+                        String G_TC_CEB06_OLD = "";
+                        for (int i = 0; i < num; i++) {
+                            try {
+                                G_TC_CEB03_OLD = cursor_check.getString(cursor_check.getColumnIndexOrThrow("tc_ceb03_old"));
+                                G_TC_CEB06_OLD = cursor_check.getString(cursor_check.getColumnIndexOrThrow("tc_ceb06_old"));
+                            } catch (Exception e) {
+                                String err = e.toString();
+                            }
+                            cursor_check.moveToNext();
+                        }
+                        if (G_TC_CEB03_OLD.equals(tc_ceb03) &&  G_TC_CEB06_OLD.equals(tc_ceb06)) {
+                            showInputDialog( holder.tv_tc_ceb04, editingPosition,kt07MainRowItems_list.get(adapterPosition).getG_tc_ceb04());
+                        }
+                        else{
+                            Toast.makeText(view.getContext(), "Dữ liệu đã kết chuyển lâu, không thể sửa đổi!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
                 }
                 else{
                     showInputDialog( holder.tv_tc_ceb04, editingPosition,kt07MainRowItems_list.get(adapterPosition).getG_tc_ceb04());
                 }
+
             }
         });
 //        holder.edt_tc_ceb04.setOnFocusChangeListener(new View.OnFocusChangeListener() {

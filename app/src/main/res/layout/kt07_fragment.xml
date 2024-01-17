@@ -126,6 +126,17 @@
                     android:orientation="vertical"
                     android:background="@color/white">
                     <TextView
+                        android:id="@+id/kt07_textDB"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="Đồng bộ dữ liệu"
+                        android:textColor="@color/black"
+                        android:textSize="19dp"
+                        android:onClick="onTextDBClicked" />
+                    <TextView
                      android:id="@+id/kt07_textCheck"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

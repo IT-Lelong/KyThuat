@@ -335,6 +335,14 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
 //        menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "").setEnabled(false);
         //menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "").setEnabled(false);
 
+        SpannableString db_spannable = new SpannableString("Đồng bộ dữ liệu  ");
+        Drawable db_Icon = getResources().getDrawable(R.drawable.db);
+        ImageSpan db_imageSpan = new ImageSpan(db_Icon, ImageSpan.ALIGN_BASELINE);
+        db_spannable.setSpan(db_imageSpan, db_spannable.length() - 1, db_spannable.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+        db_Icon.setBounds(0, 0, 40, 40); // Điều chỉnh kích thước theo ý muốn
+        TextView textdb = findViewById(R.id.kt07_textDB);
+        textdb.setText(db_spannable);
+
         SpannableString checkSpannable = new SpannableString("Kiểm tra dữ liệu   ");
         Drawable checkIcon = getResources().getDrawable(R.drawable.check);
         ImageSpan imagedelete = new ImageSpan(checkIcon , ImageSpan.ALIGN_BASELINE);
@@ -579,6 +587,127 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
 
     public void onTextUploadClicked(View view) {
         showConfirmationDialog();
+    }
+
+    public void onTextDBClicked(View view){
+        showConfirmationDialog1();
+    }
+
+    private void showConfirmationDialog1() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Xác nhận");
+        builder.setMessage("Bạn có muốn đồng bộ dữ liệu không ?");
+        // Tạo LinearLayout
+        LinearLayout linearLayout = new LinearLayout(this);
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
+
+        // Tạo LinearLayout mới để chứa tiêu đề và TextView chọn ngày
+        LinearLayout dateLayout = new LinearLayout(this);
+        dateLayout.setOrientation(LinearLayout.HORIZONTAL);
+        dateLayout.setGravity(Gravity.CENTER);
+
+        // Tạo tiêu đề cho ngày tháng
+        TextView dateTitleTextView = new TextView(this);
+        dateTitleTextView.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        ));
+        dateTitleTextView.setText("Ngày bắt đầu:");
+
+
+        int paddingInPixels = 16; // Đổi giá trị này theo nhu cầu của bạn
+        dateTitleTextView.setPadding(paddingInPixels, paddingInPixels, paddingInPixels, paddingInPixels);
+        dateTitleTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+        dateLayout.addView(dateTitleTextView);
+
+        // Tạo TextView cho ngày tháng
+        final TextView dateTextView = new TextView(this);
+        dateTextView.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        ));
+
+        // Đặt giá trị mặc định là ngày hiện tại
+        dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_YEAR, -3);
+        dateTextView.setText(dateFormat.format(calendar.getTime()));
+        //dateTextView.setText(dateFormat.format(new Date()).toString());
+        dateTextView.setPadding(paddingInPixels, paddingInPixels, paddingInPixels, paddingInPixels);
+        dateTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDatePickerDialog(dateTextView);
+            }
+        });
+        dateTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+        dateLayout.addView(dateTextView);
+
+        /////
+        // Tạo LinearLayout mới để chứa tiêu đề và TextView chọn ngày
+        LinearLayout dateLayout1 = new LinearLayout(this);
+        dateLayout1.setOrientation(LinearLayout.HORIZONTAL);
+        dateLayout1.setGravity(Gravity.CENTER);
+
+        // Tạo tiêu đề cho ngày tháng
+        TextView dateTitleTextView1 = new TextView(this);
+        dateTitleTextView1.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        ));
+        dateTitleTextView1.setText("Ngày kết thúc:");
+
+
+        int paddingInPixels1 = 16; // Đổi giá trị này theo nhu cầu của bạn
+        dateTitleTextView1.setPadding(paddingInPixels1, paddingInPixels1, paddingInPixels1, paddingInPixels1);
+        dateTitleTextView1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+        dateLayout1.addView(dateTitleTextView1);
+
+        // Tạo TextView cho ngày tháng
+        final TextView dateTextView1 = new TextView(this);
+        dateTextView1.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        ));
+
+        // Đặt giá trị mặc định là ngày hiện tại
+        dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        dateTextView1.setText(dateFormat.format(new Date()).toString());
+        dateTextView1.setPadding(paddingInPixels, paddingInPixels, paddingInPixels, paddingInPixels);
+        dateTextView1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDatePickerDialog(dateTextView1);
+            }
+        });
+        dateTextView1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+        dateLayout1.addView(dateTextView1);
+
+        // Thêm LinearLayout chứa tiêu đề và TextView vào LinearLayout chính
+        linearLayout.addView(dateLayout);
+        linearLayout.addView(dateLayout1);
+
+        builder.setView(linearLayout);
+
+        builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String selectedDate_bd = dateTextView.getText().toString();
+                String selectedDate_kt = dateTextView1.getText().toString();
+                upload_dataKT(selectedDate_bd,selectedDate_kt);
+                Toast.makeText(KT07_Main.this, "Đồng bộ thành công!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     private void showConfirmationDialog() {
@@ -984,7 +1113,7 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
                                     e.printStackTrace();
                                 }
                                 Toast.makeText(KT07_Main.this, "Đã upload xong", Toast.LENGTH_SHORT).show();
-                                upload_dataKT();
+                                //upload_dataKT();
                             }
                         });
 
@@ -1438,17 +1567,17 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
         kt07MainAdapter.notifyDataSetChanged();
     }
 
-    public void upload_dataKT(){
+    public void upload_dataKT(String date1, String date2){
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
-        Calendar calendar = Calendar.getInstance();
+        //Calendar calendar = Calendar.getInstance();
         //Date ngayHienTai = calendar.getTime();
-        calendar.add(Calendar.DAY_OF_YEAR, -1);
-        Date ngayHomQua = calendar.getTime();
-        String currentDate = dateFormat.format(ngayHomQua);
+        //calendar.add(Calendar.DAY_OF_YEAR, -1);
+        //Date ngayHomQua = calendar.getTime();
+        //String currentDate = dateFormat.format(ngayHomQua);
         Thread UpLoad_fia = new Thread(new Runnable() {
             @Override
             public void run() {
-                final String res = get_DataTable("http://172.16.40.20/" + Constant_Class.server + "/TechAPP/get_dataKT.php?item="+currentDate+"");
+                final String res = get_DataTable("http://172.16.40.20/" + Constant_Class.server + "/TechAPP/get_dataKT.php?item="+date1+"&item1="+date2+"");
                 if (!res.equals("FALSE")) {
                     runOnUiThread(new Runnable() {
                         @Override
@@ -1464,7 +1593,9 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
                                     String g_tc_ceb05 = jsonObject.getString("tc_ceb05");
                                     String g_tc_ceb06 = jsonObject.getString("tc_ceb06");
                                     String g_tc_cebdate = jsonObject.getString("tc_cebdate");
-                                    kt07Db.update_dataKT(g_tc_ceb01,g_tc_ceb02,g_tc_ceb03,g_tc_ceb04,g_tc_ceb05,g_tc_ceb06,g_tc_cebdate);
+                                    String g_tc_cebuser = jsonObject.getString("tc_cebuser");
+                                    //kt07Db.update_dataKT(g_tc_ceb01,g_tc_ceb02,g_tc_ceb03,g_tc_ceb04,g_tc_ceb05,g_tc_ceb06,g_tc_cebdate);
+                                    kt07Db.update_tc_ceb_file(g_tc_ceb01,g_tc_ceb02,g_tc_ceb03,g_tc_ceb04,g_tc_ceb05,g_tc_ceb06,g_tc_cebdate,g_tc_cebuser);
                                 }
 
                             } catch (JSONException e) {
