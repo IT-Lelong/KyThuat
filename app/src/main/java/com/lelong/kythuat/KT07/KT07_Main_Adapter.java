@@ -28,6 +28,8 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class KT07_Main_Adapter extends RecyclerView.Adapter<KT07_Main_Adapter.DataViewHolder>{
     private final Context applicationContext;
@@ -45,6 +47,7 @@ public class KT07_Main_Adapter extends RecyclerView.Adapter<KT07_Main_Adapter.Da
     private KT07_Main_FillData kt07MainFillData;
     private AlertDialog alertDialog;
     private KT07_Main kt07_Main;
+    AtomicReference<String> lResultReference = new AtomicReference<>();
 
     public KT07_Main_Adapter(Context applicationContext,
                              int kt07_listdata_item,
@@ -59,7 +62,6 @@ public class KT07_Main_Adapter extends RecyclerView.Adapter<KT07_Main_Adapter.Da
         this.kt07MainRowItems_list = kt07MainRowItems_list;
         this.kt07MainFillData = kt07MainFillData;
         this.kt07_Main = kt07_Main;
-
         this.tv_tc_ceb03 = tv_tc_ceb03;
         this.tv_tc_ceb06 = tv_tc_ceb06;
         this.tv_tc_cebdate = tv_tc_cebdate;
@@ -118,11 +120,9 @@ public class KT07_Main_Adapter extends RecyclerView.Adapter<KT07_Main_Adapter.Da
                 String tc_ceb06 = tv_tc_ceb06.getText().toString();
                 String tc_cebdate = tv_tc_cebdate.getText().toString();
                 String tc_cebuser = tv_tc_cebuser.getText().toString();
-                //Cursor db_check = kt07Db.getdata_check(tc_cea01,tc_cea03,tc_ceb03,tc_ceb06);
+                Cursor db_check = kt07Db.getdata_check(tc_cea01,tc_cea03,tc_ceb03,tc_ceb06);
                 int count = kt07Db.getCheckKT(tc_cea01,tc_cea03,tc_ceb03,tc_cebdate,tc_cebuser,tc_ceb06);
                 if (count > 0) {
-                    //Toast.makeText(view.getContext(), "Dữ liệu đã được kết chuyển, không thể sửa đổi!", Toast.LENGTH_SHORT).show();
-                    //kt07_Main.check_data(db_check);
                 }
                 else{
                     showInputDialog( holder.tv_tc_ceb04, editingPosition,kt07MainRowItems_list.get(adapterPosition).getG_tc_ceb04());

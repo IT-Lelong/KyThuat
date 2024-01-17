@@ -69,7 +69,7 @@ public class KT07_Check_Adapter extends RecyclerView.Adapter<KT07_Check_Adapter.
         holder.tv_tc_ceb03.setText(item.getG_tc_ceb03());
         holder.tv_tc_cea04.setText(item.getG_tc_cea04());
         holder.tv_tc_cea05.setText(item.getG_tc_cea05());
-        //holder.tv_tc_ceb06.setText(item.getG_tc_ceb06());
+        holder.tv_tc_ceb06.setText(item.getG_tc_ceb06());
         // Gắn dữ liệu cho các thành phần giao diện khác nếu cần thiết
     }
 

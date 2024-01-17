@@ -56,6 +56,13 @@ android:padding="5dp">
                 android:layout_weight="1.7"
                 android:text="Ngày tiêu hao"
                 android:textSize="17sp" />
+            <TextView
+                style="@style/title_02"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.7"
+                android:text="Khoảng TG"
+                android:textSize="17sp" />
 
 
 

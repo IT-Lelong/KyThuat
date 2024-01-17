@@ -39,6 +39,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.lelong.kythuat.Constant_Class;
 import com.lelong.kythuat.KT01.KT01_DB;
 import com.lelong.kythuat.R;
@@ -66,6 +68,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class KT07_Main extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, KT07_Main_FillData {
     List<String> groupList;
@@ -96,7 +100,7 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
     private String selectedDate;
     private String tc_ceb06_old;
     private String modeltmp;
-
+    public AtomicReference<String> gStatusReference = new AtomicReference<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -1061,100 +1065,97 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
                 start();
 
     }
-    public void check_data(Cursor data_check) {
+    public String check_data2(Cursor data_check) {
+        CountDownLatch latch = new CountDownLatch(1);
+
         Thread UpLoad_fia = new Thread(new Runnable() {
             @Override
             public void run() {
-                Cursor upl = data_check;
-                jsonupload = cur2Json(upl);
-                if (jsonupload.length() == 0) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(KT07_Main.this, "Không có dữ liệu để chỉnh sửa", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                } else {
+                try {
+                    Cursor upl = data_check;
+                    jsonupload = cur2Json(upl);
 
-                    try {
-                        ujobject = new JSONObject();
-                        //ujobject.put("docNum", edt_maCT.getText().toString());
-                        ujobject.put("ujson", jsonupload);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                    final String res = upload_all("http://172.16.40.20/" + Constant_Class.server + "/TechAPP/check_dateKT.php");
-                    if (!res.equals("FALSE")) {
+                    if (jsonupload.length() == 0) {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                try{
-                                    JSONArray jsonarray = new JSONArray(res);
-                                    for (int i = 0; i < jsonarray.length(); i++) {
-                                        JSONObject jsonObject = jsonarray.getJSONObject(i);
-                                        String g_tc_ceb01 = jsonObject.getString("TC_CEB01");
-                                        String g_tc_ceb02 = jsonObject.getString("TC_CEB02");
-                                        String g_tc_ceb03 = jsonObject.getString("TC_CEB03");
-                                        String g_tc_cebdate = jsonObject.getString("TC_CEBDATE");
-                                        String g_tc_ceb06 = jsonObject.getString("TC_CEB06");
-                                        kt07Db.update_status(g_tc_ceb01,g_tc_ceb02,g_tc_ceb03,g_tc_ceb06,g_tc_cebdate);
+                                Toast.makeText(KT07_Main.this, "Không có dữ liệu để chỉnh sửa", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    } else {
+                        try {
+                            ujobject = new JSONObject();
+                            ujobject.put("ujson", jsonupload);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        final String res = upload_all("http://172.16.40.20/" + Constant_Class.server + "/TechAPP/check_dateKT.php");
+                        if (!res.equals("FALSE")) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        Gson gson = new Gson();
+                                        JsonObject jsonObject = gson.fromJson(res, JsonObject.class);
+
+                                        String g_status = jsonObject.get("status").getAsString();
+                                        gStatusReference.set(g_status);
+                                        //if (g_status.equals("success")) {
+                                        //    Toast.makeText(KT07_Main.this, "Đươc phép sửa đổi!", Toast.LENGTH_SHORT).show();
+                                        //}
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
                                     }
                                 }
-                                catch (JSONException e) {
-                                    e.printStackTrace();
+                            });
+                        } else {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    gStatusReference.set("error");
+                                    Toast.makeText(KT07_Main.this, "Không kết nối với internet", Toast.LENGTH_SHORT).show();
                                 }
-                                Toast.makeText(KT07_Main.this, "Đã upload xong", Toast.LENGTH_SHORT).show();
-                                upload_dataKT();
-                            }
-                        });
-
-                    } else {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(KT07_Main.this, "Không kết nối với internet", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                            });
+                        }
                     }
+                } finally {
+                    latch.countDown();
                 }
-
             }
         });
 
         Thread Load_fia = new Thread(new Runnable() {
             @Override
             public void run() {
-                Looper.prepare(); // Chuẩn bị luồng để chạy vòng lặp sự kiện
-                //getLVData();
-                Looper.loop(); // Bắt đầu vòng lặp sự kiện
+                try {
+                    latch.await(); // Chờ cho Thread UpLoad_fia hoàn thành
+                    Looper.prepare(); // Chuẩn bị luồng để chạy vòng lặp sự kiện
+                    //getLVData();
+                    Looper.loop(); // Bắt đầu vòng lặp sự kiện
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         });
-        //dialog.dismiss();
 
-        new
+        UpLoad_fia.start();
+        try {
+            UpLoad_fia.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
-                Thread() {
-                    @Override
-                    public void run() {
-                        UpLoad_fia.start();
-                        try {
-                            UpLoad_fia.join();
-                        } catch (InterruptedException e) {
-                        }
-                        if (a == "ok") {
-                            Load_fia.start();
-                            try {
-                                Load_fia.join();
-                            } catch (InterruptedException e) {
-                            }
-                        }
+        if ("ok".equals(a)) {
+            Load_fia.start();
+            try {
+                Load_fia.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
 
-                    }
-                }.
-
-                start();
-
+        return gStatusReference.get();
     }
 
     private void upLoad_CheckData(String date_start, String date_end) {
@@ -1179,9 +1180,9 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
                                         String g_tc_ceb03 = jsonObject.getString("tc_ceb03");
                                         String g_tc_cea04 = jsonObject.getString("tc_cea04");
                                         String g_tc_cea05 = jsonObject.getString("tc_cea05");
+                                        String g_tc_ceb06 = jsonObject.getString("tc_ceb06");
 
-
-                                        KT07_CheckList_Row checkListRow = new KT07_CheckList_Row(g_tc_ceb01, g_tc_ceb02, g_tc_cea04, g_tc_cea05, g_tc_ceb03);
+                                        KT07_CheckList_Row checkListRow = new KT07_CheckList_Row(g_tc_ceb01, g_tc_ceb02, g_tc_cea04, g_tc_cea05, g_tc_ceb03,g_tc_ceb06);
                                         checkList_Rows.add(checkListRow);
                                     }
                                     KT07_ListCheck_Dialog dialog = new KT07_ListCheck_Dialog(getApplicationContext());

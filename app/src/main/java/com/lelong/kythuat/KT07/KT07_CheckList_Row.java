@@ -12,7 +12,7 @@ public class KT07_CheckList_Row implements Parcelable {
     private String g_tc_cea04;
     private String g_tc_cea05;
     private String g_tc_ceb03;
-    //private String g_tc_ceb06;
+    private String g_tc_ceb06;
 
     public String getG_tc_ceb01() {
         return g_tc_ceb01;
@@ -34,9 +34,9 @@ public class KT07_CheckList_Row implements Parcelable {
         return g_tc_ceb03;
     }
 
-    //public String getG_tc_ceb06() {
-        //return g_tc_ceb06;
-    //}
+    public String getG_tc_ceb06() {
+        return g_tc_ceb06;
+    }
 
     public void setG_tc_ceb01(String g_tc_ceb01) {
         this.g_tc_ceb01 = g_tc_ceb01;
@@ -54,21 +54,21 @@ public class KT07_CheckList_Row implements Parcelable {
         this.g_tc_cea05 = g_tc_cea05;
     }
 
-    //public void setG_tc_ceb06(String g_tc_ceb06) {
-        //this.g_tc_ceb06 = g_tc_ceb06;
-    //}
+    public void setG_tc_ceb06(String g_tc_ceb06) {
+        this.g_tc_ceb06 = g_tc_ceb06;
+    }
 
     public void setG_tc_ceb03(String g_tc_ceb03) {
         this.g_tc_ceb03 = g_tc_ceb03;
     }
 
-    public KT07_CheckList_Row(String g_tc_ceb01, String g_tc_ceb02, String g_tc_cea04, String g_tc_cea05, String g_tc_ceb03) {
+    public KT07_CheckList_Row(String g_tc_ceb01, String g_tc_ceb02, String g_tc_cea04, String g_tc_cea05, String g_tc_ceb03,String g_tc_ceb06) {
         this.g_tc_ceb01 = g_tc_ceb01;
         this.g_tc_ceb02 = g_tc_ceb02;
         this.g_tc_cea04 = g_tc_cea04;
         this.g_tc_cea05 = g_tc_cea05;
         this.g_tc_ceb03 = g_tc_ceb03;
-        //this.g_tc_ceb06 = g_tc_ceb06;
+        this.g_tc_ceb06 = g_tc_ceb06;
     }
 
     protected KT07_CheckList_Row(Parcel in) {
@@ -77,7 +77,7 @@ public class KT07_CheckList_Row implements Parcelable {
         g_tc_cea04 = in.readString();
         g_tc_cea05 = in.readString();
         g_tc_ceb03 = in.readString();
-        //g_tc_ceb06 = in.readString();
+        g_tc_ceb06 = in.readString();
     }
 
     public static final Creator<KT07_CheckList_Row> CREATOR = new Creator<KT07_CheckList_Row>() {
@@ -99,7 +99,7 @@ public class KT07_CheckList_Row implements Parcelable {
         dest.writeString(g_tc_cea04);
         dest.writeString(g_tc_cea05);
         dest.writeString(g_tc_ceb03);
-        //dest.writeString(g_tc_ceb06);
+        dest.writeString(g_tc_ceb06);
     }
 
     @Override
