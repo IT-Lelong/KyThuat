@@ -1092,7 +1092,7 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
                         e.printStackTrace();
                     }
 
-                    final String res = upload_all("http://172.16.40.20/" + Constant_Class.server + "/TechAPP/upload_tc_ceb_file.php");
+                    final String res = upload_all("http://172.16.40.20/" + Constant_Class.server + "/TechAPP/upload_tc_ceb.php");
                     if (!res.equals("FALSE")) {
                         runOnUiThread(new Runnable() {
                             @Override
@@ -1577,7 +1577,7 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
         Thread UpLoad_fia = new Thread(new Runnable() {
             @Override
             public void run() {
-                final String res = get_DataTable("http://172.16.40.20/" + Constant_Class.server + "/TechAPP/get_dataKT.php?item="+date1+"&item1="+date2+"");
+                final String res = get_DataTable("http://172.16.40.20/" + Constant_Class.server + "/TechAPP/check_dateKT.php?item="+date1+"&item1="+date2+"");
                 if (!res.equals("FALSE")) {
                     runOnUiThread(new Runnable() {
                         @Override

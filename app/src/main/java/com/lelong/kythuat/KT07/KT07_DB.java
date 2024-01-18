@@ -203,11 +203,11 @@ public class KT07_DB {
         String selectQuery = null;
         if(g_title =="1=1"){
             selectQuery = " SELECT tc_ceb01,tc_ceb02,tc_ceb03,tc_ceb04,tc_ceb05,tc_cebdate,tc_cebuser,tc_ceb06 FROM tc_ceb_file " +
-                    "  WHERE  " + g_title + " AND tc_ceb03 <= '"+g_tc_ceb03+"' AND tc_cebstatus = 'N' ORDER BY tc_ceb03,tc_ceb06 " ;
+                    "  WHERE  " + g_title + " AND tc_ceb03 <= '"+g_tc_ceb03+"' AND tc_cebstatus IN ('N','E') ORDER BY tc_ceb03,tc_ceb06 " ;
         }else {
             //Fill Data của loại tiêu thụ
             selectQuery = " SELECT tc_ceb01,tc_ceb02,tc_ceb03,tc_ceb04,tc_ceb05,tc_cebdate,tc_cebuser, tc_ceb06 FROM tc_ceb_file " +
-                    "  WHERE tc_ceb01 IN ('" + g_title + "') AND tc_ceb03 <= '" + g_tc_ceb03 + "' AND tc_cebstatus = 'N' ORDER BY tc_ceb03,tc_ceb06 ";
+                    "  WHERE tc_ceb01 IN ('" + g_title + "') AND tc_ceb03 <= '" + g_tc_ceb03 + "' AND tc_cebstatus IN('N','E')  ORDER BY tc_ceb03,tc_ceb06 ";
         }
         return db.rawQuery(selectQuery, null);
     }
@@ -238,7 +238,7 @@ public class KT07_DB {
 
                 db.insert(TABLE_NAME_TC_CEB, null, args);
             }else if(count>=1){
-                db.execSQL("UPDATE " +TABLE_NAME_TC_CEB+ " SET tc_ceb04 = '"+g_tc_ceb04+"', tc_cebstatus = 'N' " +
+                db.execSQL("UPDATE " +TABLE_NAME_TC_CEB+ " SET tc_ceb04 = '"+g_tc_ceb04+"', tc_cebstatus = 'E' " +
                         "WHERE tc_ceb01 = '"+g_tc_ceb01+"' AND tc_ceb02 = '"+g_tc_ceb02+"' " +
                         "AND tc_ceb03 = '"+g_tc_ceb03+"'  " +
                         "AND tc_ceb06 = '"+g_tc_ceb06+"' "  );
@@ -274,7 +274,7 @@ public class KT07_DB {
     public Integer getCheckKT(String g_tc_cea01,String g_tc_cea03,String g_tc_ceb03,String g_tc_cebdate,String g_tc_cebuser, String g_tc_ceb06){
         String selectQuery = null;
         selectQuery = " SELECT count(*) FROM tc_ceb_file WHERE tc_ceb01='"+g_tc_cea01+"' AND tc_ceb02 ='"+g_tc_cea03+"' AND tc_ceb03='"+g_tc_ceb03+"' " +
-                " AND tc_ceb06 = '"+g_tc_ceb06+"' AND tc_cebstatus = 'Y' ";
+                " AND tc_ceb06 = '"+g_tc_ceb06+"' AND tc_cebstatus IN ('Y','E')  ";
 
         Cursor a = db.rawQuery(selectQuery, null);
         a.moveToFirst();
@@ -285,7 +285,7 @@ public class KT07_DB {
         String selectQuery = null;
         selectQuery = "SELECT tc_ceb03 AS tc_ceb03_old, tc_ceb06 AS tc_ceb06_old  " +
                 "FROM (SELECT tc_ceb03, tc_ceb06, tc_ceb04  FROM tc_ceb_file  " +
-                "WHERE tc_ceb01='"+g_tc_cea01+"' AND tc_ceb02='"+g_tc_cea03+"' AND tc_cebstatus = 'Y' ORDER BY tc_ceb03 DESC, tc_ceb06 DESC)  LIMIT 1";
+                "WHERE tc_ceb01='"+g_tc_cea01+"' AND tc_ceb02='"+g_tc_cea03+"' AND tc_cebstatus IN ('Y','E') ORDER BY tc_ceb03 DESC, tc_ceb06 DESC)  LIMIT 1";
         return db.rawQuery(selectQuery, null);
     }
     public String update_dataKT(String g_tc_ceb01,String g_tc_ceb02,String g_tc_ceb03,String g_tc_ceb04,String g_tc_ceb05,String g_tc_ceb06,String g_tc_cebdate){
