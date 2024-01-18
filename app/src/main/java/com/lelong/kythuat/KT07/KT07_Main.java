@@ -1092,7 +1092,7 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
                         e.printStackTrace();
                     }
 
-                    final String res = upload_all("http://172.16.40.20/" + Constant_Class.server + "/TechAPP/upload_tc_ceb.php");
+                    final String res = upload_all("http://172.16.40.20/" + Constant_Class.server + "/TechAPP/upload_tc_ceb_file.php");
                     if (!res.equals("FALSE")) {
                         runOnUiThread(new Runnable() {
                             @Override

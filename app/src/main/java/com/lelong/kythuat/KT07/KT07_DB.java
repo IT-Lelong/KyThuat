@@ -238,11 +238,24 @@ public class KT07_DB {
 
                 db.insert(TABLE_NAME_TC_CEB, null, args);
             }else if(count>=1){
-                db.execSQL("UPDATE " +TABLE_NAME_TC_CEB+ " SET tc_ceb04 = '"+g_tc_ceb04+"', tc_cebstatus = 'E' " +
-                        "WHERE tc_ceb01 = '"+g_tc_ceb01+"' AND tc_ceb02 = '"+g_tc_ceb02+"' " +
-                        "AND tc_ceb03 = '"+g_tc_ceb03+"'  " +
-                        "AND tc_ceb06 = '"+g_tc_ceb06+"' "  );
-
+                String sqlquery = null;
+                sqlquery = "SELECT tc_cebstatus FROM tc_ceb_file WHERE tc_ceb01 = '"+g_tc_ceb01+"' " +
+                        " AND tc_ceb02 = '"+g_tc_ceb02+"' AND tc_ceb03 = '"+g_tc_ceb03+"' " +
+                        "  AND tc_ceb06 = '"+g_tc_ceb06+"' ";
+                Cursor ab = db.rawQuery(sqlquery, null);
+                ab.moveToFirst();
+                String status = ab.getString(0);
+                if( status.equals("Y")){
+                    db.execSQL("UPDATE " +TABLE_NAME_TC_CEB+ " SET tc_ceb04 = '"+g_tc_ceb04+"', tc_cebstatus = 'E' " +
+                            "WHERE tc_ceb01 = '"+g_tc_ceb01+"' AND tc_ceb02 = '"+g_tc_ceb02+"' " +
+                            "AND tc_ceb03 = '"+g_tc_ceb03+"'  " +
+                            "AND tc_ceb06 = '"+g_tc_ceb06+"' "  );
+                }else {
+                    db.execSQL("UPDATE " +TABLE_NAME_TC_CEB+ " SET tc_ceb04 = '"+g_tc_ceb04+"' " +
+                            "WHERE tc_ceb01 = '"+g_tc_ceb01+"' AND tc_ceb02 = '"+g_tc_ceb02+"' " +
+                            "AND tc_ceb03 = '"+g_tc_ceb03+"'  " +
+                            "AND tc_ceb06 = '"+g_tc_ceb06+"' "  );
+                }
             }
                 return "TRUE";
 

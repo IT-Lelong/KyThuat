@@ -239,7 +239,7 @@ public class Menu extends AppCompatActivity {
             }
 
             private void get_fab() {
-                String res_fab = get_DataTable("http://172.16.40.20/" + Constant_Class.server + "/TechAPP/getDataTable.php?item=fapb");
+                String res_fab = get_DataTable("http://172.16.40.20/" + Constant_Class.server + "/TechAPP/getDataTable.php?item=fab");
                 if (!res_fab.equals("FALSE")) {
                     try {
                         JSONArray jsonarray = new JSONArray(res_fab);
