@@ -219,8 +219,7 @@ public class KT07_DB {
             String selectQ = null;
             selectQ = "SELECT count(*) FROM tc_ceb_file WHERE tc_ceb01 = '"+g_tc_ceb01+"' " +
                     " AND tc_ceb02 = '"+g_tc_ceb02+"' AND tc_ceb03 = '"+g_tc_ceb03+"' " +
-                    " AND tc_ceb05 = '"+g_tc_ceb05+"' AND tc_ceb06 = '"+g_tc_ceb06+"'" +
-                    " AND tc_cebuser = '"+g_tc_cebuser+"' ";
+                    "  AND tc_ceb06 = '"+g_tc_ceb06+"' ";
             Cursor a = db.rawQuery(selectQ, null);
             a.moveToFirst();
             Integer count = a.getInt(0);
@@ -239,11 +238,10 @@ public class KT07_DB {
 
                 db.insert(TABLE_NAME_TC_CEB, null, args);
             }else if(count>=1){
-                db.execSQL("UPDATE " +TABLE_NAME_TC_CEB+ " SET tc_ceb04 = '"+g_tc_ceb04+"' " +
+                db.execSQL("UPDATE " +TABLE_NAME_TC_CEB+ " SET tc_ceb04 = '"+g_tc_ceb04+"', tc_cebstatus = 'N' " +
                         "WHERE tc_ceb01 = '"+g_tc_ceb01+"' AND tc_ceb02 = '"+g_tc_ceb02+"' " +
-                        "AND tc_ceb03 = '"+g_tc_ceb03+"' AND tc_ceb05 = '"+g_tc_ceb05+"' " +
-                        "AND tc_ceb06 = '"+g_tc_ceb06+"' " +
-                        "AND tc_cebuser = '"+g_tc_cebuser+"' "  );
+                        "AND tc_ceb03 = '"+g_tc_ceb03+"'  " +
+                        "AND tc_ceb06 = '"+g_tc_ceb06+"' "  );
 
             }
                 return "TRUE";
