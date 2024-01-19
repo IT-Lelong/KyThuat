@@ -830,5 +830,13 @@ class KT01_DB {
             return null;
         }
     }
+    public Cursor getAll_kyten(String mabp, String tenbp,String ngay) {
+        try {
+            return db.rawQuery("SELECT manv_sig, sogio_sig, ghichu_sig from " + TABLE_NAME_FIA_UP_SIG01 + " where mabp_sig = '"+mabp+"' and tebp_sig = '"+tenbp+"' and ngay_sig = '"+ngay+"'  ", null);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
 
 }

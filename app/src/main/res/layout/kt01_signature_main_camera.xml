@@ -23,21 +23,64 @@
         android:layout_width="400dp"
         android:layout_height="400dp"
         android:layout_gravity="center"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginBottom="30dp" />
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp" />
 
     <TextView
         android:id="@+id/tv_bpname"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:textSize="30sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         android:layout_marginBottom="10dp"/>
-
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:theme="@style/title"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Mã NV"
+            android:textSize="17sp" />
+
+        <TextView
+            android:theme="@style/title"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Số giờ"
+            android:textSize="17sp" />
+
+        <TextView
+            android:theme="@style/title"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2.5"
+            android:text="Ghi chú"
+            android:textSize="17sp" />
+        <TextView
+            android:theme="@style/title"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Xóa"
+            android:textSize="17sp" />
+    </LinearLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvc_kyten"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:textSize="17sp"
+        android:textStyle="bold">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <!--<LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
@@ -50,7 +93,7 @@
             android:layout_weight="0.7"
             android:gravity="center_vertical"
             android:text="Mã NV: "
-            android:textSize="25sp"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <TextView
@@ -118,7 +161,7 @@
             android:maxLines="3"
             android:textSize="25sp" />
 
-    </LinearLayout>
+    </LinearLayout>-->
 
     <Button
         android:id="@+id/btninsert"

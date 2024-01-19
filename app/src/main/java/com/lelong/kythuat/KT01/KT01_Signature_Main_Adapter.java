@@ -18,6 +18,7 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
 import androidx.core.app.ActivityCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
@@ -41,6 +42,7 @@ public class KT01_Signature_Main_Adapter extends SimpleCursorAdapter {
     Button btnkt;
     Dialog dialog;
     String s_somay, s_bophan, s_tenbp, s_ngay;
+    RecyclerView rvc_kyten;
     CameraSource cameraSource;
     BarcodeDetector barcodeDetector;
     boolean firstDetected = true;
@@ -91,12 +93,12 @@ public class KT01_Signature_Main_Adapter extends SimpleCursorAdapter {
                 s_ngay = mCursor.getString(mCursor.getColumnIndexOrThrow("ngaysig"));
 
                 UpdateDialog(s_bophan, s_tenbp, s_ngay,position);
-                dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                /*dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialog) {
                         kt01Interface.loadData_Search_Sig();
                     }
-                });
+                });*/
             }
         });
 
@@ -104,16 +106,18 @@ public class KT01_Signature_Main_Adapter extends SimpleCursorAdapter {
     }
 
     private void UpdateDialog(String s_bophan, String s_tenbp, String s_ngay, int position) {
-        dialog = new Dialog(context);
-        dialog.setContentView(R.layout.kt01_signature_main_camera);
-        dialog.getWindow().setBackgroundDrawableResource(R.drawable.rounded_shape);
+        //dialog = new Dialog(context);
+        //dialog.setContentView(R.layout.kt01_signature_main_camera);
+        //dialog.getWindow().setBackgroundDrawableResource(R.drawable.rounded_shape);
+        KT01_Signature_Dialog_Camera kt01SignatureDialogCamera = new KT01_Signature_Dialog_Camera(context,s_bophan, s_tenbp, s_ngay, position);
+        kt01SignatureDialogCamera.show();
         firstDetected = true;
 
-        SurfaceView suv_qr = (SurfaceView) dialog.findViewById(R.id.suv_qr);
+        /*SurfaceView suv_qr = (SurfaceView) dialog.findViewById(R.id.suv_qr);
         TextView tv_bpname = dialog.findViewById(R.id.tv_bpname);
-        TextView tv_manvsig = dialog.findViewById(R.id.tv_manvsig);
-        EditText edt_sogio = dialog.findViewById(R.id.edt_sogio);
-        EditText edt_ghichu = dialog.findViewById(R.id.edt_ghichu);
+        //TextView tv_manvsig = dialog.findViewById(R.id.tv_manvsig);
+        //EditText edt_sogio = dialog.findViewById(R.id.edt_sogio);
+        //EditText edt_ghichu = dialog.findViewById(R.id.edt_ghichu);
         Button btninsert = dialog.findViewById(R.id.btninsert);
 
         tv_bpname.setText(s_tenbp);
@@ -179,7 +183,8 @@ public class KT01_Signature_Main_Adapter extends SimpleCursorAdapter {
                         s_tenbp,
                         edt_ghichu.getText().toString().trim(),
                         tv_manvsig.getText().toString().trim(),
-                        edt_sogio.getText().toString().trim(),
+                        //edt_sogio.getText().toString().trim(),
+                        "",
                         null);
                 Cursor updatedCursor = kt01Db.getDepartmetData(Constant_Class.UserFactory);
                 mCursor.moveToPosition(position);
@@ -196,7 +201,7 @@ public class KT01_Signature_Main_Adapter extends SimpleCursorAdapter {
             }
         });
 
-        dialog.show();
+        dialog.show();*/
     }
 
 }
