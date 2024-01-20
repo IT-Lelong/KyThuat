@@ -17,9 +17,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,6 +35,7 @@ import com.google.android.gms.vision.barcode.BarcodeDetector;
 import com.lelong.kythuat.KT07.KT07_CheckList_Row;
 import com.lelong.kythuat.KT07.KT07_Check_Adapter;
 import com.lelong.kythuat.KT07.KT07_DB;
+import com.lelong.kythuat.KT07.KT07_Main;
 import com.lelong.kythuat.KT07.KT07_Main_RowItem;
 import com.lelong.kythuat.R;
 
@@ -41,7 +46,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class KT01_Signature_Dialog_Camera {
+public class KT01_Signature_Dialog_Camera extends DialogFragment {
     private KT01_DB db = null;
     private Context context;
     private Dialog dialog;
@@ -59,7 +64,10 @@ public class KT01_Signature_Dialog_Camera {
     BarcodeDetector barcodeDetector;
     boolean firstDetected = true;
     Cursor mCursor;
-
+    Button btninsert,btnthoat;
+    String tv_barcode;
+    KT01_Interface kt01Interface;
+    private OnDialogDismissListener dismissListener;
     public KT01_Signature_Dialog_Camera() {
         // Empty constructor required for DialogFragment
     }
@@ -112,12 +120,31 @@ public class KT01_Signature_Dialog_Camera {
         recyclerView = dialog.findViewById(R.id.rvc_kyten);
         tv_bpname = dialog.findViewById(R.id.tv_bpname);
         suv_qr = (SurfaceView) dialog.findViewById(R.id.suv_qr);
+        btninsert = dialog.findViewById(R.id.btninsert);
+        btnthoat = dialog.findViewById(R.id.btnthoat);
         g_today = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
         kt01SignatureDialogModels = new ArrayList<KT01_Signature_Dialog_Model>();
-        kt01SignatureDialogModels.add(new KT01_Signature_Dialog_Model("H32687", " ", " "));
+        mCursor = db.getAll_kyten(s_bophan,s_tenbp,s_ngay);
+        mCursor.moveToFirst();
+        int num = mCursor.getCount();
+        kt01SignatureDialogModels.clear();
+        for (int i = 0; i < num; i++) {
+            try {
+                String G_MANV = mCursor.getString(mCursor.getColumnIndexOrThrow("manv_sig"));
+                String G_SOGIO = mCursor.getString(mCursor.getColumnIndexOrThrow("sogio_sig"));
+                String G_GHICHU = mCursor.getString(mCursor.getColumnIndexOrThrow("ghichu_sig"));
+                kt01SignatureDialogModels.add(new KT01_Signature_Dialog_Model(G_MANV, G_SOGIO, G_GHICHU));
+            } catch (Exception e) {
+                String err = e.toString();
+            }
+            mCursor.moveToNext();
+        }
         kt01SignatureDialogAdapter = new KT01_Signature_Dialog_Adapter(context,
                 R.layout.kt01_sign_rowitem,
-                mCursor);
+                kt01SignatureDialogModels,s_bophan,s_tenbp,s_ngay);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(dialog.getContext());
+
+        recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(kt01SignatureDialogAdapter);
         tv_bpname.setText(s_tenbp);
         barcodeDetector = new BarcodeDetector.Builder(dialog.getContext()).setBarcodeFormats(Barcode.ALL_FORMATS).build();
@@ -165,15 +192,11 @@ public class KT01_Signature_Dialog_Camera {
                     final String qrcode = qrCodes.valueAt(0).displayValue;
                     if (qrcode.trim().startsWith("H") && qrcode.trim().length() == 6) {
                         //tv_manvsig.setText(qrcode.trim());
-                        kt01SignatureDialogModels.add(new KT01_Signature_Dialog_Model(qrcode.trim(), " ", " "));
-                        db.ins_sig(s_ngay,
-                                null,
-                                s_bophan,
-                                s_tenbp,
-                                " ",
-                                qrcode.trim(),
-                                "",
-                                null);
+                        int l_sl = db.check_kyten(qrcode.trim(),s_bophan,s_tenbp,s_ngay);
+                        if (l_sl == 0 ){
+                            kt01SignatureDialogModels.add(new KT01_Signature_Dialog_Model(qrcode.trim(), " ", " "));
+                        }
+                        tv_barcode = qrcode.trim();
                         firstDetected = false;
                         //tv_bpname.setText(qrcode.trim());
                         if (kt01SignatureDialogAdapter != null){
@@ -182,11 +205,8 @@ public class KT01_Signature_Dialog_Camera {
                                 public void run() {
                                     try {
                                         //kt01SignatureDialogAdapter.notifyDataSetChanged();
-                                        mCursor = db.getAll_kyten(s_bophan,s_tenbp,s_ngay);
-                                        kt01SignatureDialogAdapter = new KT01_Signature_Dialog_Adapter(dialog.getContext(),
-                                                R.layout.kt01_sign_rowitem,
-                                                mCursor);
-                                        recyclerView.setAdapter(kt01SignatureDialogAdapter);
+                                        //mCursor = db.getAll_kyten(s_bophan,s_tenbp,s_ngay);
+                                        kt01SignatureDialogAdapter.notifyDataSetChanged();
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
@@ -200,6 +220,39 @@ public class KT01_Signature_Dialog_Camera {
 
             }
         });
+        btnthoat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                firstDetected = false;
+                dismiss();
+                if (dismissListener != null) {
+                    dismissListener.onDialogDismissed();
+                }
+
+            }
+        });
+        btninsert.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                long kq = db.ins_sig(s_ngay,
+                        null,
+                        s_bophan,
+                        s_tenbp,
+                        " ",
+                        tv_barcode,
+                        "",
+                        null);
+                if(kq == 1){
+                    Toast.makeText(dialog.getContext(), "Lưu dữ liệu thành công!", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(dialog.getContext(), "Lưu dữ liệu không thành công!", Toast.LENGTH_SHORT).show();
+                }
+
+                firstDetected = true;
+            }
+        });
+
     }
 
     public void show() {
@@ -209,4 +262,20 @@ public class KT01_Signature_Dialog_Camera {
     public void dismiss() {
         dialog.dismiss();
     }
+    public interface OnDialogDismissListener {
+        void onDialogDismissed();
+    }
+
+    public void setOnDialogDismissListener(OnDialogDismissListener listener) {
+        this.dismissListener = listener;
+    }
+
+    @Override
+    public void onDismiss(@NonNull DialogInterface dialog) {
+        super.onDismiss(dialog);
+        if (dismissListener != null) {
+            dismissListener.onDialogDismissed();
+        }
+    }
+
 }

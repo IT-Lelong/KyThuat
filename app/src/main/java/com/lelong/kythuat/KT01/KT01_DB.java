@@ -724,7 +724,7 @@ class KT01_DB {
         try {
             int count = 0;
             ContentValues argsA = new ContentValues();
-            Cursor mCount = db.rawQuery("SELECT count(*) FROM " + TABLE_NAME_FIA_UP_SIG01 + " WHERE mabp_sig='" + is_bophan + "' AND ngay_sig='" + is_ngay + "'", null);
+            Cursor mCount = db.rawQuery("SELECT count(*) FROM " + TABLE_NAME_FIA_UP_SIG01 + " WHERE manv_sig= '"+is_manv+"' AND mabp_sig='" + is_bophan + "' AND ngay_sig='" + is_ngay + "'", null);
             mCount.moveToFirst();
             count = mCount.getInt(0);
             if (count <= 0) {
@@ -807,7 +807,7 @@ class KT01_DB {
     }
 
     public Cursor getDepartmetData(String userFactory) {
-        String selectQuery = " SELECT COUNT(*) AS _id,tc_fba007,tc_fba009,date('now') AS ngaysig,(select manv_sig from fia_up_sigkt01_file where mabp_sig = tc_fba007 and ngay_sig = date('now')) as manv_sig FROM tc_fba_file  ";
+        String selectQuery = " SELECT COUNT(*) AS _id,tc_fba007,tc_fba009,date('now') AS ngaysig,(select GROUP_CONCAT(manv_sig, ', ') AS manv_sig from fia_up_sigkt01_file where mabp_sig = tc_fba007 and ngay_sig = date('now')) as manv_sig FROM tc_fba_file  ";
         if(userFactory.equals("DH")){
             selectQuery += " WHERE SUBSTR(tc_fba007,1,2) NOT IN ('04','05') GROUP BY tc_fba007,tc_fba009 ORDER BY tc_fba007 ";
         }else {
@@ -837,6 +837,43 @@ class KT01_DB {
             return null;
         }
     }
+    public Integer check_kyten(String manv, String mabp, String tenbp,String ngay) {
+        try {
+            String selectQuery = null;
+            selectQuery = "SELECT count(*)  from " + TABLE_NAME_FIA_UP_SIG01 + " where manv_sig = '"+manv+"' AND mabp_sig = '"+mabp+"' and tebp_sig = '"+tenbp+"' and ngay_sig = '"+ngay+"'  ";
+            Cursor a = db.rawQuery(selectQuery, null);
+            a.moveToFirst();
+            Integer count = a.getInt(0);
+            return count;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+    public void delete_kyten(String manv, String mabp, String tenbp,String ngay) {
+        String whereClause_kyten = "manv_sig=? AND mabp_sig=? AND tebp_sig=? AND ngay_sig=?";
+        String[] strings = new String[]{manv, mabp,tenbp,ngay};
+        db.delete(TABLE_NAME_FIA_UP_SIG01, whereClause_kyten, strings);
+    }
+
+    public static long update_GhiChuKT(String manv, String ghichu, String bophan, String ngay) {
+        try {
+            db.execSQL("UPDATE " + TABLE_NAME_FIA_UP_SIG01 + " SET ghichu_sig ='" + ghichu + "' " +
+                    " WHERE manv_sig = '" + manv + "' AND mabp_sig='" + bophan + "' AND ngay_sig='" + ngay + "' ");
+            return 1;
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+    public static long update_SogioKT(String manv, String sogio, String bophan, String ngay) {
+        try {
+            db.execSQL("UPDATE " + TABLE_NAME_FIA_UP_SIG01 + " SET sogio_sig ='" + sogio + "' " +
+                    " WHERE manv_sig = '" + manv + "' AND mabp_sig='" + bophan + "' AND ngay_sig='" + ngay + "' ");
+            return 1;
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+
 
 
 }

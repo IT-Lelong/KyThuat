@@ -7,6 +7,8 @@ import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.SparseArray;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -18,6 +20,7 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
 import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.vision.CameraSource;
@@ -25,11 +28,13 @@ import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 import com.lelong.kythuat.Constant_Class;
+import com.lelong.kythuat.KT07.KT07_ListCheck_Dialog;
 import com.lelong.kythuat.R;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
-public class KT01_Signature_Main_Adapter extends SimpleCursorAdapter {
+public class KT01_Signature_Main_Adapter extends SimpleCursorAdapter  {
     private final Context context;
     private final int layout;
     private final Cursor mCursor;
@@ -106,102 +111,20 @@ public class KT01_Signature_Main_Adapter extends SimpleCursorAdapter {
     }
 
     private void UpdateDialog(String s_bophan, String s_tenbp, String s_ngay, int position) {
-        //dialog = new Dialog(context);
-        //dialog.setContentView(R.layout.kt01_signature_main_camera);
-        //dialog.getWindow().setBackgroundDrawableResource(R.drawable.rounded_shape);
         KT01_Signature_Dialog_Camera kt01SignatureDialogCamera = new KT01_Signature_Dialog_Camera(context,s_bophan, s_tenbp, s_ngay, position);
         kt01SignatureDialogCamera.show();
         firstDetected = true;
-
-        /*SurfaceView suv_qr = (SurfaceView) dialog.findViewById(R.id.suv_qr);
-        TextView tv_bpname = dialog.findViewById(R.id.tv_bpname);
-        //TextView tv_manvsig = dialog.findViewById(R.id.tv_manvsig);
-        //EditText edt_sogio = dialog.findViewById(R.id.edt_sogio);
-        //EditText edt_ghichu = dialog.findViewById(R.id.edt_ghichu);
-        Button btninsert = dialog.findViewById(R.id.btninsert);
-
-        tv_bpname.setText(s_tenbp);
-
-        barcodeDetector = new BarcodeDetector.Builder(dialog.getContext()).setBarcodeFormats(Barcode.ALL_FORMATS).build();
-        cameraSource = new CameraSource.Builder(dialog.getContext(), barcodeDetector).setRequestedPreviewSize(300, 300).build();
-        cameraSource = new CameraSource.Builder(dialog.getContext(), barcodeDetector).setAutoFocusEnabled(true).build();
-        cameraSource = new CameraSource.Builder(dialog.getContext(), barcodeDetector).setFacing(CameraSource.CAMERA_FACING_FRONT).build(); //camera trước
-
-        suv_qr.getHolder().addCallback(new SurfaceHolder.Callback() {
+        kt01SignatureDialogCamera.setOnDialogDismissListener(new KT01_Signature_Dialog_Camera.OnDialogDismissListener() {
             @Override
-            public void surfaceCreated(SurfaceHolder surfaceHolder) {
-                if (ActivityCompat.checkSelfPermission(dialog.getContext(), Manifest.permission.CAMERA)
-                        != PackageManager.PERMISSION_GRANTED)
-                    return;
-                try {
-
-                    cameraSource.start(surfaceHolder);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-
-            }
-
-            @Override
-            public void surfaceDestroyed(SurfaceHolder holder) {
-                cameraSource.stop();
-            }
-        });
-
-        barcodeDetector.setProcessor(new Detector.Processor<Barcode>() {
-            @Override
-            public void release() {
-
-            }
-
-            @Override
-            public void receiveDetections(Detector.Detections<Barcode> detections) {
-                SparseArray<Barcode> qrCodes = detections.getDetectedItems();
-                if (qrCodes.size() != 0 && firstDetected) {
-                    final String qrcode = qrCodes.valueAt(0).displayValue;
-                    if (qrcode.trim().startsWith("H") && qrcode.trim().length() == 6) {
-                        tv_manvsig.setText(qrcode.trim());
-
-                        firstDetected = false;
-                    }
-                }
-
-
-            }
-        });
-
-        btninsert.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                kt01Db.ins_sig(s_ngay,
-                        null,
-                        s_bophan,
-                        s_tenbp,
-                        edt_ghichu.getText().toString().trim(),
-                        tv_manvsig.getText().toString().trim(),
-                        //edt_sogio.getText().toString().trim(),
-                        "",
-                        null);
+            public void onDialogDismissed() {
+                // Xử lý sự kiện khi dialog được đóng từ Adapter
                 Cursor updatedCursor = kt01Db.getDepartmetData(Constant_Class.UserFactory);
                 mCursor.moveToPosition(position);
                 updateData(updatedCursor) ;
                 notifyDataSetChanged();
-                dialog.dismiss();
             }
         });
-
-        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                kt01Interface.loadData_Search_Sig();
-            }
-        });
-
-        dialog.show();*/
     }
+
 
 }
