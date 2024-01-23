@@ -478,6 +478,7 @@ public class Create_Table {
                     argsC.put("tc_fac003", c.getString(8));
                     argsC.put("tc_fac005", c.getString(9));
                     argsC.put("tc_fac006", c.getString(10));
+                    argsC.put("tc_facpost", "N");
                     db.insert(TABLE_NAME_TC_FAC_KT02, null, argsC);
                 } while (c.moveToNext());
             } else {

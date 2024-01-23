@@ -73,15 +73,28 @@ public class ListDataAdapter_KT02 extends RecyclerView.Adapter<ListDataAdapter_K
         holder.checkBox5.setChecked(mangLV02.get(position).getCheckBox5());
         holder.checkBox6.setChecked(mangLV02.get(position).getCheckBox6());
         holder.tc_fac009.setText(mangLV02.get(position).getTc_fac009());
-kt02Db=new KT02_DB(applicationContext.getApplicationContext());
+        kt02Db=new KT02_DB(applicationContext.getApplicationContext());
         user=mangLV02.get(position).getUser();
         somay=mangLV02.get(position).getSomay();
         ngay=mangLV02.get(position).getNgay();
         mahangmuc=mangLV02.get(holder.getPosition()).getTc_fac004();
         //if (mangLV02.get(position).getTenhinh() == "TRUE"){
+        String check1 = String.valueOf(mangLV02.get(position).getCheckBox1());
+        String check2 = String.valueOf(mangLV02.get(position).getCheckBox2());
+        String check3 = String.valueOf(mangLV02.get(position).getCheckBox3());
 
         Boolean chk_qrb = kt02Db.KT_ndhinh(mahangmuc,user,somay,ngay);
         if (chk_qrb == true) {
+            if (check1.equals("true") || check2.equals("true") || check3.equals("true"))
+            {
+                kt02Db.updateDiem(mahangmuc,ngay,user,somay);
+                holder.checkBox1.setChecked(false);
+                holder.checkBox2.setChecked(false);
+                holder.checkBox3.setChecked(false);
+                holder.checkBox4.setChecked(true);
+                holder.checkBox5.setChecked(false);
+                holder.checkBox6.setChecked(false);
+            }
             Drawable[] layers = new Drawable[2];
             layers[0] = applicationContext.getDrawable(R.drawable.camera1); // replace R.drawable.button_image with your button image
             GradientDrawable gradientDrawable = new GradientDrawable();

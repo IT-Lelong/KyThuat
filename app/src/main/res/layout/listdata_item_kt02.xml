@@ -1,55 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="60dp"
-    android:orientation="horizontal"
-    android:gravity="center">
+    android:layout_height="90dp"
+    android:gravity="center"
+    android:orientation="horizontal">
 
         <TextView
             android:id="@+id/tc_fac003"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.6"
+            android:layout_weight="0.7"
             android:background="@drawable/border_listview"
-            android:text="stt"
             android:gravity="center"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            />
+            android:text="stt"
+            android:textSize="20sp" />
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="3"
-            android:orientation="vertical"
+            android:layout_weight="3.4"
             android:background="@drawable/border_listview"
-            >
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tc_fac006"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:text="Nội dung khảo hạch"
-                android:gravity="center"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:layout_weight="9"/>
+                <TextView
+                    android:id="@+id/tc_fac006"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Nội dung khảo hạch"
+                    android:paddingRight="3dp"
+                    android:paddingLeft="3dp"
+                    android:textStyle="bold"
+                    android:textSize="18sp" />
 
-            <TextView
-                android:id="@+id/tc_fac004"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:text="Nội dung khảo hạch"
-                android:gravity="center"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:layout_weight="2"
-                android:visibility="invisible"/>
+                <TextView
+                    android:id="@+id/tc_fac004"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:text="Nội dung khảo hạch"
+                    android:gravity="center"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:layout_weight="0"
+                    android:visibility="invisible"/>
+
         </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="60dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/border_listview"
             android:gravity="center">
@@ -57,12 +58,14 @@
                 <CheckBox
                     android:id="@+id/checkBox1"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="match_parent"
+                    />
+
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="60dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/border_listview"
             android:gravity="center">
@@ -70,12 +73,13 @@
                 <CheckBox
                     android:id="@+id/checkBox2"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="match_parent" />
+
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="60dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/border_listview"
             android:gravity="center">
@@ -83,12 +87,13 @@
                 <CheckBox
                     android:id="@+id/checkBox3"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="match_parent" />
+
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="60dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/border_listview"
             android:gravity="center">
@@ -96,12 +101,13 @@
                 <CheckBox
                     android:id="@+id/checkBox4"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="match_parent" />
+
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="60dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/border_listview"
             android:gravity="center">
@@ -109,12 +115,13 @@
                 <CheckBox
                     android:id="@+id/checkBox5"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="match_parent" />
+
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="60dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/border_listview"
             android:gravity="center">
@@ -122,33 +129,37 @@
                 <CheckBox
                     android:id="@+id/checkBox6"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="match_parent" />
+
         </LinearLayout>
 
         <EditText
             android:id="@+id/tc_fac009"
-            android:gravity="center"
-            android:textSize="20sp"
-            android:textStyle="bold"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="2.4"
+            android:layout_weight="2"
             android:background="@drawable/border_listview"
-            android:text="stt"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:ems="10"/>
+            android:ems="10"
+            android:gravity="center"
+            android:visibility="gone"
+            android:inputType="textMultiLine" />
 
-        <Button
-            android:id="@+id/btn1"
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:adjustViewBounds="true"
-            android:background="@drawable/camera1"
-            android:drawablePadding="1dp"
-            android:ems="10"
-            android:scaleType="center"
-            android:layout_margin="5dp"
-            />
+            android:background="@drawable/border_listview"
+            android:gravity="center">
+
+                <Button
+                    android:id="@+id/btn1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
+                    android:adjustViewBounds="true"
+                    android:background="@drawable/camera1"
+                    android:drawablePadding="1dp"
+                    android:scaleType="center" />
+        </LinearLayout>
+
 </LinearLayout>

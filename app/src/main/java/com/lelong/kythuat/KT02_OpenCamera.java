@@ -24,9 +24,11 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.common.util.concurrent.ListenableFuture;
+import com.lelong.kythuat.Constant_Class;
 import com.lelong.kythuat.KT01.KT01_DB;
 import com.lelong.kythuat.KT01.OpenCamera;
 import com.lelong.kythuat.KT02.KT02_DB;
+import com.lelong.kythuat.R;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -51,6 +53,9 @@ public class KT02_OpenCamera extends AppCompatActivity {
     private boolean canCapture = true;
     private Handler captureHandler = new Handler();
     private static final long CAPTURE_DELAY = 5000; // Độ trễ giữa các lần chụp (5 giây)
+    private File photoFile;
+    private File lastCapturedPhotoFile;
+    private String fileName, fileName_005;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +81,34 @@ public class KT02_OpenCamera extends AppCompatActivity {
 
         startCamera();
     }
+    @Override
+    public void onBackPressed() {
+        if (photoFile != null) {
+            saveImgLast(photoFile, fileName, fileName_005);
+        }
+
+        // Gọi phương thức onBackPressed() của lớp cha để thoát khỏi Activity
+        super.onBackPressed();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        lastCapturedPhotoFile = null;
+    }
+
+    private void saveImgLast(File photofile, String filename, String filename_005) {
+        luudulieuanh(filename, filename_005);
+
+        // Đường dẫn của hình ảnh đã chụp
+        String savedImagePath = photofile.getAbsolutePath();
+
+        // Giới hạn kích thước của hình ảnh sau khi chụp
+        Bitmap resizedBitmap = resizeImage(savedImagePath, 800, 800);
+
+        // Lưu hình ảnh đã giới hạn kích thước
+        saveResizedImage(resizedBitmap, photofile);
+    }
 
     private void takePhoto() {
         if (!canCapture) {
@@ -83,7 +116,8 @@ public class KT02_OpenCamera extends AppCompatActivity {
             return;
         }
 
-
+        fileName = "";
+        fileName_005 = "";
         db = new KT02_DB(this);
         db.open();
 
@@ -91,9 +125,9 @@ public class KT02_OpenCamera extends AppCompatActivity {
         cursor.moveToFirst();
         int num = cursor.getInt(cursor.getColumnIndexOrThrow("soluong"));
         STT = num + 1;
-        String fileName = selectedDetail + "_" + selectedDate + "_" + selectedDepartment + "_" + selectedSomay + "_" + STT + ".png";
+        fileName = selectedDetail + "_" + selectedDate + "_" + selectedDepartment + "_" + selectedSomay + "_" + STT + ".png";
         //String fileName_005 = selectedDetail + "_" + selectedDate + "_" + selectedDepartment + "_" + selectedSomay + ".png";
-        String fileName_005 = selectedDetail + "_" + selectedDate + "_" + selectedDepartment + "_" + selectedSomay;
+        fileName_005 = selectedDetail + "_" + selectedDate + "_" + selectedDepartment + "_" + selectedSomay;
 
         File newDirectory = new File(getExternalMediaDirs()[0], selectedDate.replace("-", ""));
         ///storage/emulated/0/Android/media/com.lelong.kythuat/20230916
@@ -102,8 +136,8 @@ public class KT02_OpenCamera extends AppCompatActivity {
         if (!newDirectory.exists()) {
             newDirectory.mkdirs(); //Tạo thư mục
         }
-
-        File photoFile = new File(newDirectory, fileName);
+        photoFile = null;
+        photoFile = new File(newDirectory, fileName);
         ImageCapture.OutputFileOptions outputFileOptions =
                 new ImageCapture.OutputFileOptions.Builder(photoFile).build();
 
@@ -112,16 +146,18 @@ public class KT02_OpenCamera extends AppCompatActivity {
                     @Override
                     public void onImageSaved(@NonNull ImageCapture.OutputFileResults outputFileResults) {
                         //Cre_db.call_insertPhotoData(selectedDetail, selectedDate, selectedDepartment, g_User, fileName);
-                        luudulieuanh(fileName, fileName_005);
+                        String savedImagePath = photoFile.getAbsolutePath();
+                        lastCapturedPhotoFile = photoFile;
+                        //luudulieuanh(fileName, fileName_005);
 
                         // Đường dẫn của hình ảnh đã chụp
-                        String savedImagePath = photoFile.getAbsolutePath();
+                        //String savedImagePath = photoFile.getAbsolutePath();
 
                         // Giới hạn kích thước của hình ảnh sau khi chụp
-                        Bitmap resizedBitmap = resizeImage(savedImagePath, 800, 800);
+                        //Bitmap resizedBitmap = resizeImage(savedImagePath, 800, 800);
 
                         // Lưu hình ảnh đã giới hạn kích thước
-                        saveResizedImage(resizedBitmap, photoFile);
+                        //saveResizedImage(resizedBitmap, photoFile);
 
                         // Nén ảnh đã chụp
                         //compressImage(photoFile);
@@ -148,7 +184,7 @@ public class KT02_OpenCamera extends AppCompatActivity {
                 canCapture = true;
             }
         }, CAPTURE_DELAY);
-
+        lastCapturedPhotoFile = null;
     }
 
     private Bitmap resizeImage(String imagePath, int maxWidth, int maxHeight) {
@@ -185,7 +221,9 @@ public class KT02_OpenCamera extends AppCompatActivity {
     private void luudulieuanh(String g_fileName, String g_fileName_005) {
         db = new KT02_DB(this);
         db.open();
+        db.ins_img_tc_far(selectedDetail, selectedDate, selectedDepartment, selectedSomay, g_fileName);
         db.appendUPDAEhinhanh(selectedDetail, selectedDate, selectedDepartment, selectedSomay, "tenhinh", "soluong", g_fileName_005, STT);
+
     }
 
     private void startCamera() {

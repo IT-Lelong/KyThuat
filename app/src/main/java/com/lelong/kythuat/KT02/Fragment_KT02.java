@@ -106,6 +106,11 @@ public class Fragment_KT02 extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
+    @Override
+    public void onResume() {
+        super.onResume();
+        adapter.notifyDataSetChanged();
+    }
 
     private void setLanguage() {
         SharedPreferences preferences = getActivity().getSharedPreferences("Language", Context.MODE_PRIVATE);

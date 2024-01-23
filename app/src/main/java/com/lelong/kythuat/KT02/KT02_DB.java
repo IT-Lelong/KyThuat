@@ -33,6 +33,7 @@ public class KT02_DB {
     private final static String tenhinh = "tenhinh"; //Tên hình
     private final static String soluong = "soluong"; //Số lượng hình
     private final static String ghichu = "ghichu"; //
+    private final static String tc_facpost = "tc_facpost"; //trang thái
 
 
     //KT02(S)
@@ -61,6 +62,20 @@ public class KT02_DB {
     private final static String sogio_sig = "sogio_sig"; //Số giờ hoạt động
     private final static String tenhinh_sig = "tenhinh_sig"; //Số giờ hoạt động
 
+    String TABLE_NAME_TC_FAR_KT02 = "tc_far_file_kt02";
+    String tc_far001 = "tc_far001";//Mã hạng muc
+    String tc_far002 = "tc_far002";//Ngày
+    String tc_far003 = "tc_far003";//Đơn vị
+    String tc_far012 = "tc_far012";//Số xe
+    String tc_far005 = "tc_far005";//Tên hình
+    String tc_far006 = "tc_far006";//Ghi chu
+    String tc_far016 = "tc_far016";//Ngày dự kiến ct
+    String tc_farpost = "tc_farpost";//
+
+    String CREATE_TABLE_NAME_TC_FAR_KT02 = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_TC_FAR_KT02 + " ("
+            + tc_far001 + " TEXT," + tc_far002 + " TEXT," + tc_far003 + " TEXT," + tc_far012 + " TEXT," +
+            "" + tc_far005 + " TEXT ," + tc_far006 + " TEXT," + tc_far016 + " TEXT," + tc_farpost + " TEXT)";
+
     String CREATE_TABLE_NAME_FIA_UP_SIG = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_FIA_UP_SIG + " ("
             + somay_sig + " TEXT," + mabp_sig + " TEXT," + tebp_sig + " TEXT,"
             + ngay_sig + " TEXT," + ghichu_sig + " TEXT," + trangthai_sig + " TEXT," + manv_sig + " TEXT," + sogio_sig + " TEXT," + tenhinh_sig +" TEXT )";
@@ -71,7 +86,7 @@ public class KT02_DB {
             + tc_fac004 + " TEXT," + tc_fac009 + " TEXT,"
             + checkbox1 + " TEXT ," + checkbox2 + " TEXT," + checkbox3 + " TEXT," + checkbox4 + " TEXT,"
             + checkbox5 + " TEXT," + checkbox6 + " TEXT," + user + " TEXT," + ngay + " TEXT," + somay + " TEXT,"
-            + tc_fac003 + " TEXT," + tc_fac005 + " TEXT," + tc_fac006 + " TEXT," + tenhinh + " TEXT," + soluong + " TEXT," + ghichu + " TEXT )";
+            + tc_fac003 + " TEXT," + tc_fac005 + " TEXT," + tc_fac006 + " TEXT," + tenhinh + " TEXT," + soluong + " TEXT," + ghichu + " TEXT," + tc_facpost + " TEXT )";
     //Bảng ảo lưu biểu KT02 (E)
 
     public KT02_DB(Context ctx) {
@@ -97,6 +112,7 @@ public class KT02_DB {
             db.execSQL(CREATE_TABLE_NAME_TC_FAC_KT02);
             db.execSQL(CREATE_TABLE_NAME_FIA_UP);
             db.execSQL(CREATE_TABLE_NAME_FIA_UP_SIG);
+            db.execSQL(CREATE_TABLE_NAME_TC_FAR_KT02);
         } catch (Exception e) {
 
         }
@@ -112,6 +128,8 @@ public class KT02_DB {
             db.execSQL(DROP_TABLE_NAME_FIA_UP);
             final String DROP_TABLE_NAME_FIA_UP_SIG = "DROP TABLE IF EXISTS " + TABLE_NAME_FIA_UP_SIG;
             db.execSQL(DROP_TABLE_NAME_FIA_UP_SIG);
+            final String DROP_TABLE_NAME_TC_FAR_KT02 = "DROP TABLE IF EXISTS " + TABLE_NAME_TC_FAR_KT02;
+            db.execSQL(DROP_TABLE_NAME_TC_FAR_KT02);
             db.close();
         } catch (Exception e) {
 
@@ -181,6 +199,7 @@ public class KT02_DB {
                 argsA.put(tc_fac003, xtc_fac003);
                 argsA.put(tc_fac005, xtc_fac005);
                 argsA.put(tc_fac006, xtc_fac006);
+                argsA.put(tc_facpost, "N");
                 db.insert(TABLE_NAME_TC_FAC_KT02, null, argsA);
                 return 1;
             }else {
@@ -359,7 +378,7 @@ public class KT02_DB {
     public Boolean KT_ndhinh(String key,String l_bp, String xsomay,String l_ngay) {
         try {
             int count = 0;
-            String selectQuery = "SELECT count(*) as dem FROM " + TABLE_NAME_TC_FAC_KT02 + " WHERE tc_fac004='" + key + "' AND user='" + l_bp + "' AND somay='" + xsomay  + "' AND ngay='" + l_ngay + "' AND tenhinh is not null";
+            String selectQuery = "SELECT count(*) as dem FROM " + TABLE_NAME_TC_FAC_KT02 + " WHERE tc_fac004='" + key + "' AND user='" + l_bp + "' AND somay='" + xsomay  + "' AND ngay='" + l_ngay + "' AND soluong > 0";
             Cursor mCount=db.rawQuery(selectQuery, null);
             mCount.moveToFirst();
             count = mCount.getInt(0);
@@ -487,7 +506,7 @@ public class KT02_DB {
         try {
             return db.rawQuery("SELECT * "
 
-                    + " FROM " + TABLE_NAME_TC_FAC_KT02 + "  WHERE tc_fac004='" + key + "' AND user='" + l_bp + "' AND somay='" + xsomay  + "' AND ngay='" + l_ngay + "'", null);
+                    + " FROM " + TABLE_NAME_TC_FAR_KT02 + "  WHERE tc_far001='" + key + "' AND tc_far003='" + l_bp + "' AND tc_far012='" + xsomay  + "' AND tc_far002='" + l_ngay + "'", null);
         } catch (Exception e) {
             return null;
         }
@@ -530,6 +549,175 @@ public class KT02_DB {
             return db.rawQuery("SELECT  DISTINCT  ngay FROM " + TABLE_NAME_TC_FAC_KT02+ " ", null);
         } catch (Exception e) {
             return null;
+        }
+    }
+    public String updateGhichu(String hm, String ngay, String donvi, String soxe, String ghichu) {
+        try {
+            ContentValues args = new ContentValues();
+            db.execSQL("UPDATE " + TABLE_NAME_TC_FAR_KT02 + " SET tc_far006 ='" + ghichu + "' WHERE tc_far001='" + hm + "'  AND tc_far002='" + ngay + "' AND tc_far003='" + donvi + "' AND tc_far012='" + soxe + "' ");
+            return "TRUE";
+        } catch (Exception e) {
+            return "FALSE";
+        }
+    }
+    public Boolean getcountAnhpost(String tenanh1) {
+        try {
+            Cursor mCursor= db.rawQuery("SELECT  tc_far005 " + " FROM " + TABLE_NAME_TC_FAR_KT02 + " WHERE tc_far005 = '"+tenanh1+"' AND tc_farpost != 'Y'  ", null);
+            if (mCursor.getCount() > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public void delete_tenanh_tc_far(String tenanh1) {
+        String whereClause_hm0102 = "tc_far005=? ";
+        String[] strings = new String[]{tenanh1};
+        db.delete(TABLE_NAME_TC_FAR_KT02, whereClause_hm0102, strings);
+    }
+    public Cursor demsttanh(String KEY, String bp, String ngay) {
+        try {
+
+            return db.rawQuery("SELECT  soluong FROM " + TABLE_NAME_TC_FAC_KT02 + " WHERE tc_fac004='" + KEY + "' AND user='" + bp + "' AND ngay='" + ngay + "' ", null);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+    public Cursor getTen_Anh(String g_hm,String g_ngay,String g_donvi,String g_soxe) {
+        try {
+            String selectQuery = "SELECT count(*) as l_count FROM " + TABLE_NAME_TC_FAR_KT02 + " WHERE tc_far001= '"+g_hm+"' " +
+                    " and tc_far002 = '"+g_ngay+"' and tc_far003 = '"+g_donvi+"' and tc_far012 = '"+g_soxe+"' ";
+            return db.rawQuery(selectQuery, null);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+    public Cursor getstt(String KEY, String bp, String ngay) {
+        try {
+            return db.rawQuery("SELECT  max(stt+0) AS stt FROM " + TABLE_NAME_TC_FAR_KT02 + " ", null);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+    public String ins_img_tc_far(String g_key, String g_ngay, String g_bp, String g_soxe, String g_tenanh) {
+        try {
+            ContentValues args = new ContentValues();
+            args.put("tc_far001", g_key);
+            args.put("tc_far002", g_ngay);
+            args.put("tc_far003", g_bp);
+            args.put("tc_far012", g_soxe);
+            args.put("tc_far005", g_tenanh);
+            args.put("tc_farpost", "N");
+
+            db.insert(TABLE_NAME_TC_FAR_KT02, null, args);
+            return "TRUE";
+        } catch (Exception e) {
+            return "FALSE";
+        }
+    }
+    public Cursor xuatghichu(String hm, String ngay, String donvi,String soxe) {
+        try {
+            return db.rawQuery("SELECT tc_far006 "
+
+                    + " FROM " + TABLE_NAME_TC_FAR_KT02 + "  WHERE tc_far001='" + hm + "' AND tc_far002 ='" + ngay + "' AND tc_far003='" + donvi + "' AND tc_far012='" + soxe + "'", null);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+    public String updateDiem(String hm, String ngay, String donvi,String soxe) {
+        try {
+            ContentValues args = new ContentValues();
+            db.execSQL("UPDATE " + TABLE_NAME_TC_FAC_KT02 + " SET checkbox1 ='false',checkbox2 ='false',checkbox3 ='false'," +
+                    " checkbox4 ='true',checkbox5 ='false',checkbox6 ='false' WHERE tc_fac004='" + hm + "' AND ngay = '"+ngay+"' " +
+                    " AND user = '"+donvi+"' AND somay = '"+soxe+"' ");
+            return "TRUE";
+        } catch (Exception e) {
+            return "FALSE";
+        }
+    }
+    public Cursor getAll_datekt() {
+        try {
+            return db.rawQuery("SELECT DISTINCT ngay FROM " + TABLE_NAME_TC_FAC_KT02 + " WHERE soluong > 0  ", null);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+    public Cursor getAll_bophan() {
+        try {
+            return db.rawQuery("SELECT DISTINCT user,fka02 FROM " + TABLE_NAME_TC_FAC_KT02 + ",fia_file WHERE user = fia15 AND soluong > 0  ", null);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+    public Cursor getAll_tc_fac_new(String g_date,String g_bophan,String tenxe) {
+        try {
+            String selectQuery = null;
+            selectQuery = "SELECT  tc_fac_file.tc_fac001 as tc_fac001,tc_fac_file.tc_fac002 as tc_fac002,tc_fac_file.tc_fac003 as tc_fac003,tc_fac_file.tc_fac004 as tc_fac004,tc_fac_table_kt02.tc_fac005 as tc_fac005 ,tc_fac_file.tc_fac006 as tc_fac006 ,tc_fac_table_kt02.checkbox1 as checkbox1,tc_fac_table_kt02.checkbox2 as checkbox2," +
+                    "tc_fac_table_kt02.checkbox3 as checkbox3,tc_fac_table_kt02.checkbox4 as checkbox4,tc_fac_table_kt02.checkbox5 as checkbox5,tc_fac_table_kt02.checkbox6 as checkbox6, IFNULL(tc_fac_table_kt02.tc_fac009,' ') as tc_fac009," +
+                    "tc_fac_table_kt02.user as user,tc_fac_table_kt02.ngay as ngay,tc_fac_table_kt02.somay as somay " +
+                    " FROM tc_fac_file," + TABLE_NAME_TC_FAC_KT02 + ",fia_file " +
+                    " WHERE tc_fac_table_kt02.tc_fac004=tc_fac_file.tc_fac004 and somay=fiaud03 and fia15=user and ta_fia02_1='" + tenxe + "'  and soluong > 0  and tc_facpost = 'N' ";
+
+            if(!g_date.equals(""))
+            {
+                selectQuery += " AND ngay = '"+g_date+"' ";
+            }
+            if(!g_bophan.equals("")){
+                selectQuery += " AND fka02 = '"+g_bophan+"' ";
+            }
+            return db.rawQuery(selectQuery, null);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+    public Cursor getAll_tc_far(String g_date,String g_bophan,String tenxe) {
+        try {
+            String selectQuery = null;
+            selectQuery = "SELECT tc_far001,tc_far002,tc_far003,tc_far012,tc_far005,IFNULL(tc_far006,' ') tc_far006 FROM " + TABLE_NAME_TC_FAR_KT02 + ",fia_file " +
+                    " WHERE tc_far012=fiaud03 and fia15=tc_far003 and ta_fia02_1='" + tenxe + "' AND tc_farpost != 'Y'   ";
+
+            if(!g_date.equals(""))
+            {
+                selectQuery += " AND tc_far002 = '"+g_date+"' ";
+            }
+            if(!g_bophan.equals("")){
+                selectQuery += " AND fka02 = '"+g_bophan+"' ";
+            }
+            return db.rawQuery(selectQuery, null);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+    public void call_upd_tc_facpost (Cursor c_getTc_fac) {
+        if (c_getTc_fac.getCount() > 0) {
+            c_getTc_fac.moveToFirst();
+            for (int i = 0; i < c_getTc_fac.getCount(); i++) {
+                String g_tc_fac004 = c_getTc_fac.getString(c_getTc_fac.getColumnIndexOrThrow("tc_fac004"));
+                String g_ngay = c_getTc_fac.getString(c_getTc_fac.getColumnIndexOrThrow("ngay"));
+                String g_user = c_getTc_fac.getString(c_getTc_fac.getColumnIndexOrThrow("user"));
+                String g_somay = c_getTc_fac.getString(c_getTc_fac.getColumnIndexOrThrow("somay"));
+
+                db.execSQL(" UPDATE tc_fac_table_kt02 SET tc_facpost = 'Y' " +
+                        " WHERE tc_fac004 ='" + g_tc_fac004 + "' " +
+                        " AND ngay ='" + g_ngay + "'" +
+                        " AND user = '" + g_user + "'" +
+                        " AND somay = '" + g_somay + "' ");
+                c_getTc_fac.moveToNext();
+            }
+        }
+    }
+    public void update_tc_farpost(String image_no, String image_date, String image_dept, String image_somay, String image_name) {
+        try {
+            db.execSQL(" UPDATE tc_far_file_kt02 SET tc_farpost = 'Y' " +
+                    " WHERE tc_far001 ='" + image_no + "' " +
+                    " AND tc_far002 ='" + image_date + "'" +
+                    " AND tc_far003 = '" + image_dept + "'" +
+                    " AND tc_far012 = '" + image_somay + "' " +
+                    " AND tc_far005 = '" + image_name + "' ");
+        } catch (Exception e) {
         }
     }
 }

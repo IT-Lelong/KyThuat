@@ -34,6 +34,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.lelong.kythuat.Constant_Class;
 import com.lelong.kythuat.Create_Table;
+import com.lelong.kythuat.KT01.KT01_Transfer;
+import com.lelong.kythuat.KT01.KetChuyen_Dialog;
 import com.lelong.kythuat.KT02.Retrofit2.APIYtils;
 import com.lelong.kythuat.KT02.Retrofit2.DataClient;
 import com.lelong.kythuat.R;
@@ -393,7 +395,25 @@ public class login_kt02 extends AppCompatActivity {
                     break;
                 }
                 case R.id.btn_uploaddata: {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    KT02_Ketchuyen_Dialog ketChuyenDialog = new KT02_Ketchuyen_Dialog(v.getContext());
+                    ketChuyenDialog.setEnableBtn(true,true);
+                    ketChuyenDialog.setOkButtonClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            String input_datekt = ketChuyenDialog.getSelected_sp_datekt();
+                            String input_department = ketChuyenDialog.getSelected_sp_department();
+                            new KT02_Transfer(view.getContext(),ketChuyenDialog,input_datekt,input_department,g_tenxe);
+                        }
+                    });
+                    ketChuyenDialog.setCancelButtonClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            ketChuyenDialog.dismiss();
+                        }
+                    });
+                    ketChuyenDialog.show();
+
+                    /*AlertDialog.Builder builder = new AlertDialog.Builder(context);
                     builder.setMessage(context.getString(R.string.M02))
                             .setPositiveButton(context.getString(R.string.btn_ok), null)
                             .setNegativeButton(context.getString(R.string.btn_cancel), null);
@@ -425,7 +445,7 @@ public class login_kt02 extends AppCompatActivity {
                         }
                     });
 
-                    al_dialog.show();
+                    al_dialog.show();*/
                     break;
                 }
                 case R.id.btn_signature: {
