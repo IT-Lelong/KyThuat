@@ -450,8 +450,20 @@ public class login_kt02 extends AppCompatActivity {
                 }
                 case R.id.btn_signature: {
 
-                    Intent QR020 = new Intent();
+                    /*Intent QR020 = new Intent();
                     QR020.setClass(v.getContext(), KT02_Signature_List.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("somay", g_soxe);
+                    bundle.putString("bophan", g_bophan);
+                    bundle.putString("LAYOUT", "notlogin");
+                    bundle.putString("G_TC_FAA001", g_tc_faa001);
+                    bundle.putString("G_TENXE", g_tenxe);
+                    //bundle.putString("SERVER", g_server);
+                    QR020.putExtras(bundle);
+                    v.getContext().startActivity(QR020);
+                    dialog.dismiss();*/
+                    Intent QR020 = new Intent();
+                    QR020.setClass(v.getContext(), KT02_Signature_Main.class);
                     Bundle bundle = new Bundle();
                     bundle.putString("somay", g_soxe);
                     bundle.putString("bophan", g_bophan);

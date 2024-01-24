@@ -466,9 +466,10 @@ public class KT02_DB {
         try {
 
             //SQLiteDatabase db = this.getWritableDatabase();
-            String selectQuery = "SELECT DISTINCT somay_sig,mabp_sig,tebp_sig,ngay_sig,ghichu_sig,'Đã chuyển' AS trangthai_sig,manv_sig,sogio_sig,tenhinh_sig FROM fia_up_sig_file,fia_file " +
+            String selectQuery = "SELECT DISTINCT somay_sig,mabp_sig,tebp_sig,ngay_sig,ghichu_sig,'Đã chuyển' AS trangthai_sig,manv_sig,IFNULL(sogio_sig,' ') sogio_sig,IFNULL(tenhinh_sig,' ') tenhinh_sig FROM fia_up_sig_file,fia_file " +
                     " WHERE somay_sig=fiaud03 AND mabp_sig=fia15 AND (trangthai_sig is null OR trangthai_sig='Chưa chuyển') AND ta_fia02_1='" + tenxe + "' " +
                     " order by somay_sig,mabp_sig,ngay_sig ";
+
             return db.rawQuery(selectQuery, null);
 
         } catch (Exception e) {
@@ -718,6 +719,76 @@ public class KT02_DB {
                     " AND tc_far012 = '" + image_somay + "' " +
                     " AND tc_far005 = '" + image_name + "' ");
         } catch (Exception e) {
+        }
+    }
+    public Cursor getDepartmetData(String tenxe,String bophan,String ngay) {
+        String selectQuery = " select count(*) AS _id,fiaud03,fia15,fka02,'" + ngay + "' AS ngaysig, (select GROUP_CONCAT(manv_sig, ', ') AS manv_sig from fia_up_sig_file where fiaud03 = somay_sig and ngay_sig = date('now'))  as manv_sig from fia_file " +
+                " where ta_fia02_1='" + tenxe + "' ";
+        if (!(bophan == null)) {
+            selectQuery = selectQuery + " AND Substr(fia15,1,1) = '" + bophan + "' ";
+        }
+        selectQuery = selectQuery + " group by fia15,fiaud03,fka02 order by fiaud03,fia15 ";
+
+        return db.rawQuery(selectQuery, null);
+    }
+    public Boolean KT_fia_up_sig01(String is_soxe, String is_bophan, String is_ngay) {
+        try {
+            int count = 0;
+            String selectQuery = "SELECT count(*) as dem FROM " + TABLE_NAME_FIA_UP_SIG + " WHERE somay_sig='" + is_soxe + "' AND mabp_sig='" + is_bophan + "' AND ngay_sig='" + is_ngay + "' ";
+            //String selectQuery = "SELECT count(*) as dem FROM " + TABLE_NAME_FIA_UP_SIG + " WHERE mabp_sig='" + is_bophan + "' and ngay_sig='" + is_ngay + "' ";
+            Cursor mCount = db.rawQuery(selectQuery, null);
+            mCount.moveToFirst();
+            count = mCount.getInt(0);
+            if (count > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            return false;
+        }
+    }
+    public Cursor getAll_kyten(String somay,String mabp, String tenbp,String ngay) {
+        try {
+            return db.rawQuery("SELECT manv_sig, sogio_sig, ghichu_sig from " + TABLE_NAME_FIA_UP_SIG + " where somay_sig = '"+somay+"' AND mabp_sig = '"+mabp+"' and tebp_sig = '"+tenbp+"' and ngay_sig = '"+ngay+"'  ", null);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+    public Integer check_kyten(String somay,String manv, String mabp, String tenbp,String ngay) {
+        try {
+            String selectQuery = null;
+            selectQuery = "SELECT count(*)  from " + TABLE_NAME_FIA_UP_SIG + " where somay_sig = '"+somay+"' AND manv_sig = '"+manv+"' AND mabp_sig = '"+mabp+"' and tebp_sig = '"+tenbp+"' and ngay_sig = '"+ngay+"'  ";
+            Cursor a = db.rawQuery(selectQuery, null);
+            a.moveToFirst();
+            Integer count = a.getInt(0);
+            return count;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+    public void delete_kyten(String somay,String manv, String mabp, String tenbp,String ngay) {
+        String whereClause_kyten = "somay_sig=? AND manv_sig=? AND mabp_sig=? AND tebp_sig=? AND ngay_sig=?";
+        String[] strings = new String[]{somay,manv, mabp,tenbp,ngay};
+        db.delete(TABLE_NAME_FIA_UP_SIG, whereClause_kyten, strings);
+    }
+
+    public static long update_GhiChuKT(String somay,String manv, String ghichu, String bophan, String ngay) {
+        try {
+            db.execSQL("UPDATE " + TABLE_NAME_FIA_UP_SIG + " SET ghichu_sig ='" + ghichu + "' " +
+                    " WHERE somay_sig = '"+somay+"' AND manv_sig = '" + manv + "' AND mabp_sig='" + bophan + "' AND ngay_sig='" + ngay + "' ");
+            return 1;
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+    public static long update_SogioKT(String somay,String manv, String sogio, String bophan, String ngay) {
+        try {
+            db.execSQL("UPDATE " + TABLE_NAME_FIA_UP_SIG + " SET sogio_sig ='" + sogio + "' " +
+                    " WHERE somay_sig = '"+somay+"' AND manv_sig = '" + manv + "' AND mabp_sig='" + bophan + "' AND ngay_sig='" + ngay + "' ");
+            return 1;
+        } catch (Exception e) {
+            return 0;
         }
     }
 }

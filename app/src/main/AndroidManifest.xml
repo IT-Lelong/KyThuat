@@ -66,6 +66,9 @@
         <activity
             android:name=".KT02.KT02_Signature_List"
             android:exported="false" />
+        <activity
+            android:name=".KT02.KT02_Signature_Main"
+            android:exported="false" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
