@@ -85,7 +85,7 @@ public class KT02_Signature_Main extends AppCompatActivity implements KT02_Inter
             @Override
             public void run() {
 //INSERT TB TC_FAO
-                Cursor upl = kt02Db.getAll_fiaupnot_sig("");
+                Cursor upl = kt02Db.getAll_fiaupnot_sig(g_tenxe);
                 jsonupload = cur2Json(upl);
 
                 try {
