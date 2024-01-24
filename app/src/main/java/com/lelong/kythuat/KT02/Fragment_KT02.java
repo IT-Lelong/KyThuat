@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -106,11 +107,11 @@ public class Fragment_KT02 extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
-    @Override
+    /*@Override
     public void onResume() {
         super.onResume();
         adapter.notifyDataSetChanged();
-    }
+    }*/
 
     private void setLanguage() {
         SharedPreferences preferences = getActivity().getSharedPreferences("Language", Context.MODE_PRIVATE);
@@ -163,31 +164,38 @@ public class Fragment_KT02 extends Fragment {
         createTable_fac02.open();
         createTable_fac02.ins_fac_02(g_tc_faa001, bophan, ngay, somay);
         cursor_1 = createTable_fac02.getAll_tc_fac_02(g_tc_faa001, matab, bophan, somay, ngay);
-        cursor_1.moveToFirst();
+        if (cursor_1 != null) {
+            cursor_1.moveToFirst();
+            int num = cursor_1.getCount();
+            for (int i = 0; i < num; i++) {
+                try {
+                    @SuppressLint("Range") String tc_fac003 = cursor_1.getString(cursor_1.getColumnIndex("tc_fac003"));
+                    @SuppressLint("Range") String tc_fac006 = cursor_1.getString(cursor_1.getColumnIndex(g_lang));
+                    @SuppressLint("Range") String tc_fac004 = cursor_1.getString(cursor_1.getColumnIndex("tc_fac004"));
+                    @SuppressLint("Range") Boolean checkbox1 = Boolean.valueOf(cursor_1.getString(cursor_1.getColumnIndex("checkbox1")));
+                    @SuppressLint("Range") Boolean checkbox2 = Boolean.valueOf(cursor_1. getString(cursor_1.getColumnIndex("checkbox2")));
+                    @SuppressLint("Range") Boolean checkbox3 = Boolean.valueOf(cursor_1.getString(cursor_1.getColumnIndex("checkbox3")));
+                    @SuppressLint("Range") Boolean checkbox4 = Boolean.valueOf(cursor_1.getString(cursor_1.getColumnIndex("checkbox4")));
+                    @SuppressLint("Range") Boolean checkbox5 = Boolean.valueOf(cursor_1.getString(cursor_1.getColumnIndex("checkbox5")));
+                    @SuppressLint("Range") Boolean checkbox6 = Boolean.valueOf(cursor_1.getString(cursor_1.getColumnIndex("checkbox6")));
+                    @SuppressLint("Range") String tc_fac009 = cursor_1.getString(cursor_1.getColumnIndex("tc_fac009"));
 
+                    mangLV02.add(new KT02_LIST(view, tc_fac003, tc_fac006, tc_fac004, checkbox1, checkbox2,
+                            checkbox3, checkbox4, checkbox5, checkbox6, bophan, ngay, tc_fac009, somay,tenhinh));
+                } catch (Exception e) {
+                    String err = e.toString();
+                }
 
-        int num = cursor_1.getCount();
-        for (int i = 0; i < num; i++) {
-            try {
-                @SuppressLint("Range") String tc_fac003 = cursor_1.getString(cursor_1.getColumnIndex("tc_fac003"));
-                @SuppressLint("Range") String tc_fac006 = cursor_1.getString(cursor_1.getColumnIndex(g_lang));
-                @SuppressLint("Range") String tc_fac004 = cursor_1.getString(cursor_1.getColumnIndex("tc_fac004"));
-                @SuppressLint("Range") Boolean checkbox1 = Boolean.valueOf(cursor_1.getString(cursor_1.getColumnIndex("checkbox1")));
-                @SuppressLint("Range") Boolean checkbox2 = Boolean.valueOf(cursor_1. getString(cursor_1.getColumnIndex("checkbox2")));
-                @SuppressLint("Range") Boolean checkbox3 = Boolean.valueOf(cursor_1.getString(cursor_1.getColumnIndex("checkbox3")));
-                @SuppressLint("Range") Boolean checkbox4 = Boolean.valueOf(cursor_1.getString(cursor_1.getColumnIndex("checkbox4")));
-                @SuppressLint("Range") Boolean checkbox5 = Boolean.valueOf(cursor_1.getString(cursor_1.getColumnIndex("checkbox5")));
-                @SuppressLint("Range") Boolean checkbox6 = Boolean.valueOf(cursor_1.getString(cursor_1.getColumnIndex("checkbox6")));
-                @SuppressLint("Range") String tc_fac009 = cursor_1.getString(cursor_1.getColumnIndex("tc_fac009"));
-
-                mangLV02.add(new KT02_LIST(view, tc_fac003, tc_fac006, tc_fac004, checkbox1, checkbox2,
-                        checkbox3, checkbox4, checkbox5, checkbox6, bophan, ngay, tc_fac009, somay,tenhinh));
-            } catch (Exception e) {
-                String err = e.toString();
+                cursor_1.moveToNext();
             }
-
-            cursor_1.moveToNext();
         }
+        else{
+            String abc = "sdsd";
+            Toast.makeText(view.getContext(), g_tc_faa001+ "  " +matab + "  " +bophan+ "  " +somay + " " +ngay, Toast.LENGTH_SHORT).show();
+        }
+
+
+
 
         adapter = new ListDataAdapter_KT02(getContext(), R.layout.listdata_item_kt02, mangLV02);
         recyclerView.setAdapter(adapter);
