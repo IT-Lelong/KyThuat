@@ -694,7 +694,7 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
             public void onClick(DialogInterface dialog, int which) {
                 String selectedDate_bd = dateTextView.getText().toString();
                 String selectedDate_kt = dateTextView1.getText().toString();
-                upload_dataKT(selectedDate_bd,selectedDate_kt);
+                upload_dataKT(Constant_Class.UserFactory,selectedDate_bd,selectedDate_kt);
                 Toast.makeText(KT07_Main.this, "Đồng bộ thành công!", Toast.LENGTH_SHORT).show();
             }
         });
@@ -1293,7 +1293,7 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
         Thread UpLoad_fia = new Thread(new Runnable() {
             @Override
             public void run() {
-                    final String res = get_DataTable("http://172.16.40.20/" + Constant_Class.server + "/TechAPP/check_upload_tc_ceb.php?item="+currentDate+"");
+                    final String res = get_DataTable("http://172.16.40.20/" + Constant_Class.server + "/TechAPP/check_tc_ceb.php?item="+Constant_Class.UserFactory+"");
                     if (!res.equals("FALSE")) {
                         runOnUiThread(new Runnable() {
                             @Override
@@ -1567,7 +1567,7 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
         kt07MainAdapter.notifyDataSetChanged();
     }
 
-    public void upload_dataKT(String date1, String date2){
+    public void upload_dataKT(String xuong,String date1, String date2){
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
         //Calendar calendar = Calendar.getInstance();
         //Date ngayHienTai = calendar.getTime();
@@ -1577,7 +1577,7 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
         Thread UpLoad_fia = new Thread(new Runnable() {
             @Override
             public void run() {
-                final String res = get_DataTable("http://172.16.40.20/" + Constant_Class.server + "/TechAPP/check_dateKT.php?item="+date1+"&item1="+date2+"");
+                final String res = get_DataTable("http://172.16.40.20/" + Constant_Class.server + "/TechAPP/get_dataKT.php?item="+date1+"&item1="+date2+"&item2="+xuong+"");
                 if (!res.equals("FALSE")) {
                     runOnUiThread(new Runnable() {
                         @Override
