@@ -127,7 +127,8 @@ public class KT02_Ketchuyen_Dialog {
         progBar_transfer.setProgress(progress);
     }
     public String getSelected_sp_datekt() {
-        return sp_datekt.getSelectedItem().toString();
+        String selectedDatekt = (sp_datekt.getSelectedItem() != null) ? sp_datekt.getSelectedItem().toString() : "";
+        return selectedDatekt;
     }
 
     public String getSelected_sp_department() {

@@ -660,7 +660,7 @@ public class KT02_DB {
                     "tc_fac_table_kt02.checkbox3 as checkbox3,tc_fac_table_kt02.checkbox4 as checkbox4,tc_fac_table_kt02.checkbox5 as checkbox5,tc_fac_table_kt02.checkbox6 as checkbox6, IFNULL(tc_fac_table_kt02.tc_fac009,' ') as tc_fac009," +
                     "tc_fac_table_kt02.user as user,tc_fac_table_kt02.ngay as ngay,tc_fac_table_kt02.somay as somay " +
                     " FROM tc_fac_file," + TABLE_NAME_TC_FAC_KT02 + ",fia_file " +
-                    " WHERE tc_fac_table_kt02.tc_fac004=tc_fac_file.tc_fac004 and somay=fiaud03 and fia15=user and ta_fia02_1='" + tenxe + "'  and soluong > 0  and tc_facpost = 'N' ";
+                    " WHERE tc_fac_table_kt02.tc_fac004=tc_fac_file.tc_fac004 and somay=fiaud03 and fia15=user and ta_fia02_1='" + tenxe + "' and (checkbox4 = 'true' or checkbox5 = 'true' or checkbox6 = 'true')  and tc_facpost = 'N' ";
 
             if(!g_date.equals(""))
             {

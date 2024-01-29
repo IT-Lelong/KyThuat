@@ -98,8 +98,17 @@ public class KT02_Transfer {
 
                         if (status.equals("success")) {
                             db.call_upd_tc_facpost(get_tc_fac);
-                            //Hàm lấy ảnh và gửi ảnh
-                            ketChuyenPhoto = new KT02_KetchuyenPhoto(context, get_tc_far, ketchuyenDialog);
+                            if(get_tc_far.getCount() > 0){
+                                //Hàm lấy ảnh và gửi ảnh
+                                ketChuyenPhoto = new KT02_KetchuyenPhoto(context, get_tc_far, ketchuyenDialog);
+                            }
+                            else {
+                                ketchuyenDialog.setProgressBar(get_tc_fac.getCount());
+                                ketchuyenDialog.updateProgressBar(get_tc_fac.getCount());
+                                ketchuyenDialog.setStatus("2");
+                                ketchuyenDialog.setEnableBtn(false,true);
+                            }
+
                         } else {
                             ketchuyenDialog.setStatus(message);
                         }
