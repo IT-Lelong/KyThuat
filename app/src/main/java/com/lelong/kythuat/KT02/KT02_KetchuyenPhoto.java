@@ -46,8 +46,13 @@ public class KT02_KetchuyenPhoto {
 
         Gson gson = new GsonBuilder().create();
 
+        //OkHttpClient client = new OkHttpClient.Builder()
+        //       .readTimeout(60, TimeUnit.SECONDS) // Ví dụ: timeout sau 60 giây
+        //        .build();
         OkHttpClient client = new OkHttpClient.Builder()
-                .readTimeout(60, TimeUnit.SECONDS) // Ví dụ: timeout sau 60 giây
+                .connectTimeout(120, TimeUnit.SECONDS)
+                .writeTimeout(120, TimeUnit.SECONDS)
+                .readTimeout(120, TimeUnit.SECONDS)
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()

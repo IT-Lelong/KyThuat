@@ -48,8 +48,13 @@ public class KT02_Transfer {
         Gson gson = new GsonBuilder().create();
 
         // Tạo một OkHttpClient với thời gian timeout mới
+        //OkHttpClient client = new OkHttpClient.Builder()
+        //        .callTimeout(60, TimeUnit.SECONDS) // Đặt thời gian timeout ở đây, ví dụ: 20 giây
+         //       .build();
         OkHttpClient client = new OkHttpClient.Builder()
-                .callTimeout(20, TimeUnit.SECONDS) // Đặt thời gian timeout ở đây, ví dụ: 20 giây
+                .connectTimeout(120, TimeUnit.SECONDS)
+                .writeTimeout(120, TimeUnit.SECONDS)
+                .readTimeout(120, TimeUnit.SECONDS)
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
