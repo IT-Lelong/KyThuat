@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
@@ -67,6 +68,9 @@ public class KT02_activity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_kt02);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();
 
         SharedPreferences preferences = getSharedPreferences("Language", Context.MODE_PRIVATE);
         int language = preferences.getInt("Language", 0);

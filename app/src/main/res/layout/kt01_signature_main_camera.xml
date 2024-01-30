@@ -71,6 +71,7 @@
             android:text="Xóa"
             android:textSize="17sp" />
     </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvc_kyten"
         android:layout_width="match_parent"

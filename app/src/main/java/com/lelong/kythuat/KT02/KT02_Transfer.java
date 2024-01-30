@@ -16,7 +16,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.concurrent.TimeUnit;
 
+import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -45,8 +47,14 @@ public class KT02_Transfer {
 
         Gson gson = new GsonBuilder().create();
 
+        // Tạo một OkHttpClient với thời gian timeout mới
+        OkHttpClient client = new OkHttpClient.Builder()
+                .callTimeout(20, TimeUnit.SECONDS) // Đặt thời gian timeout ở đây, ví dụ: 20 giây
+                .build();
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://172.16.40.20/PHP/TechAPP/")
+                .client(client)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
