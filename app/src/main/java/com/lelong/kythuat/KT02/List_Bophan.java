@@ -14,9 +14,11 @@ import android.widget.EditText;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
+import com.lelong.kythuat.KT07.KT07_Main;
 import com.lelong.kythuat.R;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class List_Bophan extends SimpleCursorAdapter {
@@ -81,8 +83,31 @@ public class List_Bophan extends SimpleCursorAdapter {
         btn_Insert = dialog.findViewById(R.id.btninsert);
 
         tv_date.setText(dateFormat.format(new Date()).toString());
+        Date currentDate = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(currentDate);
+        calendar.add(Calendar.DAY_OF_YEAR, 0);
+        Date previousDate = calendar.getTime();
 
-        btn_Date.setOnClickListener(new View.OnClickListener() {
+        String previousDateString = dateFormat.format(previousDate);
+        String currentDateString = dateFormat.format(currentDate);
+        tv_date.setText(previousDateString);
+        tv_date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerDialog datePickerDialog = new DatePickerDialog(v.getContext());
+                datePickerDialog.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        String selectedDate = String.format("%04d/%02d/%02d", year, month + 1, dayOfMonth);
+                        tv_date.setText(selectedDate);
+                    }
+                });
+                datePickerDialog.show();
+            }
+        });
+
+        /*btn_Date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showDatePickerDialog();
@@ -109,7 +134,7 @@ public class List_Bophan extends SimpleCursorAdapter {
                         callback, nam, thang, ngay);
                 pic.show();
             }
-        });
+        });*/
 
 
 

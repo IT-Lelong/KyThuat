@@ -28,7 +28,7 @@
             android:id="@+id/tv_date"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="5"
+            android:layout_weight="8"
             android:layout_gravity="left|center_vertical"
             android:gravity="left|center_vertical"
             android:hint="YYYY/MM/DD"
@@ -36,15 +36,7 @@
             android:textColor="@color/black"
             android:textSize="16sp"/>
 
-        <Button
-            android:id="@+id/btn_Date"
-            android:layout_width="0dp"
-            android:layout_weight="3"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:background="@drawable/button_type_nomal"
-            android:text="@string/btn_date"
-            android:textColor="#FFFFFF" />
+
     </LinearLayout>
 
     <LinearLayout

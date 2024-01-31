@@ -398,7 +398,7 @@ public class KT02_DB {
 
             //SQLiteDatabase db = this.getWritableDatabase();
             String selectQuery = "SELECT count(*) AS _id,fiaud03,fia15,fka02,ngay_up,ghichu_up,trangthai_up FROM fia_up_file,fia_file WHERE somay_up=fiaud03 AND mabp_up=fia15 AND ta_fia02_1='" + tenxe + "'" +
-                                 " group by fiaud03,fia15,fka02,ngay_up " +
+                                 " AND replace(ngay_up, '/', '-') = date('now') group by fiaud03,fia15,fka02,ngay_up " +
                                  " order by fiaud03,fia15,ngay_up ";
             return db.rawQuery(selectQuery, null);
 
