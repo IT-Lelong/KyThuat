@@ -11,13 +11,18 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.lelong.kythuat.CheckConnects.CheckConnect;
+import com.lelong.kythuat.CheckConnects.ConnectionCallback;
+import com.lelong.kythuat.CheckConnects.NetworkStatusView;
 import com.lelong.kythuat.KT01.KT01_Main_Menu;
 import com.lelong.kythuat.KT02.login_kt02;
 import com.lelong.kythuat.KT03.KT03_login;
@@ -35,7 +40,13 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
-public class Menu extends AppCompatActivity {
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.Bundle;
+import android.widget.Toast;
+
+public class Menu extends AppCompatActivity implements ConnectionCallback {
     private CheckAppUpdate checkAppUpdate = null;
     private Create_Table Cre_db = null;
     private KT03_login loginKt03 = null;
@@ -49,6 +60,8 @@ public class Menu extends AppCompatActivity {
     String ID;
     Locale locale;
     SimpleDateFormat dateFormat;
+    NetworkStatusView networkStatusView;
+    Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +73,23 @@ public class Menu extends AppCompatActivity {
         addControls();
         addEvents();
         getIDname();
+
+ }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        checkAppUpdate = new CheckAppUpdate(this);
+        checkAppUpdate.checkVersion();
+        performConnectionCheck();
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        handler.removeCallbacksAndMessages(null);
+    }
+
 
     private void addEvents() {
         btn_KT01.setOnClickListener(btnlistener);
@@ -70,9 +99,26 @@ public class Menu extends AppCompatActivity {
         btn_KT05.setOnClickListener(btnlistener);
         btn_KT06.setOnClickListener(btnlistener);
         btn_KT07.setOnClickListener(btnlistener);
+
+        // Khởi tạo một handler mới
+        handler = new Handler();
+
+        // Chạy hàm sau mỗi khoảng thời gian (ví dụ: 5 giây)
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Gọi hàm cần thực thi sau mỗi khoảng thời gian
+                performConnectionCheck();
+
+                // Lặp lại quá trình sau mỗi khoảng thời gian
+                handler.postDelayed(this, 3000); // 5000 milliseconds = 5 seconds
+            }
+        }, 3000); // 5000 milliseconds = 5 seconds
+
     }
 
     private void addControls() {
+        networkStatusView = findViewById(R.id.network_status_view);
         menuID = (TextView) findViewById(R.id.menuID);
         btn_KT01 = findViewById(R.id.btn_KT01);
         btn_KT02 = findViewById(R.id.btn_KT02);
@@ -123,13 +169,6 @@ public class Menu extends AppCompatActivity {
                 }
             }
         }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        checkAppUpdate = new CheckAppUpdate(this);
-        checkAppUpdate.checkVersion();
     }
 
     private void getIDname() {
@@ -425,11 +464,11 @@ public class Menu extends AppCompatActivity {
                             String g_cpf281 = jsonObject.getString("CPF281"); //Tên bộ phận
                             String g_usercontrols = jsonObject.getString("TC_QRS007"); //Tài khoản
                             String g_group = jsonObject.getString("TC_QRS004"); //Tổ
-                            Cre_db.ins_cpf_file(g_cpf01, g_cpf02, g_ta_cpf001, g_cpf29, g_gem02, g_cpf281, g_usercontrols , g_group);
+                            Cre_db.ins_cpf_file(g_cpf01, g_cpf02, g_ta_cpf001, g_cpf29, g_gem02, g_cpf281, g_usercontrols, g_group);
                             final int progress = i + 1; // i bắt đầu từ 0, cần + 1 để điều chỉnh
                             runOnUiThread(() -> progressDialog.setProgress(progress));
 
-                            if(i == jsonarray.length()-1){
+                            if (i == jsonarray.length() - 1) {
                                 progressDialog.dismiss();
                                 runOnUiThread(new Runnable() {
                                     @Override
@@ -449,7 +488,6 @@ public class Menu extends AppCompatActivity {
         });
         api.start();
     }
-
 
     private String get_DataTable(String s) {
         try {
@@ -494,4 +532,15 @@ public class Menu extends AppCompatActivity {
         }
         resources.updateConfiguration(configuration, displayMetrics);
     }
+
+    @Override
+    public void onConnectionResult(String speed, String ping, String stability) {
+        NetworkStatusView.setNetworkStatus(speed,ping,stability);
+    }
+
+    private void performConnectionCheck() {
+        CheckConnect checkConnect = new CheckConnect(getApplicationContext(), this);
+        checkConnect.execute();
+    }
+
 }

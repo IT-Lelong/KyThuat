@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/text_speed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tốc độ Kết nối: "
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/text_stability"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Độ ổn định: "
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/text_ping"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ping: "
+            android:textSize="15sp" />
+
+</LinearLayout>
