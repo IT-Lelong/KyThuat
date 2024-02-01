@@ -308,6 +308,14 @@ public class KT03_login {
             }
         });
         dialog.show();
+
+
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                dialog.dismiss();
+            }
+        });
     }
 
     private void getLVData() {

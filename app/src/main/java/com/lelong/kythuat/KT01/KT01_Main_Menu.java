@@ -341,9 +341,13 @@ public class KT01_Main_Menu extends AppCompatActivity {
         });
 
         dialog.show();
-    }
-    private void Call_showKetChuyenDialog() {
 
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                finish();
+            }
+        });
     }
 
     private void addEvents() {

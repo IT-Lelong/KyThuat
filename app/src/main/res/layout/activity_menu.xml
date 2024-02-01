@@ -16,11 +16,20 @@
 
         <TextView
             android:id="@+id/menuID"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="10sp"
+            android:layout_weight="1.4"
+            android:layout_marginTop="8sp"
+            android:layout_marginLeft="8sp"
             android:hint="Name"
             android:textSize="25sp"/>
+
+        <com.lelong.kythuat.CheckConnects.NetworkStatusView
+            android:id="@+id/network_status_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.6"
+            android:layout_marginTop="8sp"/>
 
     </LinearLayout>
 

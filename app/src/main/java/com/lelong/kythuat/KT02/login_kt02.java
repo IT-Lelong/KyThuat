@@ -8,10 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.media.MediaScannerConnection;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -24,32 +21,21 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
-
-import com.google.firebase.crashlytics.buildtools.reloc.org.apache.commons.io.FileUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.lelong.kythuat.Constant_Class;
 import com.lelong.kythuat.Create_Table;
-import com.lelong.kythuat.KT01.KT01_Transfer;
-import com.lelong.kythuat.KT01.KetChuyen_Dialog;
 import com.lelong.kythuat.KT02.Retrofit2.APIYtils;
 import com.lelong.kythuat.KT02.Retrofit2.DataClient;
 import com.lelong.kythuat.R;
-import com.lelong.kythuat.SignaturePad;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -59,6 +45,7 @@ import java.net.URLConnection;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -130,13 +117,13 @@ public class login_kt02 extends AppCompatActivity {
         createTable.open();
         kt02Db = new KT02_DB(dialog.getContext());
         //kt03Db = new KT03_DB(dialog.getContext());
-        if (g_tc_faa001 == "KT02") {
+        if (Objects.equals(g_tc_faa001, "KT02")) {
             g_tenxe = "Xe nâng dầu";
         }
-        if (g_tc_faa001 == "KT05") {
+        if (Objects.equals(g_tc_faa001, "KT05")) {
             g_tenxe = "Xe nâng tay điện";
         }
-        if (g_tc_faa001 == "KT06") {
+        if (Objects.equals(g_tc_faa001, "KT06")) {
             g_tenxe = "Xe nâng điện";
         }
         cursor_1 = createTable.getAll_fia_02(g_tenxe,g_fia15);
@@ -160,9 +147,7 @@ public class login_kt02 extends AppCompatActivity {
             cursor_1.moveToNext();
         }
 
-
-//Bộ phận
-
+        //Bộ phận
         Spinner cbxbophan = dialog.findViewById(R.id.cbxbophan);
         List<Loggin_List> qrReScanIpLists = new ArrayList<>();
         Bophan_Adapter bophan_adapter = new Bophan_Adapter(this.activity,
@@ -171,7 +156,6 @@ public class login_kt02 extends AppCompatActivity {
                 R.id.sp_tenbp,
                 qrReScanIpLists);
         cbxbophan.setAdapter(bophan_adapter);
-
 
         //spinner Scan IP (E)
         cbxsoxe.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -199,7 +183,6 @@ public class login_kt02 extends AppCompatActivity {
                 //qrReScanIpLists.add(new Loggin_List("", ""));
                 bophan_adapter.notifyDataSetChanged();
                 //cbxbophan.setSelection(position);
-
             }
 
             @Override
@@ -220,17 +203,13 @@ public class login_kt02 extends AppCompatActivity {
                         tenbp = res.getTenbp().toString().trim();
                         g_bophan = qrReScanIpLists.get(position).getIDbp().trim();
                         //g_bophan=tenbp;
-
                     }
                 }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
-
-
         });
 
         //Danh sach đã kiểm tra (S)
@@ -260,7 +239,6 @@ public class login_kt02 extends AppCompatActivity {
                         Intent KT02 = new Intent();
                         KT02.setClass(context, KT02_activity.class);
                         Bundle bundle = new Bundle();
-                        //bundle.putString("ID", ID);
                         bundle.putString("DATE", qry_ngay.getText().toString());
                         bundle.putString("SOMAY", qry_somay.getText().toString());
                         bundle.putString("USER", qry_user.getText().toString());
@@ -316,6 +294,13 @@ public class login_kt02 extends AppCompatActivity {
         //Danh sach đã kiểm tra (E)
 
         dialog.show();
+
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                finish();
+            }
+        });
     }
 
     private void getLVData() {
@@ -346,7 +331,6 @@ public class login_kt02 extends AppCompatActivity {
         public void onClick(View v) {
             //利用switch case方法，之後新增按鈕只需新增case即可
             switch (v.getId()) {
-
                 case R.id.btninsert: {
 
                     Intent QR020 = new Intent();
@@ -655,8 +639,6 @@ public class login_kt02 extends AppCompatActivity {
                         cursor_3.moveToNext();
                     }
 
-
-
                     /*Cursor upl = createTable.getAll_instc_fad(g_tenxe,"01");
                     jsonupload = cur2Json(upl);
 
@@ -698,16 +680,6 @@ public class login_kt02 extends AppCompatActivity {
 
         }
 
-        private void nutchucnang() {
-            try {
-                //FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
-                FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
-                fos.write(g_bophan.getBytes());
-                fos.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
     };
 
     public JSONArray cur2Json(Cursor cursor) {
@@ -787,4 +759,6 @@ public class login_kt02 extends AppCompatActivity {
         }
         return content.toString();
     }
+
+
 }
