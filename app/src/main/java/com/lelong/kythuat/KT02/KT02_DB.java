@@ -722,7 +722,9 @@ public class KT02_DB {
         }
     }
     public Cursor getDepartmetData(String tenxe,String bophan,String ngay) {
-        String selectQuery = " select count(*) AS _id,fiaud03,fia15,fka02,'" + ngay + "' AS ngaysig, (select GROUP_CONCAT(manv_sig, ', ') AS manv_sig from fia_up_sig_file where fiaud03 = somay_sig and ngay_sig = date('now'))  as manv_sig from fia_file " +
+        String selectQuery = " select count(*) AS _id,fiaud03,fia15,fka02,'" + ngay + "' AS ngaysig, " +
+                "(select GROUP_CONCAT(manv_sig, ', ') AS manv_sig from fia_up_sig_file where fia15 = mabp_sig " +
+                "AND fiaud03 = somay_sig and ngay_sig = date('now') AND ta_fia02_1='" + tenxe + "'  )  as manv_sig from fia_file " +
                 " where ta_fia02_1='" + tenxe + "' ";
         if (!(bophan == null)) {
             selectQuery = selectQuery + " AND Substr(fia15,1,1) = '" + bophan + "' ";
