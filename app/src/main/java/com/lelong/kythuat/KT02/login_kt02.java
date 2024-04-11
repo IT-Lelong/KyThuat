@@ -80,6 +80,8 @@ public class login_kt02 extends AppCompatActivity {
     JSONObject ujobject;
     String g_tc_faa001 = "";
     String g_fia15;
+    List<Loggin_List> qrReScanIpLists;
+    Spinner cbxbophan;
 
     public void login_dialogkt02(Context context, String menuID, Activity activity, String g_tc_faa001) {
         this.activity = activity;
@@ -149,7 +151,7 @@ public class login_kt02 extends AppCompatActivity {
 
         //Bộ phận
         Spinner cbxbophan = dialog.findViewById(R.id.cbxbophan);
-        List<Loggin_List> qrReScanIpLists = new ArrayList<>();
+        qrReScanIpLists = new ArrayList<>();
         Bophan_Adapter bophan_adapter = new Bophan_Adapter(this.activity,
                 R.layout.kt02_loginsetting_bophan,
                 R.id.sp_mabp,
@@ -175,6 +177,7 @@ public class login_kt02 extends AppCompatActivity {
                         @SuppressLint("Range") String fka02 = cursor_2.getString(cursor_2.getColumnIndex("fka02"));
                         qrReScanIpLists.add(new Loggin_List(fia15, fka02));
                         g_bophan = fia15;
+
                     } catch (Exception e) {
                         String err = e.toString();
                     }
@@ -182,6 +185,7 @@ public class login_kt02 extends AppCompatActivity {
                 }
                 //qrReScanIpLists.add(new Loggin_List("", ""));
                 bophan_adapter.notifyDataSetChanged();
+                //g_bophan = cbxbophan.getSelectedItem().toString().trim();
                 //cbxbophan.setSelection(position);
             }
 
@@ -305,7 +309,7 @@ public class login_kt02 extends AppCompatActivity {
 
     private void getLVData() {
         kt02Db.open();
-        Cursor cursor = kt02Db.getAll_lvQuery(g_tenxe);
+        Cursor cursor = kt02Db.getAll_lvQuery(g_tc_faa001,g_tenxe);
         SimpleCursorAdapter simpleCursorAdapter = new SimpleCursorAdapter(context,
                 R.layout.kt02_login_lvrow, cursor,
                 new String[]{"_id", "ngay", "somay", "user"},
@@ -330,6 +334,10 @@ public class login_kt02 extends AppCompatActivity {
     private Button.OnClickListener btnlistener1 = new Button.OnClickListener() {
         public void onClick(View v) {
             //利用switch case方法，之後新增按鈕只需新增case即可
+            cbxbophan = dialog.findViewById(R.id.cbxbophan);
+            int currentPosition = cbxbophan.getSelectedItemPosition();
+            g_bophan = qrReScanIpLists.get(currentPosition).getIDbp();
+
             switch (v.getId()) {
                 case R.id.btninsert: {
 

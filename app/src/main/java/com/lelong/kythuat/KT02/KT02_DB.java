@@ -221,7 +221,7 @@ public class KT02_DB {
     }
 
 
-    public Cursor getAll_lvQuery(String tenxe) {
+    public Cursor getAll_lvQuery(String hm,String tenxe) {
         String selectQuery = " select COUNT(*) AS _id ,ngay,somay,user" +
                 " from (select ngay,somay,user, " +
                 "      (select count(checkbox1)  from tc_fac_table_kt02 where checkbox1='true' and ngay=a.ngay and somay =a.somay and user = a.user ) AS loai1," +
@@ -230,7 +230,7 @@ public class KT02_DB {
                 "      (select count(checkbox4)  from tc_fac_table_kt02 where checkbox4='true' and ngay=a.ngay and somay =a.somay and user = a.user ) AS loai4," +
                 "      (select count(checkbox5)  from tc_fac_table_kt02 where checkbox5='true' and ngay=a.ngay and somay =a.somay and user = a.user ) AS loai5," +
                 "      (select count(checkbox6)  from tc_fac_table_kt02 where checkbox6='true' and ngay=a.ngay and somay =a.somay and user = a.user ) AS loai6" +
-                "       from tc_fac_table_kt02 a ,fia_file where a.somay=fiaud03 and fia15=a.user and ta_fia02_1='" + tenxe + "' " +
+                "       from tc_fac_table_kt02 a ,fia_file where substr(tc_fac004,1,4) = '" + hm + "' AND a.somay=fiaud03 and fia15=a.user and ta_fia02_1='" + tenxe + "' " +
                 "       GROUP BY ngay,somay,user ) " +
                 " GROUP BY ngay,somay,user" +
                 " ORDER BY ngay,somay,user";
