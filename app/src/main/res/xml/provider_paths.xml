@@ -6,6 +6,9 @@
     <external-path
         name="download"
         path="Download/" />
+    <external-path
+        name="external_files"
+        path="." />
     <external-files-path
         name="Download"
         path="Download/" />

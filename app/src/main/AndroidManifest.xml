@@ -58,9 +58,6 @@
             android:name=".KT02.Search_Signature_KT02"
             android:exported="false" />
         <activity
-            android:name=".MainActivity2"
-            android:exported="false" />
-        <activity
             android:name=".KT01.KT01_Signature_List"
             android:exported="false" />
         <activity

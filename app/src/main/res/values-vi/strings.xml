@@ -68,12 +68,16 @@
 
     /*check version*/
     <string name="ver_curr_version">Phiên bản hiện tại : </string>
-    <string name="ver_new_version">Phiên bản mới：</string>
+    <string name="ver_new_version">Phiên bản mới：%1$s (mã %2$d)</string>
     <string name="ver_install">Xin hãy cài đặt!</string>
     <string name="ver_soft_update">Cập nhật phần mềm</string>
     <string name="ver_update">Cập nhật</string>
     <string name="ver_downloading">Đang cập nhật</string>
     <string name="ver_please_wait">Xin đợi...</string>
+    <string name="ver_no_update">Phiên bản hiện tại là phiên bản mới nhất</string>
+    <string name="ver_check_fail">Không thể kiểm tra cập nhật, vui lòng thử lại sau</string>
+    <string name="ver_cancel">Hủy</string>
+    <string name="ver_download_fail">Tải xuống thất bại</string>
 
     <string name="E01">Tài khoản hoặc mật khẩu không đúng</string>
     <string name="E02">Liên kết máy chủ thất bại</string>

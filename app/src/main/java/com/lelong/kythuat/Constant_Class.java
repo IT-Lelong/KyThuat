@@ -5,6 +5,7 @@ public class Constant_Class {
     public static final String Update_serverAPK = "TECH_APP.apk";
     public static final String Package_Name = "com.lelong.kythuat";
     public static final String server = "PHP";
+    public static final String mbaseUrl = "http://172.16.40.20/PHP/TECHAPP/";
 
     public static String androidID = "";
 

@@ -66,14 +66,17 @@
     <string name="main_stay_logged">保持登入</string>
 
     /*check version*/
-    /*check version*/
     <string name="ver_curr_version">當前版本: </string>
-    <string name="ver_new_version">新版本：</string>
+    <string name="ver_new_version">新版本：%1$s (mã %2$d)</string>
     <string name="ver_install">請安裝!</string>
     <string name="ver_soft_update">軟件更新</string>
     <string name="ver_update">更新</string>
     <string name="ver_downloading">正在下載</string>
     <string name="ver_please_wait">請稍後...</string>
+    <string name="ver_no_update">目前版本為最新版本</string>
+    <string name="ver_check_fail">無法檢查更新，請稍後重試</string>
+    <string name="ver_cancel">取消</string>
+    <string name="ver_download_fail">下載失敗</string>
 
     <string name="E01">帳號密碼錯誤</string>
     <string name="E02">連線錯誤</string>

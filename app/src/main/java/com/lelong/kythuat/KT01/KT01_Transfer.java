@@ -3,6 +3,7 @@ package com.lelong.kythuat.KT01;
 import android.content.Context;
 import android.database.Cursor;
 import android.widget.Toast;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
@@ -13,6 +14,7 @@ import com.lelong.kythuat.KT01.Retrofit2.DataClient;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -32,15 +34,15 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class KT01_Transfer {
-    private  KT01_DB db = null;
+    private KT01_DB db = null;
     private KetChuyenPhoto ketChuyenPhoto = null;
     //MT01_Interface apiService;
     private Context context;
     private KetChuyen_Dialog ketchuyenDialog;
-    private String input_date,input_department;
+    private String input_date, input_department;
     DataClient apiService;
 
-    public KT01_Transfer(Context context, KetChuyen_Dialog ketchuyenDialog,String input_date, String input_department) {
+    public KT01_Transfer(Context context, KetChuyen_Dialog ketchuyenDialog, String input_date, String input_department) {
         this.context = context;
         this.ketchuyenDialog = ketchuyenDialog;
         this.input_department = input_department;
@@ -63,8 +65,8 @@ public class KT01_Transfer {
 
     private void Call_transfer() {
         //Khi sử dụng Retrofit cần sử dụng thư viện Json của Google , không nên dùng thư viện Json của Java
-        Cursor get_tc_faa = db.getAll_tc_faa_new(input_date,input_department);
-        Cursor get_tc_far = db.getAll_tc_far(input_date,input_department);
+        Cursor get_tc_faa = db.getAll_tc_faa_new(input_date, input_department);
+        Cursor get_tc_far = db.getAll_tc_far(input_date, input_department);
         if (get_tc_faa.getCount() > 0) {
 
             JsonArray jarray_tc_faa = CursorToJsonConverter.cursorToJson(get_tc_faa);
@@ -125,9 +127,9 @@ public class KT01_Transfer {
             });
 
         } else {
-            if(get_tc_far.getCount() > 0){
+            if (get_tc_far.getCount() > 0) {
                 ketChuyenPhoto = new KetChuyenPhoto(context, get_tc_far, ketchuyenDialog);
-            }else {
+            } else {
                 ketchuyenDialog.setStatus("Không có dữ liệu cập nhật");
             }
         }
