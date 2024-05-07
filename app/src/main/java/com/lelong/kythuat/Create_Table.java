@@ -284,7 +284,19 @@ public class Create_Table {
     public Cursor getAll_tc_fac(String g_kind, String g_kind1) {
         try {
             //SQLiteDatabase db = this.getWritableDatabase();
-            String selectQuery = "SELECT * FROM " + TABLE_NAME_TC_FAC + " WHERE tc_fac002='" + g_kind + "' AND tc_fac001='" + g_kind1 + "'";
+            String g_xuong = Constant_Class.UserFactory;
+            String selectQuery = "";
+            if(g_xuong.equals("DH")){
+                selectQuery = "SELECT * FROM " + TABLE_NAME_TC_FAC + " WHERE tc_fac002='" + g_kind + "' AND tc_fac001='" + g_kind1 + "'";
+            }else{
+                if(g_kind1.equals("02")){
+                    selectQuery = "SELECT * FROM " + TABLE_NAME_TC_FAC + " WHERE tc_fac002='" + g_kind + "' AND tc_fac001='" + g_kind1 + "' AND tc_fac003 != '17' ";
+                }
+                else {
+                    selectQuery = "SELECT * FROM " + TABLE_NAME_TC_FAC + " WHERE tc_fac002='" + g_kind + "' AND tc_fac001='" + g_kind1 + "'";
+                }
+            }
+
             return db.rawQuery(selectQuery, null);
         } catch (Exception e) {
             return null;

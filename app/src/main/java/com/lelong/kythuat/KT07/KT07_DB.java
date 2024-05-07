@@ -95,6 +95,7 @@ public class KT07_DB {
             selectQuery = " SELECT tc_cea01, tc_cea02, loai FROM ( " +
                     " SELECT DISTINCT tc_cea01, tc_cea02, " +
                     " (CASE WHEN UPPER(tc_cea02) LIKE '%ĐIỆN%' THEN 'dien' " +
+                    " WHEN UPPER(tc_cea02) LIKE '%OXY%' THEN 'dien' " +
                     " WHEN UPPER(tc_cea02) LIKE '%NƯỚC%' THEN 'nuoc' " +
                     " WHEN UPPER(tc_cea02) LIKE '%GAS%' THEN 'gas' END) AS loai " +
                     " FROM tc_cea_file WHERE tc_cea01 like '" + g_cpf281 + "%' " +
