@@ -92,14 +92,27 @@ public class KT07_DB {
 
         String selectQuery = null;
         if (g_cpf281.length() > 0) {
-            selectQuery = " SELECT tc_cea01, tc_cea02, loai FROM ( " +
-                    " SELECT DISTINCT tc_cea01, tc_cea02, " +
-                    " (CASE WHEN UPPER(tc_cea02) LIKE '%ĐIỆN%' THEN 'dien' " +
-                    " WHEN UPPER(tc_cea02) LIKE '%OXY%' THEN 'dien' " +
-                    " WHEN UPPER(tc_cea02) LIKE '%NƯỚC%' THEN 'nuoc' " +
-                    " WHEN UPPER(tc_cea02) LIKE '%GAS%' THEN 'gas' END) AS loai " +
-                    " FROM tc_cea_file WHERE tc_cea01 like '" + g_cpf281 + "%' " +
-                    " ) ORDER BY (case when loai = 'nuoc' then 3 when loai = 'dien' then 2 when loai = 'gas' then 1 end)";
+            String g_xuong  = Constant_Class.UserFactory;
+            if(g_xuong.equals("DH")){
+                selectQuery = " SELECT tc_cea01, tc_cea02, loai FROM ( " +
+                        " SELECT DISTINCT tc_cea01, tc_cea02, " +
+                        " (CASE WHEN UPPER(tc_cea02) LIKE '%ĐIỆN%' THEN 'dien' " +
+                        " WHEN tc_cea01 = 'DHO' THEN 'dien' " +
+                        " WHEN UPPER(tc_cea02) LIKE '%NƯỚC%' THEN 'nuoc' " +
+                        " WHEN UPPER(tc_cea02) LIKE '%GAS%' THEN 'gas' END) AS loai " +
+                        " FROM tc_cea_file WHERE tc_cea01 like '" + g_cpf281 + "%' " +
+                        " ) ORDER BY (case when loai = 'nuoc' then 3 when loai = 'dien' then 2 when loai = 'gas' then 1 end)";
+            }
+            else{
+                selectQuery = " SELECT tc_cea01, tc_cea02, loai FROM ( " +
+                        " SELECT DISTINCT tc_cea01, tc_cea02, " +
+                        " (CASE WHEN UPPER(tc_cea02) LIKE '%ĐIỆN%' THEN 'dien' " +
+                        " WHEN UPPER(tc_cea02) LIKE '%NƯỚC%' THEN 'nuoc' " +
+                        " WHEN UPPER(tc_cea02) LIKE '%GAS%' THEN 'gas' END) AS loai " +
+                        " FROM tc_cea_file WHERE tc_cea01 like '" + g_cpf281 + "%' " +
+                        " ) ORDER BY (case when loai = 'nuoc' then 3 when loai = 'dien' then 2 when loai = 'gas' then 1 end)";
+            }
+
         }
         return db.rawQuery(selectQuery, null);
     }
