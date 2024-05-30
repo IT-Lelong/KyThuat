@@ -392,6 +392,7 @@ public class login_kt02 extends AppCompatActivity {
                     ketChuyenDialog.setOkButtonClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
+                            ketChuyenDialog.setEnableBtn(false,true);
                             String input_datekt = ketChuyenDialog.getSelected_sp_datekt();
                             String input_department = ketChuyenDialog.getSelected_sp_department();
                             new KT02_Transfer(view.getContext(),ketChuyenDialog,input_datekt,input_department,g_tenxe);

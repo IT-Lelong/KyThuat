@@ -170,6 +170,7 @@ public class KT01_Main_Menu extends AppCompatActivity {
                 ketChuyenDialog.setOkButtonClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        ketChuyenDialog.setEnableBtn(false,true);
                         String input_datekt = ketChuyenDialog.getSelected_sp_datekt();
                         String input_department = ketChuyenDialog.getSelected_sp_department();
                         new KT01_Transfer(view.getContext(),ketChuyenDialog,input_datekt,input_department);
