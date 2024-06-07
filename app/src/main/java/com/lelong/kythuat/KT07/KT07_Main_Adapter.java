@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.graphics.Typeface;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -83,6 +85,7 @@ public class KT07_Main_Adapter extends RecyclerView.Adapter<KT07_Main_Adapter.Da
         int adapterPosition = holder.getAdapterPosition();
         holder.tv_tc_cea03.setText(kt07MainRowItems_list.get(adapterPosition).getG_tc_cea03());
         holder.tv_tc_cea04.setText(kt07MainRowItems_list.get(adapterPosition).getG_tc_cea04());
+        holder.edt_tc_ceb07.setText(kt07MainRowItems_list.get(adapterPosition).getG_tc_ceb07());
         holder.tv_tc_cea04.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -120,6 +123,7 @@ public class KT07_Main_Adapter extends RecyclerView.Adapter<KT07_Main_Adapter.Da
                 String tc_ceb06 = tv_tc_ceb06.getText().toString();
                 String tc_cebdate = tv_tc_cebdate.getText().toString();
                 String tc_cebuser = tv_tc_cebuser.getText().toString();
+
                 int l_count = kt07Db.getCheckKT(tc_cea01,tc_cea03,tc_ceb03,tc_cebdate,tc_cebuser,tc_ceb06);
                 if(l_count > 0){
                     Cursor cursor_check = kt07Db.getdataKT(tc_cea01,tc_cea03);
@@ -201,6 +205,40 @@ public class KT07_Main_Adapter extends RecyclerView.Adapter<KT07_Main_Adapter.Da
 
         //Insert dữ liệu vào bảng ảo tc_ceb (E)
 
+        holder.edt_tc_ceb07.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (holder.edt_tc_ceb07.getText().toString().trim().length() >= 0) {
+                    getUserCode(holder.edt_tc_ceb07.getText().toString().trim(), holder.getPosition());
+                }
+                //holder.tc_fac009.getText().toString();
+            }
+
+            private void getUserCode(String kt02_tc_fac009, int position) {
+                try {
+                    final String qr_val = kt02_tc_fac009.trim();
+                    String g_tc_ceb07 = null;
+                    g_tc_ceb07 = holder.edt_tc_ceb07.getText().toString();
+                    kt07Db.appendUPDAE(kt07MainRowItems_list.get(adapterPosition).getG_TC_CEA01(),
+                            kt07MainRowItems_list.get(adapterPosition).getG_tc_cea03(),
+                            tv_tc_ceb03.getText().toString(),tv_tc_cebdate.getText().toString(),g_tc_ceb07,tv_tc_ceb06.getText().toString());
+
+                    kt07MainRowItems_list.get(position).setG_tc_ceb07(g_tc_ceb07);
+                } catch (Exception e) {
+                    String err = e.toString();
+                }
+            }
+        });
     }
 
     @Override
@@ -210,7 +248,7 @@ public class KT07_Main_Adapter extends RecyclerView.Adapter<KT07_Main_Adapter.Da
 
     public static class DataViewHolder extends RecyclerView.ViewHolder {
         TextView tv_tc_cea03, tv_tc_cea04, tv_tc_cea05, tv_tc_ceb04_old,tv_tc_ceb04_diff,tv_tc_ceb04;
-        //EditText edt_tc_ceb04;
+        EditText edt_tc_ceb07;
 
         public DataViewHolder(View itemView) {
             super(itemView);
@@ -220,7 +258,7 @@ public class KT07_Main_Adapter extends RecyclerView.Adapter<KT07_Main_Adapter.Da
             tv_tc_ceb04_old = itemView.findViewById(R.id.tv_tc_ceb04_old);
             tv_tc_ceb04 = itemView.findViewById(R.id.tv_tc_ceb04);
             tv_tc_ceb04_diff =itemView.findViewById(R.id.tv_tc_ceb04_diff);
-
+            edt_tc_ceb07 = itemView.findViewById(R.id.tv_tc_ceb07);
         }
     }
 
@@ -373,6 +411,16 @@ public class KT07_Main_Adapter extends RecyclerView.Adapter<KT07_Main_Adapter.Da
         if (text.equals(null)){
             return;
         }else {
+            /*kt07Db.ins_tc_ceb_file(kt07MainRowItems_list.get(adapterPosition).getG_TC_CEA01(),
+                    kt07MainRowItems_list.get(adapterPosition).getG_tc_cea03(),
+                    tv_tc_ceb03.getText().toString(),
+                    text,
+                    "0",
+                    tv_tc_ceb06.getText().toString(),
+                    tv_tc_cebdate.getText().toString(),
+                    tv_tc_cebuser.getText().toString()
+            ,kt07MainRowItems_list.get(adapterPosition).getG_tc_ceb07());*/
+
             kt07Db.ins_tc_ceb_file(kt07MainRowItems_list.get(adapterPosition).getG_TC_CEA01(),
                     kt07MainRowItems_list.get(adapterPosition).getG_tc_cea03(),
                     tv_tc_ceb03.getText().toString(),

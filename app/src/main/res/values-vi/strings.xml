@@ -178,4 +178,5 @@
     <string name="tc_ceb04">Bảng số đo</string>
     <string name="tc_ceb05">Lưu lượng sử dụng</string>
     <string name= "checkbox"> Kết hợp điều kiên tra cứu</string>
+    <string name="tc_ceb07">Ghi chú</string>
 </resources>

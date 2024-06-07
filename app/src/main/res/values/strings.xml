@@ -179,4 +179,5 @@
     <string name="tc_ceb04">錶度數</string>
     <string name="tc_ceb05">當天用量</string>
     <string name= "checkbox">組合查找條件</string>
+    <string name="tc_ceb07">備註</string>
 </resources>

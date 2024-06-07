@@ -67,7 +67,13 @@
                 android:layout_weight="1"
                 android:text="@string/tc_ceb04_diff"
                 android:textSize="20sp" />
-
+            <TextView
+                style="@style/title_02"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:text="@string/tc_ceb07"
+                android:textSize="20sp" />
         </LinearLayout>
         <!--RecyclerView-->
         <androidx.recyclerview.widget.RecyclerView

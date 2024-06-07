@@ -26,13 +26,14 @@ public class KT07_DB {
     private final static String tc_ceb04 = "tc_ceb04"; ////Bảng số đo
     private final static String tc_ceb05 = "tc_ceb05"; ////Lượng sử dụng
     private final static String tc_ceb06 = "tc_ceb06"; ////Khoảng thời gian (AM/PM)
+    private final static String tc_ceb07 = "tc_ceb07";/////Ghi chú
     private final static String tc_cebdate = "tc_cebdate"; ////Ngày nhập
     private final static String tc_cebuser = "tc_cebuser"; ////Nhân viên nhập
     private final static String tc_cebstatus = "tc_cebstatus"; ////Nhân viên nhập
 
     String CREATE_TABLE_NAME_TC_CEB = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME_TC_CEB + " ("
             + tc_ceb01 + " TEXT," + tc_ceb02 + " TEXT," + tc_ceb03 + " TEXT ,"
-            + tc_ceb04 + " TEXT," + tc_ceb05 + " TEXT," + tc_ceb06 + " TEXT,"
+            + tc_ceb04 + " TEXT," + tc_ceb05 + " TEXT," + tc_ceb06 + " TEXT," + tc_ceb07 + " TEXT,"
             + tc_cebdate + " TEXT, " + tc_cebuser + " TEXT," + tc_cebstatus + " TEXT  )";
 
 
@@ -74,9 +75,7 @@ public class KT07_DB {
 
         // Thực hiện xóa dữ liệu
 
-            db.delete(TABLE_NAME_TC_CEB, whereClause, null);
-
-
+        db.delete(TABLE_NAME_TC_CEB, whereClause, null);
 
 
     }
@@ -92,8 +91,8 @@ public class KT07_DB {
 
         String selectQuery = null;
         if (g_cpf281.length() > 0) {
-            String g_xuong  = Constant_Class.UserFactory;
-            if(g_xuong.equals("DH")){
+            String g_xuong = Constant_Class.UserFactory;
+            if (g_xuong.equals("DH")) {
                 selectQuery = " SELECT tc_cea01, tc_cea02, loai FROM ( " +
                         " SELECT DISTINCT tc_cea01, tc_cea02, " +
                         " (CASE WHEN UPPER(tc_cea02) LIKE '%ĐIỆN%' THEN 'dien' " +
@@ -102,8 +101,7 @@ public class KT07_DB {
                         " WHEN UPPER(tc_cea02) LIKE '%GAS%' THEN 'gas' END) AS loai " +
                         " FROM tc_cea_file WHERE tc_cea01 like '" + g_cpf281 + "%' " +
                         " ) ORDER BY (case when loai = 'nuoc' then 3 when loai = 'dien' then 2 when loai = 'gas' then 1 end)";
-            }
-            else{
+            } else {
                 selectQuery = " SELECT tc_cea01, tc_cea02, loai FROM ( " +
                         " SELECT DISTINCT tc_cea01, tc_cea02, " +
                         " (CASE WHEN UPPER(tc_cea02) LIKE '%ĐIỆN%' THEN 'dien' " +
@@ -133,17 +131,18 @@ public class KT07_DB {
         return db.rawQuery(selectQuery, null);
     }
 
-    public Integer getCheck(String g_tc_cebdate, String g_tc_ceb06){
+    public Integer getCheck(String g_tc_cebdate, String g_tc_ceb06) {
         String selectQuery = null;
-        selectQuery = " SELECT count(*) FROM tc_ceb_file WHERE tc_cebdate = '" + g_tc_cebdate + "' AND tc_ceb06 = '"+g_tc_ceb06+"' ";
+        selectQuery = " SELECT count(*) FROM tc_ceb_file WHERE tc_cebdate = '" + g_tc_cebdate + "' AND tc_ceb06 = '" + g_tc_ceb06 + "' ";
         Cursor a = db.rawQuery(selectQuery, null);
         a.moveToFirst();
         Integer count = a.getInt(0);
         return count;
     }
-    public Cursor getAll_tc_cea_data(String g_title, String g_tc_cebdate, String g_tc_ceb06,String g_dk,String g_tc_ceb03) {
+
+    public Cursor getAll_tc_cea_data(String g_title, String g_tc_cebdate, String g_tc_ceb06, String g_dk, String g_tc_ceb03) {
         String selectQuery = null;
-        if (g_title.startsWith("D") || g_title.startsWith("B") ) {
+        if (g_title.startsWith("D") || g_title.startsWith("B")) {
             //Fill Data của loại tiêu thụ
             /*selectQuery = " SELECT tc_cea01,tc_cea03,tc_cea04,(tc_cea05||'/'||CASE WHEN tc_cea09 = 'null' THEN '' ELSE tc_cea09 END) AS tc_cea05 ,tc_cea06,tc_cea08,  " +
                     " COALESCE((select tc_ceb04 from  (SELECT * FROM tc_ceb_file   WHERE  tc_ceb02 =TC_CEA03 AND tc_ceb01 = tc_cea01 and  tc_cebdate||tc_ceb06 < '"+g_tc_cebdate+""+g_tc_ceb06+"' AND tc_ceb03 = '"+g_tc_ceb03+"' " +
@@ -156,18 +155,18 @@ public class KT07_DB {
 
                     " ORDER BY TC_CEA03 ";*/
             selectQuery = " SELECT tc_cea01,tc_cea03,tc_cea04,(tc_cea05||'/'||CASE WHEN tc_cea09 = 'null' THEN '' ELSE tc_cea09 END) AS tc_cea05 ,tc_cea06,tc_cea08,  " +
-                    " COALESCE((select tc_ceb04 from  (SELECT * FROM tc_ceb_file   WHERE  tc_ceb02 =TC_CEA03 AND tc_ceb01 = tc_cea01 and  tc_ceb03||tc_ceb06 < '"+g_tc_ceb03+""+g_tc_ceb06+"'  " +
+                    " COALESCE((select tc_ceb04 from  (SELECT * FROM tc_ceb_file   WHERE  tc_ceb02 =TC_CEA03 AND tc_ceb01 = tc_cea01 and  tc_ceb03||tc_ceb06 < '" + g_tc_ceb03 + "" + g_tc_ceb06 + "'  " +
                     " order by tc_ceb03 desc ,tc_ceb06 desc)  LIMIT 1 ),0) AS tc_ceb04_old, " +
-                    " COALESCE((select tc_ceb03||'-'||tc_ceb06  from  (SELECT * FROM tc_ceb_file   WHERE  tc_ceb02 =TC_CEA03 AND tc_ceb01 = tc_cea01 AND tc_ceb03||tc_ceb06 < '"+g_tc_ceb03+""+g_tc_ceb06+"'  "+
-                    " order by tc_ceb03 desc ,tc_ceb06 desc)  LIMIT 1 ),' ') AS tc_ceb03_ceb06, "+
-                    " COALESCE((SELECT tc_ceb04 FROM tc_ceb_file WHERE tc_ceb01 = tc_cea01 AND tc_ceb02 = TC_CEA03  AND tc_ceb06 = '"+g_tc_ceb06+"' AND tc_ceb03 = '"+g_tc_ceb03+"' ),0) AS  tc_ceb04, " +
-                    "((COALESCE((SELECT tc_ceb04 FROM tc_ceb_file WHERE tc_ceb01 = tc_cea01 AND tc_ceb02 = TC_CEA03 AND tc_ceb06 = '"+g_tc_ceb06+"' AND tc_ceb03 = '"+g_tc_ceb03+"' ),0)) - (COALESCE((select tc_ceb04  from  (SELECT * FROM tc_ceb_file   WHERE  tc_ceb02 =TC_CEA03 AND tc_ceb01 = tc_cea01 and  tc_ceb03||tc_ceb06 < '"+g_tc_ceb03+""+g_tc_ceb06+"'  order by tc_ceb03 desc ,tc_ceb06 desc)  LIMIT 1 ),0) )) AS tc_ceb04_diff" +
+                    " COALESCE((select tc_ceb03||'-'||tc_ceb06  from  (SELECT * FROM tc_ceb_file   WHERE  tc_ceb02 =TC_CEA03 AND tc_ceb01 = tc_cea01 AND tc_ceb03||tc_ceb06 < '" + g_tc_ceb03 + "" + g_tc_ceb06 + "'  " +
+                    " order by tc_ceb03 desc ,tc_ceb06 desc)  LIMIT 1 ),' ') AS tc_ceb03_ceb06, " +
+                    " COALESCE((SELECT tc_ceb04 FROM tc_ceb_file WHERE tc_ceb01 = tc_cea01 AND tc_ceb02 = TC_CEA03  AND tc_ceb06 = '" + g_tc_ceb06 + "' AND tc_ceb03 = '" + g_tc_ceb03 + "' ),0) AS  tc_ceb04, " +
+                    "((COALESCE((SELECT tc_ceb04 FROM tc_ceb_file WHERE tc_ceb01 = tc_cea01 AND tc_ceb02 = TC_CEA03 AND tc_ceb06 = '" + g_tc_ceb06 + "' AND tc_ceb03 = '" + g_tc_ceb03 + "' ),0)) - (COALESCE((select tc_ceb04  from  (SELECT * FROM tc_ceb_file   WHERE  tc_ceb02 =TC_CEA03 AND tc_ceb01 = tc_cea01 and  tc_ceb03||tc_ceb06 < '" + g_tc_ceb03 + "" + g_tc_ceb06 + "'  order by tc_ceb03 desc ,tc_ceb06 desc)  LIMIT 1 ),0) )) AS tc_ceb04_diff,tc_ceb07" +
                     " FROM tc_cea_file WHERE tc_cea01 = '" + g_title + "' " +
-
-                    " ORDER BY TC_CEA03 " ;
+                    " ,(SELECT tc_ceb07 FROM tc_ceb_file WHERE tc_ceb01 = tc_cea01 AND tc_ceb02 = TC_CEA03  AND tc_ceb06 = '" + g_tc_ceb06 + "' AND tc_ceb03 = '" + g_tc_ceb03 + "' ) AS  tc_ceb07 ," +
+                    " ORDER BY TC_CEA03 ";
         }
 
-        if(g_title.length() == 1 ){
+        if (g_title.length() == 1) {
             //Fill Data của Xưởng
             /*selectQuery = " SELECT tc_cea01,tc_cea03,tc_cea04,(tc_cea05||'/'||CASE WHEN tc_cea09 = 'null' THEN '' ELSE tc_cea09 END ) AS tc_cea05,tc_cea06,tc_cea08, " +
                     " COALESCE((select tc_ceb04  from  (SELECT * FROM tc_ceb_file   WHERE  tc_ceb02 =TC_CEA03 AND tc_ceb01 = tc_cea01 and  tc_cebdate||tc_ceb06 < '"+g_tc_cebdate+""+g_tc_ceb06+"' AND tc_ceb03 = '"+g_tc_ceb03+"' " +
@@ -181,64 +180,65 @@ public class KT07_DB {
 
                     " FROM tc_cea_file WHERE substr(tc_cea01,1,2) IN ('"+ Constant_Class.UserFactory +"')  AND tc_cea09 = '" + g_title + "' " ;*/
             selectQuery = " SELECT tc_cea01,tc_cea03,tc_cea04,(tc_cea05||'/'||CASE WHEN tc_cea09 = 'null' THEN '' ELSE tc_cea09 END ) AS tc_cea05,tc_cea06,tc_cea08, " +
-                    " COALESCE((select tc_ceb04  from  (SELECT * FROM tc_ceb_file   WHERE  tc_ceb02 =TC_CEA03 AND tc_ceb01 = tc_cea01 and  tc_ceb03||tc_ceb06 < '"+g_tc_ceb03+""+g_tc_ceb06+"'  " +
+                    " COALESCE((select tc_ceb04  from  (SELECT * FROM tc_ceb_file   WHERE  tc_ceb02 =TC_CEA03 AND tc_ceb01 = tc_cea01 and  tc_ceb03||tc_ceb06 < '" + g_tc_ceb03 + "" + g_tc_ceb06 + "'  " +
                     " order by tc_ceb03 desc ,tc_ceb06 desc)  LIMIT 1 ),0) AS tc_ceb04_old, " +
-                    " COALESCE((select tc_ceb03||'-'||tc_ceb06  from  (SELECT * FROM tc_ceb_file   WHERE  tc_ceb02 =TC_CEA03 AND tc_ceb01 = tc_cea01 AND  tc_ceb03||tc_ceb06 < '"+g_tc_ceb03+""+g_tc_ceb06+"'  "+
-                    " order by tc_ceb03 desc ,tc_ceb06 desc)  LIMIT 1 ),' ') AS tc_ceb03_ceb06, "+
-                    " COALESCE((SELECT tc_ceb04 FROM tc_ceb_file WHERE tc_ceb01 = tc_cea01 AND tc_ceb02 = TC_CEA03  AND tc_ceb06 = '"+g_tc_ceb06+"' AND tc_ceb03 = '"+g_tc_ceb03+"' ),0) AS  tc_ceb04 ," +
-                    "((COALESCE((SELECT tc_ceb04 FROM tc_ceb_file WHERE tc_ceb01 = tc_cea01 AND tc_ceb02 = TC_CEA03  AND tc_ceb06 = '"+g_tc_ceb06+"' AND tc_ceb03 = '"+g_tc_ceb03+"' ),0))" +
-                    " - (COALESCE((select tc_ceb04  from  (SELECT * FROM tc_ceb_file   WHERE  tc_ceb02 =TC_CEA03 AND tc_ceb01 = tc_cea01 and  tc_ceb03||tc_ceb06 < '"+g_tc_ceb03+""+g_tc_ceb06+"'  order by tc_ceb03 desc ,tc_ceb06 desc) " +
-                    " LIMIT 1 ),0) )) AS tc_ceb04_diff" +
+                    " COALESCE((select tc_ceb03||'-'||tc_ceb06  from  (SELECT * FROM tc_ceb_file   WHERE  tc_ceb02 =TC_CEA03 AND tc_ceb01 = tc_cea01 AND  tc_ceb03||tc_ceb06 < '" + g_tc_ceb03 + "" + g_tc_ceb06 + "'  " +
+                    " order by tc_ceb03 desc ,tc_ceb06 desc)  LIMIT 1 ),' ') AS tc_ceb03_ceb06, " +
+                    " COALESCE((SELECT tc_ceb04 FROM tc_ceb_file WHERE tc_ceb01 = tc_cea01 AND tc_ceb02 = TC_CEA03  AND tc_ceb06 = '" + g_tc_ceb06 + "' AND tc_ceb03 = '" + g_tc_ceb03 + "' ),0) AS  tc_ceb04 ," +
+                    "((COALESCE((SELECT tc_ceb04 FROM tc_ceb_file WHERE tc_ceb01 = tc_cea01 AND tc_ceb02 = TC_CEA03  AND tc_ceb06 = '" + g_tc_ceb06 + "' AND tc_ceb03 = '" + g_tc_ceb03 + "' ),0))" +
+                    " - (COALESCE((select tc_ceb04  from  (SELECT * FROM tc_ceb_file   WHERE  tc_ceb02 =TC_CEA03 AND tc_ceb01 = tc_cea01 and  tc_ceb03||tc_ceb06 < '" + g_tc_ceb03 + "" + g_tc_ceb06 + "'  order by tc_ceb03 desc ,tc_ceb06 desc) " +
+                    " LIMIT 1 ),0) )) AS tc_ceb04_diff " +
+                    " ,(SELECT tc_ceb07 FROM tc_ceb_file WHERE tc_ceb01 = tc_cea01 AND tc_ceb02 = TC_CEA03  AND tc_ceb06 = '" + g_tc_ceb06 + "' AND tc_ceb03 = '" + g_tc_ceb03 + "' ) AS  tc_ceb07 " +
+                    " FROM tc_cea_file WHERE substr(tc_cea01,1,2) IN ('" + Constant_Class.UserFactory + "')  AND tc_cea09 = '" + g_title + "' ";
 
-                    " FROM tc_cea_file WHERE substr(tc_cea01,1,2) IN ('"+ Constant_Class.UserFactory +"')  AND tc_cea09 = '" + g_title + "' " ;
+            if (g_dk != null) {
+                switch (g_dk) {
+                    case "Điện":
+                        selectQuery += " AND substr(tc_cea01,3,1) IN('D') ";
+                        break;
+                    case "Nước":
+                        selectQuery += " AND substr(tc_cea01,3,1) IN('M','R','S','N') ";
+                        break;
+                    case "Gas":
+                        selectQuery += " AND substr(tc_cea01,3,1) IN('G') ";
+                        break;
 
-                    if (g_dk != null){
-                        switch(g_dk){
-                            case "Điện":
-                                selectQuery += " AND substr(tc_cea01,3,1) IN('D') ";
-                                break;
-                            case "Nước":
-                                selectQuery += " AND substr(tc_cea01,3,1) IN('M','R','S','N') ";
-                                break;
-                            case "Gas":
-                                selectQuery += " AND substr(tc_cea01,3,1) IN('G') ";
-                                break;
-
-                        }
+                }
 
 
-                    }
-                 selectQuery +=" ORDER BY tc_cea01,tc_cea05,tc_cea03 ";
+            }
+            selectQuery += " ORDER BY tc_cea01,tc_cea05,tc_cea03 ";
         }
 
         return db.rawQuery(selectQuery, null);
     }
-    public Cursor getAll_tc_ceb_data(String g_title,String g_tc_ceb03 ) {
+
+    public Cursor getAll_tc_ceb_data(String g_title, String g_tc_ceb03) {
         String selectQuery = null;
-        if(g_title =="1=1"){
-            selectQuery = " SELECT tc_ceb01,tc_ceb02,tc_ceb03,tc_ceb04,tc_ceb05,tc_cebdate,tc_cebuser,tc_ceb06 FROM tc_ceb_file " +
-                    "  WHERE  " + g_title + " AND tc_ceb03 <= '"+g_tc_ceb03+"' AND tc_cebstatus IN ('N','E') ORDER BY tc_ceb03,tc_ceb06 " ;
-        }else {
+        if (g_title == "1=1") {
+            selectQuery = " SELECT tc_ceb01,tc_ceb02,tc_ceb03,tc_ceb04,tc_ceb05,tc_cebdate,tc_cebuser,tc_ceb06,tc_ceb07 FROM tc_ceb_file " +
+                    "  WHERE  " + g_title + " AND tc_ceb03 <= '" + g_tc_ceb03 + "' AND tc_cebstatus IN ('N','E') ORDER BY tc_ceb03,tc_ceb06 ";
+        } else {
             //Fill Data của loại tiêu thụ
-            selectQuery = " SELECT tc_ceb01,tc_ceb02,tc_ceb03,tc_ceb04,tc_ceb05,tc_cebdate,tc_cebuser, tc_ceb06 FROM tc_ceb_file " +
+            selectQuery = " SELECT tc_ceb01,tc_ceb02,tc_ceb03,tc_ceb04,tc_ceb05,tc_cebdate,tc_cebuser, tc_ceb06,tc_ceb07 FROM tc_ceb_file " +
                     "  WHERE tc_ceb01 IN ('" + g_title + "') AND tc_ceb03 <= '" + g_tc_ceb03 + "' AND tc_cebstatus IN('N','E')  ORDER BY tc_ceb03,tc_ceb06 ";
         }
         return db.rawQuery(selectQuery, null);
     }
 
     public String ins_tc_ceb_file(String g_tc_ceb01, String g_tc_ceb02, String g_tc_ceb03,
-                               String g_tc_ceb04, String g_tc_ceb05, String g_tc_ceb06, String g_tc_cebdate, String g_tc_cebuser) {
+                                  String g_tc_ceb04, String g_tc_ceb05, String g_tc_ceb06, String g_tc_cebdate, String g_tc_cebuser) {
         try {
 
             String selectQ = null;
-            selectQ = "SELECT count(*) FROM tc_ceb_file WHERE tc_ceb01 = '"+g_tc_ceb01+"' " +
-                    " AND tc_ceb02 = '"+g_tc_ceb02+"' AND tc_ceb03 = '"+g_tc_ceb03+"' " +
-                    "  AND tc_ceb06 = '"+g_tc_ceb06+"' ";
+            selectQ = "SELECT count(*) FROM tc_ceb_file WHERE tc_ceb01 = '" + g_tc_ceb01 + "' " +
+                    " AND tc_ceb02 = '" + g_tc_ceb02 + "' AND tc_ceb03 = '" + g_tc_ceb03 + "' " +
+                    "  AND tc_ceb06 = '" + g_tc_ceb06 + "' ";
             Cursor a = db.rawQuery(selectQ, null);
             a.moveToFirst();
             Integer count = a.getInt(0);
 
-            if ( count == 0) {
+            if (count == 0) {
                 ContentValues args = new ContentValues();
                 args.put("tc_ceb01", g_tc_ceb01);
                 args.put("tc_ceb02", g_tc_ceb02);
@@ -249,111 +249,110 @@ public class KT07_DB {
                 args.put("tc_cebdate", g_tc_cebdate);
                 args.put("tc_cebuser", g_tc_cebuser);
                 args.put("tc_cebstatus", "N");
-
+               // args.put("tc_ceb07", g_tc_ceb07);
                 db.insert(TABLE_NAME_TC_CEB, null, args);
-            }else if(count>=1){
+            } else if (count >= 1) {
                 String sqlquery = null;
-                sqlquery = "SELECT tc_cebstatus FROM tc_ceb_file WHERE tc_ceb01 = '"+g_tc_ceb01+"' " +
-                        " AND tc_ceb02 = '"+g_tc_ceb02+"' AND tc_ceb03 = '"+g_tc_ceb03+"' " +
-                        "  AND tc_ceb06 = '"+g_tc_ceb06+"' ";
+                sqlquery = "SELECT tc_cebstatus FROM tc_ceb_file WHERE tc_ceb01 = '" + g_tc_ceb01 + "' " +
+                        " AND tc_ceb02 = '" + g_tc_ceb02 + "' AND tc_ceb03 = '" + g_tc_ceb03 + "' " +
+                        "  AND tc_ceb06 = '" + g_tc_ceb06 + "' ";
                 Cursor ab = db.rawQuery(sqlquery, null);
                 ab.moveToFirst();
                 String status = ab.getString(0);
-                if( status.equals("Y")){
-                    db.execSQL("UPDATE " +TABLE_NAME_TC_CEB+ " SET tc_ceb04 = '"+g_tc_ceb04+"', tc_cebstatus = 'E' " +
-                            "WHERE tc_ceb01 = '"+g_tc_ceb01+"' AND tc_ceb02 = '"+g_tc_ceb02+"' " +
-                            "AND tc_ceb03 = '"+g_tc_ceb03+"'  " +
-                            "AND tc_ceb06 = '"+g_tc_ceb06+"' "  );
-                }else {
-                    db.execSQL("UPDATE " +TABLE_NAME_TC_CEB+ " SET tc_ceb04 = '"+g_tc_ceb04+"' " +
-                            "WHERE tc_ceb01 = '"+g_tc_ceb01+"' AND tc_ceb02 = '"+g_tc_ceb02+"' " +
-                            "AND tc_ceb03 = '"+g_tc_ceb03+"'  " +
-                            "AND tc_ceb06 = '"+g_tc_ceb06+"' "  );
+                if (status.equals("Y")) {
+                    db.execSQL("UPDATE " + TABLE_NAME_TC_CEB + " SET tc_ceb04 = '" + g_tc_ceb04 + "', tc_cebstatus = 'E' " +
+                            "WHERE tc_ceb01 = '" + g_tc_ceb01 + "' AND tc_ceb02 = '" + g_tc_ceb02 + "' " +
+                            "AND tc_ceb03 = '" + g_tc_ceb03 + "'  " +
+                            "AND tc_ceb06 = '" + g_tc_ceb06 + "' ");
+                } else {
+                    db.execSQL("UPDATE " + TABLE_NAME_TC_CEB + " SET tc_ceb04 = '" + g_tc_ceb04 + "' " +
+                            "WHERE tc_ceb01 = '" + g_tc_ceb01 + "' AND tc_ceb02 = '" + g_tc_ceb02 + "' " +
+                            "AND tc_ceb03 = '" + g_tc_ceb03 + "'  " +
+                            "AND tc_ceb06 = '" + g_tc_ceb06 + "' ");
                 }
             }
-                return "TRUE";
+            return "TRUE";
 
         } catch (Exception e) {
             return "FALSE";
         }
     }
 
-    public String update_status(String g_tc_ceb01,String g_tc_ceb02,String g_tc_ceb03,String g_tc_ceb06,String g_tc_cebdate){
-        try{
+    public String update_status(String g_tc_ceb01, String g_tc_ceb02, String g_tc_ceb03, String g_tc_ceb06, String g_tc_cebdate) {
+        try {
             String l_tc_ceb06 = "";
-            if(g_tc_ceb06.equals("0")){
+            if (g_tc_ceb06.equals("0")) {
                 l_tc_ceb06 = "AM";
-            }
-            else {
+            } else {
                 l_tc_ceb06 = "PM";
             }
-            db.execSQL("UPDATE " +TABLE_NAME_TC_CEB+ " SET tc_cebstatus = 'Y' " +
-                    "WHERE tc_ceb01 = '"+g_tc_ceb01+"' AND tc_ceb02 = '"+g_tc_ceb02+"' " +
-                    "AND tc_ceb03 = '"+g_tc_ceb03+"'  " +
-                    "AND tc_ceb06 = '"+l_tc_ceb06+"'  "  );
+            db.execSQL("UPDATE " + TABLE_NAME_TC_CEB + " SET tc_cebstatus = 'Y' " +
+                    "WHERE tc_ceb01 = '" + g_tc_ceb01 + "' AND tc_ceb02 = '" + g_tc_ceb02 + "' " +
+                    "AND tc_ceb03 = '" + g_tc_ceb03 + "'  " +
+                    "AND tc_ceb06 = '" + l_tc_ceb06 + "'  ");
             return "TRUE";
 
-        }catch (Exception ex){
-            return  "FALSE";
+        } catch (Exception ex) {
+            return "FALSE";
         }
     }
 
-    public Integer getCheckKT(String g_tc_cea01,String g_tc_cea03,String g_tc_ceb03,String g_tc_cebdate,String g_tc_cebuser, String g_tc_ceb06){
+    public Integer getCheckKT(String g_tc_cea01, String g_tc_cea03, String g_tc_ceb03, String g_tc_cebdate, String g_tc_cebuser, String g_tc_ceb06) {
         String selectQuery = null;
-        selectQuery = " SELECT count(*) FROM tc_ceb_file WHERE tc_ceb01='"+g_tc_cea01+"' AND tc_ceb02 ='"+g_tc_cea03+"' AND tc_ceb03='"+g_tc_ceb03+"' " +
-                " AND tc_ceb06 = '"+g_tc_ceb06+"' AND tc_cebstatus IN ('Y','E')  ";
+        selectQuery = " SELECT count(*) FROM tc_ceb_file WHERE tc_ceb01='" + g_tc_cea01 + "' AND tc_ceb02 ='" + g_tc_cea03 + "' AND tc_ceb03='" + g_tc_ceb03 + "' " +
+                " AND tc_ceb06 = '" + g_tc_ceb06 + "' AND tc_cebstatus IN ('Y','E')  ";
 
         Cursor a = db.rawQuery(selectQuery, null);
         a.moveToFirst();
         Integer count = a.getInt(0);
         return count;
     }
-    public Cursor getdataKT(String g_tc_cea01,String g_tc_cea03){
+
+    public Cursor getdataKT(String g_tc_cea01, String g_tc_cea03) {
         String selectQuery = null;
         selectQuery = "SELECT tc_ceb03 AS tc_ceb03_old, tc_ceb06 AS tc_ceb06_old  " +
                 "FROM (SELECT tc_ceb03, tc_ceb06, tc_ceb04  FROM tc_ceb_file  " +
-                "WHERE tc_ceb01='"+g_tc_cea01+"' AND tc_ceb02='"+g_tc_cea03+"' AND tc_cebstatus IN ('Y','E') ORDER BY tc_ceb03 DESC, tc_ceb06 DESC)  LIMIT 1";
+                "WHERE tc_ceb01='" + g_tc_cea01 + "' AND tc_ceb02='" + g_tc_cea03 + "' AND tc_cebstatus IN ('Y','E') ORDER BY tc_ceb03 DESC, tc_ceb06 DESC)  LIMIT 1";
         return db.rawQuery(selectQuery, null);
     }
-    public String update_dataKT(String g_tc_ceb01,String g_tc_ceb02,String g_tc_ceb03,String g_tc_ceb04,String g_tc_ceb05,String g_tc_ceb06,String g_tc_cebdate){
-        try{
+
+    public String update_dataKT(String g_tc_ceb01, String g_tc_ceb02, String g_tc_ceb03, String g_tc_ceb04, String g_tc_ceb05, String g_tc_ceb06, String g_tc_cebdate) {
+        try {
             String l_tc_ceb06 = "";
-            if(g_tc_ceb06.equals("0")){
+            if (g_tc_ceb06.equals("0")) {
                 l_tc_ceb06 = "AM";
-            }
-            else {
+            } else {
                 l_tc_ceb06 = "PM";
             }
-            db.execSQL("UPDATE " +TABLE_NAME_TC_CEB+ " SET tc_ceb04 = '"+g_tc_ceb04+"', tc_ceb05 = '"+g_tc_ceb05+"' " +
-                    " WHERE tc_ceb01 = '"+g_tc_ceb01+"' AND tc_ceb02 = '"+g_tc_ceb02+"' " +
-                    " AND tc_ceb03 = '"+g_tc_ceb03+"' AND tc_cebstatus = 'Y' " +
-                    " AND tc_ceb06 = '"+l_tc_ceb06+"'  "  );
+            db.execSQL("UPDATE " + TABLE_NAME_TC_CEB + " SET tc_ceb04 = '" + g_tc_ceb04 + "', tc_ceb05 = '" + g_tc_ceb05 + "' " +
+                    " WHERE tc_ceb01 = '" + g_tc_ceb01 + "' AND tc_ceb02 = '" + g_tc_ceb02 + "' " +
+                    " AND tc_ceb03 = '" + g_tc_ceb03 + "' AND tc_cebstatus = 'Y' " +
+                    " AND tc_ceb06 = '" + l_tc_ceb06 + "'  ");
             return "TRUE";
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             return "FALSE";
         }
     }
+
     public String update_tc_ceb_file(String g_tc_ceb01, String g_tc_ceb02, String g_tc_ceb03,
-                                  String g_tc_ceb04, String g_tc_ceb05, String g_tc_ceb06, String g_tc_cebdate, String g_tc_cebuser) {
+                                     String g_tc_ceb04, String g_tc_ceb05, String g_tc_ceb06, String g_tc_cebdate, String g_tc_cebuser) {
         try {
             String l_tc_ceb06 = "";
-            if(g_tc_ceb06.equals("0")){
+            if (g_tc_ceb06.equals("0")) {
                 l_tc_ceb06 = "AM";
-            }
-            else {
+            } else {
                 l_tc_ceb06 = "PM";
             }
 
             String selectQ = null;
-            selectQ = "SELECT count(*) FROM tc_ceb_file WHERE tc_ceb01 = '"+g_tc_ceb01+"' " +
-                    " AND tc_ceb02 = '"+g_tc_ceb02+"' AND tc_ceb03 = '"+g_tc_ceb03+"' " +
-                    " AND tc_ceb06 = '"+l_tc_ceb06+"' ";
+            selectQ = "SELECT count(*) FROM tc_ceb_file WHERE tc_ceb01 = '" + g_tc_ceb01 + "' " +
+                    " AND tc_ceb02 = '" + g_tc_ceb02 + "' AND tc_ceb03 = '" + g_tc_ceb03 + "' " +
+                    " AND tc_ceb06 = '" + l_tc_ceb06 + "' ";
             Cursor a = db.rawQuery(selectQ, null);
             a.moveToFirst();
             Integer count = a.getInt(0);
 
-            if ( count == 0) {
+            if (count == 0) {
                 ContentValues args = new ContentValues();
                 args.put("tc_ceb01", g_tc_ceb01);
                 args.put("tc_ceb02", g_tc_ceb02);
@@ -366,11 +365,11 @@ public class KT07_DB {
                 args.put("tc_cebstatus", "Y");
 
                 db.insert(TABLE_NAME_TC_CEB, null, args);
-            }else if(count>=1){
-                db.execSQL("UPDATE " +TABLE_NAME_TC_CEB+ " SET tc_ceb04 = '"+g_tc_ceb04+"', tc_ceb05 = '"+g_tc_ceb05+"' " +
-                        "WHERE tc_ceb01 = '"+g_tc_ceb01+"' AND tc_ceb02 = '"+g_tc_ceb02+"' " +
-                        "AND tc_ceb03 = '"+g_tc_ceb03+"'  " +
-                        "AND tc_ceb06 = '"+l_tc_ceb06+"' "  );
+            } else if (count >= 1) {
+                db.execSQL("UPDATE " + TABLE_NAME_TC_CEB + " SET tc_ceb04 = '" + g_tc_ceb04 + "', tc_ceb05 = '" + g_tc_ceb05 + "' " +
+                        "WHERE tc_ceb01 = '" + g_tc_ceb01 + "' AND tc_ceb02 = '" + g_tc_ceb02 + "' " +
+                        "AND tc_ceb03 = '" + g_tc_ceb03 + "'  " +
+                        "AND tc_ceb06 = '" + l_tc_ceb06 + "' ");
 
             }
             return "TRUE";
@@ -379,10 +378,23 @@ public class KT07_DB {
             return "FALSE";
         }
     }
-    public Cursor getdata_check(String g_tc_cea01,String g_tc_cea03,String g_tc_ceb03, String g_tc_ceb06 ) {
+
+    public Cursor getdata_check(String g_tc_cea01, String g_tc_cea03, String g_tc_ceb03, String g_tc_ceb06) {
         String selectQuery = null;
-        selectQuery = " SELECT tc_ceb01,tc_ceb02,tc_ceb03,tc_ceb06 FROM " +TABLE_NAME_TC_CEB+ "  WHERE tc_ceb01='"+g_tc_cea01+"' AND tc_ceb02 ='"+g_tc_cea03+"' AND tc_ceb03='"+g_tc_ceb03+"' " +
-                " AND tc_ceb06 = '"+g_tc_ceb06+"' ";
+        selectQuery = " SELECT tc_ceb01,tc_ceb02,tc_ceb03,tc_ceb06 FROM " + TABLE_NAME_TC_CEB + "  WHERE tc_ceb01='" + g_tc_cea01 + "' AND tc_ceb02 ='" + g_tc_cea03 + "' AND tc_ceb03='" + g_tc_ceb03 + "' " +
+                " AND tc_ceb06 = '" + g_tc_ceb06 + "' ";
         return db.rawQuery(selectQuery, null);
+    }
+
+    public String appendUPDAE(String tc_ceb01, String tc_ceb02, String tc_ceb03, String tc_cebdate, String l_giatri, String tc_ceb06) {
+        try {
+            ContentValues args = new ContentValues();
+            db.execSQL("UPDATE " + TABLE_NAME_TC_CEB + " SET tc_ceb07='" + l_giatri + "' WHERE tc_ceb01='" + tc_ceb01 + "'  " +
+                    " AND tc_ceb02='" + tc_ceb02 + "' AND tc_ceb03='" + tc_ceb03 + "' and tc_cebstatus='N' AND tc_ceb06='" + tc_ceb06 + "' " +
+                    " AND tc_cebdate='" + tc_cebdate + "'");
+            return "TRUE";
+        } catch (Exception e) {
+            return "FALSE";
+        }
     }
 }
