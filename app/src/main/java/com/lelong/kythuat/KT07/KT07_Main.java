@@ -454,8 +454,9 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
                     String G_TC_CEB03_CEB06 = cursor.getString(cursor.getColumnIndexOrThrow("tc_ceb03_ceb06"));
                     String G_TC_CEB04 = cursor.getString(cursor.getColumnIndexOrThrow("tc_ceb04"));
                     String G_TC_CEB07 = cursor.getString(cursor.getColumnIndexOrThrow("tc_ceb07"));
+                    String G_TC_CEB07_OLD = cursor.getString(cursor.getColumnIndexOrThrow("tc_ceb07_old"));
 
-                    kt07MainRowItems_list.add(new KT07_Main_RowItem(G_TC_CEA01, G_TC_CEA03, G_TC_CEA04, G_TC_CEA05, G_TC_CEA06, G_TC_CEA08, G_TC_CEB04_OLD, G_TC_CEB04, G_TC_CEB03_CEB06, G_TC_CEB04_DIFF,G_TC_CEB07));
+                    kt07MainRowItems_list.add(new KT07_Main_RowItem(G_TC_CEA01, G_TC_CEA03, G_TC_CEA04, G_TC_CEA05, G_TC_CEA06, G_TC_CEA08, G_TC_CEB04_OLD, G_TC_CEB04, G_TC_CEB03_CEB06, G_TC_CEB04_DIFF,G_TC_CEB07,G_TC_CEB07_OLD));
                 } catch (Exception e) {
                     String err = e.toString();
                 }
@@ -1558,8 +1559,8 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
                 String G_TC_CEB04 = cursor.getString(cursor.getColumnIndexOrThrow("tc_ceb04"));
                 String G_TC_CEB04_DIFF = cursor.getString(cursor.getColumnIndexOrThrow("tc_ceb04_diff"));
                 String G_TC_CEB07 = cursor.getString(cursor.getColumnIndexOrThrow("tc_ceb07"));
-
-                kt07MainRowItems_list.add(new KT07_Main_RowItem(G_TC_CEA01, G_TC_CEA03, G_TC_CEA04, G_TC_CEA05, G_TC_CEA06, G_TC_CEA08, G_TC_CEB04_OLD, G_TC_CEB04, G_TC_CEB03_CEB06, G_TC_CEB04_DIFF, G_TC_CEB07));
+                String G_TC_CEB07_OLD = cursor.getString(cursor.getColumnIndexOrThrow("tc_ceb07_old"));
+                kt07MainRowItems_list.add(new KT07_Main_RowItem(G_TC_CEA01, G_TC_CEA03, G_TC_CEA04, G_TC_CEA05, G_TC_CEA06, G_TC_CEA08, G_TC_CEB04_OLD, G_TC_CEB04, G_TC_CEB03_CEB06, G_TC_CEB04_DIFF, G_TC_CEB07,G_TC_CEB07_OLD));
             } catch (Exception e) {
                 String err = e.toString();
             }

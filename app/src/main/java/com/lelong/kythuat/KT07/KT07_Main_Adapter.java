@@ -1,5 +1,6 @@
 package com.lelong.kythuat.KT07;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -7,6 +8,7 @@ import android.database.Cursor;
 import android.graphics.Typeface;
 import android.text.Editable;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -50,6 +52,7 @@ public class KT07_Main_Adapter extends RecyclerView.Adapter<KT07_Main_Adapter.Da
     private AlertDialog alertDialog;
     private KT07_Main kt07_Main;
     AtomicReference<String> lResultReference = new AtomicReference<>();
+    private boolean isTextWatcherEnabled = true; // Biến để kiểm soát TextWatcher
 
     public KT07_Main_Adapter(Context applicationContext,
                              int kt07_listdata_item,
@@ -85,7 +88,7 @@ public class KT07_Main_Adapter extends RecyclerView.Adapter<KT07_Main_Adapter.Da
         int adapterPosition = holder.getAdapterPosition();
         holder.tv_tc_cea03.setText(kt07MainRowItems_list.get(adapterPosition).getG_tc_cea03());
         holder.tv_tc_cea04.setText(kt07MainRowItems_list.get(adapterPosition).getG_tc_cea04());
-        holder.edt_tc_ceb07.setText(kt07MainRowItems_list.get(adapterPosition).getG_tc_ceb07());
+        holder.tv_tc_ceb07.setText(kt07MainRowItems_list.get(adapterPosition).getG_tc_ceb07());
         holder.tv_tc_cea04.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -205,40 +208,54 @@ public class KT07_Main_Adapter extends RecyclerView.Adapter<KT07_Main_Adapter.Da
 
         //Insert dữ liệu vào bảng ảo tc_ceb (E)
 
-        holder.edt_tc_ceb07.addTextChangedListener(new TextWatcher() {
+        holder.tv_tc_ceb07.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            public void onClick(View view) {
+                int adapterPosition_tmp = holder.getAdapterPosition();
+                editingPosition = adapterPosition_tmp;
+                //check kết chuyển
+                String tc_cea01=kt07MainRowItems_list.get(adapterPosition).getG_TC_CEA01();
+                String tc_cea03=kt07MainRowItems_list.get(adapterPosition).getG_tc_cea03();
+                String tc_ceb03 = tv_tc_ceb03.getText().toString();
+                String tc_ceb06 = tv_tc_ceb06.getText().toString();
+                String tc_cebdate = tv_tc_cebdate.getText().toString();
+                String tc_cebuser = tv_tc_cebuser.getText().toString();
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (holder.edt_tc_ceb07.getText().toString().trim().length() >= 0) {
-                    getUserCode(holder.edt_tc_ceb07.getText().toString().trim(), holder.getPosition());
+                int l_count = kt07Db.getCheckKT(tc_cea01,tc_cea03,tc_ceb03,tc_cebdate,tc_cebuser,tc_ceb06);
+                if(l_count > 0){
+                    Cursor cursor_check = kt07Db.getdataKT(tc_cea01,tc_cea03);
+                    cursor_check.moveToFirst();
+                    int num = cursor_check.getCount();
+                    if (num == 0){
+                        showInputDialog_Note( holder.tv_tc_ceb04, editingPosition,kt07MainRowItems_list.get(adapterPosition).getG_tc_ceb07());
+                    }
+                    else{
+                        String G_TC_CEB03_OLD = "";
+                        String G_TC_CEB06_OLD = "";
+                        for (int i = 0; i < num; i++) {
+                            try {
+                                G_TC_CEB03_OLD = cursor_check.getString(cursor_check.getColumnIndexOrThrow("tc_ceb03_old"));
+                                G_TC_CEB06_OLD = cursor_check.getString(cursor_check.getColumnIndexOrThrow("tc_ceb06_old"));
+                            } catch (Exception e) {
+                                String err = e.toString();
+                            }
+                            cursor_check.moveToNext();
+                        }
+                        if (G_TC_CEB03_OLD.equals(tc_ceb03) &&  G_TC_CEB06_OLD.equals(tc_ceb06)) {
+                            showInputDialog_Note( holder.tv_tc_ceb04, editingPosition,kt07MainRowItems_list.get(adapterPosition).getG_tc_ceb07());
+                        }
+                        else{
+                            Toast.makeText(view.getContext(), "Dữ liệu đã kết chuyển lâu, không thể sửa đổi!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
                 }
-                //holder.tc_fac009.getText().toString();
-            }
-
-            private void getUserCode(String kt02_tc_fac009, int position) {
-                try {
-                    final String qr_val = kt02_tc_fac009.trim();
-                    String g_tc_ceb07 = null;
-                    g_tc_ceb07 = holder.edt_tc_ceb07.getText().toString();
-                    kt07Db.appendUPDAE(kt07MainRowItems_list.get(adapterPosition).getG_TC_CEA01(),
-                            kt07MainRowItems_list.get(adapterPosition).getG_tc_cea03(),
-                            tv_tc_ceb03.getText().toString(),tv_tc_cebdate.getText().toString(),g_tc_ceb07,tv_tc_ceb06.getText().toString());
-
-                    kt07MainRowItems_list.get(position).setG_tc_ceb07(g_tc_ceb07);
-                } catch (Exception e) {
-                    String err = e.toString();
+                else{
+                    showInputDialog_Note( holder.tv_tc_ceb04, editingPosition,kt07MainRowItems_list.get(adapterPosition).getG_tc_ceb07());
                 }
+
             }
         });
+
     }
 
     @Override
@@ -247,7 +264,7 @@ public class KT07_Main_Adapter extends RecyclerView.Adapter<KT07_Main_Adapter.Da
     }
 
     public static class DataViewHolder extends RecyclerView.ViewHolder {
-        TextView tv_tc_cea03, tv_tc_cea04, tv_tc_cea05, tv_tc_ceb04_old,tv_tc_ceb04_diff,tv_tc_ceb04;
+        TextView tv_tc_cea03, tv_tc_cea04, tv_tc_cea05, tv_tc_ceb04_old,tv_tc_ceb04_diff,tv_tc_ceb04,tv_tc_ceb07;
         EditText edt_tc_ceb07;
 
         public DataViewHolder(View itemView) {
@@ -258,8 +275,10 @@ public class KT07_Main_Adapter extends RecyclerView.Adapter<KT07_Main_Adapter.Da
             tv_tc_ceb04_old = itemView.findViewById(R.id.tv_tc_ceb04_old);
             tv_tc_ceb04 = itemView.findViewById(R.id.tv_tc_ceb04);
             tv_tc_ceb04_diff =itemView.findViewById(R.id.tv_tc_ceb04_diff);
-            edt_tc_ceb07 = itemView.findViewById(R.id.tv_tc_ceb07);
+            tv_tc_ceb07 = itemView.findViewById(R.id.tv_tc_ceb07);
         }
+
+
     }
 
 
@@ -324,6 +343,22 @@ public class KT07_Main_Adapter extends RecyclerView.Adapter<KT07_Main_Adapter.Da
         report.setTextColor(ContextCompat.getColor(applicationContext, R.color.black));
         layout.addView(report);
 
+        /*TextView tvInputNote = new TextView(applicationContext);
+        tvInputNote.setText("Nhập ghi chu");
+        tvInputNote.setTypeface(null, Typeface.BOLD);
+        tvInputNote.setTextColor(ContextCompat.getColor(applicationContext, R.color.black));
+        tvInputNote.setTextSize(21);
+
+        layout.addView(tvInputNote);
+        EditText edtInputNote = new EditText(applicationContext);
+        edtInputNote.setText(tc_ceb07now);
+        edtInputNote.setHint("Nhập ghi chu");
+        edtInputNote.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        edtInputNote.setTextSize(20);
+        layout.addView(edtInputNote);*/
+
+
+
         builder.setView(layout);
 
         KT07_Debounced debouncedTextWatcher = new KT07_Debounced(new KT07_Debounced.TextWatcherListener() {
@@ -353,12 +388,13 @@ public class KT07_Main_Adapter extends RecyclerView.Adapter<KT07_Main_Adapter.Da
         });
 
         edtInput.addTextChangedListener(debouncedTextWatcher);
-
+        //edtInputNote.addTextChangedListener(debouncedTextWatcher);
         builder.setPositiveButton("Xác nhận", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String userInput = edtInput.getText().toString();
-                if (userInput.equals("")){
+                //String noteInput= edtInputNote.getText().toString();
+                if (userInput.equals("") ){
 
                 }else {
                     double sodo = Double.parseDouble(userInput);
@@ -370,6 +406,7 @@ public class KT07_Main_Adapter extends RecyclerView.Adapter<KT07_Main_Adapter.Da
 
                     }
                 }
+
             }
         });
 
@@ -408,19 +445,9 @@ public class KT07_Main_Adapter extends RecyclerView.Adapter<KT07_Main_Adapter.Da
 
     //Insert dữ liệu vào bảng ảo tc_ceb (S)
     private void  handleUserInput(int adapterPosition, String text) {
-        if (text.equals(null)){
+        if (text.equals(null)  ){
             return;
         }else {
-            /*kt07Db.ins_tc_ceb_file(kt07MainRowItems_list.get(adapterPosition).getG_TC_CEA01(),
-                    kt07MainRowItems_list.get(adapterPosition).getG_tc_cea03(),
-                    tv_tc_ceb03.getText().toString(),
-                    text,
-                    "0",
-                    tv_tc_ceb06.getText().toString(),
-                    tv_tc_cebdate.getText().toString(),
-                    tv_tc_cebuser.getText().toString()
-            ,kt07MainRowItems_list.get(adapterPosition).getG_tc_ceb07());*/
-
             kt07Db.ins_tc_ceb_file(kt07MainRowItems_list.get(adapterPosition).getG_TC_CEA01(),
                     kt07MainRowItems_list.get(adapterPosition).getG_tc_cea03(),
                     tv_tc_ceb03.getText().toString(),
@@ -428,7 +455,27 @@ public class KT07_Main_Adapter extends RecyclerView.Adapter<KT07_Main_Adapter.Da
                     "0",
                     tv_tc_ceb06.getText().toString(),
                     tv_tc_cebdate.getText().toString(),
-                    tv_tc_cebuser.getText().toString());
+                    tv_tc_cebuser.getText().toString()
+            ,kt07MainRowItems_list.get(adapterPosition).getG_tc_ceb07());
+
+
+        }
+    }
+
+    private void  handleUserInput_Note(int adapterPosition, String text) {
+        if (text.equals(null)  ){
+            return;
+        }else {
+            kt07Db.ins_tc_ceb_file(kt07MainRowItems_list.get(adapterPosition).getG_TC_CEA01(),
+                    kt07MainRowItems_list.get(adapterPosition).getG_tc_cea03(),
+                    tv_tc_ceb03.getText().toString(),
+                    kt07MainRowItems_list.get(adapterPosition).getG_tc_ceb04(),
+                    "0",
+                    tv_tc_ceb06.getText().toString(),
+                    tv_tc_cebdate.getText().toString(),
+                    tv_tc_cebuser.getText().toString()
+                    ,text);
+
         }
     }
     //Insert dữ liệu vào bảng ảo tc_ceb (E)
@@ -494,6 +541,89 @@ public class KT07_Main_Adapter extends RecyclerView.Adapter<KT07_Main_Adapter.Da
         // Hiển thị menu popup
         popupMenu.show();
     }
+
+    private void showInputDialog_Note(View anchorView, int adapterPosition, String tc_ceb07now) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(anchorView.getContext());
+
+        // Tạo tiêu đề cho Dialog
+        TextView title = new TextView(anchorView.getContext());
+        title.setText("Nhập ghi chú");
+        title.setPadding(15, 15, 15, 15);
+        title.setTextSize(24);
+        title.setTypeface(null, Typeface.BOLD);
+        title.setTextColor(ContextCompat.getColor(anchorView.getContext(), R.color.black));
+        builder.setCustomTitle(title);
+
+
+        // Tạo Layout chứa các thành phần của Dialog
+        LinearLayout layout = new LinearLayout(anchorView.getContext());
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.setPadding(16, 16, 16, 16);
+
+        if (tc_ceb07now.equals("") || tc_ceb07now==null || tc_ceb07now.equals(null)) {
+            tc_ceb07now = "Nhập ghi chú";
+        }
+
+        // Tạo EditText cho người dùng nhập dữ liệu
+        EditText edtInput = new EditText(anchorView.getContext());
+        edtInput.setText(tc_ceb07now);
+        edtInput.setHint("Nhập ghi chú");
+        //edtInput.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        edtInput.setTextSize(20);
+        layout.addView(edtInput);
+
+        builder.setView(layout);
+        // Thêm nút xác nhận cho Dialog
+        builder.setPositiveButton("Xác nhận", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String userInput = edtInput.getText().toString();
+                if (!userInput.isEmpty()) {
+                        handleUserInput_Note(adapterPosition,userInput);
+                        kt07MainRowItems_list.get(adapterPosition).setG_tc_ceb07(userInput);
+                        kt07MainFillData.notifydata();
+                    //alertDialog.dismiss();
+                }else {
+                    handleUserInput_Note(adapterPosition,"");
+                    kt07MainRowItems_list.get(adapterPosition).setG_tc_ceb07("");
+                    kt07MainFillData.notifydata();
+                }
+            }
+        });
+
+        // Thêm nút hủy cho Dialog
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.setCancelable(false);
+
+        AlertDialog alertDialog = builder.create();
+
+        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                if (alertDialog != null && alertDialog.getButton(DialogInterface.BUTTON_POSITIVE) != null) {
+                    String edtInputTmp = edtInput.getText().toString().trim(); // Loại bỏ khoảng trắng hai bên
+                    if (edtInputTmp.isEmpty()) {
+                        alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(false); // Không cho phép xác nhận khi trống
+                    } else {
+                           // Double.parseDouble(edtInputTmp); // Kiểm tra giá trị đầu vào có phải số hay không
+                            alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(true); // Kích hoạt nút xác nhận nếu là số hợp lệ
+
+                    }
+                }
+            }
+        });
+
+        alertDialog.show();
+        edtInput.requestFocus();
+    }
+
+
 }
 
 
