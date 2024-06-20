@@ -150,7 +150,7 @@ class KT02_camera extends AppCompatActivity {
                                         if (deleted) {
                                             Log.d("BBB", "Deleted file: " + fileToDelete.getAbsolutePath());
                                             db.delete_tenanh_tc_far(tenanh);
-                                            Cursor cursor = db.demsttanh(ID, ID1, l_ngay);
+                                            Cursor cursor = db.demsttanh(ID, ID1, l_ngay,l_somay);
                                             cursor.moveToFirst();
                                             int num23 = cursor.getInt(cursor.getColumnIndexOrThrow("soluong"));
                                             int loadhinh = num23 - 1;
@@ -202,7 +202,7 @@ class KT02_camera extends AppCompatActivity {
                                         if (deleted) {
                                             Log.d("BBB", "Deleted file: " + fileToDelete.getAbsolutePath());
                                             db.delete_tenanh_tc_far(tenanh);
-                                            Cursor cursor = db.demsttanh(ID, ID1, l_ngay);
+                                            Cursor cursor = db.demsttanh(ID, ID1, l_ngay,l_somay);
                                             cursor.moveToFirst();
                                             int num23 = cursor.getInt(cursor.getColumnIndexOrThrow("soluong"));
                                             int loadhinh = num23 - 1;
