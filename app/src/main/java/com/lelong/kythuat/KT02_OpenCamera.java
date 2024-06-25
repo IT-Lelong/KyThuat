@@ -121,7 +121,8 @@ public class KT02_OpenCamera extends AppCompatActivity {
         db = new KT02_DB(this);
         db.open();
 
-        Cursor cursor = db.demsttanh(selectedDetail, selectedDepartment, selectedDate, selectedSomay);
+        //Cursor cursor = db.demsttanh(selectedDetail, selectedDepartment, selectedDate, selectedSomay);
+        Cursor cursor = db.countslanh(selectedDetail, selectedDepartment, selectedDate, selectedSomay);
         cursor.moveToFirst();
         int num = cursor.getInt(cursor.getColumnIndexOrThrow("soluong"));
         STT = num + 1;

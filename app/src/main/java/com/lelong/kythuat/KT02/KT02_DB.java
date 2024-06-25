@@ -502,6 +502,14 @@ public class KT02_DB {
             return null;
         }
     }
+
+    public Cursor countslanh(String KEY, String bp, String ngay, String xsomay) {
+        try {
+            return db.rawQuery("SELECT  count (*) as soluong FROM " + TABLE_NAME_TC_FAC_KT02 + " WHERE tc_fac004='" + KEY + "' AND user='" + bp + "' AND somay='" + xsomay  + "' AND ngay='" + ngay + "' AND tenhinh is not null AND tenhinh != '' ", null);
+        } catch (Exception e) {
+            return null;
+        }
+    }
     public
     Cursor xuathinhanh(String key,String l_ngay,String l_bp,String xsomay) {
         try {
@@ -579,14 +587,14 @@ public class KT02_DB {
         String[] strings = new String[]{tenanh1};
         db.delete(TABLE_NAME_TC_FAR_KT02, whereClause_hm0102, strings);
     }
-    public Cursor demsttanh(String KEY, String bp, String ngay) {
+    /*public Cursor demsttanh(String KEY, String bp, String ngay) {
         try {
 
             return db.rawQuery("SELECT  soluong FROM " + TABLE_NAME_TC_FAC_KT02 + " WHERE tc_fac004='" + KEY + "' AND user='" + bp + "' AND ngay='" + ngay + "' ", null);
         } catch (Exception e) {
             return null;
         }
-    }
+    }*/
     public Cursor getTen_Anh(String g_hm,String g_ngay,String g_donvi,String g_soxe) {
         try {
             String selectQuery = "SELECT count(*) as l_count FROM " + TABLE_NAME_TC_FAR_KT02 + " WHERE tc_far001= '"+g_hm+"' " +
