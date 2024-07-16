@@ -812,7 +812,7 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
                     }
                 }
                 showProgressBarOnDialog(dialog);
-                new DataProcessingTask(dialog).execute();
+                new DataProcessingTask(dialog, modelUdate, timeUpdate).execute();
             }
         });
 
@@ -826,6 +826,61 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
+    private void showProgressBarOnDialog(final DialogInterface dialog) {
+        // Tạo LinearLayout để chứa ProgressBar và TextView tiến trình
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.setGravity(Gravity.CENTER);
+
+        // Tạo ProgressBar và thêm vào LinearLayout
+        final ProgressBar progressBar = new ProgressBar(this, null, android.R.attr.progressBarStyleLarge);
+        progressBar.setIndeterminate(true);
+        layout.addView(progressBar);
+
+        // Tạo TextView để hiển thị thông điệp
+        final TextView messageTextView = new TextView(this);
+        messageTextView.setText("Đang xử lý...");
+        messageTextView.setGravity(Gravity.CENTER);
+        layout.addView(messageTextView);
+
+        // Tạo LayoutParams để đặt kích thước và vị trí cho LinearLayout chứa ProgressBar và TextView
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        );
+        layoutParams.gravity = Gravity.CENTER;
+        layout.setLayoutParams(layoutParams);
+
+        // Thêm LinearLayout vào Dialog
+        if (dialog instanceof AlertDialog) {
+            AlertDialog alertDialog = (AlertDialog) dialog;
+
+            // Vô hiệu hóa nút "Có" và "Không" khi hiển thị ProgressBar
+            alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(false);
+            alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setEnabled(false);
+
+            // Thêm LinearLayout chứa ProgressBar và TextView vào AlertDialog
+            alertDialog.setView(layout);
+
+            // Chặn việc đóng Dialog khi nhấn nút "OK"
+            alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Do nothing
+                }
+            });
+
+            // Chặn việc đóng Dialog khi nhấn nút "Cancel"
+            alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Do nothing
+                }
+            });
+        }
+    }
+
 
     private void addSpinnerWithTitle(LinearLayout linearLayout, String title, List<String> options) {
         // Tạo LinearLayout để chứa tiêu đề và Spinner trên cùng một hàng
@@ -1000,7 +1055,7 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
         datePickerDialog.show();
     }
 
-    private void showProgressBarOnDialog(final DialogInterface dialog) {
+    /*private void showProgressBarOnDialog(final DialogInterface dialog) {
         // Tạo LinearLayout để chứa ProgressBar và TextView tiến trình
         LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
@@ -1038,9 +1093,9 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
                 }
             });
         }
-    }
+    }*/
 
-    private class DataProcessingTask extends AsyncTask<Void, Void, Void> {
+    /*private class DataProcessingTask extends AsyncTask<Void, Void, Void> {
         private DialogInterface dialog;
 
         public DataProcessingTask(DialogInterface dialog) {
@@ -1069,9 +1124,154 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
                 dialog.dismiss(); // Tắt Dialog sau khi hoàn thành xử lý
             }
         }
+    }*/
+
+    private class DataProcessingTask extends AsyncTask<Void, Void, Void> {
+        private DialogInterface dialog;
+        private String model;
+        private String date_upload;
+
+        public DataProcessingTask(DialogInterface dialog, String model, String date_upload) {
+            this.dialog = dialog;
+            this.model = model;
+            this.date_upload = date_upload;
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            processUploads(0); // Bắt đầu quá trình upload
+            return null;
+        }
+
+        private void processUploads(int iteration) {
+            if (iteration >= 100) { // Số lần gọi hàm upload
+                return;
+            }
+
+            upLoad_Datatable(model, date_upload, new Runnable() {
+                @Override
+                public void run() {
+                    // Sau khi hoàn thành, gọi lại processUploads với iteration tăng lên
+                    processUploads(iteration + 1);
+                }
+            });
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            if (dialog != null && dialog instanceof AlertDialog) {
+                ProgressBar progressBar = ((AlertDialog) dialog).findViewById(android.R.id.progress);
+                if (progressBar != null) {
+                    progressBar.setVisibility(View.GONE);
+                }
+                ((AlertDialog) dialog).getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(true);
+                ((AlertDialog) dialog).getButton(DialogInterface.BUTTON_NEGATIVE).setEnabled(true);
+                dialog.dismiss();
+            }
+        }
     }
 
-    private void upLoad_Datatable(String model, String date_upload) {
+    private void upLoad_Datatable(String model, String date_upload, Runnable callback) {
+        Thread UpLoad_fia = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Cursor upl = kt07Db.getAll_tc_ceb_data(model, date_upload);
+                jsonupload = cur2Json(upl);
+                if (jsonupload.length() == 0) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(KT07_Main.this, "Không có dữ liệu để upload", Toast.LENGTH_SHORT).show();
+                            if (callback != null) {
+                                callback.run();
+                            }
+                        }
+                    });
+                } else {
+                    try {
+                        ujobject = new JSONObject();
+                        ujobject.put("ujson", jsonupload);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    final String res = upload_all("http://172.16.40.20/" + Constant_Class.server + "/TechAPP/upload_tc_ceb_file.php");
+                    if (!res.equals("FALSE")) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    JSONArray jsonarray = new JSONArray(res);
+                                    for (int i = 0; i < jsonarray.length(); i++) {
+                                        JSONObject jsonObject = jsonarray.getJSONObject(i);
+                                        String g_tc_ceb01 = jsonObject.getString("TC_CEB01");
+                                        String g_tc_ceb02 = jsonObject.getString("TC_CEB02");
+                                        String g_tc_ceb03 = jsonObject.getString("TC_CEB03");
+                                        String g_tc_cebdate = jsonObject.getString("TC_CEBDATE");
+                                        String g_tc_ceb06 = jsonObject.getString("TC_CEB06");
+                                        kt07Db.update_status(g_tc_ceb01, g_tc_ceb02, g_tc_ceb03, g_tc_ceb06, g_tc_cebdate);
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                Toast.makeText(KT07_Main.this, "Đã upload xong", Toast.LENGTH_SHORT).show();
+                                if (callback != null) {
+                                    callback.run();
+                                }
+                            }
+                        });
+                    } else {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(KT07_Main.this, "Không kết nối với internet", Toast.LENGTH_SHORT).show();
+                                if (callback != null) {
+                                    callback.run();
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+        });
+
+        Thread Load_fia = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Looper.prepare(); // Chuẩn bị luồng để chạy vòng lặp sự kiện
+                //getLVData();
+                Looper.loop(); // Bắt đầu vòng lặp sự kiện
+            }
+        });
+        //dialog.dismiss();
+
+        new
+
+                Thread() {
+                    @Override
+                    public void run() {
+                        UpLoad_fia.start();
+                        try {
+                            UpLoad_fia.join();
+                        } catch (InterruptedException e) {
+                        }
+                        if (a == "ok") {
+                            Load_fia.start();
+                            try {
+                                Load_fia.join();
+                            } catch (InterruptedException e) {
+                            }
+                        }
+
+                    }
+                }.
+
+                start();
+    }
+
+
+
+    /*private void upLoad_Datatable(String model, String date_upload) {
         Thread UpLoad_fia = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -1195,7 +1395,7 @@ public class KT07_Main extends AppCompatActivity implements NavigationView.OnNav
 
                 start();
 
-    }
+    }*/
     public String check_data2(Cursor data_check) {
         CountDownLatch latch = new CountDownLatch(1);
 
