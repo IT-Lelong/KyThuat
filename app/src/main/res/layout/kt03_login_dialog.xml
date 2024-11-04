@@ -75,7 +75,8 @@
                 android:layout_margin="5dp"
                 android:background="@drawable/button_type_nomal"
                 android:text="Kiểm tra"
-                android:textColor="#FFFFFF" />
+                android:textColor="#FFFFFF"
+                android:visibility="gone"/>
 
         </TableRow>
 

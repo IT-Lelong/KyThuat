@@ -21,7 +21,7 @@
         android:id="@+id/tv4_hangmuc"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="4"
+        android:layout_weight="3.9"
         android:paddingLeft="5dp"
         android:gravity="center|left"
         android:text="@string/tenmaymoc"
@@ -32,7 +32,7 @@
         android:id="@+id/tv4_hang"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="2.5"
+        android:layout_weight="2.4"
         android:paddingLeft="5dp"
         android:gravity="center|left"
         android:text="@string/hangsanxuat"
@@ -43,7 +43,7 @@
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1.3"
+        android:layout_weight="1.9"
         android:background="@drawable/border_listview"
         android:gravity="center">
 
@@ -56,7 +56,7 @@
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1.3"
+        android:layout_weight="1.9"
         android:background="@drawable/border_listview"
         android:gravity="center">
 
@@ -70,12 +70,28 @@
         android:id="@+id/edt4_ghiChu"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="5.4"
+        android:layout_weight="3.2"
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
         android:background="@drawable/border_listview"
         android:ems="10"
         android:inputType="textPersonName"
         android:hint="@string/thongtin" />
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.8"
+        android:background="@drawable/border_listview"
+        android:gravity="center">
 
+        <Button
+            android:id="@+id/btn1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:adjustViewBounds="true"
+            android:background="@drawable/camera1"
+            android:drawablePadding="1dp"
+            android:scaleType="center" />
+    </LinearLayout>
 </LinearLayout>

@@ -5,6 +5,7 @@ import android.database.Cursor;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
@@ -28,9 +29,13 @@ public class CursorToJsonConverter {
             for (int i = 0; i < totalColumn; i++) {
                 String columnName = cursor.getColumnName(i);
                 String columnValue = cursor.getString(i);
-
+                if (columnValue != null) {
+                    rowObject.add(columnName, new JsonPrimitive(columnValue));
+                } else {
+                    rowObject.add(columnName, JsonNull.INSTANCE);  // Xử lý giá trị null
+                }
                 // Thêm cặp khóa-giá trị vào rowObject
-                rowObject.add(columnName, new JsonPrimitive(columnValue));
+                //rowObject.add(columnName, new JsonPrimitive(columnValue));
             }
 
             jsonArray.add(rowObject);

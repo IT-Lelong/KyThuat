@@ -22,7 +22,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
-
 import com.lelong.kythuat.R;
 import com.lelong.kythuat.KT02.Search_Signature_KT02;
 import com.lelong.kythuat.UploadToServer;
@@ -44,7 +43,7 @@ import java.util.Date;
 public class KT03_login {
     private UploadToServer uploadToServer = null;
     String g_server = "";
-    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     JSONObject ujobject = null;
     KT03_DB kt03Db;
     ListView lv_query;
@@ -182,13 +181,13 @@ public class KT03_login {
                                           int monthOfYear,
                                           int dayOfMonth) {
                         //Mỗi lần thay đổi ngày tháng năm thì cập nhật lại TextView Date
-                        tv_date.setText(year + "/" + (monthOfYear) + "/" + (dayOfMonth));
+                        tv_date.setText(year + "/" + (monthOfYear+1) + "/" + (dayOfMonth));
                     }
                 };
                 //các lệnh dưới này xử lý ngày giờ trong DatePickerDialog
                 //sẽ giống với trên TextView khi mở nó lên
                 String s = tv_date.getText() + "";
-                String strArrtmp[] = s.split("/");
+                String strArrtmp[] = s.split("-");
                 int ngay = Integer.parseInt(strArrtmp[2]);
                 int thang = Integer.parseInt(strArrtmp[1]);
                 int nam = Integer.parseInt(strArrtmp[0]);
@@ -218,7 +217,7 @@ public class KT03_login {
             }
         });
 
-        btn_Camera.setOnClickListener(new View.OnClickListener() {
+        /*btn_Camera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                     Intent KT03 = new Intent();
@@ -232,9 +231,33 @@ public class KT03_login {
                     context.startActivity(KT03);
                     dialog.dismiss();
             }
-        });
+        });*/
 
         btn_Upload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                KT03_KetChuyen_Dialog KT03_ketChuyenDialog = new KT03_KetChuyen_Dialog(v.getContext());
+                KT03_ketChuyenDialog.setEnableBtn(true,true);
+                KT03_ketChuyenDialog.setOkButtonClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        KT03_ketChuyenDialog.setEnableBtn(false,true);
+                        String input_datekt = KT03_ketChuyenDialog.getSelected_sp_datekt();
+                        String input_department = KT03_ketChuyenDialog.getSelected_sp_department();
+                        String input_ca = KT03_ketChuyenDialog.getSelected_sp_ca();
+                        new KT03_Transfer(view.getContext(),KT03_ketChuyenDialog,input_datekt,input_department,input_ca);
+                    }
+                });
+                KT03_ketChuyenDialog.setCancelButtonClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        KT03_ketChuyenDialog.dismiss();
+                    }
+                });
+                KT03_ketChuyenDialog.show();
+            }
+        });
+        /*btn_Upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -292,6 +315,9 @@ public class KT03_login {
                                                 Toast.makeText(view.getContext(), view.getContext().getString(R.string.M04), Toast.LENGTH_SHORT).show();
                                             } else {
                                                 kt03Db.delete_all_table();
+                                                //kt03Db.call_upd_tc_faapost(get_tc_faa);
+                                                //Hàm lấy ảnh và gửi ảnh
+                                                //ketChuyenPhoto = new KetChuyenPhoto(context, get_tc_far, ketchuyenDialog);
                                                 Toast.makeText(view.getContext(), view.getContext().getString(R.string.M03), Toast.LENGTH_SHORT).show();
                                                 al_dialog.dismiss();
                                             }
@@ -306,7 +332,7 @@ public class KT03_login {
 
                 al_dialog.show();
             }
-        });
+        });*/
         dialog.show();
 
 

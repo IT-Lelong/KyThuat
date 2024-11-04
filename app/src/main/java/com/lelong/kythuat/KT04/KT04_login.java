@@ -24,6 +24,8 @@ import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 
+import com.lelong.kythuat.KT04.KT04_KetChuyen_Dialog;
+import com.lelong.kythuat.KT04.KT04_Transfer;
 import com.lelong.kythuat.R;
 import com.lelong.kythuat.UploadToServer;
 
@@ -45,7 +47,7 @@ public class KT04_login {
     private UploadToServer uploadToServer = null;
     String g_server = "";
     JSONObject ujobject;
-    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     public void KT04_login_dialog(Context context, String menuID, String ID) {
         //setLanguage.setLanguage();
@@ -213,7 +215,7 @@ public class KT04_login {
                                           int monthOfYear,
                                           int dayOfMonth) {
                         //Mỗi lần thay đổi ngày tháng năm thì cập nhật lại TextView Date
-                        tv_date.setText(year + "/" + (monthOfYear) + "/" + (dayOfMonth));
+                        tv_date.setText(year + "/" + (monthOfYear+1) + "/" + (dayOfMonth));
                     }
                 };
                 //các lệnh dưới này xử lý ngày giờ trong DatePickerDialog
@@ -249,8 +251,32 @@ public class KT04_login {
             }
         });
 
-
         btn_Upload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                KT04_KetChuyen_Dialog KT04_ketChuyenDialog = new KT04_KetChuyen_Dialog(v.getContext());
+                KT04_ketChuyenDialog.setEnableBtn(true,true);
+                KT04_ketChuyenDialog.setOkButtonClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        KT04_ketChuyenDialog.setEnableBtn(false,true);
+                        String input_datekt = KT04_ketChuyenDialog.getSelected_sp_datekt();
+                        String input_department = KT04_ketChuyenDialog.getSelected_sp_department();
+                        String input_ca = KT04_ketChuyenDialog.getSelected_sp_ca();
+                        new KT04_Transfer(view.getContext(),KT04_ketChuyenDialog,input_datekt,input_department,input_ca);
+                    }
+                });
+                KT04_ketChuyenDialog.setCancelButtonClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        KT04_ketChuyenDialog.dismiss();
+                    }
+                });
+                KT04_ketChuyenDialog.show();
+            }
+        });
+
+        /*btn_Upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -319,7 +345,7 @@ public class KT04_login {
                 a.setTextColor(Color.BLUE);
 
             }
-        });
+        });*/
         dialog.show();
     }
 

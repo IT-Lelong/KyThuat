@@ -1,10 +1,17 @@
 package com.lelong.kythuat.KT03;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.LayerDrawable;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -12,6 +19,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.lelong.kythuat.KT01.KT01_Camera;
 import com.lelong.kythuat.R;
 
 import java.util.List;
@@ -25,6 +33,7 @@ public class KT03_HM0102_Adapder extends RecyclerView.Adapter<KT03_HM0102_Adapde
     KT03_DB kt03Db = null;
     private String g_id;
     private int g_lang;
+    String ngay, bophan,mahangmuc;
 
     public KT03_HM0102_Adapder(@NonNull Context context, int resource, @NonNull List<KT03_HM0102_Model> objects, String g_date, String g_ca, String g_id) {
         this.context = context;
@@ -114,6 +123,57 @@ public class KT03_HM0102_Adapder extends RecyclerView.Adapter<KT03_HM0102_Adapde
             }
         });
 
+        ngay = g_date;
+        bophan = g_ca;
+        mahangmuc=g_id;
+
+        String checkca1 = String.valueOf(objects.get(position).isG_kotot_ca1());
+        String checkca2 = String.valueOf(objects.get(position).isG_kotot_ca2());
+        Boolean chk_qrb = kt03Db.KT_ndhinh(g_machitiet,bophan,mahangmuc,ngay);
+        if (chk_qrb == true) {
+            /*if(bophan.equals("1")){
+                holder.cb_tot_ca1.setChecked(true);
+                holder.cb_kotot_ca1.setChecked(false);
+            }else {
+                holder.cb_tot_ca2.setChecked(true);
+                holder.cb_kotot_ca2.setChecked(false);
+            }*/
+            Drawable[] layers = new Drawable[2];
+            layers[0] = context.getDrawable(R.drawable.camera1); // replace R.drawable.button_image with your button image
+            GradientDrawable gradientDrawable = new GradientDrawable();
+            gradientDrawable.setStroke(4, Color.RED); // set border color and width
+            gradientDrawable.setCornerRadius(20); // set border corner radius
+            layers[1] = gradientDrawable;
+            LayerDrawable layerDrawable = new LayerDrawable(layers);
+            holder.btn1.setBackground(layerDrawable);
+        }else {
+            Drawable[] layers = new Drawable[2];
+            layers[0] = context.getDrawable(R.drawable.camera1); // replace R.drawable.button_image with your button image
+            GradientDrawable gradientDrawable = new GradientDrawable();
+            gradientDrawable.setStroke(4, Color.WHITE); // set border color and width
+            gradientDrawable.setCornerRadius(20); // set border corner radius
+            layers[1] = gradientDrawable;
+            LayerDrawable layerDrawable = new LayerDrawable(layers);
+            holder.btn1.setBackground(layerDrawable);
+        }
+
+        holder.btn1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, KT03_Camera.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("ID", g_id);
+                bundle.putString("l_ngay", ngay);
+                bundle.putString("l_ca", bophan);
+                bundle.putString("l_hm", g_machitiet);
+                intent.putExtras(bundle);
+
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // add this line
+                context.startActivity(intent);
+                //openDialog(DULIEU,g_to);
+            }
+        });
+
         /*holder.edt_ghiChu.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -176,6 +236,7 @@ public class KT03_HM0102_Adapder extends RecyclerView.Adapter<KT03_HM0102_Adapde
         TextView tv_stt, tv_hangmuc;
         CheckBox cb_tot_ca1, cb_tot_ca2, cb_kotot_ca1, cb_kotot_ca2;
         EditText edt_ghiChu;
+        Button btn1;
 
         public DataViewHolder(View itemView) {
             super(itemView);
@@ -187,6 +248,7 @@ public class KT03_HM0102_Adapder extends RecyclerView.Adapter<KT03_HM0102_Adapde
             cb_kotot_ca1 = (CheckBox) itemView.findViewById(R.id.cb_kotot_ca1);
             cb_kotot_ca2 = (CheckBox) itemView.findViewById(R.id.cb_kotot_ca2);
             edt_ghiChu = (EditText) itemView.findViewById(R.id.edt_ghiChu);
+            btn1 = (Button) itemView.findViewById(R.id.btn1);
         }
     }
 

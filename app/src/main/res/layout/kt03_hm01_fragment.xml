@@ -124,6 +124,14 @@
                     android:text="@string/ghichu"
                     android:textStyle="bold"
                     android:theme="@style/title" />
+                <TextView
+                    android:id="@+id/login_button"
+                    style="@style/title"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="@string/hang6"
+                    android:textSize="18sp" />
 
             </LinearLayout>
 

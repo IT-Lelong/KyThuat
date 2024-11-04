@@ -3,16 +3,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".KT03.KT03_HM04">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="90dp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:background="@drawable/border_listview"
+        android:gravity="center">
 
-    <EditText
-        android:id="@+id/edt_danhgia"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:ems="10"
-        android:hint="@string/thongtin"
-        android:gravity="start|top"
-        android:inputType="textMultiLine" />
+        <EditText
+            android:id="@+id/edt_danhgia"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="9"
+            android:hint="@string/thongtin"
+            android:inputType="textMultiLine" />
+
+    </LinearLayout>
+
 </LinearLayout>

@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class KT04_HM01 extends Fragment {
-    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     private String g_dk = "";
     private String g_date;
     private String g_ca;
@@ -117,7 +117,7 @@ public class KT04_HM01 extends Fragment {
         recyclerView.setLayoutManager(linearLayoutManager);
 
         list_hm01 = new ArrayList<KT04_HM01_Model>();
-        adapter = new KT04_HM01_Adapder(getContext(), R.layout.kt04_hm0102_fragment_row, list_hm01, g_date, g_ca);
+        adapter = new KT04_HM01_Adapder(getContext(), R.layout.kt04_hm0102_fragment_row, list_hm01, g_date, g_ca,g_id);
         recyclerView.setAdapter(adapter);
 
         final Cursor[] cur_getAll = {null};
@@ -228,7 +228,7 @@ public class KT04_HM01 extends Fragment {
         for (int i = 0; i < num; i++) {
             try {
                 @SuppressLint("Range") String tc_fac004 = cur_tc_fac.getString(cur_tc_fac.getColumnIndex("tc_fac004"));
-                kt04Db.append(tc_fac004, "0", "", g_date, g_ca, g_id);
+                kt04Db.append(tc_fac004, "1", "", g_date, g_ca, g_id);
             } catch (Exception e) {
                 String err = e.toString();
             }

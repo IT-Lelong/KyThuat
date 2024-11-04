@@ -111,7 +111,7 @@ public class KT04_HM02 extends Fragment {
         recyclerView.setLayoutManager(linearLayoutManager);
 
         list_hm02 = new ArrayList<KT04_HM02_Model>();
-        adapter = new KT04_HM02_Adapder(getContext(), R.layout.kt04_hm02_fragment_row, list_hm02, g_date, g_ca);
+        adapter = new KT04_HM02_Adapder(getContext(), R.layout.kt04_hm02_fragment_row, list_hm02, g_date, g_ca, g_id);
         recyclerView.setAdapter(adapter);
 
         final Cursor[] cur_getAll = {null};
@@ -225,7 +225,7 @@ public class KT04_HM02 extends Fragment {
         for (int i = 0; i < num; i++) {
             try {
                 @SuppressLint("Range") String tc_fac004 = cur_tc_fac.getString(cur_tc_fac.getColumnIndex("tc_fac004"));
-                kt04Db.append(tc_fac004, "0", "", g_date, g_ca, g_id);
+                kt04Db.append(tc_fac004, "1", "", g_date, g_ca, g_id);
             } catch (Exception e) {
                 String err = e.toString();
             }
