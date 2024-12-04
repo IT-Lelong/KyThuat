@@ -215,15 +215,17 @@ public class KT04_login {
                                           int monthOfYear,
                                           int dayOfMonth) {
                         //Mỗi lần thay đổi ngày tháng năm thì cập nhật lại TextView Date
-                        tv_date.setText(year + "/" + (monthOfYear+1) + "/" + (dayOfMonth));
+                        //tv_date.setText(year + "-" + (monthOfYear+1) + "-" + (dayOfMonth));
+                        String formattedDate = String.format("%d-%02d-%02d", year, monthOfYear + 1, dayOfMonth);
+                        tv_date.setText(formattedDate);
                     }
                 };
                 //các lệnh dưới này xử lý ngày giờ trong DatePickerDialog
                 //sẽ giống với trên TextView khi mở nó lên
                 String s = tv_date.getText() + "";
-                String strArrtmp[] = s.split("/");
+                String strArrtmp[] = s.split("-");
                 int ngay = Integer.parseInt(strArrtmp[2]);
-                int thang = Integer.parseInt(strArrtmp[1]);
+                int thang = Integer.parseInt(strArrtmp[1])-1;
                 int nam = Integer.parseInt(strArrtmp[0]);
                 DatePickerDialog pic = new DatePickerDialog(
                         context, AlertDialog.THEME_DEVICE_DEFAULT_DARK,
